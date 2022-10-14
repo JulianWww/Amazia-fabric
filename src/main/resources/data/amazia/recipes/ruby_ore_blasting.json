@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "amazia:ruby_ore"
+  },
+  "result": "amazia:ruby",
+  "experience": 2
+}

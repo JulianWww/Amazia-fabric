@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+  	"amazia:ruby_block",
+  	"amazia:ruby_ore",
+  	"amazia:deepslate_ruby_ore"
+  ]
+}

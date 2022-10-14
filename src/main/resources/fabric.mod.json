@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "amazia",
+  "version": "${version}",
+
+  "name": "Amazia",
+  "description": "Comming",
+  "authors": [
+    "Julian Wandhoven", "Nico Steiner"
+  ],
+  "contact": {
+    "homepage": "https://github.com/JulianWww/Amazia-fabric/issues",
+    "sources": "https://github.com/JulianWww/amazia-fabric"
+  },
+
+  "license": "MIT",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.denanu.amazia.Amazia"
+    ],
+    "client": [
+      "net.denanu.amazia.AmaziaClient"
+    ],
+    "cardinal-components-entity": [
+      "net.denanu.amazia.components.AmaziaComponents"
+    ]
+  },
+  "mixins": [
+    "amazia.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric-api": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
