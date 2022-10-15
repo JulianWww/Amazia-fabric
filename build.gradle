@@ -35,11 +35,11 @@ dependencies {
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
 
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.2"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.2"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-world:5.0.2"
+    //modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.2"
+    //modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.2"
+    //modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-world:5.0.2"
     //modImplementation "io.github.ladysnake:baritone-api-fabric:1.8.3"
-    implementation files("libs/baritone-api-fabric-1.8.3.jar")
+    //implementation files("libs/baritone-api-fabric-1.8.3.jar")
 }
 
 processResources {
