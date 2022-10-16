@@ -34,4 +34,8 @@ public class JJUtils {
 		}
 		return list;
 	}
+	
+	public static boolean equal(BlockPos a, BlockPos b) {
+		return (a.getX() == b.getX() && a.getY() == b.getY() && a.getZ() == b.getZ());
+	}
 }

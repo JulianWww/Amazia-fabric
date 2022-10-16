@@ -26,7 +26,7 @@ public class BasePathingNode extends PathingNode {
         return this.updateTick;
     }
     
-    /*@Override
+    @Override
     public int updateConnections(final World world, final PathingCellMap cellMap, final PathingGraph graph) {
         this.updateTick = System.currentTimeMillis();
         this.checkConnection(world, cellMap, graph, 1, 0);
@@ -38,9 +38,9 @@ public class BasePathingNode extends PathingNode {
             graph.addLastNode(this.parent);
         }
         return 0;
-    }*/
+    }
     
-    /*private boolean checkConnection(final World world, final PathingCellMap cellMap, final PathingGraph graph, final int x, final int z) {
+    private boolean checkConnection(final World world, final PathingCellMap cellMap, final PathingGraph graph, final int x, final int z) {
         if (!graph.isInRange(this.getBlockPos().add(x, 0, z))) {
             return false;
         }
@@ -67,7 +67,7 @@ public class BasePathingNode extends PathingNode {
             this.checkParentLink(connected);
         }
         return false;
-    }*/
+    }
     
     /*@Override
     protected void notifyListeners(final World world, final List<EntityPlayerMP> listeners) {
@@ -128,7 +128,7 @@ public class BasePathingNode extends PathingNode {
         return (node.getCell().y == this.getCell().y - 1 && node.getClearanceHeight() >= 3) || node.getCell().y == this.getCell().y || (node.getCell().y == this.getCell().y + 1 && this.getClearanceHeight() >= 3);
     }
     
-    /*private BasePathingNode getExistingNeighbor(final PathingCellMap cellMap, final int x, final int z) {
+    private BasePathingNode getExistingNeighbor(final PathingCellMap cellMap, final int x, final int z) {
         return cellMap.getNodeYRange(this.getCell().x + x, this.getCell().y - 1, this.getCell().y + 1, this.getCell().z + z);
-    }*/
+    }
 }

@@ -1,9 +1,10 @@
-package net.denanu.amazia.village;
+package net.denanu.amazia.village.sceduling;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.denanu.amazia.JJUtils;
+import net.denanu.amazia.village.Village;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -11,7 +12,6 @@ import net.minecraft.block.CropBlock;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class FarmingSceduler extends VillageSceduler {
 	public List<BlockPos> farms;

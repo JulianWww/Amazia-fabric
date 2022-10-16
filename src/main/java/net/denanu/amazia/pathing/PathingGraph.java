@@ -10,12 +10,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 public class PathingGraph {
-    protected final World world;
+    private final World world;
     protected final Village village;
     private int nodesVerified;
     private final PathingCellMap baseCellMap;
     private Deque<PathingNode> nodeProcessQueue;
     private boolean initialQueueComplete;
+    private final int throttle = 10;
     //private List<EntityPlayerMP> listeners;
     
     public PathingGraph(final World worldIn, final Village v) {
@@ -25,7 +26,7 @@ public class PathingGraph {
         //this.listeners = new ArrayList<EntityPlayerMP>();
         this.world = worldIn;
         this.village = v;
-        this.baseCellMap = new PathingCellMap(120);
+        this.baseCellMap = new PathingCellMap(Village.getSize());
     }
     
     public int nodeCount() {
@@ -47,15 +48,15 @@ public class PathingGraph {
     
     public void seedVillage(final BlockPos bp) {
         byte clearanceHeight = 0;
-        if (BasePathingNode.isPassable(this.world, bp) && BasePathingNode.isPassable(this.world, bp.up())) {
+        if (BasePathingNode.isPassable(this.getWorld(), bp) && BasePathingNode.isPassable(this.getWorld(), bp.up())) {
             clearanceHeight = 2;
-            if (BasePathingNode.isPassable(this.world, bp.up(2))) {
+            if (BasePathingNode.isPassable(this.getWorld(), bp.up(2))) {
                 ++clearanceHeight;
             }
         }
         if (clearanceHeight >= 2) {
             final BasePathingNode baseNode = new BasePathingNode(bp, clearanceHeight);
-            this.baseCellMap.putNode(baseNode, this.world);
+            this.baseCellMap.putNode(baseNode, this.getWorld());
             this.nodeProcessQueue.addLast(baseNode);
         }
     }
@@ -66,12 +67,11 @@ public class PathingGraph {
     
     private void processNodeQueue() {
         int nodesProcessed = 0;
-        //final int throttle = 16000;
-        while (!this.nodeProcessQueue.isEmpty() && nodesProcessed < 16000) {
+        while (!this.nodeProcessQueue.isEmpty() && nodesProcessed < this.throttle) {
             final PathingNode node = this.nodeProcessQueue.pollFirst();
             if (node != null) {
                 if (!node.isDestroyed()) {
-                    node.process(this.world, this.baseCellMap, this);
+                    node.process(this.getWorld(), this.baseCellMap, this);
                     //if (!this.listeners.isEmpty()) {
                     //    node.notifyListeners(this.world, this.listeners);
                     //}
@@ -201,4 +201,12 @@ public class PathingGraph {
     public BasePathingNode getEdgeNode(final BlockPos origin, final Double minDist) {
         return this.baseCellMap.getEdgeNode(origin, minDist);
     }
+    
+    public PathingCellMap getCellMap() {
+    	return this.baseCellMap;
+    }
+
+	public World getWorld() {
+		return world;
+	}
 }

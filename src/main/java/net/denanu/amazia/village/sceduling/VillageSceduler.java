@@ -1,7 +1,9 @@
-package net.denanu.amazia.village;
+package net.denanu.amazia.village.sceduling;
 
 import java.util.List;
 import java.util.Random;
+
+import net.denanu.amazia.village.Village;
 
 public class VillageSceduler {
 	private Village village;

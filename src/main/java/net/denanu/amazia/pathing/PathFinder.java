@@ -9,25 +9,22 @@ import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.entities.village.server.AmaziaEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.Path;
-import net.minecraft.entity.ai.pathing.PathNodeNavigator;
+import net.minecraft.entity.ai.pathing.MobNavigation;
 import net.minecraft.entity.ai.pathing.PathNode;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class PathFinder extends EntityNavigation {
-	protected AmaziaVillagerEntity entity;
+public class PathFinder  extends MobNavigation {
+	protected AmaziaEntity entity;
     protected World blockAccess;
     protected PriorityQueue<PathStep> openSteps;
     protected Set<PathingNode> closedNodes;
     
-    public PathFinder(final AmaziaVillagerEntity entityNav) {
-        super(entityNav, null);
+    public PathFinder(final AmaziaEntity entityNav) {
+        super(entityNav, entityNav.world);
         this.openSteps = new PriorityQueue<PathStep>(Comparator.comparingInt(a -> a.getTotalPathDistance()));
         this.closedNodes = new HashSet<PathingNode>();
         this.entity = entityNav;
@@ -42,16 +39,16 @@ public class PathFinder extends EntityNavigation {
     }
     
     @Nullable
-    public Path func_186333_a(final World worldIn, final Entity entitylivingIn, final Entity targetEntity, final float maxDistance) {
+    public PathingPath findPath(final World worldIn, final Entity entitylivingIn, final Entity targetEntity, final float maxDistance) {
         return this.findPath(worldIn, entitylivingIn, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ());
     }
     
     @Nullable
-    public Path func_186336_a(final World worldIn, final Entity entitylivingIn, final BlockPos targetPos, final float maxDistance) {
+    public PathingPath findPath(final World worldIn, final Entity entitylivingIn, final BlockPos targetPos, final float maxDistance) {
         return this.findPath(worldIn, entitylivingIn, targetPos.getX() + 0.5f, targetPos.getY() + 0.5f, targetPos.getZ() + 0.5f);
     }
     
-    private Path findPath(final World worldIn, final Entity entityLivingIn, final double x, final double y, final double z) {
+    private PathingPath findPath(final World worldIn, final Entity entityLivingIn, final double x, final double y, final double z) {
         this.blockAccess = worldIn;
         final PathingGraph graph = this.getGraph();
         if (graph != null) {
@@ -62,18 +59,18 @@ public class PathFinder extends EntityNavigation {
         return null;
     }
     
-    public Path findPath(final World worldIn, final PathingNode startNode, final PathingNode endNode) {
+    public PathingPath findPath(final World worldIn, final PathingNode startNode, final PathingNode endNode) {
         if (endNode == null || startNode == null) {
             return null;
         }
         PathStep firstStep = null;
         int level;
-        for (int maxLevel = level = endNode.getTopParent().getCell().level; level >= 0; --level) {
+        for (level = endNode.getTopParent().getCell().level; level >= 0; --level) {
             final PathingNode localStart = startNode.getParent(level);
             final PathingNode localEnd = endNode.getParent(level);
             firstStep = this.findLevelPath(new PathStep(localStart, null, localEnd, firstStep), localEnd);
         }
-        return this.finalizePath(firstStep);
+        return this.finalizePath(firstStep, endNode.getBlockPos());
     }
     
     private PathStep findLevelPath(final PathStep startPoint, final PathingNode endNode) {
@@ -125,46 +122,49 @@ public class PathFinder extends EntityNavigation {
         }
     }
     
-    private Path finalizePath(final PathStep firstStep) {
+    private PathingPath finalizePath(final PathStep firstStep, final BlockPos pos) {
         final ArrayList<PathNode> list = new ArrayList<PathNode>();
         for (PathStep step = firstStep; step != null; step = step.getNextStep()) {
             final PathingCell cell = step.getNode().getCell();
             list.add(new PathNode(cell.x, cell.y, cell.z));
         }
-        return new Path((PathNode[])list.toArray(new PathNode[0]));
+        return new PathingPath(list, pos, true);
     }
     
     private PathingNode getStart(final PathingGraph graph) {
-        int i;
-        if (this.entity.func_70090_H()) {
+    	int i;
+        /*if (this.entity.func_70090_H()) {
             i = (int)this.entity.func_174813_aQ().field_72338_b;
             final BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(MathHelper.func_76128_c(this.entity.field_70165_t), i, MathHelper.func_76128_c(this.entity.field_70161_v));
             for (Block block = this.blockAccess.func_180495_p((BlockPos)blockpos$mutableblockpos).func_177230_c(); block == Blocks.field_150358_i || block == Blocks.field_150355_j; block = this.blockAccess.func_180495_p((BlockPos)blockpos$mutableblockpos).func_177230_c()) {
                 ++i;
                 blockpos$mutableblockpos.func_181079_c(MathHelper.func_76128_c(this.entity.field_70165_t), i, MathHelper.func_76128_c(this.entity.field_70161_v));
             }
-        }
-        else if (this.entity.field_70122_E) {
-            i = MathHelper.func_76128_c(this.entity.func_174813_aQ().field_72338_b + 0.5);
+        }*/ // idk
+        if (this.entity.isOnGround()) { // if else (actually)
+            i = MathHelper.floor(this.entity.getY() + 0.5);
         }
         else {
+        	return null;
+        }
+        /* falling code ?? else {
             BlockPos blockpos;
             for (blockpos = new BlockPos((Entity)this.entity); (this.blockAccess.func_180495_p(blockpos).func_185904_a() == Material.field_151579_a || this.blockAccess.func_180495_p(blockpos).func_177230_c().func_176205_b(this.blockAccess, blockpos)) && blockpos.func_177956_o() > 0; blockpos = blockpos.func_177977_b()) {}
             i = blockpos.func_177984_a().func_177956_o();
-        }
-        final BlockPos blockpos2 = new BlockPos((Entity)this.entity);
-        PathingNode node = graph.getBaseNode(blockpos2.func_177958_n(), i, blockpos2.func_177952_p());
+        }*/
+        final BlockPos blockpos2 = new BlockPos(this.entity.getPos());
+        PathingNode node = graph.getBaseNode(blockpos2.getX(), i, blockpos2.getY());
         if (node == null) {
-            node = graph.getBaseNode(blockpos2.func_177958_n(), i + 1, blockpos2.func_177952_p());
+            node = graph.getBaseNode(blockpos2.getX(), i + 1, blockpos2.getY());
         }
         if (node == null) {
-            final Set<BlockPos> set = (Set<BlockPos>)Sets.newHashSet();
-            set.add(new BlockPos(this.entity.func_174813_aQ().field_72340_a, (double)i, this.entity.func_174813_aQ().field_72339_c));
-            set.add(new BlockPos(this.entity.func_174813_aQ().field_72340_a, (double)i, this.entity.func_174813_aQ().field_72334_f));
-            set.add(new BlockPos(this.entity.func_174813_aQ().field_72336_d, (double)i, this.entity.func_174813_aQ().field_72339_c));
-            set.add(new BlockPos(this.entity.func_174813_aQ().field_72336_d, (double)i, this.entity.func_174813_aQ().field_72334_f));
+            final Set<BlockPos> set = new HashSet<BlockPos>();
+            set.add(new BlockPos(this.entity.getX() + 1, (double)i, this.entity.getZ() + 1));
+            set.add(new BlockPos(this.entity.getX() + 1, (double)i, this.entity.getZ() - 1));
+            set.add(new BlockPos(this.entity.getX() - 1, (double)i, this.entity.getZ() + 1));
+            set.add(new BlockPos(this.entity.getX() - 1, (double)i, this.entity.getZ() - 1));
             for (final BlockPos blockpos3 : set) {
-                node = graph.getNodeYRange(blockpos3.func_177958_n(), blockpos3.func_177956_o() - 1, blockpos3.func_177956_o(), blockpos3.func_177952_p());
+                node = graph.getNodeYRange(blockpos3.getX(), blockpos3.getY() - 1, blockpos3.getY(), blockpos3.getZ());
                 if (node != null) {
                     return node;
                 }
@@ -172,22 +172,4 @@ public class PathFinder extends EntityNavigation {
         }
         return node;
     }
-
-	@Override
-	protected PathNodeNavigator createPathNodeNavigator(int range) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected Vec3d getPos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected boolean isAtValidPosition() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }
