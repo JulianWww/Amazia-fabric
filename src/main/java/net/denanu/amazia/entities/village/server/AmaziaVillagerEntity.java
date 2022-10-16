@@ -1,16 +1,20 @@
 package net.denanu.amazia.entities.village.server;
 
+import net.denanu.amazia.village.Village;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
+import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
-public class VillagerEntity extends PassiveEntity {
+public class AmaziaVillagerEntity extends PassiveEntity {
+	private Village village;
 
-	protected VillagerEntity(EntityType<? extends PassiveEntity> entityType, World world) {
+	protected AmaziaVillagerEntity(EntityType<? extends PassiveEntity> entityType, World world) {
 		super(entityType, world);
+		EntityNavigation nav = this.getNavigation();
 	}
 
 	@Override
@@ -23,4 +27,10 @@ public class VillagerEntity extends PassiveEntity {
         this.goalSelector.add(1000, new LookAroundGoal(this));
 	}
 
+	public boolean hasVillage() {
+		return this.village != null;
+	}
+	public Village getVillage() {
+		return this.village;
+	}
 }

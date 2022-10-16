@@ -3,27 +3,32 @@ package net.denanu.amazia.village;
 import org.jetbrains.annotations.Nullable;
 
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
+import net.denanu.amazia.pathing.PathingGraph;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
 public class Village {
-	private static int SIZE = 16;
+	private static int SIZE = 120;
 	private static int SIZE_OFFSET = SIZE/2;
 	private static int MIN_Y = -64;
 	private static int MAX_Y = 128;
+	private BlockPos origin;
 	
 	private int scanPos;
 	private boolean valid;
 	private FarmingSceduler farming;
 	@Nullable
 	private VillageCoreBlockEntity coreBlock;
+	private PathingGraph pathingGraph;
 	
 	public Village(VillageCoreBlockEntity core) {
 		this.valid = true;
 		this.coreBlock = core;
+		this.origin = core.getPos();
 		
 		this.farming = new FarmingSceduler(this);
+		this.pathingGraph = new PathingGraph(core.getWorld(), this);
 	}
 	
     public void writeNbt(NbtCompound nbt, String name) {
@@ -40,10 +45,6 @@ public class Village {
 	}
 	public void destroy() {
 		this.valid = false;
-	}
-	
-	public FarmingSceduler getFarming() {
-		return this.farming;
 	}
 	
 	public void tick(ServerWorld world) {
@@ -75,14 +76,25 @@ public class Village {
 	}
 
 	private BlockPos toGlobalPos(BlockPos pos) {
-		if (coreBlock != null) {
-			return pos.add(this.coreBlock.getPos());
-		}
-		return null;
+		return pos.add(this.getOrigin());
 	}
 	public void setChanged() {
 		if (coreBlock != null) {
 			this.coreBlock._setChanged();
 		}
 	}
+	
+	public BlockPos getOrigin() {
+		return this.origin;
+	}
+	public PathingGraph getPathingGraph() {
+        return this.pathingGraph;
+    }
+	public FarmingSceduler getFarming() {
+		return this.farming;
+	}
+	
+	public boolean isInVillage(final BlockPos pos) {
+        return Math.max(Math.abs(this.getOrigin().getX() - pos.getX()), Math.abs(this.getOrigin().getZ() - pos.getZ())) < SIZE;
+    }
 }
