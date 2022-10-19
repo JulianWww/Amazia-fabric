@@ -4,22 +4,23 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 import net.denanu.amazia.village.Village;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 public class PathingGraph {
-    private final World world;
+    private final ServerWorld world;
     protected final Village village;
     private int nodesVerified;
     private final PathingCellMap baseCellMap;
     private Deque<PathingNode> nodeProcessQueue;
     private boolean initialQueueComplete;
-    private final int throttle = 10;
+    private final int throttle = 240;
     //private List<EntityPlayerMP> listeners;
     
-    public PathingGraph(final World worldIn, final Village v) {
+    public PathingGraph(final ServerWorld worldIn, final Village v) {
         this.nodesVerified = 0;
         this.nodeProcessQueue = new LinkedList<PathingNode>();
         this.initialQueueComplete = false;
@@ -208,5 +209,13 @@ public class PathingGraph {
 
 	public World getWorld() {
 		return world;
+	}
+	
+	public PathingEventEmiter getEventEmiter() {
+		return this.baseCellMap.getEventEmiter();
+	}
+	
+	public boolean hasNode(BlockPos pos) {
+		return this.getNodeYRange(pos.getX(), pos.getY() - 1, pos.getY(), pos.getZ()) != null;
 	}
 }

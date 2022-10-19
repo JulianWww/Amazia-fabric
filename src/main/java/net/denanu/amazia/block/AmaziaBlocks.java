@@ -1,6 +1,7 @@
 package net.denanu.amazia.block;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.block.custom.MineMarkerBlock;
 import net.denanu.amazia.block.custom.VillageCoreBlock;
 import net.denanu.amazia.item.AmaziaItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -28,6 +29,10 @@ public class AmaziaBlocks {
     
     public static final Block VILLAGE_CORE = registerBlock("village_core",
     		new VillageCoreBlock(FabricBlockSettings.of(Material.METAL).strength(5f).nonOpaque()
+    				), AmaziaItemGroup.VILLAGE);
+    
+    public static final Block MINE_MARKER = registerBlock("mine_marker",
+    		new MineMarkerBlock(FabricBlockSettings.of(Material.STONE).strength(1f).nonOpaque()
     				), AmaziaItemGroup.VILLAGE);
     
     

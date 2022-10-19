@@ -6,7 +6,10 @@
   "mixins": [
   ],
   "client": [
-    "AmaziaMixin"
+    "PathingBlockUpdateMixin",
+    "VillageBlockUpdateMixin",
+    "ChestInventoryAccessMixin",
+    "BarrelInventoryAccessMixin"
   ],
   "injectors": {
     "defaultRequire": 1

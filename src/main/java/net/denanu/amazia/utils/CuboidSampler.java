@@ -6,8 +6,8 @@ import net.minecraft.util.math.Vec3d;
 public class CuboidSampler extends Sampler{
 	protected int sampleIdx = 0;
 	
-	public CuboidSampler() {
-		super();
+	public CuboidSampler(BlockPos pos, int _size_x, int _size_y, int _size_z) {
+		super(pos.getX(), pos.getY(), pos.getZ(), _size_x, _size_y, _size_z);
 	}
 	public CuboidSampler(Vec3d pos, int _size_x, int _size_y, int _size_z, int _offset_x, int _offset_y, int _offset_z) {
 		super(pos, _size_x, _size_y, _size_z, _offset_x, _offset_y, _offset_z);

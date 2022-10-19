@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "amazia:block/mine_marker"
+    },
+    "facing=south": {
+      "model": "amazia:block/mine_marker",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "amazia:block/mine_marker",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "amazia:block/mine_marker",
+      "y": 90
+    }
+  }
+}

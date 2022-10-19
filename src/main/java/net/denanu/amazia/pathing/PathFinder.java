@@ -9,22 +9,22 @@ import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.AmaziaEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.pathing.MobNavigation;
 import net.minecraft.entity.ai.pathing.PathNode;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class PathFinder  extends MobNavigation {
+public class PathFinder {
 	protected AmaziaEntity entity;
     protected World blockAccess;
     protected PriorityQueue<PathStep> openSteps;
     protected Set<PathingNode> closedNodes;
     
     public PathFinder(final AmaziaEntity entityNav) {
-        super(entityNav, entityNav.world);
+        //super(entityNav, entityNav.world);
         this.openSteps = new PriorityQueue<PathStep>(Comparator.comparingInt(a -> a.getTotalPathDistance()));
         this.closedNodes = new HashSet<PathingNode>();
         this.entity = entityNav;
@@ -39,17 +39,18 @@ public class PathFinder  extends MobNavigation {
     }
     
     @Nullable
-    public PathingPath findPath(final World worldIn, final Entity entitylivingIn, final Entity targetEntity, final float maxDistance) {
-        return this.findPath(worldIn, entitylivingIn, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ());
+    public PathingPath findPath(final World worldIn, final Entity targetEntity) {
+        return this.findPath(worldIn, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ());
     }
     
     @Nullable
-    public PathingPath findPath(final World worldIn, final Entity entitylivingIn, final BlockPos targetPos, final float maxDistance) {
-        return this.findPath(worldIn, entitylivingIn, targetPos.getX() + 0.5f, targetPos.getY() + 0.5f, targetPos.getZ() + 0.5f);
+    public PathingPath findPath(final World worldIn, final BlockPos targetPos) {
+        return this.findPath(worldIn, targetPos.getX() + 0.5f, targetPos.getY() + 0.5f, targetPos.getZ() + 0.5f);
     }
     
-    private PathingPath findPath(final World worldIn, final Entity entityLivingIn, final double x, final double y, final double z) {
+    private PathingPath findPath(final World worldIn, final double x, final double y, final double z) {
         this.blockAccess = worldIn;
+        //this.getGraph().debugEdgeNodes(worldIn);
         final PathingGraph graph = this.getGraph();
         if (graph != null) {
             final PathingNode endNode = graph.getBaseNode(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
@@ -74,8 +75,8 @@ public class PathFinder  extends MobNavigation {
     }
     
     private PathStep findLevelPath(final PathStep startPoint, final PathingNode endNode) {
+    	this.closedNodes.clear();
         this.openSteps.clear();
-        this.closedNodes.clear();
         this.openSteps.add(startPoint);
         while (true) {
             final PathStep current = this.openSteps.poll();
@@ -145,7 +146,9 @@ public class PathFinder  extends MobNavigation {
             i = MathHelper.floor(this.entity.getY() + 0.5);
         }
         else {
-        	return null;
+        	BlockPos pos;
+        	for (pos = new BlockPos(this.entity.getPos()); !BasePathingNode.isPassable(graph.getWorld(), pos) && pos.getY() >= Amazia.LOWER_WORLD_BORDER; pos = pos.down()) {}
+        	i = pos.getY();
         }
         /* falling code ?? else {
             BlockPos blockpos;
@@ -153,7 +156,7 @@ public class PathFinder  extends MobNavigation {
             i = blockpos.func_177984_a().func_177956_o();
         }*/
         final BlockPos blockpos2 = new BlockPos(this.entity.getPos());
-        PathingNode node = graph.getBaseNode(blockpos2.getX(), i, blockpos2.getY());
+        PathingNode node = graph.getBaseNode(blockpos2.getX(), i, blockpos2.getZ());
         if (node == null) {
             node = graph.getBaseNode(blockpos2.getX(), i + 1, blockpos2.getY());
         }

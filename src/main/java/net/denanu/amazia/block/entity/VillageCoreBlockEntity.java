@@ -1,6 +1,5 @@
 package net.denanu.amazia.block.entity;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.village.Village;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -15,6 +14,7 @@ public class VillageCoreBlockEntity extends BlockEntity {
 
 	public VillageCoreBlockEntity(BlockPos pos, BlockState state) {
 		super(AmaziaBlockEntities.VILLAGE_CORE, pos, state);
+		this.createVillage();
 	}
 	
 	@Override
@@ -25,24 +25,27 @@ public class VillageCoreBlockEntity extends BlockEntity {
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        this.initialize();
-        //village.readNbt(nbt, "village");
+        this.createVillage();
+        village.readNbt(nbt, "village");
     }
     
     public Village getVillage() {
     	return this.village;
     }
     
-    public void initialize() {
+    private void createVillage() {
+    	this.village = new Village(this);
+    }
+    
+    private void initialize() {
     	if (!this.initialized) {
-			this.village = new Village(this);
+			this.village.setupVillage();
 			this.village.getPathingGraph().seedVillage(pos.up());
     		this.initialized = true;
     	}
     }
 	
 	public static void tick(World world, BlockPos pos, BlockState state, VillageCoreBlockEntity e) {
-		Amazia.LOGGER.info("hi from Villag Core");
 		if (!world.isClient()) {
 			e.initialize();
 			e.village.tick((ServerWorld)world);
@@ -51,5 +54,17 @@ public class VillageCoreBlockEntity extends BlockEntity {
 
 	public void _setChanged() {
 		this.markDirty();
+	}
+	
+	@Override
+	public void markRemoved() {
+		super.markRemoved();
+		this.village.remove(this.getWorld());
+	}
+	
+	@Override
+	public void cancelRemoval() {
+		super.cancelRemoval();
+		this.village.register(this.getWorld());
 	}
 }

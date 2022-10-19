@@ -22,6 +22,7 @@ public class PathingCellMap {
     private Map<Integer, Map<Integer, Set<BasePathingNode>>> baseNodes;
     private NavigableSet<BasePathingNode> edgeNodes;
     private Random rnd;
+    private final PathingEventEmiter eventEmiter;
     
     public PathingCellMap(final int defaultMapCapacity) {
         this.nodeCount = 0;
@@ -30,6 +31,7 @@ public class PathingCellMap {
         this.rnd = new Random();
         this.defaultCapacity = defaultMapCapacity;
         this.baseNodes = new HashMap<Integer, Map<Integer, Set<BasePathingNode>>>(this.defaultCapacity);
+        this.eventEmiter = new PathingEventEmiter();
     }
     
     public void putNode(final BasePathingNode node, final World world) {
@@ -56,6 +58,7 @@ public class PathingCellMap {
                 }
             }
         }
+        this.eventEmiter.sendCreate(node.getBlockPos());
         if (!nodeSet.add(node)) {
             throw new IllegalArgumentException("Duplicate BasePathingNode encountered");
         }
@@ -185,4 +188,8 @@ public class PathingCellMap {
         }
         throw new AssertionError();
     }
+
+	public PathingEventEmiter getEventEmiter() {
+		return eventEmiter;
+	}
 }

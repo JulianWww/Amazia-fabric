@@ -4,6 +4,7 @@ import net.minecraft.nbt.NbtCompound;
 import java.lang.Iterable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 
@@ -35,7 +36,37 @@ public class JJUtils {
 		return list;
 	}
 	
+	public static void wrtieBlockPosNBT(NbtCompound tag, BlockPos pos, String name) {
+		if (pos == null) {
+			tag.putBoolean(name, false);
+		}
+		else {
+			tag.putBoolean(name, true);
+			tag.putInt(name + ".x", pos.getX());
+			tag.putInt(name + ".y", pos.getY());
+			tag.putInt(name + ".z", pos.getZ());
+		}
+	}
+	public static BlockPos readBlockPosNBT(NbtCompound tag, String name) {
+		if (tag.getBoolean(name)) {
+			return new BlockPos(
+					tag.getInt(name + ".x"),
+					tag.getInt(name + ".y"),
+					tag.getInt(name + ".z")
+				);
+		}
+		else {
+			return null;
+		}
+	}
+	
 	public static boolean equal(BlockPos a, BlockPos b) {
 		return (a.getX() == b.getX() && a.getY() == b.getY() && a.getZ() == b.getZ());
+	}
+	
+	public static <E extends Object> E getRandomListElement(List<E> list) {
+		if (list.size() == 0) {return null;}
+		Random rand = new Random();
+		return list.get(rand.nextInt(list.size()));
 	}
 }

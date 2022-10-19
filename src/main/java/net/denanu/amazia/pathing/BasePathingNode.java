@@ -2,8 +2,8 @@ package net.denanu.amazia.pathing;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceBlock;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.block.WallBlock;
-import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -109,7 +109,7 @@ public class BasePathingNode extends PathingNode {
     
     public static boolean isPassable(final World world, final BlockPos bp) {
         final BlockState blockState = world.getBlockState(bp);
-        return !blockState.getMaterial().blocksMovement() && (blockState.getBlock().canPathfindThrough(blockState, world, bp, NavigationType.LAND) || isPortal(world, bp));
+        return !blockState.getMaterial().blocksMovement() && !(blockState.getBlock() instanceof FluidBlock) || isPortal(world, bp);
     }
     
     private static boolean isPortal(final World world, final BlockPos bp) {
@@ -119,7 +119,7 @@ public class BasePathingNode extends PathingNode {
     public static boolean canWalkOn(final World world, final BlockPos bp) {
         if (!isPassable(world, bp)) {
             final BlockState blockState = world.getBlockState(bp);
-            return blockState.getMaterial().blocksMovement() && !(blockState.getBlock() instanceof FenceBlock) && !(blockState.getBlock() instanceof WallBlock);
+            return blockState.getMaterial().blocksMovement() && !(blockState.getBlock() instanceof FenceBlock) && !(blockState.getBlock() instanceof WallBlock);// || blockState.getBlock().equals(Blocks.WATER);
         }
         return false;
     }

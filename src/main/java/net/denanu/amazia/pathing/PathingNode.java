@@ -104,11 +104,14 @@ public class PathingNode {
     }*/
     
     protected void breakConnection(final PathingNode node2, final PathingGraph graph) {
-        this.connections.remove(node2);
+        //this.connections.remove(node2);
         node2.connections.remove(this);
         if (this.parent != node2.parent && node2.parent != null) {
             graph.addLastNode(node2.parent);
         }
+    }
+    protected void breakAllOutgoingConnections() {
+    	this.connections.clear();
     }
     
     protected void checkParentLink(final PathingNode node) {
@@ -153,6 +156,11 @@ public class PathingNode {
         for (PathingNode node: this.connections) {
         	this.breakConnection(node, graph);
         }
+        
+        graph.getEventEmiter().sendDestroy(this.getBlockPos());
+        
+        this.breakAllOutgoingConnections();
+        
         if (this.parent != null) {
             final PathingNode par = this.parent;
             this.parent.removeChild(this);

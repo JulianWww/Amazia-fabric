@@ -1,5 +1,6 @@
 package net.denanu.amazia.pathing;
 
+import net.denanu.amazia.Amazia;
 import net.minecraft.util.math.BlockPos;
 
 public class PathingCell {
@@ -28,7 +29,7 @@ public class PathingCell {
     }
     
     public PathingCell up(final byte levels) {
-        return new PathingCell(this.x >> levels, this.y >> levels, this.z >> levels, (byte)(this.level + levels));
+        return new PathingCell(this.x >> levels, (this.y + Amazia.LOWER_WORLD_BORDER) >> levels - Amazia.LOWER_WORLD_BORDER , this.z >> levels, (byte)(this.level + levels));
     }
     
     @Override
