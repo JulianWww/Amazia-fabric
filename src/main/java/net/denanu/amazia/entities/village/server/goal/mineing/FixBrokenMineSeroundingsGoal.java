@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal.mineing;
 
 import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 
 public class FixBrokenMineSeroundingsGoal extends TimedMineGoal {
 	public FixBrokenMineSeroundingsGoal(MinerEntity e, int priority) {
@@ -16,7 +17,13 @@ public class FixBrokenMineSeroundingsGoal extends TimedMineGoal {
 	@Override
 	protected void takeAction() {
 		if (this.pos != null) {
-			this.entity.world.setBlockState(this.pos, Blocks.COBBLESTONE.getDefaultState());
+			if (this.entity.hasCobbleStone()) {
+				this.entity.world.setBlockState(this.pos, Blocks.COBBLESTONE.getDefaultState());
+				this.entity.removeItemFromInventory(Items.COBBLESTONE, 1);
+			}
+			else {
+				this.entity.requestItem(Items.COBBLESTONE);
+			}
 		}
 	}
 

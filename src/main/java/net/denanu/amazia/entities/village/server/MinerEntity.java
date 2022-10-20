@@ -38,7 +38,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.WOODEN_PICKAXE, Items.STONE_PICKAXE, Items.IRON_PICKAXE, Items.GOLDEN_PICKAXE, Items.DIAMOND_PICKAXE, Items.NETHERITE_PICKAXE, Items.AIR);
-	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COBBLESTONE, 64);
+	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COBBLESTONE, 64, Items.TORCH, 64);
 	public static final ImmutableMap<Item, Integer> MAX_PICKUPS = ImmutableMap.of(Items.COBBLESTONE, 64);
 	private static final Vec3i ITEM_PICK_UP_RANGE_EXPANDER_WHILE_MINEING = new Vec3i(5, 5, 5);
 	
@@ -207,9 +207,12 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	@Override
 	protected boolean shouldPickUp(ItemStack stack) {
 		if (MAX_PICKUPS.containsKey(stack.getItem())) {
-			int count = this.countItems(stack.getItem());
 			return this.countItems(stack.getItem()) < MAX_PICKUPS.get(stack.getItem()) + stack.getMaxCount();
 		}
 		return true;
+	}
+	
+	public boolean hasCobbleStone() {
+		return this.countItems(Items.COBBLESTONE) > 0;
 	}
 }

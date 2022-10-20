@@ -1,8 +1,6 @@
 package net.denanu.amazia.village.sceduling.utils;
 
-import net.denanu.amazia.mixin.ChestInventoryAccessMixin;
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.mixin.BarrelInventoryAccessMixin;
 import net.denanu.amazia.village.Village;
 import net.minecraft.block.entity.BarrelBlockEntity;
 import net.minecraft.block.entity.BlockEntity;

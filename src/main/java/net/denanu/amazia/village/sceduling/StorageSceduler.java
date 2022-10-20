@@ -150,7 +150,9 @@ public class StorageSceduler extends VillageSceduler {
 	
 	public static boolean containsItem(LootableContainerBlockEntity lootableContainerBlockEntity, Item itm) {
 		for (int idx=0; idx<lootableContainerBlockEntity.size(); idx++) {
-			if (lootableContainerBlockEntity.getStack(idx).isOf(itm)) { return true; }
+			if (lootableContainerBlockEntity.getStack(idx).isOf(itm)) { 
+				return true; 
+			}
 		}
 		return false;
 	}
@@ -168,7 +170,6 @@ public class StorageSceduler extends VillageSceduler {
 	}
 
 	public StoragePathingData getRequestLocation(ServerWorld world, Item item) {
-		StoragePathingData potential = null;
 		for (Entry<BlockPos, StoragePathingData> pos : this.chests.entrySet()) {
 			if (containsItem(pos.getValue().getStorageInventory(world), item)) 
 			return pos.getValue();

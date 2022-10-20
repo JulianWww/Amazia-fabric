@@ -9,6 +9,7 @@ import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.village.VillageManager;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.server.MinecraftServer;
 import software.bernie.geckolib3.GeckoLib;
 
 public class Amazia implements ModInitializer {
@@ -35,5 +36,9 @@ public class Amazia implements ModInitializer {
 
 	public static VillageManager getVillageManager() {
 		return villageManager;
+	}
+
+	public static void registerCrafters(MinecraftServer minecraftServer) {
+		
 	}
 }

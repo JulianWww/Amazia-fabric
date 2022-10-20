@@ -4,10 +4,8 @@ import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
 import net.denanu.amazia.village.sceduling.utils.StoragePathingData;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import oshi.util.tuples.Triplet;
 
 public class GetItemGoal extends AmaziaVillageGoal implements StorageGetInteractionGoalInterface, StoragePathingInterface {
 	private StoragePathingData target;

@@ -1,5 +1,6 @@
 package net.denanu.amazia.entities.village.server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.goal.storage.DepositItemGoal;
+import net.denanu.amazia.entities.village.server.goal.storage.GetItemGoal;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InventoryOwner;
@@ -35,7 +37,14 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	
 	protected AmaziaVillagerEntity(EntityType<? extends PassiveEntity> entityType, World world) {
 		super(entityType, world);
-		this.setCanPickUpLoot(true);;
+		this.setCanPickUpLoot(true);
+		this.requestedItems = new ArrayList<Item>();
+	}
+	
+	public void registerBaseGoals() {
+		this.goalSelector.add(25, new GetItemGoal(this, 25));
+		this.goalSelector.add(99, new DepositItemGoal(this, 99));
+        this.goalSelector.add(100, new LookAroundGoal(this));
 	}
 	
 	@Override
@@ -112,11 +121,6 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	public PassiveEntity createChild(ServerWorld arg0, PassiveEntity arg1) {
 		return null;
 	}
-
-	public void registerBaseGoals() {
-		this.goalSelector.add(99, new DepositItemGoal(this, 99));
-        this.goalSelector.add(100, new LookAroundGoal(this));
-	}
 	
 	public SimpleInventory getInventory() {
 		return inventory;
@@ -176,14 +180,31 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	public Item getRandomRequiredItem() {
 		return JJUtils.getRandomListElement(this.requestedItems);
 	}
-	public void addItem(Item itm) {
-		this.requestedItems.add(itm);
+	public void requestItem(Item itm) {
+		if (!this.requestedItems.contains(itm)) {
+			this.requestedItems.add(itm);
+		}
 	}
 	public void removeRequestedItem(Item itm) {
 		this.requestedItems.remove(itm);
 	}
 	public boolean hasRequestedItems() {
 		return this.requestedItems.size() > 0 && this.getEmptyInventorySlots() > 0;
+	}
+	
+	public void removeItemFromInventory(Item itm, int count) {
+		for (int idx = this.inventory.size() - 1; idx >= 0 && count > 0; idx--) {
+			ItemStack stack = this.inventory.getStack(idx);
+			if (stack.isOf(itm) && !stack.isEmpty()) {
+				int delta = Math.min(stack.getCount(), count);
+				stack.decrement(delta);
+				count = count - delta;
+				this.inventory.setStack(idx, stack);
+			}
+			if (stack.isEmpty()) {
+				this.inventory.setStack(idx, ItemStack.EMPTY);
+			}
+		}
 	}
 	
 	@Override
