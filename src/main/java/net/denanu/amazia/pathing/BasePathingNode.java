@@ -4,131 +4,94 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.WallBlock;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class BasePathingNode extends PathingNode {
-    private final byte clearanceHeight;
-    private long updateTick;
-    
-    public BasePathingNode(final BlockPos bp, final byte ch) {
-        super(new PathingCell(bp, (byte)0));
-        this.updateTick = 0L;
-        this.clearanceHeight = ch;
-        this.updateTick = System.currentTimeMillis();
-    }
-    
-    public byte getClearanceHeight() {
+	private final byte clearanceHeight;
+
+	public BasePathingNode(BlockPos pos, PathingGraph graph, final byte clearance) {
+		super(pos, graph);
+		this.clearanceHeight = clearance;
+	}
+	
+	public byte getClearanceHeight() {
         return this.clearanceHeight;
     }
-    
-    public long getUpdateTick() {
-        return this.updateTick;
-    }
-    
-    @Override
-    public int updateConnections(final World world, final PathingCellMap cellMap, final PathingGraph graph) {
-        this.updateTick = System.currentTimeMillis();
-        this.checkConnection(world, cellMap, graph, 1, 0);
-        this.checkConnection(world, cellMap, graph, -1, 0);
-        this.checkConnection(world, cellMap, graph, 0, 1);
-        this.checkConnection(world, cellMap, graph, 0, -1);
-        if (this.parent == null) {
-            (this.parent = new PathingNode(this.getCell().up())).addChild(this);
-            graph.addLastNode(this.parent);
-        }
-        return 0;
-    }
-    
-    private boolean checkConnection(final World world, final PathingCellMap cellMap, final PathingGraph graph, final int x, final int z) {
-        if (!graph.isInRange(this.getBlockPos().add(x, 0, z))) {
+	
+	@Override
+	public void updateConnections(ServerWorld world, PathingGraph graph) {
+		this.checkConnectionSide(world, graph, this.getBlockPos().east());
+		this.checkConnectionSide(world, graph, this.getBlockPos().west());
+		this.checkConnectionSide(world, graph, this.getBlockPos().north());
+		this.checkConnectionSide(world, graph, this.getBlockPos().south());
+	}
+	
+	private boolean checkConnectionSide(final ServerWorld world, final PathingGraph graph, final BlockPos pos) {
+		return (
+				this.checkConnection(world, graph, pos.down()) ||
+				this.checkConnection(world, graph, pos) ||
+				this.checkConnection(world, graph, pos.up())
+			);
+	}
+	
+	private boolean checkConnection(final ServerWorld world, final PathingGraph graph, final BlockPos pos) {
+        if (!graph.isInRange(pos)) {
             return false;
         }
-        final PathingNode connected = this.getConnection(x, z);
+        final PathingEdge connected = this.getConnection(pos);
         if (connected == null) {
             boolean newNode = false;
-            BasePathingNode node = this.getExistingNeighbor(cellMap, x, z);
+            BasePathingNode node = this.getExistingNeighbor(graph, pos);
             if (node == null) {
-                node = this.checkWalkableNeighbor(world, x, z);
+                node = BasePathingNode.checkWalkableNeighbor(world, pos, graph);
                 if (node != null) {
                     newNode = true;
                 }
             }
             if (node != null && this.canWalkTo(node)) {
-                PathingNode.connectNodes(this, node, graph);
+                this.addBaseConnection(node, graph);
                 if (newNode) {
-                    graph.addFirstNode(node);
-                    cellMap.putNode(node, world);
+                    this.sceduleUpdate(graph);
                     return true;
                 }
             }
         }
-        else {
-            this.checkParentLink(connected);
-        }
         return false;
     }
-    
-    /*@Override
-    protected void notifyListeners(final World world, final List<EntityPlayerMP> listeners) {
-        final SimpleNetworkWrapper network;
-        final PacketPathingNode packetPathingNode;
-        listeners.forEach(p -> {
-            network = TekVillager.NETWORK;
-            new PacketPathingNode(new PathingNodeClient(this));
-            network.sendTo((IMessage)packetPathingNode, p);
-        });
-    }*/
-    
-    private BasePathingNode checkWalkableNeighbor(final World world, final int x, final int z) {
-        BlockPos bp = this.getBlockPos().add(x, 0, z);
-        if (!canWalkOn(world, bp)) {
-            bp = bp.down();
-            if (!canWalkOn(world, bp)) {
-                bp = bp.down();
-                if (!canWalkOn(world, bp)) {
-                    bp = null;
-                }
-            }
-        }
-        if (bp != null) {
-            bp = bp.up();
-            byte clearance = 0;
-            if (isPassable(world, bp) && isPassable(world, bp.up(1))) {
-                clearance = 2;
-                if (isPassable(world, bp.up(2))) {
-                    ++clearance;
-                }
-            }
-            if (clearance >= 2) {
-                return new BasePathingNode(bp, clearance);
-            }
-        }
-        return null;
+	
+	private void addBaseConnection(BasePathingNode node, PathingGraph graph) {
+		int connectionLvl = Math.min(this.getTopLvl(), node.getTopLvl());
+		this.getParentAtLvl(connectionLvl).BaseConnect(node.getParentAtLvl(connectionLvl));
+	}
+
+	private static BasePathingNode checkWalkableNeighbor(final ServerWorld world, BlockPos pos, PathingGraph graph) {
+		if (canWalkOn(world, pos.down()) && isPassable(world, pos) && isPassable(world, pos.up())) {
+			byte clearance = 2;
+			if (isPassable(world, pos.up(2))) {
+				clearance++;
+			}
+			return new BasePathingNode(pos, graph, clearance);
+		}
+		return null;
     }
-    
-    public static boolean isPassable(final World world, final BlockPos bp) {
-        final BlockState blockState = world.getBlockState(bp);
+
+	private static boolean canWalkOn(final ServerWorld world, BlockPos pos) {
+		final BlockState blockState = world.getBlockState(pos);
+        return blockState.getMaterial().blocksMovement() && !(blockState.getBlock() instanceof FenceBlock) && !(blockState.getBlock() instanceof WallBlock);
+	}
+	static boolean isPassable(final ServerWorld world, final BlockPos bp) {
+		final BlockState blockState = world.getBlockState(bp);
         return !blockState.getMaterial().blocksMovement() && !(blockState.getBlock() instanceof FluidBlock) || isPortal(world, bp);
+	}
+	private static boolean isPortal(final ServerWorld world, final BlockPos bp) {
+		return false;
+	}
+	private boolean canWalkTo(final BasePathingNode node) {
+        return (node.getBlockPos().getY() == this.getBlockPos().getY() - 1 && node.getClearanceHeight() >= 3) || node.getBlockPos().getY() == this.getBlockPos().getY() || (node.getBlockPos().getY() == this.getBlockPos().getY() + 1 && this.getClearanceHeight() >= 3);
     }
-    
-    private static boolean isPortal(final World world, final BlockPos bp) {
-        return false;//VillageStructure.isWoodDoor(world, bp) || VillageStructure.isGate(world, bp);
-    }
-    
-    public static boolean canWalkOn(final World world, final BlockPos bp) {
-        if (!isPassable(world, bp)) {
-            final BlockState blockState = world.getBlockState(bp);
-            return blockState.getMaterial().blocksMovement() && !(blockState.getBlock() instanceof FenceBlock) && !(blockState.getBlock() instanceof WallBlock);// || blockState.getBlock().equals(Blocks.WATER);
-        }
-        return false;
-    }
-    
-    private boolean canWalkTo(final BasePathingNode node) {
-        return (node.getCell().y == this.getCell().y - 1 && node.getClearanceHeight() >= 3) || node.getCell().y == this.getCell().y || (node.getCell().y == this.getCell().y + 1 && this.getClearanceHeight() >= 3);
-    }
-    
-    private BasePathingNode getExistingNeighbor(final PathingCellMap cellMap, final int x, final int z) {
-        return cellMap.getNodeYRange(this.getCell().x + x, this.getCell().y - 1, this.getCell().y + 1, this.getCell().z + z);
-    }
+
+	private BasePathingNode getExistingNeighbor(PathingGraph graph, BlockPos pos) {
+		return graph.getNode(pos);
+	}
 }

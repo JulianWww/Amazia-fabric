@@ -50,7 +50,7 @@ public class StorageSceduler extends VillageSceduler {
     }
     
     protected Direction getFacing(BlockPos pos) {
-    	BlockState state = this.getVillage().getPathingGraph().getWorld().getBlockState(pos);
+    	BlockState state = this.getVillage().getWorld().getBlockState(pos);
     	if (state.getBlock() instanceof ChestBlock) {
     		return ChestBlock.getFacing(state);
     	}
