@@ -7,17 +7,18 @@ import net.denanu.amazia.pathing.PathingEventListener;
 import net.denanu.amazia.village.Village;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class BlockAreaPathingData implements PathingEventListener {
-	private BlockPos pos;
+public abstract class BlockAreaPathingData<E extends BlockPos> implements PathingEventListener {
+	private E pos;
 	private Set<BlockPos> validPathingNodes;
 
-	BlockAreaPathingData(BlockPos pos, Village _village) {
+	BlockAreaPathingData(E pos, Village _village) {
 		this.pos = pos;
 		this.validPathingNodes = new HashSet<BlockPos>();
 		this.getAccessPoints(new RegisterListener(), pos, _village);
 	}
 	
 	protected abstract void getAccessPoints(PathingListenerRegistryOperation operation, BlockPos origin, Village v);
+	public abstract BlockPos getAccessPoint();
 	
 	public void destroy(Village village) {
 		this.getAccessPoints(new UnregiserListener(), pos, village);
@@ -43,7 +44,7 @@ public abstract class BlockAreaPathingData implements PathingEventListener {
 		this.validPathingNodes.remove(pos);
 	}
 	
-	public BlockPos getPos() {
+	public E getPos() {
 		return this.pos;
 	}
 

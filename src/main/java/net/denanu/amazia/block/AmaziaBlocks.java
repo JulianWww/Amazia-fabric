@@ -1,8 +1,8 @@
 package net.denanu.amazia.block;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.block.custom.MineMarkerBlock;
 import net.denanu.amazia.block.custom.VillageCoreBlock;
+import net.denanu.amazia.block.custom.VillageMarkerBlock;
 import net.denanu.amazia.item.AmaziaItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -32,7 +32,11 @@ public class AmaziaBlocks {
     				), AmaziaItemGroup.VILLAGE);
     
     public static final Block MINE_MARKER = registerBlock("mine_marker",
-    		new MineMarkerBlock(FabricBlockSettings.of(Material.STONE).strength(1f).nonOpaque()
+    		new VillageMarkerBlock(FabricBlockSettings.of(Material.STONE).strength(1f).nonOpaque()
+    				), AmaziaItemGroup.VILLAGE);
+    
+    public static final Block TREE_FARM_MARKER = registerBlock("tree_school",
+    		new Block(FabricBlockSettings.of(Material.STONE).strength(1f).nonOpaque()
     				), AmaziaItemGroup.VILLAGE);
     
     

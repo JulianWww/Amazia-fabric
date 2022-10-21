@@ -1,10 +1,10 @@
 package net.denanu.amazia.entities.village.server.goal.storage;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
-import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal;
+import net.denanu.amazia.entities.village.server.goal.BaseAmaziaGoToBlockGoal;
 import net.minecraft.util.math.BlockPos;
 
-public class GoToStorageGoal extends AmaziaGoToBlockGoal {
+public class GoToStorageGoal extends BaseAmaziaGoToBlockGoal<AmaziaVillagerEntity> {
 	private StoragePathingInterface master;
 
 	public GoToStorageGoal(AmaziaVillagerEntity e, StoragePathingInterface _master) {
@@ -25,6 +25,7 @@ public class GoToStorageGoal extends AmaziaGoToBlockGoal {
 
 	@Override
 	protected BlockPos getTargetBlock() {
+		BlockPos pos = this.master.getTargetBlockPos();
 		return this.master.getTargetBlockPos();
 	}
 

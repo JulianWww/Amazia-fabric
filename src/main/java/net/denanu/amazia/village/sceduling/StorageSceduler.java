@@ -176,4 +176,8 @@ public class StorageSceduler extends VillageSceduler {
 		}
 		return null;
 	}
+	
+	public boolean itemInStorage(ServerWorld world, Item itm)  {
+		return this.getRequestLocation(world, itm) != null;
+	}
 }

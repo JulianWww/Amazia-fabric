@@ -4,12 +4,10 @@ import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
 import net.denanu.amazia.village.structures.MineStructure;
 
-public class MoveToEndOfMine extends AmaziaVillageGoal{
-	protected final MinerEntity entity;
-
+public class MoveToEndOfMine extends AmaziaVillageGoal<MinerEntity> {
+	
 	public MoveToEndOfMine(MinerEntity e, int priority) {
 		super(e, priority);
-		this.entity = e;
 	}
 	
 	@Override

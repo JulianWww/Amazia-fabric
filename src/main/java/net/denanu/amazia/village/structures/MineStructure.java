@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 public class MineStructure extends VillageStructure {
 	private Direction direction;
 	
-	private boolean isValid;
 	private boolean isEnd;
 	private boolean hasVillager;
 	
@@ -28,7 +27,6 @@ public class MineStructure extends VillageStructure {
 		super(_center.down(2), v);
 		this.direction = _direction;
 		this.hasVillager = false;
-		this.isValid = true;
 		this.isEnd = false;
 	}
 	
@@ -57,10 +55,10 @@ public class MineStructure extends VillageStructure {
 	@Override
 	public boolean isIn(BlockPos pos) {
 		if (this.direction.getOffsetX() != 0) {
-			return isInFront(pos.getX(), this.getCenter().getX(), this.direction.getOffsetX()) && this.isWithinHeightRange(pos.getY()) && this.getZ() == pos.getZ() && this.isValid && !this.isEnd;
+			return isInFront(pos.getX(), this.getCenter().getX(), this.direction.getOffsetX()) && this.isWithinHeightRange(pos.getY()) && this.getZ() == pos.getZ() && this.isValid() && !this.isEnd;
 		}
 		if (this.direction.getOffsetZ() != 0) {
-			return isInFront(pos.getZ(), this.getCenter().getZ(), this.direction.getOffsetZ()) && this.isWithinHeightRange(pos.getY()) && this.getX() == pos.getX() && this.isValid && !this.isEnd;
+			return isInFront(pos.getZ(), this.getCenter().getZ(), this.direction.getOffsetZ()) && this.isWithinHeightRange(pos.getY()) && this.getX() == pos.getX() && this.isValid() && !this.isEnd;
 		}
 		return false;
 	}
@@ -69,7 +67,6 @@ public class MineStructure extends VillageStructure {
 		return direction;
 	}
 
-	@Override
 	public BlockPos getMainEntrance() {
 		return this.getCenter();
 	}
@@ -150,14 +147,6 @@ public class MineStructure extends VillageStructure {
 		if (this.direction == null) {
 			this.direction = d;
 		}
-	}
-	
-	public boolean isValid() {
-		return isValid;
-	}
-	
-	public void destroy() {
-		this.isValid = false;
 	}
 	
 	public boolean getIsEnd() {

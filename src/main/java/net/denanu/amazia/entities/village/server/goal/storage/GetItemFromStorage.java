@@ -28,7 +28,6 @@ public class GetItemFromStorage extends InteractWithContainerGoal {
 				ItemStack stack = inventory.getStack(idx);
 				if (stack.isOf(this.getItem())) {
 					ItemStack leftOver = this.entity.getInventory().addStack(stack);
-					this.entity.removeRequestedItem(this.getItem());
 					if (leftOver.isEmpty()) {
 						inventory.setStack(idx, ItemStack.EMPTY);
 					}

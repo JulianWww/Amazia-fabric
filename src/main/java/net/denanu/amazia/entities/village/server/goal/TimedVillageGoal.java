@@ -2,11 +2,11 @@ package net.denanu.amazia.entities.village.server.goal;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 
-public abstract class TimedVillageGoal extends AmaziaVillageGoal {
+public abstract class TimedVillageGoal<E extends AmaziaVillagerEntity> extends AmaziaVillageGoal<E> {
 	protected int ticker;
 	protected int requiredTime;
 
-	public TimedVillageGoal(AmaziaVillagerEntity e, int priority) {
+	public TimedVillageGoal(E e, int priority) {
 		super(e, priority);
 	}
 	
@@ -24,7 +24,7 @@ public abstract class TimedVillageGoal extends AmaziaVillageGoal {
 	public void start() {
 		super.start();
 		this.ticker = 0;
-		this.requiredTime = this.getRequiredTime();;
+		this.requiredTime = this.getRequiredTime();
 	}
 	
 	@Override

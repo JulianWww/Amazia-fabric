@@ -45,12 +45,6 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 		super(entityType, world);
 	}
 	
-	public static DefaultAttributeContainer.Builder setAttributes() {
-        return PassiveEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2f);
-    }
-	
 	@Override
     protected void initGoals() {                
         this.goalSelector.add(47, new HarvestCropsGoal  (this, 47));

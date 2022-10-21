@@ -4,8 +4,7 @@ import net.denanu.amazia.entities.village.server.FarmerEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.village.sceduling.FarmingSceduler;
 
-public class HarvestCropsGoal extends TimedVillageGoal {
-	private FarmerEntity entity;
+public class HarvestCropsGoal extends TimedVillageGoal<FarmerEntity> {
 
 	public HarvestCropsGoal(FarmerEntity e, int priority) {
 		super(e, priority);

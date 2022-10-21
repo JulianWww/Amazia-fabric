@@ -5,10 +5,13 @@ import java.lang.Iterable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.util.math.BlockPos;
 
 public class JJUtils {
+	public static final Random rand = new Random();
+	
 	public static <E extends Iterable<BlockPos>> void writeNBT(NbtCompound tag, E list, String name) {
 		List<Integer> x = new ArrayList<Integer>();
 		List<Integer> y = new ArrayList<Integer>();
@@ -64,9 +67,24 @@ public class JJUtils {
 		return (a.getX() == b.getX() && a.getY() == b.getY() && a.getZ() == b.getZ());
 	}
 	
+	public static <E extends Object> E getRandomSetElement(Set<E> set) {
+		if (set.size() == 0) { return null; }
+		int item = rand.nextInt(set.size());
+		int i = 0;
+		for(E obj : set)
+		{
+		    if (i == item)
+		        return obj;
+		    i++;
+		}
+		return null;
+	}
 	public static <E extends Object> E getRandomListElement(List<E> list) {
 		if (list.size() == 0) {return null;}
-		Random rand = new Random();
 		return list.get(rand.nextInt(list.size()));
+	}
+	public static <E extends Object> E getRandomArrayElement(E[] arr) {
+		if (arr.length == 0) { return null; }
+		return arr[rand.nextInt(arr.length)];
 	}
 }

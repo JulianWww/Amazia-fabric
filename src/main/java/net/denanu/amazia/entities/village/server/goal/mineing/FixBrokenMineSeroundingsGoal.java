@@ -17,12 +17,10 @@ public class FixBrokenMineSeroundingsGoal extends TimedMineGoal {
 	@Override
 	protected void takeAction() {
 		if (this.pos != null) {
-			if (this.entity.hasCobbleStone()) {
-				this.entity.world.setBlockState(this.pos, Blocks.COBBLESTONE.getDefaultState());
-				this.entity.removeItemFromInventory(Items.COBBLESTONE, 1);
-			}
-			else {
-				this.entity.requestItem(Items.COBBLESTONE);
+			this.entity.world.setBlockState(this.pos, Blocks.COBBLESTONE.getDefaultState());
+			this.entity.removeItemFromInventory(Items.COBBLESTONE, 1);
+			if (!this.entity.hasItem(Items.COBBLESTONE, 1)) {
+				//this.entity.requestItem(Items.COBBLESTONE);
 			}
 		}
 	}

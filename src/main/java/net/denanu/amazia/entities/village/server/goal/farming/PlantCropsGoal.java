@@ -1,12 +1,10 @@
 package net.denanu.amazia.entities.village.server.goal.farming;
 
 import net.denanu.amazia.entities.village.server.FarmerEntity;
-import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.village.sceduling.FarmingSceduler;
 
-public class PlantCropsGoal extends TimedVillageGoal {
-	protected FarmerEntity entity;
+public class PlantCropsGoal extends TimedVillageGoal<FarmerEntity> {
 
 	public PlantCropsGoal(FarmerEntity e, int priority) {
 		super(e, priority);

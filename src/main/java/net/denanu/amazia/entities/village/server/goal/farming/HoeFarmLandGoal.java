@@ -1,13 +1,12 @@
 package net.denanu.amazia.entities.village.server.goal.farming;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
-import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.utils.BlockChecks;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 
-public class HoeFarmLandGoal extends TimedVillageGoal {
+public class HoeFarmLandGoal extends TimedVillageGoal<AmaziaVillagerEntity> {
 	public HoeFarmLandGoal(AmaziaVillagerEntity e, int priority) {
 		super(e, priority);
 	}

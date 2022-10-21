@@ -1,16 +1,14 @@
 package net.denanu.amazia.entities.village.server.goal.storage;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
-import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
+import net.denanu.amazia.entities.village.server.goal.BaseAmaziaVillageGoal;
 import net.denanu.amazia.village.sceduling.utils.StoragePathingData;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import oshi.util.tuples.Triplet;
 
-public class DepositItemGoal extends AmaziaVillageGoal implements StoragePathingInterface, StoragePutInteractionGoalInterface {
+public class DepositItemGoal extends BaseAmaziaVillageGoal<AmaziaVillagerEntity> implements StoragePathingInterface, StoragePutInteractionGoalInterface {
 	private StoragePathingData target;
 	private Triplet<ItemStack, Integer, Integer> item;
 	private boolean isPathing, isDone, containerInteracting;
@@ -25,6 +23,13 @@ public class DepositItemGoal extends AmaziaVillageGoal implements StoragePathing
 	
 	@Override
 	public boolean canStart() {
+		boolean out = this.getCanStart();
+		if (this.entity.isDeposeting()) { 
+			this.entity.setDeposeting(this.target != null); 
+		}
+		return out;
+	}
+	private boolean getCanStart() {
 		if (!super.canStart()) { return false; }
 		if (item == null || this.target == null) {
 			item = this.entity.getDepositableItems();
@@ -39,10 +44,11 @@ public class DepositItemGoal extends AmaziaVillageGoal implements StoragePathing
 	public boolean shouldContinue() {
 		return this.canStart() && !this.isDone;
 	}
-	
+
 	@Override
 	public void start() {
 		super.start();
+		this.entity.setDeposeting(true);
 		this.pathingSubGoal.start();
 		this.isPathing = true;
 		this.containerInteracting = false;
@@ -86,7 +92,7 @@ public class DepositItemGoal extends AmaziaVillageGoal implements StoragePathing
 		if (this.target != null) {
 			BlockPos t = this.target.getAccessPoint();
 			if (t != null) {
-				return t.down();
+				return t;
 			}
 		}
 		return null;

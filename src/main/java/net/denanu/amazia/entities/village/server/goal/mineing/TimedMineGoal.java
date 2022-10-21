@@ -4,13 +4,11 @@ import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class TimedMineGoal extends TimedVillageGoal {
-	protected MinerEntity entity;
+public abstract class TimedMineGoal extends TimedVillageGoal<MinerEntity> {
 	protected BlockPos pos;
 
 	public TimedMineGoal(MinerEntity e, int priority) {
 		super(e, priority);
-		this.entity = e;
 	}
 	
 	@Override

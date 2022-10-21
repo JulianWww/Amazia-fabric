@@ -15,6 +15,11 @@ public class PutItemInContainerGoal extends InteractWithContainerGoal {
 	}
 	
 	@Override
+	public boolean canStart() {
+		return this.isStartable();
+	}
+	
+	@Override
 	public void stop() {
 		super.stop();
 		master.StorageInteractionDone();

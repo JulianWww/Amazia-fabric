@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.block.AmaziaBlocks;
-import net.denanu.amazia.block.custom.MineMarkerBlock;
+import net.denanu.amazia.block.custom.VillageMarkerBlock;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.structures.MineStructure;
@@ -53,7 +53,7 @@ public class MineingSceduler extends VillageSceduler {
 	
 	protected Direction getFacing(BlockPos pos) {
     	BlockState state = this.getVillage().getPathingGraph().getWorld().getBlockState(pos);
-    	return state.get(MineMarkerBlock.FACING);
+    	return state.get(VillageMarkerBlock.FACING);
     }
 	
 	private void addMine(BlockPos pos) {

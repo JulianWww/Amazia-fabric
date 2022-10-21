@@ -5,7 +5,7 @@ import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
-public class AmaziaGoToFarmGoal extends AmaziaGoToBlockGoal {
+public class AmaziaGoToFarmGoal extends AmaziaGoToBlockGoal<AmaziaVillagerEntity> {
 
 	public AmaziaGoToFarmGoal(AmaziaVillagerEntity e, int priority) {
 		super(e, priority);
@@ -15,7 +15,7 @@ public class AmaziaGoToFarmGoal extends AmaziaGoToBlockGoal {
 	protected BlockPos getTargetBlock() {
 		ServerWorld sword = (ServerWorld) this.entity.getWorld();
 		BlockPos pos = this.entity.getVillage().getFarming().getRandomPos(sword, this.entity);
-		return pos;
+		return pos!=null ? pos.up() : null;
 	}
 
 }

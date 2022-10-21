@@ -7,6 +7,7 @@ import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.utils.CuboidSampler;
 import net.denanu.amazia.village.sceduling.FarmingSceduler;
+import net.denanu.amazia.village.sceduling.LumberSceduler;
 import net.denanu.amazia.village.sceduling.MineingSceduler;
 import net.denanu.amazia.village.sceduling.StorageSceduler;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,6 +27,7 @@ public class Village {
 	private FarmingSceduler farming;
 	private StorageSceduler storage;
 	private MineingSceduler mineing;
+	private LumberSceduler  lumber;
 
 	private PathingGraph pathingGraph;
 	
@@ -38,6 +40,7 @@ public class Village {
 		this.farming = new FarmingSceduler(this);
 		this.storage = new StorageSceduler(this);
 		this.mineing = new MineingSceduler(this);
+		this.lumber  = new LumberSceduler (this);
 		this.valid = true;
 	}
 	
@@ -46,8 +49,10 @@ public class Village {
 		
 		this.pathingGraph = new PathingGraph((ServerWorld)this.coreBlock.getWorld(), this);
 		
+		this.farming.initialize();
 		this.storage.initialize();
 		this.mineing.initialize();
+		this.lumber.initialize();
 		
 		this.sampler = new CuboidSampler(this.getOrigin(), SCAN_SIZE, SCAN_SIZE, SCAN_SIZE);
 		
@@ -70,12 +75,14 @@ public class Village {
 		farming.writeNbt(nbt, name + ".farming");
 		storage.writeNbt(nbt, name + ".storage");
 		mineing.writeNbt(nbt, name + ".mineing");
+		lumber. writeNbt(nbt, name + ".lumber");
     }
     public void readNbt(NbtCompound nbt, String name) {
     	valid = nbt.getBoolean("village.isValid");
     	farming.readNbt(nbt, name + ".farming");
     	storage.readNbt(nbt, name + ".storage");
     	mineing.readNbt(nbt, name + ".mineing");
+    	lumber. readNbt(nbt, name + ".lumber");
     }
 	
 	public boolean isValid() {
@@ -108,6 +115,7 @@ public class Village {
 		this.farming.discover(world, blockPos);
 		this.storage.discover(world, blockPos);
 		this.mineing.discover(world, blockPos);
+		this.lumber. discover(world, blockPos);
 	}
 
 
@@ -131,6 +139,9 @@ public class Village {
 	}
 	public MineingSceduler getMineing() {
 		return mineing;
+	}
+	public LumberSceduler getLumber() {
+		return lumber;
 	}
 
 	public static int getSize() {

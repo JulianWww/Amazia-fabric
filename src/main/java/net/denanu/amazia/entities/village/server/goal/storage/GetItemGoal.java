@@ -7,13 +7,12 @@ import net.minecraft.item.Item;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
-public class GetItemGoal extends AmaziaVillageGoal implements StorageGetInteractionGoalInterface, StoragePathingInterface {
+public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> implements StorageGetInteractionGoalInterface, StoragePathingInterface {
 	private StoragePathingData target;
 	private Item item;
 	private boolean isPathing, isDone, containerInteracting;
 	private GoToStorageGoal pathingSubGoal;
 	private GetItemFromStorage interactionGoal;
-	private int tickStartCounter;
 
 	public GetItemGoal(AmaziaVillagerEntity e, int priority) {
 		super(e, priority);
@@ -28,15 +27,17 @@ public class GetItemGoal extends AmaziaVillageGoal implements StorageGetInteract
 			item = this.entity.getRandomRequiredItem();
 			if (item != null) {
 				this.target = this.entity.getVillage().getStorage().getRequestLocation((ServerWorld)this.entity.getWorld(), this.getItem());
+				if (this.target == null && this.entity.canCraft()) {
+					this.entity.tryCraftingStart(item);
+				}
+				this.entity.removeRequestedItem(item);
 			}
 		}
 		return this.target != null && item != null && this.pathingSubGoal.canStart();
 	}
 	
 	private boolean runCanStartScan() {
-		this.tickStartCounter++;
-		this.tickStartCounter = this.tickStartCounter % 20;
-		return this.tickStartCounter == 0;
+		return true;
 	}
 	
 	@Override
@@ -90,7 +91,7 @@ public class GetItemGoal extends AmaziaVillageGoal implements StorageGetInteract
 		if (this.target != null) {
 			BlockPos t = this.target.getAccessPoint();
 			if (t != null) {
-				return t.down();
+				return t;
 			}
 		}
 		return null;

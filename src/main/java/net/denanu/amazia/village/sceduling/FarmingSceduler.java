@@ -40,6 +40,10 @@ public class FarmingSceduler extends VillageSceduler {
     	this.emptyFarm = JJUtils.readNBT(nbt, name + ".emptyFarm");
     }
     
+    @Override
+	public void initialize() {
+	}
+    
     protected static boolean isFarmLand(ServerWorld world, BlockPos pos) {
     	return world.getBlockState(pos).getBlock().equals(Blocks.FARMLAND);
     }

@@ -6,9 +6,11 @@
   "mixins": [
   ],
   "client": [
-    "MinecraftServerMixin",
+  	"MinecraftServerMixin",
     "PathingBlockUpdateMixin",
+    "PlantBlockMixin",
     "RecipeManagerMixinAcessor",
+    "TrunkPlacerMixin",
     "VillageBlockUpdateMixin"
   ],
   "injectors": {

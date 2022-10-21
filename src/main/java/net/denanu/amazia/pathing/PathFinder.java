@@ -70,6 +70,7 @@ public class PathFinder {
             final PathingNode localStart = startNode.getParent(level);
             final PathingNode localEnd = endNode.getParent(level);
             firstStep = this.findLevelPath(new PathStep(localStart, null, localEnd, firstStep), localEnd);
+            int a = 2;
         }
         return this.finalizePath(firstStep, endNode.getBlockPos());
     }

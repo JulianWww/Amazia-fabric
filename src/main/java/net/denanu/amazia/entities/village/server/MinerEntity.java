@@ -1,11 +1,13 @@
 package net.denanu.amazia.entities.village.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.goal.mineing.EnterMineGoal;
 import net.denanu.amazia.entities.village.server.goal.mineing.ExtendMineGoal;
@@ -23,7 +25,10 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.PickaxeItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -38,7 +43,9 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.WOODEN_PICKAXE, Items.STONE_PICKAXE, Items.IRON_PICKAXE, Items.GOLDEN_PICKAXE, Items.DIAMOND_PICKAXE, Items.NETHERITE_PICKAXE, Items.AIR);
-	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COBBLESTONE, 64, Items.TORCH, 64);
+	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_PICKAXE, Items.TORCH);
+	public static final ImmutableSet<Item> MINE_REQUIRED = ImmutableSet.of();
+	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COBBLESTONE, 64, Items.TORCH, 64, Items.STICK, 64, Items.COAL, 64);
 	public static final ImmutableMap<Item, Integer> MAX_PICKUPS = ImmutableMap.of(Items.COBBLESTONE, 64);
 	private static final Vec3i ITEM_PICK_UP_RANGE_EXPANDER_WHILE_MINEING = new Vec3i(5, 5, 5);
 	
@@ -52,12 +59,6 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 		super(entityType, world);
 		this.toMineLocations = new ArrayList<BlockPos>();
 	}
-	
-	public static DefaultAttributeContainer.Builder setAttributes() {
-        return PassiveEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2f);
-    }
 	
 	@Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
@@ -125,7 +126,7 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	protected void update() {
 		super.update();
 		if (this.isInMine()) {
-			if (!this.mine.isIn(new BlockPos(this.getPos()))) {
+			if (!this.mine.isIn(this.getBlockPos()) || !this.canMine()) {
 				this.leaveMine();
 			}
 		}
@@ -197,6 +198,9 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	}
 	
 	@Override
+	public HashMap<Item,ArrayList<CraftingRecipe>> getCraftables() { return Amazia.MINER_CRAFTS; };
+	
+	@Override
 	protected Vec3i getItemPickUpRangeExpander() {
 		if (this.isInMine()) {
 			return ITEM_PICK_UP_RANGE_EXPANDER_WHILE_MINEING;
@@ -212,7 +216,50 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 		return true;
 	}
 	
-	public boolean hasCobbleStone() {
-		return this.countItems(Items.COBBLESTONE) > 0;
+	public boolean canCraft() {
+		return this.hasFreeSlot();
+	}
+	
+	public int getPick() {
+		ItemStack itm;
+		for (int idx=0; idx < this.getInventory().size(); idx++) {
+			itm = this.getInventory().getStack(idx);
+			if (itm.getItem() instanceof PickaxeItem) {
+				return idx;
+			}
+		}
+		return -1;
+	}
+	
+	private boolean hasPick() {
+		for (ItemStack itm : this.getInventory().stacks) {
+			if (itm.getItem() instanceof PickaxeItem) {
+				return true;
+			}
+		}
+		this.requestPick();
+		return false;
+	}
+	
+	private void requestPick() {
+		if (!this.hasRequestedItems()) {
+			this.requestItem(Items.NETHERITE_PICKAXE);
+			this.requestItem(Items.DIAMOND_PICKAXE);
+			this.requestItem(Items.IRON_PICKAXE);
+			this.requestItem(Items.GOLDEN_PICKAXE);
+			this.requestItem(Items.STONE_PICKAXE);
+			this.requestItem(Items.WOODEN_PICKAXE);
+		}
+	}
+	
+	@Override
+	public boolean canMine() {
+		for (Item itm : MINE_REQUIRED) {
+			if (!this.hasItem(itm, 1)) {
+				this.requestItem(itm);
+				return false;
+			}
+		}
+		return this.hasFreeSlot() && this.hasPick();
 	}
 }

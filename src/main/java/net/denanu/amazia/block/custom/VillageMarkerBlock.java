@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 
-public abstract class VillageMarkerBlock extends HorizontalFacingBlock {
+public class VillageMarkerBlock extends HorizontalFacingBlock {
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 
 	public VillageMarkerBlock(Settings settings) {

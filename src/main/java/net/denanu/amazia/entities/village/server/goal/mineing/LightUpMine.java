@@ -2,14 +2,13 @@ package net.denanu.amazia.entities.village.server.goal.mineing;
 
 import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 
 public class LightUpMine extends TimedMineGoal {
-	protected MinerEntity entity;
 
 	public LightUpMine(MinerEntity e, int priority) {
 		super(e, priority);
-		this.entity = e;
 	}
 
 	@Override
@@ -19,12 +18,19 @@ public class LightUpMine extends TimedMineGoal {
 
 	@Override
 	protected void takeAction() {
-		this.entity.getWorld().setBlockState(new BlockPos(this.entity.getPos()), Blocks.TORCH.getDefaultState());
+		if (this.entity.hasItem(Items.TORCH, 1)) {
+			this.entity.getWorld().setBlockState(new BlockPos(this.entity.getPos()), Blocks.TORCH.getDefaultState());
+			this.entity.removeItemFromInventory(Items.TORCH, 1);
+		}
 	}
 
 	@Override
 	protected boolean shouldStart() {
-		return this.entity.getWorld().getLightLevel(new BlockPos(this.entity.getPos())) < 9;
+		boolean hasTorch = this.entity.hasItem(Items.TORCH, 1);
+		if (!hasTorch) {
+			this.entity.requestItem(Items.TORCH);
+		}
+		return hasTorch && this.entity.getWorld().getLightLevel(new BlockPos(this.entity.getPos())) < 7;
 	}
 
 }
