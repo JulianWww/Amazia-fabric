@@ -11,5 +11,5 @@
 - Village Mine marker
 - Tree School
 
-#Items
+# Items
 - Ruby
