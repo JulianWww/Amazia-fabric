@@ -13,6 +13,7 @@ public class BasePathingNode extends PathingNode {
 	public BasePathingNode(BlockPos pos, PathingGraph graph, final byte clearance) {
 		super(pos, graph);
 		this.clearanceHeight = clearance;
+		graph.lvl0.add(pos, this);
 	}
 	
 	public byte getClearanceHeight() {
@@ -50,9 +51,9 @@ public class BasePathingNode extends PathingNode {
                 }
             }
             if (node != null && this.canWalkTo(node)) {
-                this.addBaseConnection(node, graph);
+                this.addBaseConnection(node, graph); 
                 if (newNode) {
-                    this.sceduleUpdate(graph);
+                    node.sceduleUpdate(graph);
                     return true;
                 }
             }

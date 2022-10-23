@@ -5,8 +5,6 @@ import java.util.Comparator;
 import net.minecraft.util.math.BlockPos;
 
 public class PathingEdge {
-	public static final Comparator <PathingEdge> comparator = getComparator();
-	
 	protected PathingNode startNode;
 	protected PathingNode endNode;
 	protected EdgePath path;
@@ -20,33 +18,33 @@ public class PathingEdge {
 	public EdgePath getPath() {
 		return this.path;
 	}
-	
-	private static Comparator <PathingEdge> getComparator() {
-		return new Comparator<PathingEdge>()
-        {
-            public int compare ( PathingEdge e1 , PathingEdge e2 )
-            {
-                return e1.getPath().getLength() - e2.getPath().getLength();
-            }
-            
-            /*private static Pair<PathingNode, PathingNode> sortEndPoints(PathingEdge e) {
-            	return isLarger(e.startNode.getBlockPos(), e.endNode.getBlockPos()) ? new Pair<>(e.startNode, e.endNode) : new Pair<>(e.endNode, e.startNode);
-            }
-            
-            private static boolean isLarger(BlockPos pos1, BlockPos pos2) {
-            	if (pos1.getX() == pos2.getX()) {
-            		if (pos1.getY() == pos2.getY()) {
-            			return pos1.getZ() > pos2.getZ();
-            		}
-            		return pos1.getY() > pos2.getY();
-            	}
-            	return pos1.getX() > pos2.getX();
-            }*/
-        };
-	}
 
 	public boolean connects(BlockPos pos) {
 		return this.startNode.getBlockPos().equals(pos) || this.endNode.getBlockPos().equals(pos);
+	}
+	
+	@Override
+	public int hashCode() {
+		int result = this.startNode.getBlockPos().getX();
+		result = result << 4 + this.startNode.getBlockPos().getY();
+		result = result << 4 + this.startNode.getBlockPos().getZ();
+		
+		result = result << 4 + this.endNode.getBlockPos().getX();
+		result = result << 4 + this.endNode.getBlockPos().getY();
+		result = result << 4 + this.endNode.getBlockPos().getZ();
+		return result;
+	}
+	
+	private static boolean equalsInAxis(BlockPos x1, BlockPos x2, BlockPos y1, BlockPos y2) {
+		return (x1 == y1 && x2 == y2) || (x1 == y2 && x2 == y1);
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof PathingEdge edge) {
+			return (equalsInAxis(this.startNode.getBlockPos(), this.endNode.getBlockPos(), edge.startNode.getBlockPos(), edge.endNode.getBlockPos()));
+		}
+		return false;
 	}
 
 }

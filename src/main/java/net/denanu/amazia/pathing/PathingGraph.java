@@ -1,5 +1,6 @@
 package net.denanu.amazia.pathing;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Set;
@@ -15,7 +16,7 @@ public class PathingGraph {
 	private PathingEventEmiter eventEmiter;
 	
 	public PathingLvl<BasePathingNode> lvl0;
-	private final int throttle = 1;
+	private final int throttle = 100;
 	
 	private Deque<PathingUpdateInterface> pathQueue, nodeQueue;
 	
@@ -25,10 +26,14 @@ public class PathingGraph {
 		this.eventEmiter = new PathingEventEmiter();
 		
 		this.lvl0 = new PathingLvl<BasePathingNode>();
+		
+		this.pathQueue = new ArrayDeque<PathingUpdateInterface>();
+		this.nodeQueue = new ArrayDeque<PathingUpdateInterface>();
 	}
 	
 
 	public void update() {
+		this.processNodeQueue();;
 	}
 	
 	private PathingUpdateInterface toUpdate() {
@@ -80,6 +85,7 @@ public class PathingGraph {
             final BasePathingNode baseNode = new BasePathingNode(bp, this, clearanceHeight);
             baseNode.sceduleUpdate(this);
         }
+        return;
 	}
 	
 	public boolean isInRange(final BlockPos bp) {
@@ -93,11 +99,11 @@ public class PathingGraph {
 
 
 	public void queuePath(EdgePath edgePath) {
-		pathQueue.push(edgePath);
+		pathQueue.addLast(edgePath);
 	}
 
 
 	public void queueNode(PathingNode node) {
-		nodeQueue.push(node);
+		nodeQueue.addLast(node);
 	}
 }

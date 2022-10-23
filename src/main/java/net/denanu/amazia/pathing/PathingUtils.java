@@ -29,9 +29,9 @@ public class PathingUtils {
 	}
 	
 	private static boolean isLvl(BlockPos pos, int size) {
-		return isLvlInDim(size, pos.getX()) || isLvlInDim(size, pos.getY()) || isLvlInDim(size, pos.getZ());
+		return isLvlInDim(size, pos.getX()) || isLvlInDim(size, pos.getZ()); //|| isLvlInDim(size, pos.getY())
 	}
 	private static boolean isLvlInDim(int size, int x) {
-		return x % size == 0 || x % size == 1;
+		return x % size == 0 || x % size == 1 || x % size == 1-size;
 	}
 }

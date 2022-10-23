@@ -15,4 +15,8 @@ public class PathingLvl<E extends PathingNode> {
 	public E get(final BlockPos pos) {
 		return this.positionMap.get(pos);
 	}
+	
+	public void add(final BlockPos pos, E node) {
+		this.positionMap.put(pos, node);
+	}
 }

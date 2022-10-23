@@ -1,7 +1,11 @@
 package net.denanu.amazia.pathing;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
@@ -27,6 +31,8 @@ public class PathingNode implements PathingUpdateInterface {
 		this.pos = pos;
 		this.parent = null;
 		this.child = null;
+		this.edges = new HashSet<PathingEdge>();
+		this.pathes = new HashSet<PathingUpdateInterface>();
 	}
 	
 	private void buildParents(BlockPos pos, PathingGraph graph) {
@@ -34,6 +40,7 @@ public class PathingNode implements PathingUpdateInterface {
 	}
 	private static void buildParents(BlockPos pos, PathingGraph graph, int height, int maxHeight, PathingNode child) {
 		if (height <= maxHeight) {
+			graph.getWorld().spawnParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
 			child.parent = new PathingNode(pos, graph, height);
 			child.parent.child = child;
 			buildParents(pos, graph, height + 1, maxHeight, child.parent);
@@ -106,6 +113,7 @@ public class PathingNode implements PathingUpdateInterface {
 	}
 	@Override
 	public void update(ServerWorld world, PathingGraph graph) {
+		this.debugUpdate(world);
 		if (!this.destroyed) {
 			this.dequeue();
 			this.updateConnections(world, graph);
@@ -130,5 +138,43 @@ public class PathingNode implements PathingUpdateInterface {
 	@Override
 	public boolean canQueue() {
 		return !this.queued;
+	}
+	
+	@Override
+	public String toString() {
+		return "[" + this.lvl + "," + this.pos + "]";
+	}
+	
+	public void debugUpdate(ServerWorld world) {
+		Block block = Blocks.GREEN_CONCRETE;
+		int lvl = this.getTopLvl();
+		if (lvl == 1) { block = Blocks.BLUE_CONCRETE;}
+		if (lvl == 2) { block = Blocks.YELLOW_CONCRETE;}
+		if (lvl == 3) { block = Blocks.PURPLE_CONCRETE;}
+		if (lvl == 4) { block = Blocks.ORANGE_CONCRETE;}
+		if (lvl == 5) { block = Blocks.RED_CONCRETE;}
+		world.setBlockState(this.getDebugPos(), block.getDefaultState());
+	}
+	
+	private BlockPos getDebugPos() {
+		return new BlockPos(this.getBlockPos().getX(), -64, this.getBlockPos().getZ());
+	}
+	
+	@Override
+	public int hashCode() {
+		int result = this.getBlockPos().getX() % 1024;
+		result = result << 8 + (this.getBlockPos().getY() % 1024);
+		result = result << 8 + (this.getBlockPos().getZ() % 1024);
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof PathingNode other) {
+			return (
+					this.getBlockPos() == other.getBlockPos()
+				);
+		}
+		return false;
 	}
 }
