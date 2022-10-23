@@ -1,0 +1,2 @@
+# Pathing
+- create abstracted graph
