@@ -1,10 +1,10 @@
 package net.denanu.amazia.pathing;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Set;
-
+import net.denanu.amazia.Amazia;
+import net.denanu.amazia.pathing.edge.EdgePath;
+import net.denanu.amazia.pathing.interfaces.PathingUpdateInterface;
+import net.denanu.amazia.pathing.node.BasePathingNode;
+import net.denanu.amazia.pathing.node.PathingNode;
 import net.denanu.amazia.village.Village;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -16,9 +16,12 @@ public class PathingGraph {
 	private PathingEventEmiter eventEmiter;
 	
 	public PathingLvl<BasePathingNode> lvl0;
+	public PathingCluster clusters;
 	private final int throttle = 100;
 	
-	private Deque<PathingUpdateInterface> pathQueue, nodeQueue;
+	private boolean setupDone;
+	
+	private NodeQueue pathQueue, nodeQueue;
 	
 	public PathingGraph(ServerWorld _world, Village _village) {
 		this.world = _world;
@@ -26,21 +29,26 @@ public class PathingGraph {
 		this.eventEmiter = new PathingEventEmiter();
 		
 		this.lvl0 = new PathingLvl<BasePathingNode>();
+		this.clusters = new PathingCluster();
 		
-		this.pathQueue = new ArrayDeque<PathingUpdateInterface>();
-		this.nodeQueue = new ArrayDeque<PathingUpdateInterface>();
+		this.pathQueue = new NodeQueue();
+		this.nodeQueue = new NodeQueue();
+		
+		this.setupDone = false;
 	}
 	
 
 	public void update() {
-		this.processNodeQueue();;
+		this.world.getProfiler().push("Pathing Update");
+		this.processNodeQueue();
+		this.world.getProfiler().pop();
 	}
 	
 	private PathingUpdateInterface toUpdate() {
 		if (this.nodeQueue.isEmpty()) {
-			return this.pathQueue.poll();
+			return this.pathQueue.poll(null);
 		}
-		return this.nodeQueue.poll();
+		return this.nodeQueue.poll(this);
 	}
 	private boolean canUpdate() {
 		return !this.pathQueue.isEmpty() || !this.nodeQueue.isEmpty();
@@ -51,9 +59,11 @@ public class PathingGraph {
         while (this.canUpdate() && nodesProcessed < this.throttle) {
             final PathingUpdateInterface node = this.toUpdate();
             if (node != null) {
-                node.update(this.world, this);
+            	nodesProcessed = nodesProcessed + node.update(this.world, this);
             }
-            ++nodesProcessed;
+            else {
+            	break;
+            }
         }
     }
 
@@ -68,6 +78,17 @@ public class PathingGraph {
 	public PathingEventEmiter getEventEmiter() {
 		return eventEmiter;
 	}
+
+	public boolean isSetupDone() {
+		return setupDone;
+	}
+
+
+	public void finalizeSetup() {
+		Amazia.LOGGER.info("Pathing Setup Done");
+		this.setupDone = true;
+	}
+
 
 	public boolean hasNode(BlockPos pos) {
 		return false;
@@ -92,18 +113,32 @@ public class PathingGraph {
         return this.village.isInVillage(bp);
     }
 
-
-	public BasePathingNode getNode(final BlockPos pos) {
-		return this.lvl0.get(pos);
-	}
-
-
 	public void queuePath(EdgePath edgePath) {
-		pathQueue.addLast(edgePath);
+		pathQueue.put(edgePath);
 	}
 
 
 	public void queueNode(PathingNode node) {
-		nodeQueue.addLast(node);
+		nodeQueue.put(node);
+	}
+
+	public BasePathingNode getNode(final BlockPos pos) {
+		return this.lvl0.get(pos);
+	}
+	
+	public BasePathingNode getNode(int x, int y, int z) {
+		return this.getNode(new BlockPos(x, y, z));
+	}
+
+	public BasePathingNode getNodeYRange(int x, int i, int y, int z) {
+		BasePathingNode node = null;
+		
+		for (BlockPos pos = new BlockPos(x, i, y); pos.getY()<=y; pos = pos.up()) {
+			node = this.getNode(pos);
+			if (node != null) {
+				return node;
+			}
+		}
+		return node;
 	}
 }

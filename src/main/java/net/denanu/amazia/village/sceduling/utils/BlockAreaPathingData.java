@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.denanu.amazia.pathing.PathingEventEmiter;
-import net.denanu.amazia.pathing.PathingEventListener;
+import net.denanu.amazia.pathing.interfaces.PathingEventListener;
 import net.denanu.amazia.village.Village;
 import net.minecraft.util.math.BlockPos;
 

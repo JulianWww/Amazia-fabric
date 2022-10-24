@@ -1,8 +1,9 @@
 package net.denanu.amazia.pathing;
 
 import java.util.HashMap;
-import java.util.Set;
+import java.util.HashSet;
 
+import net.denanu.amazia.pathing.node.PathingNode;
 import net.minecraft.util.math.BlockPos;
 
 public class PathingLvl<E extends PathingNode> {

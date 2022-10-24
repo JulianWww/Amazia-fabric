@@ -1,5 +1,15 @@
 package net.denanu.amazia.pathing;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
+import net.denanu.amazia.Amazia;
+import net.denanu.amazia.pathing.edge.PathingEdge;
+import net.denanu.amazia.pathing.node.PathingNode;
+import net.denanu.amazia.utils.queue.PriorityElement;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 
 public class PathingUtils {
@@ -33,5 +43,66 @@ public class PathingUtils {
 	}
 	private static boolean isLvlInDim(int size, int x) {
 		return x % size == 0 || x % size == 1 || x % size == 1-size;
+	}
+	
+	private static BlockPos toClusterPos(BlockPos pos, int size) {
+		return new BlockPos(
+				toClusterPos(size, pos.getX()),
+				size,
+				toClusterPos(size, pos.getZ())
+			);
+	}
+	
+	private static int toClusterPos(int size, int val) {
+		if (val > 0) {
+			val = val - 1;
+			return val - val % size + 1;
+		}
+		return val - val % size;
+	}
+	
+	public static BlockPos toCluster(BlockPos pos, int lvl) {
+		if (lvl == 0) { return null; }
+		if (lvl == 1) { return toClusterPos(pos, 4); }
+		if (lvl == 2) { return toClusterPos(pos, 8); }
+		if (lvl == 3) { return toClusterPos(pos, 16); }
+		if (lvl == 4) { return toClusterPos(pos, 32); }
+		return toClusterPos(pos, 64);
+	}
+	
+	
+	public static Pair<Integer, HashSet<PathingEdge>> getAbstractEdges(PathingNode start, HashSet<PathingNode> endNodes) {
+		PriorityQueue<PriorityElement<PathingNode>> nodeQueue = new PriorityQueue<PriorityElement<PathingNode>>(PriorityElement.comparator);
+		HashSet<PathingEdge> outs = new HashSet<PathingEdge>();
+		HashSet<PathingNode> visited = new HashSet<PathingNode>();
+		
+		nodeQueue.add(new PriorityElement<PathingNode>(0, start));
+		visited.add(start);
+		
+		int visitedCount = 0;
+		
+		PriorityElement<PathingNode> current;
+		PathingNode next;
+		while (!nodeQueue.isEmpty()) {
+			current = nodeQueue.poll();
+			visitedCount += 1;
+			for (PathingEdge edge : current.getRight().edges) {
+				next = edge.to(current.getRight());
+				if (!visited.contains(next)) {
+					visited.add(next);
+					
+					next.from = edge;
+					int nextDist = current.getLeft() + edge.getPath().getLength();
+					
+					// build nodes if possible
+					if (next.getParent() != null) { // && endNodes.contains(next.getParent())
+						outs.add(PathingEdge.build(next, start, nextDist));
+					}
+					
+					nodeQueue.add(new PriorityElement<PathingNode>(nextDist, next));
+				}
+			}
+		}
+		return new Pair<>(visitedCount, outs);
 	}
 }

@@ -1,4 +1,4 @@
-package net.denanu.amazia.pathing;
+package net.denanu.amazia.pathing.interfaces;
 
 import net.minecraft.util.math.BlockPos;
 

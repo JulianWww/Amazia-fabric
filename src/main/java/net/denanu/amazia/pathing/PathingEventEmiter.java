@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.denanu.amazia.pathing.interfaces.PathingEventListener;
 import net.minecraft.util.math.BlockPos;
 
 public class PathingEventEmiter {

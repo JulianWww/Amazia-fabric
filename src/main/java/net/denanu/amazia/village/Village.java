@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class Village {
-	private static int SIZE = 120;
+	private static int SIZE = 16;
 	private static int SCAN_SIZE = 10;
 	private static int THROTTLE = 1;
 	
