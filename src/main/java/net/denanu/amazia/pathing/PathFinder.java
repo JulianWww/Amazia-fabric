@@ -6,13 +6,10 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.AmaziaEntity;
-import net.denanu.amazia.pathing.edge.PathingEdge;
-import net.denanu.amazia.pathing.node.BasePathingNode;
-import net.denanu.amazia.pathing.node.PathingNode;
 import net.denanu.amazia.utils.queue.PriorityElement;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
@@ -21,14 +18,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class PathFinder {
-	protected AmaziaEntity entity;
-	protected ServerWorld world;
+	private AmaziaEntity entity;
+	private ServerWorld world;
 	protected PriorityQueue<PriorityElement<PathingNode>> nodeQueue = new PriorityQueue<PriorityElement<PathingNode>>(PriorityElement.comparator);
 	protected HashSet<PathingNode> visited = new HashSet<PathingNode>();
 	
-	public PathFinder(final AmaziaEntity entityNav) {
-        this.entity = entityNav;
-    }
+	public PathFinder(AmaziaEntity e) {
+		this.entity = e;
+	}
 	
 	public PathingGraph getGraph() {
 		if (this.entity.hasVillage()) {
@@ -36,10 +33,10 @@ public class PathFinder {
 			}
 		return null;
 	}
-	
+
 	@Nullable
     public PathingPath findPath(final World worldIn, final Entity targetEntity) {
-        return null;
+        return findPath(worldIn, targetEntity.getBlockPos());
     }
     
     @Nullable
@@ -49,11 +46,11 @@ public class PathFinder {
     
     private PathingPath findPath(final World worldIn, final double x, final double y, final double z) {
         this.world = (ServerWorld)worldIn;
-        //this.getGraph().debugEdgeNodes(worldIn);
+
         final PathingGraph graph = this.getGraph();
         if (graph != null) {
-            final BasePathingNode endNode = graph.getNode(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
-            final BasePathingNode startNode = this.getStart(graph);
+            final PathingNode endNode = graph.getNode(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
+            final PathingNode startNode = this.getStart(graph);
             if (endNode == startNode) {
             	return null;
             }
@@ -62,30 +59,15 @@ public class PathFinder {
         return null;
     }
 
-	public PathingPath findPath(final BasePathingNode startNode, final BasePathingNode endNode, PathingGraph graph) {
+	public PathingPath findPath(final PathingNode startNode, final PathingNode endNode, PathingGraph graph) {
 		if (endNode == null || startNode == null) {
             return null;
         }
 		
-		if (graph.isSetupDone()) {
-			return finalizeHirarchicalPath( this.findHirarchicalPath(startNode, endNode, graph));
-		} 
 		return finalizeBasePath( this.basePathFinder(startNode, endNode));
 	}
-
-	private static PathingPath finalizeHirarchicalPath(PathingNode end) {
-		if (end == null) {
-			return null;
-		}
-		BlockPos targetPos = end.getBlockPos();
-		List<PathingNode> path = new LinkedList<PathingNode>();
-		path.add(end);
-		for (; end.getBlockPos().from != null; end = end.getBlockPos().from.to(end)) {
-			path.addAll(end.getBlockPos().from.toPath(end));
-		}
-		return new PathingPath(path, targetPos);
-	}
-	private static PathingPath finalizeBasePath(BasePathingNode end) {
+	
+	private PathingPath finalizeBasePath(PathingNode end) {
 		if (end == null) {
 			return null;
 		}
@@ -97,66 +79,25 @@ public class PathFinder {
 		}
 		return new PathingPath(path, targetPos);
 	}
-
-	private PathingNode findHirarchicalPath(BasePathingNode startNode, BasePathingNode endNode, PathingGraph graph) {
-		this.visited.clear();
-		this.nodeQueue.clear();
-		this.nodeQueue.add(new PriorityElement<PathingNode>(estimateDistance(startNode, endNode), startNode));
-		this.visited.add(startNode);
-		
-		startNode.distance = 0;
-		startNode.getBlockPos().from = null;
-		PriorityElement<PathingNode> current;
-		PathingNode next;
-		int currentLvl = 0;
-		
-		while (!nodeQueue.isEmpty()) {
-			current = this.nodeQueue.poll();
-			if (current.getRight().getParent() != null && startNode.inSameSuperCluster(current.getRight()) && !visited.contains(current.getRight().getParent())) {
-				next = current.getRight().getTopParent();
-				visited.add(next);
-				this.nodeQueue.add(new PriorityElement<PathingNode>(0, next));
-			}
-			if (current.getRight().getChild() != null && endNode.inSameCluster(current.getRight()) && !visited.contains(current.getRight().getChild())) {
-				next = current.getRight().getChild();
-				visited.add(current.getRight().getChild());
-				this.nodeQueue.add(new PriorityElement<PathingNode>(0, next));
-				currentLvl = next.getLvl();
-			}
-			if (current.getRight().getLvl() >= currentLvl) { // maybe remove
-				for (PathingEdge edge : current.getRight().edges) {
-					next = edge.to(current.getRight());
-					if ((next.getParent() == null || current.getRight().getParent() == null) && !this.visited.contains(next)) {
-						this.visited.add(next);
-						next.getBlockPos().from = edge;
-						
-						if (next.lvllessEquals(endNode)) {
-							return next;
-						}
-						
-						next.distance = current.getRight().distance + edge.getLength();
-						
-						this.nodeQueue.add(new PriorityElement<PathingNode>(estimateDistance(next, endNode) + next.distance, next));
-					}
-				}
-			}
-		}
-		return null;
-	}
 	
-	public BasePathingNode basePathFinder(BasePathingNode startNode, BasePathingNode endNode) {
-		PriorityQueue<PriorityElement<BasePathingNode>> nodeQueue = new PriorityQueue<PriorityElement<BasePathingNode>>(PriorityElement.comparator);
+	private static int estimateHyperGreadyDistance(PathingNode n1, PathingNode n2) {
+		return n1.getSquaredDistance(n2);
+	}
+
+	public PathingNode basePathFinder(PathingNode startNode, PathingNode endNode) {
+		PriorityQueue<PriorityElement<PathingNode>> nodeQueue = new PriorityQueue<PriorityElement<PathingNode>>(PriorityElement.comparator);
 		this.visited.clear();
-		nodeQueue.add(new PriorityElement<BasePathingNode>(estimateHyperGreadyDistance(startNode, endNode), startNode));
+		nodeQueue.add(new PriorityElement<PathingNode>(estimateHyperGreadyDistance(startNode, endNode), startNode));
 		this.visited.add(startNode);
 		
 		startNode.distance = 0;
 		startNode.movedFromNode = null;
-		PriorityElement<BasePathingNode> current;
+		PriorityElement<PathingNode> current;
 		
 		while (!nodeQueue.isEmpty()) {
 			current = nodeQueue.poll();
-			for (BasePathingNode next : current.getRight().ajacentNodes) {
+			//current.getRight().debug(this.getGraph());
+			for (PathingNode next : current.getRight().edges) {
 				if (!this.visited.contains(next)) {
 					next.movedFromNode = current.getRight();
 					if (next == endNode) {
@@ -166,22 +107,14 @@ public class PathFinder {
 					next.distance = current.getRight().distance + 1;
 					
 					this.visited.add(next);
-					nodeQueue.add(new PriorityElement<BasePathingNode>(next.distance + estimateHyperGreadyDistance(next, endNode), next));
+					nodeQueue.add(new PriorityElement<PathingNode>(next.distance + estimateHyperGreadyDistance(next, endNode), next));
 				}
 			}
 		}
 		return null;
 	}
-	
-	private static int estimateDistance(PathingNode n1, PathingNode n2) {
-		return n1.manhattenDistance(n2);
-	}
-	
-	private static int estimateHyperGreadyDistance(PathingNode n1, PathingNode n2) {
-		return n1.getSquaredDistance(n2);
-	}
-	
-	private BasePathingNode getStart(final PathingGraph graph) {
+
+	private PathingNode getStart(final PathingGraph graph) {
     	int i;
         /*if (this.entity.func_70090_H()) {
             i = (int)this.entity.func_174813_aQ().field_72338_b;
@@ -196,7 +129,7 @@ public class PathFinder {
         }
         else {
         	BlockPos pos;
-        	for (pos = new BlockPos(this.entity.getPos()); !BasePathingNode.isPassable(graph.getWorld(), pos) && pos.getY() >= Amazia.LOWER_WORLD_BORDER; pos = pos.down()) {}
+        	for (pos = new BlockPos(this.entity.getPos()); !PathingNode.isPassable(graph.getWorld(), pos) && pos.getY() >= Amazia.LOWER_WORLD_BORDER; pos = pos.down()) {}
         	i = pos.getY();
         }
         /* falling code ?? else {
@@ -205,7 +138,7 @@ public class PathFinder {
             i = blockpos.func_177984_a().func_177956_o();
         }*/
         final BlockPos blockpos2 = new BlockPos(this.entity.getPos());
-        BasePathingNode node = graph.getNode(blockpos2.getX(), i, blockpos2.getZ());
+        PathingNode node = graph.getNode(blockpos2.getX(), i, blockpos2.getZ());
         if (node == null) {
             node = graph.getNode(blockpos2.getX(), i + 1, blockpos2.getY());
         }
@@ -216,7 +149,7 @@ public class PathFinder {
             set.add(new BlockPos(this.entity.getX() - 1, (double)i, this.entity.getZ() + 1));
             set.add(new BlockPos(this.entity.getX() - 1, (double)i, this.entity.getZ() - 1));
             for (final BlockPos blockpos3 : set) {
-                node = graph.getNodeYRange(blockpos3.getX(), blockpos3.getY() - 1, blockpos3.getY(), blockpos3.getZ());
+                node = graph.getNode(blockpos3);
                 if (node != null) {
                     return node;
                 }

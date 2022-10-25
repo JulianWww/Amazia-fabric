@@ -18,5 +18,4 @@ public class PriorityElement<E> extends Pair<Integer, E> {
 			return o1.getLeft() - o2.getLeft();
 		}	
 	}
-	
 }

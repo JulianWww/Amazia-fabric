@@ -20,7 +20,7 @@ public class HarvestTreeGoal extends TimedVillageGoal<LumberjackEntity> {
 			this.entity.requestAxe();
 			return false;
 		}
-		if (!this.entity.hasLumberLoc() && false) {
+		if (!this.entity.hasLumberLoc()) {
 			this.entity.setLumberingLoc(this.entity.getVillage().getLumber().getHarvestLocation());
 		}
 		return this.entity.hasLumberLoc() && this.entity.isInLumberLoc() && 
