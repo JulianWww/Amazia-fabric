@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import net.denanu.amazia.pathing.PathingCell;
+import net.denanu.amazia.pathing.PathingCluster;
 import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.pathing.PathingUtils;
 import net.denanu.amazia.pathing.edge.PathingEdge;
@@ -19,10 +20,11 @@ public class BasePathingNode extends PathingNode {
 	public HashSet<BasePathingNode> ajacentNodes;
 	public BasePathingNode movedFromNode;
 
-	public BasePathingNode(BlockPos pos, PathingGraph graph, final byte clearance) {
-		super(new PathingCell(pos), graph);
+	public BasePathingNode(BlockPos pos, PathingGraph graph, final byte clearance, PathingCluster cluster) {
+		super(new PathingCell(pos), graph, cluster);
 		this.clearanceHeight = clearance;
 		graph.lvl0.add(pos, this);
+		graph.getEventEmiter().sendCreate(pos);
 		this.ajacentNodes = new HashSet<BasePathingNode>();
 	}
 	
@@ -69,7 +71,7 @@ public class BasePathingNode extends PathingNode {
             boolean newNode = false;
             BasePathingNode node = this.getExistingNeighbor(graph, pos);
             if (node == null) {
-                node = BasePathingNode.checkWalkableNeighbor(world, pos, graph);
+                node = this.checkWalkableNeighbor(world, pos, graph);
                 if (node != null) {
                 	this.addAjacentNode(node);
                     newNode = true;
@@ -92,14 +94,14 @@ public class BasePathingNode extends PathingNode {
 		node.ajacentNodes.add(this);
 	}
 
-	private static BasePathingNode checkWalkableNeighbor(final ServerWorld world, BlockPos pos, PathingGraph graph) {
+	private BasePathingNode checkWalkableNeighbor(final ServerWorld world, BlockPos pos, PathingGraph graph) {
 		long t1 = System.nanoTime();
 		if (canWalkOn(world, pos.down()) && isPassable(world, pos) && isPassable(world, pos.up())) {
 			byte clearance = 2;
 			if (isPassable(world, pos.up(2))) {
 				clearance++;
 			}
-			BasePathingNode out = new BasePathingNode(pos, graph, clearance);
+			BasePathingNode out = new BasePathingNode(pos, graph, clearance, this.cluster);
 			return out;
 		}
 		return null;
@@ -122,5 +124,14 @@ public class BasePathingNode extends PathingNode {
 
 	private BasePathingNode getExistingNeighbor(PathingGraph graph, BlockPos pos) {
 		return graph.getNode(pos); // maybe use ajacent nodes for this probably wont work more thinking required
+	}
+	
+	@Override
+	public void destroy(PathingGraph graph) {
+		for (BasePathingNode node : this.ajacentNodes) {
+			node.ajacentNodes.remove(this);
+		}
+		graph.getEventEmiter().sendDestroy(getBlockPos());
+		super.destroy(graph);
 	}
 }

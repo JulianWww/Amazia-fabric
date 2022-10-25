@@ -1,7 +1,8 @@
 package net.denanu.amazia.pathing;
 
+import java.util.HashMap;
+
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.pathing.edge.EdgePath;
 import net.denanu.amazia.pathing.interfaces.PathingUpdateInterface;
 import net.denanu.amazia.pathing.node.BasePathingNode;
 import net.denanu.amazia.pathing.node.PathingNode;
@@ -15,23 +16,22 @@ public class PathingGraph {
 	
 	private PathingEventEmiter eventEmiter;
 	
-	public PathingLvl<BasePathingNode> lvl0;
-	public PathingCluster clusters;
+	public PathingLvl lvl0;
+	public HashMap<Integer, HashMap<Integer, HashMap<Integer, PathingCluster>>> clusters;
 	private final int throttle = 100;
 	
 	private boolean setupDone;
 	
-	private NodeQueue pathQueue, nodeQueue;
+	private NodeQueue nodeQueue;
 	
 	public PathingGraph(ServerWorld _world, Village _village) {
 		this.world = _world;
 		this.village = _village;
 		this.eventEmiter = new PathingEventEmiter();
 		
-		this.lvl0 = new PathingLvl<BasePathingNode>();
-		this.clusters = new PathingCluster();
+		this.lvl0 = new PathingLvl();
+		this.clusters = new HashMap<Integer, HashMap<Integer, HashMap<Integer, PathingCluster>>>();
 		
-		this.pathQueue = new NodeQueue();
 		this.nodeQueue = new NodeQueue();
 		
 		this.setupDone = false;
@@ -44,20 +44,17 @@ public class PathingGraph {
 		this.world.getProfiler().pop();
 	}
 	
-	private PathingUpdateInterface toUpdate() {
-		if (this.nodeQueue.isEmpty()) {
-			return this.pathQueue.poll(null);
-		}
+	private PathingNode toUpdate() {
 		return this.nodeQueue.poll(this);
 	}
 	private boolean canUpdate() {
-		return !this.pathQueue.isEmpty() || !this.nodeQueue.isEmpty();
+		return !this.nodeQueue.isEmpty();
 	}
 	
 	private void processNodeQueue() {
         int nodesProcessed = 0;
         while (this.canUpdate() && nodesProcessed < this.throttle) {
-            final PathingUpdateInterface node = this.toUpdate();
+            final PathingNode node = this.toUpdate();
             if (node != null) {
             	nodesProcessed = nodesProcessed + node.update(this.world, this);
             }
@@ -68,7 +65,46 @@ public class PathingGraph {
     }
 
 	public void onBlockUpdate(ServerWorld _world, BlockPos pos) {
+		this.removeNodes(pos);
+
+		this.updateNodes(pos.east());
+		this.updateNodes(pos.west());
+		this.updateNodes(pos.north());
+		this.updateNodes(pos.south());
+	}
+	
+	private void updateNodes(BlockPos pos) {
+		HashMap<Integer, BasePathingNode> map = this.lvl0.getRemove(pos.getX(), pos.getZ());
 		
+		this.updateNode(map, pos.getY() + 1);
+		this.updateNode(map, pos.getY());
+		this.updateNode(map, pos.getY() - 1);
+		this.updateNode(map, pos.getY() - 2);
+	}
+	private void updateNode(final HashMap<Integer, BasePathingNode> map, final int y) {
+		BasePathingNode node = map.get(y);
+		if (node != null) {
+			node.sceduleUpdate(this);
+		}
+	}
+	
+	private void removeNodes(BlockPos pos) {
+		HashMap<Integer, BasePathingNode> map = this.lvl0.getRemove(pos.getX(), pos.getZ());
+		
+		if (map == null) return;
+		
+		this.removeNode(map, pos.getY() + 1);
+		this.removeNode(map, pos.getY());
+		this.removeNode(map, pos.getY() - 1);
+		this.removeNode(map, pos.getY() - 2);
+		return;
+	}
+	private void removeNode(final HashMap<Integer, BasePathingNode> map, final int y) {
+		BasePathingNode node = map.get(y);
+		if (node != null) {
+			node.destroy(this);
+			map.remove(y);
+		}
 	}
 	
 	public ServerWorld getWorld() {
@@ -91,7 +127,7 @@ public class PathingGraph {
 
 
 	public boolean hasNode(BlockPos pos) {
-		return false;
+		return this.getNode(pos) != null;
 	}
 
 	public void seedVillage(BlockPos bp) {
@@ -103,7 +139,7 @@ public class PathingGraph {
             }
         }
         if (clearanceHeight >= 2) {
-            final BasePathingNode baseNode = new BasePathingNode(bp, this, clearanceHeight);
+            final BasePathingNode baseNode = new BasePathingNode(bp, this, clearanceHeight, PathingCluster.get(this, bp, 0));
             baseNode.sceduleUpdate(this);
         }
         return;
@@ -112,10 +148,6 @@ public class PathingGraph {
 	public boolean isInRange(final BlockPos bp) {
         return this.village.isInVillage(bp);
     }
-
-	public void queuePath(EdgePath edgePath) {
-		pathQueue.put(edgePath);
-	}
 
 
 	public void queueNode(PathingNode node) {

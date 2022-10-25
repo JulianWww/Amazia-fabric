@@ -62,7 +62,7 @@ public class PathingUtils {
 	}
 	
 	public static BlockPos toCluster(BlockPos pos, int lvl) {
-		if (lvl == 0) { return null; }
+		if (lvl == 0) { return pos; }
 		if (lvl == 1) { return toClusterPos(pos, 4); }
 		if (lvl == 2) { return toClusterPos(pos, 8); }
 		if (lvl == 3) { return toClusterPos(pos, 16); }
@@ -71,7 +71,7 @@ public class PathingUtils {
 	}
 	
 	
-	public static Pair<Integer, HashSet<PathingEdge>> getAbstractEdges(PathingNode start, HashSet<PathingNode> endNodes) {
+	public static Pair<Integer, HashSet<PathingEdge>> getAbstractEdges(PathingNode start, PathingNode parent) {
 		PriorityQueue<PriorityElement<PathingNode>> nodeQueue = new PriorityQueue<PriorityElement<PathingNode>>(PriorityElement.comparator);
 		HashSet<PathingEdge> outs = new HashSet<PathingEdge>();
 		HashSet<PathingNode> visited = new HashSet<PathingNode>();
@@ -92,10 +92,10 @@ public class PathingUtils {
 					visited.add(next);
 					
 					next.from = edge;
-					int nextDist = current.getLeft() + edge.getPath().getLength();
+					int nextDist = current.getLeft() + edge.getLength();
 					
 					// build nodes if possible
-					if (next.getParent() != null) { // && endNodes.contains(next.getParent())
+					if (next.getParent() != null && !parent.connectsto(next)) { // && endNodes.contains(next.getParent())
 						outs.add(PathingEdge.build(next, start, nextDist));
 					}
 					

@@ -12,6 +12,9 @@ public class GoToLumberLocationGoal extends AmaziaGoToBlockGoal<LumberjackEntity
 	
 	@Override
 	public boolean canStart() {
+		boolean a = this.entity.hasLumberLoc();
+		//boolean b = !this.entity.isInLumberLoc();
+		//boolean c = super.canStart();
 		return this.entity.hasLumberLoc() && !this.entity.isInLumberLoc() && super.canStart();
 	}
 

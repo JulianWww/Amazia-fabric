@@ -175,6 +175,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	}
 	
 	public boolean isDeposeting() {
+		//boolean f = !this.hasFreeSlot();
 		return isDeposeting || !this.hasFreeSlot();
 	}
 

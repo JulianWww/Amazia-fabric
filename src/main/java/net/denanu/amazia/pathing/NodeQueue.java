@@ -4,20 +4,20 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.pathing.interfaces.PathingUpdateInterface;
+import net.denanu.amazia.pathing.node.PathingNode;
 
 public class NodeQueue {
-	private HashMap<Integer, LinkedList<PathingUpdateInterface>> queue;
+	private HashMap<Integer, LinkedList<PathingNode>> queue;
 	private int idx;
 	
 	public NodeQueue() {
-		this.queue = new HashMap<Integer, LinkedList<PathingUpdateInterface>>();
-		this.queue.put(0, new LinkedList<PathingUpdateInterface>());
-		this.queue.put(1, new LinkedList<PathingUpdateInterface>());
-		this.queue.put(2, new LinkedList<PathingUpdateInterface>());
-		this.queue.put(3, new LinkedList<PathingUpdateInterface>());
-		this.queue.put(4, new LinkedList<PathingUpdateInterface>());
-		this.queue.put(5, new LinkedList<PathingUpdateInterface>());
+		this.queue = new HashMap<Integer, LinkedList<PathingNode>>();
+		this.queue.put(0, new LinkedList<PathingNode>());
+		this.queue.put(1, new LinkedList<PathingNode>());
+		this.queue.put(2, new LinkedList<PathingNode>());
+		this.queue.put(3, new LinkedList<PathingNode>());
+		this.queue.put(4, new LinkedList<PathingNode>());
+		this.queue.put(5, new LinkedList<PathingNode>());
 		
 		this.idx = 6;
 	}
@@ -37,13 +37,13 @@ public class NodeQueue {
 		}
 	}
 	
-	public void put(PathingUpdateInterface node) {
+	public void put(PathingNode node) {
 		this.queue.get(node.getLvl()).add(node);
 		this.setIdx(node.getLvl());
 	}
 	
-	public PathingUpdateInterface poll(PathingGraph graph) {
-		LinkedList<PathingUpdateInterface> data = this.queue.get(this.idx);
+	public PathingNode poll(PathingGraph graph) {
+		LinkedList<PathingNode> data = this.queue.get(this.idx);
 		if (data.isEmpty()) {
 			this.releaseIdx(graph);
 		}

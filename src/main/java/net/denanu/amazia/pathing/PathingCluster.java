@@ -1,75 +1,41 @@
 package net.denanu.amazia.pathing;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 import net.denanu.amazia.pathing.node.PathingNode;
 import net.minecraft.util.math.BlockPos;
 
 public class PathingCluster {
-	private HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>> lvl1;
-	private HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>> lvl2;
-	private HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>> lvl3;
-	private HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>> lvl4;
-	private HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>> lvl5;
+	private ArrayList<PathingNode> parents;
 	
-	public PathingCluster() {
-		this.lvl1 = new HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>>();
-		this.lvl2 = new HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>>();
-		this.lvl3 = new HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>>();
-		this.lvl4 = new HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>>();
-		this.lvl5 = new HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>>();
+	public PathingCluster(PathingGraph pathingGraph, BlockPos pos, int lvl) {
+		this.parents = new ArrayList<PathingNode>();
+		this.register(pathingGraph, pos, lvl);
+		
 	}
 	
-	public void addToCluster(BlockPos pos, int lvl, PathingNode node) {
-		pos = PathingUtils.toCluster(pos, lvl);
-		if (lvl == 1) { addToCluster(pos, node, lvl1); }
-		if (lvl == 2) { addToCluster(pos, node, lvl2); }
-		if (lvl == 3) { addToCluster(pos, node, lvl3); }
-		if (lvl == 4) { addToCluster(pos, node, lvl4); }
-		if (lvl == 5) { addToCluster(pos, node, lvl5); }
-		return;
+	private void register(PathingGraph graph, BlockPos pos, int lvl) {
+		PathingLvl.setz(PathingLvl.setx(graph.clusters, lvl), pos.getX()).put(pos.getZ(), this);
 	}
 	
-	public HashSet<PathingNode> getClusterEdges(BlockPos pos, int lvl) {
-		BlockPos cluster = PathingUtils.toCluster(pos, lvl);
-		if (lvl == 1) {
-			return get(cluster, lvl1); 
+	public static PathingCluster get(PathingGraph graph, BlockPos pos, int lvl) {
+		pos = PathingUtils.toCluster(pos, lvl+1);
+		PathingCluster cluster = PathingLvl.gety(PathingLvl.getz(PathingLvl.getx(graph.clusters, lvl), pos.getX()), pos.getY());
+		if (cluster == null) {
+			cluster = new PathingCluster(graph, pos, lvl);
 		}
-		if (lvl == 2) { 
-			return get(cluster, lvl2);
-		}
-		if (lvl == 3) { 
-			return get(cluster, lvl3);
-		}
-		if (lvl == 4) { 
-			return get(cluster, lvl4);
-		}
-		if (lvl == 5) { 
-			return get(cluster, lvl5);
-		}
-		return null;
+		return cluster;
 	}
 	
-	private static void addToCluster(BlockPos pos, PathingNode node, HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>> map) {
-		PathingCluster.getz(PathingCluster.getx(map, pos.getX()), pos.getZ()).add(node);
+	public void add(PathingNode node) {
+		this.parents.add(node);
 	}
-	
-	private static HashSet<PathingNode> get(BlockPos pos, HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>> map) {
-		return PathingCluster.getz(PathingCluster.getx(map, pos.getX()), pos.getZ());
+	public void remove(PathingNode node) {
+		this.parents.remove(node);
 	}
-	
-	private static HashMap<Integer, HashSet<PathingNode>> getx(HashMap<Integer, HashMap<Integer, HashSet<PathingNode>>> map, int key) {
-		if (!map.containsKey(key)) {
-			map.put(key, new HashMap<Integer, HashSet<PathingNode>>());
+	public void update(PathingGraph graph) {
+		for (PathingNode node : this.parents) {
+			node.sceduleUpdate(graph);
 		}
-		return map.get(key);
-	}
-	
-	private static HashSet<PathingNode> getz(HashMap<Integer, HashSet<PathingNode>> map, int key) {
-		if (!map.containsKey(key)) {
-			map.put(key, new HashSet<PathingNode>());
-		}
-		return map.get(key);
 	}
 }

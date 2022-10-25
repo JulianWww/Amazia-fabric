@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.denanu.amazia.pathing.PathingCell;
+import net.denanu.amazia.pathing.PathingCluster;
 import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.pathing.PathingUtils;
 import net.denanu.amazia.pathing.edge.PathingEdge;
@@ -16,28 +17,32 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 
-public class PathingNode implements PathingUpdateInterface, PathingPathInterface {
+public class PathingNode implements PathingPathInterface {
 	private PathingCell pos;
 	private int lvl;
 	protected PathingNode parent, child;
 	protected boolean queued;
 	protected boolean destroyed;
-	protected Set<PathingUpdateInterface> pathes;
+	protected Set<PathingEdge> pathes;
 	public HashSet<PathingEdge> edges, baseEdges;
 	public int distance = 0;
 	
+	protected PathingCluster cluster;
+	
 	public PathingEdge from = null;
 	
-	public PathingNode(PathingCell pos, PathingGraph graph) {
+	public PathingNode(PathingCell pos, PathingGraph graph, PathingCluster cluster) {
 		this.lvl = 0;
+		this.cluster = cluster;
 		this.init(pos, graph);
 		buildParents(pos, graph, 1, PathingUtils.getHeigestLevel(pos), this);
 		return;
 	}
-	public PathingNode(PathingCell pos, PathingGraph graph, int lvl) {
+	public PathingNode(PathingCell pos, PathingGraph graph, int lvl, PathingCluster cluster, PathingCluster childCluster) {
 		this.lvl = lvl;
 		this.init(pos, graph);
-		this.addToCluster(graph);
+		this.cluster = cluster;
+		childCluster.add(this);
 		//this.sceduleUpdate(graph);
 	}
 	private void init(PathingCell pos, PathingGraph graph) {
@@ -46,37 +51,47 @@ public class PathingNode implements PathingUpdateInterface, PathingPathInterface
 		this.child = null;
 		this.edges = new HashSet<PathingEdge>();
 		this.baseEdges = new HashSet<PathingEdge>();
-		this.pathes = new HashSet<PathingUpdateInterface>();
+		this.pathes = new HashSet<PathingEdge>();
+		this.destroyed = false;
 	}
 
 	private static void buildParents(PathingCell pos, PathingGraph graph, int height, int maxHeight, PathingNode child) {
 		if (height <= maxHeight) {
 			//graph.getWorld().spawnParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
-			child.parent = new PathingNode(pos, graph, height);
+			child.parent = new PathingNode(pos, graph, height, PathingCluster.get(graph, pos, 0), child.cluster);
 			child.parent.child = child;
 			buildParents(pos, graph, height + 1, maxHeight, child.parent);
 		}
 	}
 	
-	
-	public void addToCluster(PathingGraph graph) {
-		graph.clusters.addToCluster(this.pos, this.lvl, this);
+	public void breakConnections(PathingGraph graph) {
+		for (PathingEdge edge : this.edges) {
+			//edge.to(this).edges.remove(edge);
+			edge.destroy(graph, this);
+		}
+		
+		for (PathingEdge edge: this.baseEdges) {
+			edge.to(this).baseEdges.remove(edge);
+		}
+		this.edges.clear();
+		this.baseEdges.clear();
 	}
 	
 	public void destroy(PathingGraph graph) {
 		this.destroyed = false;
+		this.breakConnections(graph);
 		if (this.parent != null) {
 			this.parent.destroy(graph);
 		}
-		for (PathingUpdateInterface path : this.pathes) {
-			path.sceduleUpdate(graph);
+		for (PathingEdge path : this.pathes) {
+			path.destroy(graph, null);
 		}
 	}
 	
-	public void addPath(PathingUpdateInterface path) {
+	public void addPath(PathingEdge path) {
 		this.pathes.add(path);
 	}
-	public void removePath(PathingUpdateInterface path) {
+	public void removePath(PathingEdge path) {
 		this.pathes.remove(path);
 	}
 	
@@ -137,8 +152,9 @@ public class PathingNode implements PathingUpdateInterface, PathingPathInterface
 	}
 	
 	protected void addBaseConnection(PathingNode node, PathingGraph graph) {
-		if (this.inSameCluster(node) || this.lvl == 5) {
-			this.BaseConnect(node);
+		if ((this.inSameCluster(node) && !this.inSameSubCluster(node)) || this.lvl == 5) {
+			this.BaseConnect(node, graph);
+			return;
 		}
 		if (this.parent != null && node.parent != null) {
 			this.sceduleUpdateParent(graph);
@@ -146,40 +162,33 @@ public class PathingNode implements PathingUpdateInterface, PathingPathInterface
 			this.parent.addBaseConnection(node.parent, graph);
 		}
 	}
-	protected void BaseConnect(PathingNode other) {
+	protected void BaseConnect(PathingNode other, PathingGraph graph) {
 		PathingPathInterface[] p = {this, other};
 		PathingEdge path = new PathingEdge(this, other, p, 1);
-		this.edges.add(path);
-		other.edges.add(path);
+		boolean a = this.edges.add(path);
+		boolean b = other.edges.add(path);
+		if (a || b) {
+			this.cluster.update(graph);
+		}
 		
 		this.baseEdges.add(path);
 		other.baseEdges.add(path);
 	}
 	public int BuildAbstractConnections(PathingGraph graph) {
-		Pair<Integer, HashSet<PathingEdge>> data = PathingUtils.getAbstractEdges(this.child, 
-				graph.clusters.getClusterEdges(this.pos, this.lvl)
-			);
+		Pair<Integer, HashSet<PathingEdge>> data = PathingUtils.getAbstractEdges(this.child, this);
 		
-		for (PathingEdge edge: this.baseEdges) {
-			data.getRight().add(edge);
-		}
-		if (!this.edges.equals(data.getRight())) {
-			//for (PathingEdge edge : this.edges) {
-				//edge.to(this).edges.remove(edge);
-				//edge.to(this).sceduleUpdateParent(graph);
-			//} 
+		for (PathingEdge edge : data.getRight()) {
 			this.sceduleUpdateParent(graph);
-			this.edges = data.getRight();
+			this.edges.add(edge);
 			
-			for (PathingEdge edge : this.edges) {
-				edge.to(this).sceduleUpdateParent(graph);
-				edge.to(this).edges.add(edge);
-			}
+			this.cluster.update(graph);
+			
+			edge.to(this).sceduleUpdateParent(graph);
+			edge.to(this).edges.add(edge);
 		}
 		return data.getLeft();
 	}
 	
-	@Override
 	public int update(ServerWorld world, PathingGraph graph) {
 		this.debugUpdate(world);
 		if (!this.destroyed) {
@@ -195,18 +204,18 @@ public class PathingNode implements PathingUpdateInterface, PathingPathInterface
 			this.parent.sceduleUpdate(graph);
 		}
 	}
-	@Override
+
 	public void sceduleUpdate(PathingGraph graph) {
 		if (this.canQueue()) { 
 			graph.queueNode(this);
 			this.queued = true;
 		}
 	}
-	@Override
+
 	public void dequeue() {
 		this.queued = false;
 	}
-	@Override
+
 	public boolean canQueue() {
 		return !this.queued;
 	}
@@ -277,5 +286,16 @@ public class PathingNode implements PathingUpdateInterface, PathingPathInterface
 	}
 	public boolean inSameCluster(PathingNode node) {
 		return PathingUtils.toCluster(this.getBlockPos(), node.lvl+1).equals(PathingUtils.toCluster(node.getBlockPos(), node.lvl+1));
+	}
+	public boolean inSameSubCluster(PathingNode node) {
+		return PathingUtils.toCluster(this.getBlockPos(), node.lvl).equals(PathingUtils.toCluster(node.getBlockPos(), node.lvl));
+	}
+	public boolean connectsto(PathingNode next) {
+		for (PathingEdge edge : this.edges) {
+			if (edge.to(this).lvllessEquals(next)) {
+				return true;
+			};
+		}
+		return false;
 	}
 }

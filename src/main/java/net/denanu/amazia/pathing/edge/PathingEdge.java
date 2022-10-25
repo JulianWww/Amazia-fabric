@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.pathing.interfaces.PathingPathInterface;
 import net.denanu.amazia.pathing.interfaces.PathingUpdateInterface;
 import net.denanu.amazia.pathing.node.PathingNode;
@@ -15,17 +16,21 @@ import net.minecraft.util.math.BlockPos;
 public class PathingEdge implements PathingPathInterface {
 	protected final PathingNode startNode;
 	protected final PathingNode endNode;
-	protected EdgePath path;
+	private PathingPathInterface[] path;
+	private int length;
 	
-	private HashSet<PathingUpdateInterface> pathes;
+	private HashSet<PathingEdge> pathes;
 	
 	public PathingEdge(PathingNode from, PathingNode end, PathingPathInterface[] path, int length) {
 		this.startNode = from;
 		this.endNode = end;
-		this.path = new EdgePath(path, length, from.getLvl());
+		this.path = path;
+		this.length = length;
+		this.pathes = new HashSet<PathingEdge>();
+		this.register();
 	}
 	
-	public EdgePath getPath() {
+	public PathingPathInterface[] getPath() {
 		return this.path;
 	}
 
@@ -75,20 +80,46 @@ public class PathingEdge implements PathingPathInterface {
 	}
 
 	@Override
-	public void addPath(PathingUpdateInterface path) {
+	public void addPath(PathingEdge path) {
 		this.pathes.add(path);
 	}
 
 	@Override
-	public void removePath(PathingUpdateInterface path) {
+	public void removePath(PathingEdge path) {
 		this.pathes.remove(path);
+	}
+	
+	public void register() {
+		for (PathingPathInterface node : path) {
+			node.addPath(this);
+		}
+	}
+	public void destroy(PathingGraph graph, PathingNode ignore) {
+		for (PathingPathInterface node : path) {
+			node.removePath(this);
+		}
+		while (!this.pathes.isEmpty()) {
+			this.pathes.iterator().next().destroy(graph, ignore);
+		}
+				
+		this.endNode.sceduleUpdateParent(graph);
+		this.startNode.sceduleUpdateParent(graph);
+		
+		if (startNode != ignore) {
+			this.startNode.edges.remove(this);
+			System.out.println("start");
+		}
+		if (this.endNode != ignore) { 
+			this.endNode.edges.remove(this);
+			System.out.println("end");
+		}
 	}
 	
 	private Iterator<PathingPathInterface> getPathIterator(PathingNode endNode) {
 		if (endNode.lvllessEquals(this.startNode)) {
-			return new ArrayIterator<PathingPathInterface>(this.path.getPath());
+			return new ArrayIterator<PathingPathInterface>(this.getPath());
 		}
-		return new ReverseArrayIterator<PathingPathInterface>(this.path.getPath());
+		return new ReverseArrayIterator<PathingPathInterface>(this.getPath());
 	}
 	
 	public List<PathingNode> toPath(PathingNode endNode) {
@@ -116,5 +147,9 @@ public class PathingEdge implements PathingPathInterface {
 			}
 		}
 		return output;
+	}
+
+	public int getLength() {
+		return length;
 	}
 }

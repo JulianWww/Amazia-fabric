@@ -50,24 +50,15 @@ public class PathFinder {
     private PathingPath findPath(final World worldIn, final double x, final double y, final double z) {
         this.world = (ServerWorld)worldIn;
         //this.getGraph().debugEdgeNodes(worldIn);
-        /*final PathingGraph graph = this.getGraph();
+        final PathingGraph graph = this.getGraph();
         if (graph != null) {
-            final PathingNode endNode = graph.getBaseNode(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
-            final PathingNode startNode = this.getStart(graph);
-            return this.findPath(worldIn, startNode, endNode);
-        }*/
-        return null;
-    }
-    
-    public PathingPath findPath(final BlockPos start, final BlockPos end, final PathingGraph graph) {
-        if (graph != null) {
-            final BasePathingNode endNode 	= graph.getNode(end);
-            final BasePathingNode startNode = graph.getNode(start);
+            final BasePathingNode endNode = graph.getNode(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
+            final BasePathingNode startNode = this.getStart(graph);
             return this.findPath(startNode, endNode, graph);
         }
         return null;
     }
-	
+
 	public PathingPath findPath(final BasePathingNode startNode, final BasePathingNode endNode, PathingGraph graph) {
 		if (endNode == null || startNode == null) {
             return null;
@@ -140,7 +131,7 @@ public class PathFinder {
 							return next;
 						}
 						
-						next.distance = current.getRight().distance + edge.getPath().getLength();
+						next.distance = current.getRight().distance + edge.getLength();
 						
 						this.nodeQueue.add(new PriorityElement<PathingNode>(estimateDistance(next, endNode) + next.distance, next));
 					}
