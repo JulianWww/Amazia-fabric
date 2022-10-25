@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 public class PathingEventEmiter {
 	private Map<Integer, Map<Integer, Map<Integer, Set<PathingEventListener>>>> listeners;
 	
-	PathingEventEmiter() {
+	public PathingEventEmiter() {
 		this.listeners = new HashMap<Integer, Map<Integer, Map<Integer, Set<PathingEventListener>>>>();
 	}
 	
