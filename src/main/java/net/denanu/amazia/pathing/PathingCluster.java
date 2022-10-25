@@ -19,7 +19,12 @@ public class PathingCluster {
 	}
 	
 	public static PathingCluster get(PathingGraph graph, BlockPos pos, int lvl) {
-		pos = PathingUtils.toCluster(pos, lvl+1);
+		if (lvl == 5) {
+			pos = new BlockPos(0,0,0);
+		}
+		else {
+			pos = PathingUtils.toCluster(pos, lvl+1);
+		}
 		PathingCluster cluster = PathingLvl.gety(PathingLvl.getz(PathingLvl.getx(graph.clusters, lvl), pos.getX()), pos.getY());
 		if (cluster == null) {
 			cluster = new PathingCluster(graph, pos, lvl);

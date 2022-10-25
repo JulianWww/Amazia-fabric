@@ -54,6 +54,9 @@ public class PathFinder {
         if (graph != null) {
             final BasePathingNode endNode = graph.getNode(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
             final BasePathingNode startNode = this.getStart(graph);
+            if (endNode == startNode) {
+            	return null;
+            }
             return this.findPath(startNode, endNode, graph);
         }
         return null;
@@ -108,7 +111,7 @@ public class PathFinder {
 		int currentLvl = 0;
 		
 		while (!nodeQueue.isEmpty()) {
-			current = this.nodeQueue.poll();			
+			current = this.nodeQueue.poll();
 			if (current.getRight().getParent() != null && startNode.inSameSuperCluster(current.getRight()) && !visited.contains(current.getRight().getParent())) {
 				next = current.getRight().getTopParent();
 				visited.add(next);
@@ -127,7 +130,7 @@ public class PathFinder {
 						this.visited.add(next);
 						next.getBlockPos().from = edge;
 						
-						if (next == endNode) {
+						if (next.lvllessEquals(endNode)) {
 							return next;
 						}
 						
@@ -136,7 +139,7 @@ public class PathFinder {
 						this.nodeQueue.add(new PriorityElement<PathingNode>(estimateDistance(next, endNode) + next.distance, next));
 					}
 				}
-		}
+			}
 		}
 		return null;
 	}
@@ -153,11 +156,10 @@ public class PathFinder {
 		
 		while (!nodeQueue.isEmpty()) {
 			current = nodeQueue.poll();
-			
 			for (BasePathingNode next : current.getRight().ajacentNodes) {
 				if (!this.visited.contains(next)) {
 					next.movedFromNode = current.getRight();
-					if (next ==endNode) {
+					if (next == endNode) {
 						return next;
 					}
 					

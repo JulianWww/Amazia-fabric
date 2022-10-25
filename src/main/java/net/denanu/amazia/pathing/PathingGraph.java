@@ -76,6 +76,8 @@ public class PathingGraph {
 	private void updateNodes(BlockPos pos) {
 		HashMap<Integer, BasePathingNode> map = this.lvl0.getRemove(pos.getX(), pos.getZ());
 		
+		if (map == null) { return; }
+		
 		this.updateNode(map, pos.getY() + 1);
 		this.updateNode(map, pos.getY());
 		this.updateNode(map, pos.getY() - 1);

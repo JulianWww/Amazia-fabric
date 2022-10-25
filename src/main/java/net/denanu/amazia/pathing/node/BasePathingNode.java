@@ -95,13 +95,12 @@ public class BasePathingNode extends PathingNode {
 	}
 
 	private BasePathingNode checkWalkableNeighbor(final ServerWorld world, BlockPos pos, PathingGraph graph) {
-		long t1 = System.nanoTime();
 		if (canWalkOn(world, pos.down()) && isPassable(world, pos) && isPassable(world, pos.up())) {
 			byte clearance = 2;
 			if (isPassable(world, pos.up(2))) {
 				clearance++;
 			}
-			BasePathingNode out = new BasePathingNode(pos, graph, clearance, this.cluster);
+			BasePathingNode out = new BasePathingNode(pos, graph, clearance, PathingCluster.get(graph, pos, 0));
 			return out;
 		}
 		return null;

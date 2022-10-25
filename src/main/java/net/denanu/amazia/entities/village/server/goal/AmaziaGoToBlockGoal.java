@@ -9,7 +9,7 @@ public abstract class AmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> extend
 	}
 	@Override
 	public boolean canStart() {
-		boolean a = !this.entity.isDeposeting();
+		//boolean a = !this.entity.isDeposeting();
 		return super.canStart() && !this.entity.isDeposeting();
 	}
 }

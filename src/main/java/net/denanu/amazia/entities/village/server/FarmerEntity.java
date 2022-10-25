@@ -1,8 +1,12 @@
 package net.denanu.amazia.entities.village.server;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.goal.farming.AmaziaGoToFarmGoal;
 import net.denanu.amazia.entities.village.server.goal.farming.HarvestCropsGoal;
 import net.denanu.amazia.entities.village.server.goal.farming.HoeFarmLandGoal;
@@ -13,13 +17,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.CropBlock;
 import net.minecraft.block.SugarCaneBlock;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -37,6 +40,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.WOODEN_HOE, Items.STONE_HOE, Items.IRON_HOE, Items.GOLDEN_HOE, Items.DIAMOND_HOE, Items.NETHERITE_HOE, Items.AIR);
+	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_HOE, Items.STICK);
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.CARROT, 16, Items.POTATO, 16, Items.WHEAT_SEEDS, 16, Items.BEETROOT_SEEDS, 16);
 	
 	private AnimationFactory factory = new AnimationFactory(this);
@@ -157,5 +161,10 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 
 	public void harvest() {
 		this.harvest((ServerWorld)world, new BlockPos(this.getPos()).up());
+	}
+
+	@Override
+	public HashMap<Item, ArrayList<CraftingRecipe>> getCraftables() {
+		return Amazia.FARMER_CRAFTS;
 	}
 }

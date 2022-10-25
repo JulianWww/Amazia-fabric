@@ -1,19 +1,25 @@
 package net.denanu.amazia.entities.village.server;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.goal.lumber.GoToLumberLocationGoal;
 import net.denanu.amazia.entities.village.server.goal.lumber.HarvestTreeGoal;
 import net.denanu.amazia.entities.village.server.goal.lumber.PlantSaplingGoal;
 import net.denanu.amazia.village.AmaziaData;
 import net.denanu.amazia.village.sceduling.utils.LumberPathingData;
-import net.minecraft.block.SaplingBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -26,10 +32,13 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatable {
 	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, Items.NETHERITE_AXE);
+	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_AXE, Items.STICK);
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.ACACIA_SAPLING, 64, Items.BIRCH_SAPLING, 64, Items.DARK_OAK_SAPLING, 64, Items.JUNGLE_SAPLING, 64, Items.OAK_SAPLING, 64, Items.SPRUCE_SAPLING, 64);
+	private static final Vec3i ITEM_PICK_UP_RANGE_EXPANDER_WHILE_LUMBERING = new Vec3i(5, 5, 5);
 	
 	private AnimationFactory factory = new AnimationFactory(this);
 	private LumberPathingData lumberingLoc;
+	private byte collectTimer;
 
 	public LumberjackEntity(EntityType<? extends PassiveEntity> entityType, World world) {
 		super(entityType, world);
@@ -69,11 +78,24 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 		return this.getDepositableItems(USABLE_ITEMS, REQUIRED_ITEMS);
 	}
 	
-	// LumberJacking
-
 	@Override
 	public AnimationFactory getFactory() {
 		return this.factory;
+	}
+	
+	// LumberJacking
+	
+	@Override
+	protected Vec3i getItemPickUpRangeExpander() {
+		if (this.collectTimer > 0) {
+			this.collectTimer--;
+			return ITEM_PICK_UP_RANGE_EXPANDER_WHILE_LUMBERING;
+		}
+        return super.getItemPickUpRangeExpander();
+    }
+	
+	public void setCollectTimer() {
+		this.collectTimer = 40;
 	}
 
 	public LumberPathingData getLumberingLoc() {
@@ -102,8 +124,24 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 		return -1;
 	}
 	
+	public int getAxe() {
+		ItemStack itm;
+		for (int idx=0; idx < this.getInventory().size(); idx++) {
+			itm = this.getInventory().getStack(idx);
+			if (itm.getItem() instanceof AxeItem) {
+				return idx;
+			}
+		}
+		return -1;
+	}
+	
 	@Override
 	public boolean canLumber() {
+		return this.getAxe() != -1;
+	}
+	
+	@Override
+	public boolean canCraft () {
 		return true;
 	}
 
@@ -115,6 +153,11 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 	public void requestAxe() {
 		if (!this.hasRequestedItems())
 		for (Item itm : LumberjackEntity.USABLE_ITEMS) { this.requestItem(itm); }
+	}
+
+	@Override
+	public HashMap<Item, ArrayList<CraftingRecipe>> getCraftables() {
+		return Amazia.LUMBERJACK_CRAFTS;
 	}
 
 }

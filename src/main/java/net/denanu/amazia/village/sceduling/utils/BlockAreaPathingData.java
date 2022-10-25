@@ -30,7 +30,6 @@ public abstract class BlockAreaPathingData<E extends BlockPos> implements Pathin
 		if (v.getPathingGraph().hasNode(pos)) {
 			this.validPathingNodes.add(pos);
 		}
-		return;
 	}
 	protected void unregister(Village v, BlockPos pos) {
 		v.getPathingGraph().getEventEmiter().removeListener(this, pos);

@@ -44,7 +44,7 @@ public class PlantSaplingGoal extends TimedVillageGoal<LumberjackEntity> {
 	protected void takeAction() {
 		if (this.entity.hasLumberLoc()) {
 			int sapling = this.entity.getStackPosOfSapleing();
-			if (sapling <= 0) {
+			if (sapling >= 0) {
 				this.placeBlock(sapling, this.entity.getLumberingLoc().getPos().getPlantLoc());
 			}
 		}

@@ -81,7 +81,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 	}
 	
 	public boolean shouldResetPath() {
-        return this.ticksStanding > 2;
+        return this.ticksStanding > 40;
     }
 	
 	public double getDesiredDistanceToTarget() {

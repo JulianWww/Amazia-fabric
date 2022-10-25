@@ -58,7 +58,7 @@ public class PathingNode implements PathingPathInterface {
 	private static void buildParents(PathingCell pos, PathingGraph graph, int height, int maxHeight, PathingNode child) {
 		if (height <= maxHeight) {
 			//graph.getWorld().spawnParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
-			child.parent = new PathingNode(pos, graph, height, PathingCluster.get(graph, pos, 0), child.cluster);
+			child.parent = new PathingNode(pos, graph, height, PathingCluster.get(graph, pos, height), child.cluster);
 			child.parent.child = child;
 			buildParents(pos, graph, height + 1, maxHeight, child.parent);
 		}
