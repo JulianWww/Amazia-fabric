@@ -13,7 +13,7 @@ public class HoeFarmLandGoal extends TimedVillageGoal<AmaziaVillagerEntity> {
 	
 	@Override
 	public boolean canStart() {
-		return super.canStart() && this.entity.canHoe() && this.entity.getVillage().getFarming().isHoable(this.entity.getPos());
+		return super.canStart() && this.entity.getVillage().getFarming().isHoable(this.entity.getPos()) && this.entity.canHoe();
 	}
 	
 	@Override

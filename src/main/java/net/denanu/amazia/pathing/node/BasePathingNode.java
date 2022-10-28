@@ -1,13 +1,11 @@
 package net.denanu.amazia.pathing.node;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.pathing.PathingCell;
 import net.denanu.amazia.pathing.PathingCluster;
 import net.denanu.amazia.pathing.PathingGraph;
-import net.denanu.amazia.pathing.PathingUtils;
 import net.denanu.amazia.pathing.edge.PathingEdge;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceBlock;

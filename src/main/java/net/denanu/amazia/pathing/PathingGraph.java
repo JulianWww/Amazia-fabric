@@ -14,11 +14,13 @@ public class PathingGraph {
 	private ServerWorld world;
 	private Village village;
 	
+	private int evaluationIdx;
+	
 	private PathingEventEmiter eventEmiter;
 	
 	public PathingLvl lvl0;
 	public HashMap<Integer, HashMap<Integer, HashMap<Integer, PathingCluster>>> clusters;
-	private final int throttle = 100;
+	private final static int throttle = 100;
 	
 	private boolean setupDone;
 	
@@ -34,7 +36,15 @@ public class PathingGraph {
 		
 		this.nodeQueue = new NodeQueue();
 		
+		this.evaluationIdx = 0;
 		this.setupDone = false;
+	}
+	
+	public int getEvalIndex() {
+		return this.evaluationIdx;
+	}
+	public void nextEval() {
+		this.evaluationIdx++;
 	}
 	
 
@@ -53,10 +63,11 @@ public class PathingGraph {
 	
 	private void processNodeQueue() {
         int nodesProcessed = 0;
-        while (this.canUpdate() && nodesProcessed < this.throttle) {
+        while (this.canUpdate() && nodesProcessed < throttle) {
             final PathingNode node = this.toUpdate();
             if (node != null) {
             	nodesProcessed = nodesProcessed + node.update(this.world, this);
+            	continue;
             }
             else {
             	break;
@@ -82,6 +93,7 @@ public class PathingGraph {
 		this.updateNode(map, pos.getY());
 		this.updateNode(map, pos.getY() - 1);
 		this.updateNode(map, pos.getY() - 2);
+		return;
 	}
 	private void updateNode(final HashMap<Integer, BasePathingNode> map, final int y) {
 		BasePathingNode node = map.get(y);

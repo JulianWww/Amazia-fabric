@@ -1,5 +1,6 @@
 package net.denanu.amazia.entities.village.server.goal.storage;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
 import net.denanu.amazia.village.sceduling.utils.StoragePathingData;
@@ -23,11 +24,12 @@ public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> impleme
 	@Override
 	public boolean canStart() {
 		if (!super.canStart()) { return false; }
-		if ((item == null || this.target == null) && this.entity.hasRequestedItems() && this.runCanStartScan()) {
+		if ((item == null || this.target == null) && this.entity.hasRequestedItems()) {
 			item = this.entity.getRandomRequiredItem();
 			if (item != null) {
 				this.target = this.entity.getVillage().getStorage().getRequestLocation((ServerWorld)this.entity.getWorld(), this.getItem());
 				if (this.target == null && this.entity.canCraft()) {
+					Amazia.LOGGER.info(item.toString());
 					this.entity.tryCraftingStart(item);
 				}
 				this.entity.removeRequestedItem(item);
@@ -37,7 +39,7 @@ public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> impleme
 	}
 	
 	private boolean runCanStartScan() {
-		return true;
+		return this.entity.getCanUpdate();
 	}
 	
 	@Override

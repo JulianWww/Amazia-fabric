@@ -14,7 +14,12 @@ public class CraftGoal extends TimedVillageGoal<AmaziaVillagerEntity> {
 	
 	@Override
 	public boolean canStart() {
-		return super.canStart() && this.entity.wantsToCraft() && this.canCraft();
+		return entity.getCanUpdate() && super.canStart() && this.entity.wantsToCraft() && this.canCraft();
+	}
+	
+	@Override
+	public boolean shouldContinue() {
+		return true;
 	}
 
 	@Override

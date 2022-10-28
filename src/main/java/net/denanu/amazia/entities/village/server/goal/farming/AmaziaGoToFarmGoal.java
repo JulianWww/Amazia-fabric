@@ -13,9 +13,12 @@ public class AmaziaGoToFarmGoal extends AmaziaGoToBlockGoal<AmaziaVillagerEntity
 
 	@Override
 	protected BlockPos getTargetBlock() {
-		ServerWorld sword = (ServerWorld) this.entity.getWorld();
-		BlockPos pos = this.entity.getVillage().getFarming().getRandomPos(sword, this.entity);
-		return pos!=null ? pos.up() : null;
+		if (this.entity.getCanUpdate()) {
+			ServerWorld sword = (ServerWorld) this.entity.getWorld();
+			BlockPos pos = this.entity.getVillage().getFarming().getRandomPos(sword, this.entity);
+			return pos!=null ? pos.up() : null;
+		}
+		return null;
 	}
 
 }

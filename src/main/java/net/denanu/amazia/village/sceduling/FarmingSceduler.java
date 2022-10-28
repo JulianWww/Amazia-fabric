@@ -3,6 +3,7 @@ package net.denanu.amazia.village.sceduling;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.village.Village;
@@ -161,6 +162,7 @@ public class FarmingSceduler extends VillageSceduler {
 	}
 	
 	public BlockPos getRandomPos(ServerWorld world, AmaziaVillagerEntity entity) {
+		Amazia.LOGGER.info("Scanned farming");
 		if (this.crops.size() > 0 && entity.canHarvest()) {
 			return getRandomListElement(this.crops).down();
 		}

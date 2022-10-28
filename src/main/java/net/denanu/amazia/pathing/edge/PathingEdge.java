@@ -19,15 +19,11 @@ public class PathingEdge implements PathingPathInterface {
 	private PathingPathInterface[] path;
 	private int length;
 	
-	private HashSet<PathingEdge> pathes;
-	
 	public PathingEdge(PathingNode from, PathingNode end, PathingPathInterface[] path, int length) {
 		this.startNode = from;
 		this.endNode = end;
 		this.path = path;
 		this.length = length;
-		this.pathes = new HashSet<PathingEdge>();
-		this.register();
 	}
 	
 	public PathingPathInterface[] getPath() {
@@ -77,42 +73,6 @@ public class PathingEdge implements PathingPathInterface {
 			iter = iter.from.to(iter);
 		}
 		return new PathingEdge(head.getParent(), tail.getParent(), nodes.toArray(new PathingEdge[nodes.size()]), distance);
-	}
-
-	@Override
-	public void addPath(PathingEdge path) {
-		this.pathes.add(path);
-	}
-
-	@Override
-	public void removePath(PathingEdge path) {
-		this.pathes.remove(path);
-	}
-	
-	public void register() {
-		for (PathingPathInterface node : path) {
-			node.addPath(this);
-		}
-	}
-	public void destroy(PathingGraph graph, PathingNode ignore) {
-		for (PathingPathInterface node : path) {
-			node.removePath(this);
-		}
-		while (!this.pathes.isEmpty()) {
-			this.pathes.iterator().next().destroy(graph, ignore);
-		}
-				
-		this.endNode.sceduleUpdateParent(graph);
-		this.startNode.sceduleUpdateParent(graph);
-		
-		if (startNode != ignore) {
-			this.startNode.edges.remove(this);
-			System.out.println("start");
-		}
-		if (this.endNode != ignore) { 
-			this.endNode.edges.remove(this);
-			System.out.println("end");
-		}
 	}
 	
 	private Iterator<PathingPathInterface> getPathIterator(PathingNode endNode) {

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.storage.InteractWithContainerGoal;
@@ -158,6 +159,7 @@ public class StorageSceduler extends VillageSceduler {
 	}
 	
 	public StoragePathingData getDepositLocation(ServerWorld world, ItemStack item) {
+		Amazia.LOGGER.info("Scanned storage depositing");
 		StoragePathingData potential = null;
 		for (Entry<BlockPos, StoragePathingData> pos : this.chests.entrySet()) {
 			Pair<Boolean, Boolean> data = canAddItem(pos.getValue().getStorageInventory(world), item);
@@ -170,6 +172,7 @@ public class StorageSceduler extends VillageSceduler {
 	}
 
 	public StoragePathingData getRequestLocation(ServerWorld world, Item item) {
+		Amazia.LOGGER.info("Scanned storage request");
 		for (Entry<BlockPos, StoragePathingData> pos : this.chests.entrySet()) {
 			if (containsItem(pos.getValue().getStorageInventory(world), item)) 
 			return pos.getValue();

@@ -3,14 +3,22 @@ package net.denanu.amazia.pathing;
 import java.util.ArrayList;
 
 import net.denanu.amazia.pathing.node.PathingNode;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.annotation.Debug;
 import net.minecraft.util.math.BlockPos;
 
 public class PathingCluster {
 	private ArrayList<PathingNode> parents;
+	@Debug
+	private BlockPos pos;
+	@Debug
+	private int lvl;
 	
 	public PathingCluster(PathingGraph pathingGraph, BlockPos pos, int lvl) {
 		this.parents = new ArrayList<PathingNode>();
 		this.register(pathingGraph, pos, lvl);
+		this.pos = pos;
+		this.lvl = lvl;
 		
 	}
 	
@@ -25,7 +33,7 @@ public class PathingCluster {
 		else {
 			pos = PathingUtils.toCluster(pos, lvl+1);
 		}
-		PathingCluster cluster = PathingLvl.gety(PathingLvl.getz(PathingLvl.getx(graph.clusters, lvl), pos.getX()), pos.getY());
+		PathingCluster cluster = PathingLvl.gety(PathingLvl.getz(PathingLvl.getx(graph.clusters, lvl), pos.getX()), pos.getZ());
 		if (cluster == null) {
 			cluster = new PathingCluster(graph, pos, lvl);
 		}
@@ -39,8 +47,16 @@ public class PathingCluster {
 		this.parents.remove(node);
 	}
 	public void update(PathingGraph graph) {
+		int a = 1;
 		for (PathingNode node : this.parents) {
+			debugUpdate(graph, node);
 			node.sceduleUpdate(graph);
 		}
+	}
+	
+	@Debug
+	public static void debugUpdate(PathingGraph graph, PathingNode node) {
+		graph.getWorld().setBlockState(new BlockPos(node.getBlockPos().getX(), -64, node.getBlockPos().getZ()), 
+				Blocks.REDSTONE_BLOCK.getDefaultState());
 	}
 }

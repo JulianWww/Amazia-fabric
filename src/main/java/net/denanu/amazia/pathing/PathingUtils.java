@@ -71,13 +71,16 @@ public class PathingUtils {
 	}
 	
 	
-	public static Pair<Integer, HashSet<PathingEdge>> getAbstractEdges(PathingNode start, PathingNode parent) {
+	public static Pair<Integer, HashSet<PathingEdge>> getAbstractEdges(PathingNode start, PathingGraph graph) {
+		graph.nextEval();
+		
 		PriorityQueue<PriorityElement<PathingNode>> nodeQueue = new PriorityQueue<PriorityElement<PathingNode>>(PriorityElement.comparator);
 		HashSet<PathingEdge> outs = new HashSet<PathingEdge>();
-		HashSet<PathingNode> visited = new HashSet<PathingNode>();
+		HashSet<PathingNode> connecteds = new HashSet<PathingNode>();
 		
+		start.distance = 0;
+		start.lastEvaluation = graph.getEvalIndex();
 		nodeQueue.add(new PriorityElement<PathingNode>(0, start));
-		visited.add(start);
 		
 		int visitedCount = 0;
 		
@@ -85,23 +88,31 @@ public class PathingUtils {
 		PathingNode next;
 		while (!nodeQueue.isEmpty()) {
 			current = nodeQueue.poll();
-			visitedCount += 1;
-			for (PathingEdge edge : current.getRight().edges) {
-				next = edge.to(current.getRight());
-				if (!visited.contains(next)) {
-					visited.add(next);
-					
-					next.from = edge;
+			if (current.getLeft() == current.getRight().distance) {
+				visitedCount += 1;
+				for (PathingEdge edge : current.getRight().edges) {
+					next = edge.to(current.getRight());
 					int nextDist = current.getLeft() + edge.getLength();
 					
-					// build nodes if possible
-					if (next.getParent() != null && !parent.connectsto(next)) { // && endNodes.contains(next.getParent())
-						outs.add(PathingEdge.build(next, start, nextDist));
+					if (next.lastEvaluation != graph.getEvalIndex() || nextDist < next.distance) {
+						next.lastEvaluation = graph.getEvalIndex();
+						next.distance = nextDist;
+						
+						next.from = edge;
+						
+						// build nodes if possible
+						if (next.getParent() != null) {
+							connecteds.add(next);
+						}
+						
+						nodeQueue.add(new PriorityElement<PathingNode>(nextDist, next));
 					}
-					
-					nodeQueue.add(new PriorityElement<PathingNode>(nextDist, next));
 				}
 			}
+		}
+		
+		for (PathingNode node : connecteds) {
+			outs.add(PathingEdge.build(node, start, node.distance));
 		}
 		return new Pair<>(visitedCount, outs);
 	}

@@ -15,6 +15,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Pair;
+import net.minecraft.util.annotation.Debug;
 import net.minecraft.util.math.BlockPos;
 
 public class PathingNode implements PathingPathInterface {
@@ -23,11 +24,11 @@ public class PathingNode implements PathingPathInterface {
 	protected PathingNode parent, child;
 	protected boolean queued;
 	protected boolean destroyed;
-	protected Set<PathingEdge> pathes;
 	public HashSet<PathingEdge> edges, baseEdges;
 	public int distance = 0;
+	public int lastEvaluation = 0;
 	
-	protected PathingCluster cluster;
+	public PathingCluster cluster;
 	
 	public PathingEdge from = null;
 	
@@ -51,7 +52,6 @@ public class PathingNode implements PathingPathInterface {
 		this.child = null;
 		this.edges = new HashSet<PathingEdge>();
 		this.baseEdges = new HashSet<PathingEdge>();
-		this.pathes = new HashSet<PathingEdge>();
 		this.destroyed = false;
 	}
 
@@ -66,8 +66,7 @@ public class PathingNode implements PathingPathInterface {
 	
 	public void breakConnections(PathingGraph graph) {
 		for (PathingEdge edge : this.edges) {
-			//edge.to(this).edges.remove(edge);
-			edge.destroy(graph, this);
+			edge.to(this).edges.remove(edge);
 		}
 		
 		for (PathingEdge edge: this.baseEdges) {
@@ -77,22 +76,25 @@ public class PathingNode implements PathingPathInterface {
 		this.baseEdges.clear();
 	}
 	
+	public void breakAbstractConnections() {
+		for (PathingEdge edge : this.edges) {
+			if (!this.baseEdges.contains(edge)) {
+				edge.to(this).edges.remove((edge));
+			}
+		}
+		this.edges.clear();
+	}
+	
 	public void destroy(PathingGraph graph) {
 		this.destroyed = false;
 		this.breakConnections(graph);
 		if (this.parent != null) {
 			this.parent.destroy(graph);
 		}
-		for (PathingEdge path : this.pathes) {
-			path.destroy(graph, null);
+		this.cluster.update(graph);
+		if (this.child != null) {
+			this.child.cluster.remove(this);
 		}
-	}
-	
-	public void addPath(PathingEdge path) {
-		this.pathes.add(path);
-	}
-	public void removePath(PathingEdge path) {
-		this.pathes.remove(path);
 	}
 	
 	public PathingEdge getConnection(final BlockPos pos) {
@@ -157,8 +159,8 @@ public class PathingNode implements PathingPathInterface {
 			return;
 		}
 		if (this.parent != null && node.parent != null) {
-			this.sceduleUpdateParent(graph);
-            node.sceduleUpdateParent(graph);
+			//this.sceduleUpdateParent(graph);
+            //node.sceduleUpdateParent(graph);
 			this.parent.addBaseConnection(node.parent, graph);
 		}
 	}
@@ -175,21 +177,21 @@ public class PathingNode implements PathingPathInterface {
 		other.baseEdges.add(path);
 	}
 	public int BuildAbstractConnections(PathingGraph graph) {
-		for (PathingEdge edge: this.edges) {
-			edge.destroy(graph, this);
-		}
-		this.edges.clear();
-		Pair<Integer, HashSet<PathingEdge>> data = PathingUtils.getAbstractEdges(this.child, this);
+		this.breakAbstractConnections();
+
+		Pair<Integer, HashSet<PathingEdge>> data = PathingUtils.getAbstractEdges(this.child, graph);
 		
 		for (PathingEdge edge : data.getRight()) {
-			this.sceduleUpdateParent(graph);
 			this.edges.add(edge);
-			
-			this.cluster.update(graph);
-			
-			edge.to(this).sceduleUpdateParent(graph);
 			edge.to(this).edges.add(edge);
 		}
+		
+		for (PathingEdge edge : this.baseEdges) {
+			this.edges.add(edge);
+			edge.to(this).edges.add(edge);
+		}
+		
+		this.cluster.update(graph);
 		return data.getLeft();
 	}
 	
@@ -301,5 +303,10 @@ public class PathingNode implements PathingPathInterface {
 			};
 		}
 		return false;
+	}
+	
+	@Debug
+	public void debugPlace(ServerWorld world) {
+		world.setBlockState(new BlockPos(pos.getX(), -64, pos.getZ()), Blocks.STONE.getDefaultState());
 	}
 }

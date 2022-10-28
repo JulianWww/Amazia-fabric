@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.goal.farming.AmaziaGoToFarmGoal;
 import net.denanu.amazia.entities.village.server.goal.farming.HarvestCropsGoal;
 import net.denanu.amazia.entities.village.server.goal.farming.HoeFarmLandGoal;
@@ -19,9 +20,11 @@ import net.minecraft.block.SugarCaneBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.HoeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.PickaxeItem;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -81,14 +84,55 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	
 	// FARMER SPECIFIC
 	
+	public int getHoe() {
+		ItemStack itm;
+		for (int idx=0; idx < this.getInventory().size(); idx++) {
+			itm = this.getInventory().getStack(idx);
+			if (itm.getItem() instanceof HoeItem) {
+				return idx;
+			}
+		}
+		return -1;
+	}
+	
+	private boolean hasHoe() {
+		for (ItemStack itm : this.getInventory().stacks) {
+			if (itm.getItem() instanceof HoeItem) {
+				return true;
+			}
+		}
+		this.requestHoe();
+		return false;
+	}
+	
+	private void requestHoe() {
+		if (!this.hasRequestedItems()) {
+			this.requestItem(Items.NETHERITE_HOE);
+			this.requestItem(Items.DIAMOND_HOE);
+			this.requestItem(Items.IRON_HOE);
+			this.requestItem(Items.GOLDEN_HOE);
+			this.requestItem(Items.STONE_HOE);
+			this.requestItem(Items.WOODEN_HOE);
+		}
+	}
+	
 	@Override
-	public boolean canHoe() {
+	public boolean canCraft () {
 		return true;
 	}
 	
 	@Override
+	public boolean canHoe() {
+		return this.hasHoe();
+	}
+	
+	@Override
 	public boolean canPlant() {
-		return this.getInventory().containsAny(AmaziaData.CLASSIC_PLANTABLES);
+		boolean can = this.getInventory().containsAny(AmaziaData.CLASSIC_PLANTABLES);
+		if (!can) {
+			this.requestItem(JJUtils.getRandomSetElement(AmaziaData.CLASSIC_PLANTABLES));
+		}
+		return can;
 	}
 	
 	@Override
