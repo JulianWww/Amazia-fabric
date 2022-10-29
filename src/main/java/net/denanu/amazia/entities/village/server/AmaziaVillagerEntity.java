@@ -158,7 +158,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	
 	
 	public abstract Triplet<ItemStack, Integer, Integer> getDepositableItems();
-	public HashMap<Item,ArrayList<CraftingRecipe>> getCraftables() { return null; };
+	public abstract HashMap<Item,ArrayList<CraftingRecipe>> getCraftables();
 	
 	protected Map<Item, Integer> getItemCounts(final Map<Item, Integer> minItems) {
 		Map<Item, Integer> count = new HashMap<Item, Integer>();
@@ -175,6 +175,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	}
 	
 	public boolean isDeposeting() {
+		boolean f = !this.hasFreeSlot();
 		return isDeposeting || !this.hasFreeSlot();
 	}
 
@@ -235,8 +236,10 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	}
 	
 	public void tryCraftingStart(Item itm) {
-		if (this.getCraftables().containsKey(itm)) {
-			CraftingRecipe recipy = JJUtils.getRandomListElement(this.getCraftables().get(itm));
+		HashMap<Item, ArrayList<CraftingRecipe>> craftables = this.getCraftables();
+		if (craftables.containsKey(itm)) {
+			Amazia.LOGGER.info(itm.toString());
+			CraftingRecipe recipy = JJUtils.getRandomListElement(craftables.get(itm));
 			ArrayList<Item> ingredients = new ArrayList<Item>();
 			this.craftInput = CraftingUtils.getRecipyInput(recipy);
 			boolean canCraft = true;
@@ -248,6 +251,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 					ingredients.add(ingredient.getKey());
 					continue;
 				}
+				this.requestItem(ingredient.getKey());
 				canCraft = false;
 			}
 			if (canCraft) {

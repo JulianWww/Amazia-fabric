@@ -7,12 +7,13 @@ import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.denanu.amazia.pathing.interfaces.PathingEventListener;
 import net.minecraft.util.math.BlockPos;
 
 public class PathingEventEmiter {
 	private Map<Integer, Map<Integer, Map<Integer, Set<PathingEventListener>>>> listeners;
 	
-	PathingEventEmiter() {
+	public PathingEventEmiter() {
 		this.listeners = new HashMap<Integer, Map<Integer, Map<Integer, Set<PathingEventListener>>>>();
 	}
 	

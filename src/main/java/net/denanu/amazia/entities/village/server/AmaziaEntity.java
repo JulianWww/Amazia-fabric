@@ -27,13 +27,15 @@ public class AmaziaEntity extends PassiveEntity {
 	private final int SCAN_ATTEMTS = 10;
 	
 	private int currentlyRunnginGoal = -1;
-	
-	private PathFinder villagePathFinder;
 
 	protected AmaziaEntity(EntityType<? extends PassiveEntity> entityType, World world) {
 		super(entityType, world);
 		this.cannotDespawn();
-		//world.syncWorldEvent(SCAN_ATTEMTS, villageCorePos, SCAN_ATTEMTS);
+	}
+	
+	@Deprecated
+	public boolean getCanUpdate() {
+		return true;
 	}
 	
 	@Override
@@ -41,7 +43,6 @@ public class AmaziaEntity extends PassiveEntity {
 	
 	private void setup() {
 		this.villageSampler = new CuboidSampler(this.getPos(), 4, 4, 4);
-		this.villagePathFinder = new PathFinder(this);
 	}
 	
 	@Override
@@ -69,6 +70,8 @@ public class AmaziaEntity extends PassiveEntity {
 			BlockEntity entity = world.getBlockEntity(pos);
 			if (entity instanceof VillageCoreBlockEntity core) {
 				this.village = core.getVillage();
+				this.navigation = new PathFinder(this);
+				//this.moveControl = new AmaziaMoveControll(this);
 				this.world.sendEntityStatus(this, EntityStatuses.ADD_VILLAGER_HAPPY_PARTICLES);
 			}
 			else {
@@ -127,10 +130,6 @@ public class AmaziaEntity extends PassiveEntity {
             this.world.addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
         }
     }
-
-	public PathFinder getVillagePathFinder() {
-		return villagePathFinder;
-	}
 
 	public int getCurrentlyRunnginGoal() {
 		return currentlyRunnginGoal;

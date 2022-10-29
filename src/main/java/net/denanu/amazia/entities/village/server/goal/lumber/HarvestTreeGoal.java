@@ -3,13 +3,16 @@ package net.denanu.amazia.entities.village.server.goal.lumber;
 import net.denanu.amazia.entities.village.server.LumberjackEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.village.sceduling.LumberSceduler;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
 public class HarvestTreeGoal extends TimedVillageGoal<LumberjackEntity> {
+	boolean isRunning;
 
 	public HarvestTreeGoal(LumberjackEntity e, int priority) {
 		super(e, priority);
+		this.isRunning = false;
 	}
 	
 	@Override
@@ -23,12 +26,26 @@ public class HarvestTreeGoal extends TimedVillageGoal<LumberjackEntity> {
 			this.entity.setLumberingLoc(this.entity.getVillage().getLumber().getHarvestLocation());
 		}
 		return this.entity.hasLumberLoc() && this.entity.isInLumberLoc() && 
-				this.entity.getLumberingLoc().getPos().isFull(this.entity.getWorld()); // check if a tree is present
+				this.resetIfNecesary(this.entity.getLumberingLoc().getPos().isFull(this.entity.getWorld())); // check if a tree is present
+	}
+	
+	private boolean resetIfNecesary(boolean empty) {
+		if (!empty && this.isRunning) {
+			this.entity.setLumberingLoc(null);
+		}
+		return empty;
+	}
+	
+	@Override
+	public void start() {
+		super.start();
+		this.isRunning = true;
 	}
 	
 	@Override
 	public void stop() {
 		super.stop();
+		this.isRunning = false;
 		this.entity.setLumberingLoc(null);
 	}
 
@@ -41,6 +58,7 @@ public class HarvestTreeGoal extends TimedVillageGoal<LumberjackEntity> {
 	protected void takeAction() {
 		if (this.entity.hasLumberLoc()) {
 			this.breakBlock(this.entity.getLumberingLoc().getPos().getPlantLoc());
+			this.entity.setCollectTimer();
 		}
 	}
 	
@@ -50,21 +68,30 @@ public class HarvestTreeGoal extends TimedVillageGoal<LumberjackEntity> {
 			
 			this.breakBlock(pos.up());
 			this.breakBlock(pos.down());
-			this.breakBlock(pos.east());
-			this.breakBlock(pos.west());
-			this.breakBlock(pos.south());
-			this.breakBlock(pos.east());
+			this.breakSide(pos.east());
+			this.breakSide(pos.west());
+			this.breakSide(pos.south());
+			this.breakSide(pos.north());
 		}
+	}
+	
+	private void breakSide(BlockPos pos) {
+		this.breakBlock(pos.up());
+		this.breakBlock(pos);
+		this.breakBlock(pos.down());
 	}
 	
 	private boolean isInRange(BlockPos pos) {
 		return 	Math.abs(pos.getX() - this.entity.getLumberingLoc().getPos().getX()) < 5 && 
 				Math.abs(pos.getZ() - this.entity.getLumberingLoc().getPos().getZ()) < 5 && 
 				pos.getY() >= this.entity.getLumberingLoc().getPos().getY() &&
-				this.isLog(pos);
+				(this.isLog(pos) || this.isLeaf(pos));
 	}
 	
 	private boolean isLog(BlockPos pos) {
 		return LumberSceduler.isLog((ServerWorld)this.entity.getWorld(), pos);
+	}
+	private boolean isLeaf(BlockPos pos) {
+		return this.entity.world.getBlockState(pos).getBlock() instanceof LeavesBlock;
 	}
 }

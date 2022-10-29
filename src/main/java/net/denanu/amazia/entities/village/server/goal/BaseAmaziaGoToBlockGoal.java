@@ -16,7 +16,6 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 
 	public BaseAmaziaGoToBlockGoal(E e, int priority) {
 		super(e, priority);
-		this.nav =  e.getNavigation();
 	}
 	
 	@Override
@@ -39,7 +38,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 	public boolean canStart() {
 		if (super.canStart()) {
 			this.getNewTargetPos();
-			return targetPos != null && this.entity.getVillagePathFinder() != null;
+			return targetPos != null;
 		}
 		return false;
 	}
@@ -51,7 +50,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 	
 	@Override
     public void tick() {
-		Vec3d targetPos = new Vec3d(this.targetPos.getX() + 0.5, this.targetPos.getY() + 1.0, this.targetPos.getZ() + 0.5);
+		Vec3d targetPos = new Vec3d(this.targetPos.getX() + 0.5, this.targetPos.getY(), this.targetPos.getZ() + 0.5);
 		if (this.nav.isIdle()) {
 			this.ticksStanding++;
 		}
@@ -77,11 +76,11 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 	
 	private void runBackupMotion() {
 		this.entity.getNavigation().stop();
-    	this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() + 1, this.targetPos.getZ() + 0.5, 1);
+    	this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() , this.targetPos.getZ() + 0.5, 1);
 	}
 	
 	public boolean shouldResetPath() {
-        return this.ticksStanding > 2;
+        return this.ticksStanding > 40;
     }
 	
 	public double getDesiredDistanceToTarget() {
@@ -89,7 +88,8 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
     }
 	
 	protected void recalcPath() {
-		path = this.entity.getVillagePathFinder().findPath(this.entity.world, this.targetPos);
+		this.nav =  this.entity.getNavigation();
+		path = (PathingPath) nav.findPathTo(this.targetPos, 0);
 		if (path != null && path.getLength() == 1) {
 			this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() + 1, this.targetPos.getZ() + 0.5, 1);
 		}

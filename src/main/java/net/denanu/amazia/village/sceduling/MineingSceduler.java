@@ -52,7 +52,7 @@ public class MineingSceduler extends VillageSceduler {
 	}
 	
 	protected Direction getFacing(BlockPos pos) {
-    	BlockState state = this.getVillage().getPathingGraph().getWorld().getBlockState(pos);
+    	BlockState state = this.getVillage().getWorld().getBlockState(pos);
     	return state.get(VillageMarkerBlock.FACING);
     }
 	
