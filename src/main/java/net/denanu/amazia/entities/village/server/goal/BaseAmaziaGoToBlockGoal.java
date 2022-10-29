@@ -50,7 +50,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 	
 	@Override
     public void tick() {
-		Vec3d targetPos = new Vec3d(this.targetPos.getX() + 0.5, this.targetPos.getY() + 1.0, this.targetPos.getZ() + 0.5);
+		Vec3d targetPos = new Vec3d(this.targetPos.getX() + 0.5, this.targetPos.getY(), this.targetPos.getZ() + 0.5);
 		if (this.nav.isIdle()) {
 			this.ticksStanding++;
 		}
@@ -76,7 +76,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 	
 	private void runBackupMotion() {
 		this.entity.getNavigation().stop();
-    	this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() + 1, this.targetPos.getZ() + 0.5, 1);
+    	this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() , this.targetPos.getZ() + 0.5, 1);
 	}
 	
 	public boolean shouldResetPath() {

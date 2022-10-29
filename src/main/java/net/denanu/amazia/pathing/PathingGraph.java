@@ -110,12 +110,19 @@ public class PathingGraph {
 		this.removeNode(map, pos.getY() + 1);
 		this.removeNode(map, pos.getY());
 		this.removeNode(map, pos.getY() - 1);
-		this.removeNode(map, pos.getY() - 2);
+		this.removeNodeRising(map, pos.getY() - 2);
 		return;
 	}
 	private void removeNode(final HashMap<Integer, BasePathingNode> map, final int y) {
 		BasePathingNode node = map.get(y);
 		if (node != null) {
+			node.destroy(this);
+			map.remove(y);
+		}
+	}
+	private void removeNodeRising(final HashMap<Integer, BasePathingNode> map, final int y) {
+		BasePathingNode node = map.get(y);
+		if (node != null && node.hasRisingEdge()) {
 			node.destroy(this);
 			map.remove(y);
 		}

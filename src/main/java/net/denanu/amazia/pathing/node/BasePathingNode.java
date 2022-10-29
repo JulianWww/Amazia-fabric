@@ -27,6 +27,15 @@ public class BasePathingNode extends PathingNode {
 		this.ajacentNodes = new HashSet<BasePathingNode>();
 	}
 	
+	public boolean hasRisingEdge() {
+		for (BasePathingNode node: this.ajacentNodes) {
+			if (node.getBlockPos().getY() > this.getBlockPos().getY()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public byte getClearanceHeight() {
         return this.clearanceHeight;
     }

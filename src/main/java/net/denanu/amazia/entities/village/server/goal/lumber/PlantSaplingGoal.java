@@ -10,9 +10,11 @@ import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 
 public class PlantSaplingGoal extends TimedVillageGoal<LumberjackEntity> {
+	boolean isRunning;
 
 	public PlantSaplingGoal(LumberjackEntity e, int priority) {
 		super(e, priority);
+		this.isRunning = false;
 	}
 	
 	@Override
@@ -26,12 +28,26 @@ public class PlantSaplingGoal extends TimedVillageGoal<LumberjackEntity> {
 			this.entity.setLumberingLoc(this.entity.getVillage().getLumber().getPlantLocation());
 		}
 		return this.entity.hasLumberLoc() && this.entity.isInLumberLoc() && 
-				this.entity.getLumberingLoc().getPos().isEmpty(this.entity.getWorld());
+				this.resetIfNecesary(this.entity.getLumberingLoc().getPos().isEmpty(this.entity.getWorld()));
+	}
+	
+	private boolean resetIfNecesary(boolean empty) {
+		if (!empty && this.isRunning) {
+			this.entity.setLumberingLoc(null);
+		}
+		return empty;
 	}
 	
 	@Override
+	public void start() {
+		super.start();
+		this.isRunning = true;
+	}
+
+	@Override
 	public void stop() {
 		super.stop();
+		this.isRunning = false;
 		this.entity.setLumberingLoc(null);
 	}
 

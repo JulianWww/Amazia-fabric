@@ -23,9 +23,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
+import net.minecraft.entity.ai.pathing.LandPathNodeMaker;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.ai.pathing.PathNodeNavigator;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.DebugInfoSender;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Util;
@@ -36,7 +38,6 @@ import net.minecraft.world.chunk.ChunkCache;
 
 public class PathFinder extends EntityNavigation {
 	protected AmaziaEntity entity;
-	protected ServerWorld world;
 	protected PriorityQueue<PriorityElement<PathingNode>> nodeQueue = new PriorityQueue<PriorityElement<PathingNode>>(PriorityElement.comparator);
 	
 	public PathFinder(final AmaziaEntity entityNav) {
@@ -98,7 +99,7 @@ public class PathFinder extends EntityNavigation {
             return null;
         }
 		
-		Amazia.LOGGER.info("Scanned for path 2");
+		Amazia.LOGGER.info("Scanned for path " + endNode.getBlockPos());
 		
 		if (graph.isSetupDone()) {
 			return finalizeHirarchicalPath( this.findHirarchicalPath(startNode, endNode, graph));
@@ -303,7 +304,7 @@ public class PathFinder extends EntityNavigation {
 	
 	@Override
 	public void recalculatePath() {
-		if (this.getCurrentPath() != null) {
+		if (this.getCurrentPath() != null && this.getTargetPos() != null) {
             this.currentPath = this.findPathTo(this.getTargetPos());
         }
     }
@@ -368,5 +369,36 @@ public class PathFinder extends EntityNavigation {
             }
             this.lastActiveTickMs = Util.getMeasuringTimeMs();
         }*/
+    }
+	
+	@Override
+	 protected void continueFollowingPath() {
+        boolean bl;
+        Vec3d vec3d = this.getPos();
+        this.nodeReachProximity = this.entity.getWidth() > 0.75f ? this.entity.getWidth() / 2.0f : 0.75f - this.entity.getWidth() / 2.0f;
+        BlockPos vec3i = this.currentPath.getCurrentNodePos();
+        double d = Math.abs(this.entity.getX() - ((double)vec3i.getX() + 0.5));
+        double e = Math.abs(this.entity.getY() - (double)vec3i.getY());
+        double f = Math.abs(this.entity.getZ() - ((double)vec3i.getZ() + 0.5));
+        
+        ((ServerWorld)this.world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, vec3i.getX(), vec3i.getY(), vec3i.getZ(), 2, 0,0,0,0);
+        
+        bl = d < (double)this.nodeReachProximity && f < (double)this.nodeReachProximity && e < 1.0;
+        if (bl || this.entity.canJumpToNextPathNode(this.currentPath.getCurrentNode().type) && this.shouldJumpToNextNode(vec3d)) {
+            this.currentPath.next();
+        }
+        this.checkTimeouts(vec3d);
+    }
+	
+	
+	private boolean shouldJumpToNextNode(Vec3d currentPos) {
+        if (this.currentPath.getCurrentNodeIndex() + 1 >= this.currentPath.getLength()) {
+            return false;
+        }
+        Vec3d vec3d = Vec3d.ofBottomCenter(this.currentPath.getCurrentNodePos());
+        if (Math.abs(vec3d.getX() - currentPos.getX()) + Math.abs(vec3d.getZ() - currentPos.getZ()) < 0.5) {
+            return true;
+        }
+        return false;
     }
 }

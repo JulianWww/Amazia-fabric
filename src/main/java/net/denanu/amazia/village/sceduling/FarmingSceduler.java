@@ -162,7 +162,6 @@ public class FarmingSceduler extends VillageSceduler {
 	}
 	
 	public BlockPos getRandomPos(ServerWorld world, AmaziaVillagerEntity entity) {
-		Amazia.LOGGER.info("Scanned farming");
 		if (this.crops.size() > 0 && entity.canHarvest()) {
 			return getRandomListElement(this.crops).down();
 		}

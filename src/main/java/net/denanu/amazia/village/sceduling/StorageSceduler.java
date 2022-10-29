@@ -172,7 +172,6 @@ public class StorageSceduler extends VillageSceduler {
 	}
 
 	public StoragePathingData getRequestLocation(ServerWorld world, Item item) {
-		Amazia.LOGGER.info("Scanned storage request");
 		for (Entry<BlockPos, StoragePathingData> pos : this.chests.entrySet()) {
 			if (containsItem(pos.getValue().getStorageInventory(world), item)) 
 			return pos.getValue();

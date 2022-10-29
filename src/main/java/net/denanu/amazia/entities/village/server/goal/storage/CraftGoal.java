@@ -16,11 +16,6 @@ public class CraftGoal extends TimedVillageGoal<AmaziaVillagerEntity> {
 	public boolean canStart() {
 		return entity.getCanUpdate() && super.canStart() && this.entity.wantsToCraft() && this.canCraft();
 	}
-	
-	@Override
-	public boolean shouldContinue() {
-		return true;
-	}
 
 	@Override
 	protected int getRequiredTime() {
@@ -47,6 +42,7 @@ public class CraftGoal extends TimedVillageGoal<AmaziaVillagerEntity> {
 	protected boolean canCraft() {
 		for (Entry<Item, Integer> ingredient : this.entity.getCraftInput().entrySet()) {
 			if (!this.entity.hasItem(ingredient.getKey(), ingredient.getValue())) {
+				this.entity.endCraft();
 				return false;
 			}
 		}

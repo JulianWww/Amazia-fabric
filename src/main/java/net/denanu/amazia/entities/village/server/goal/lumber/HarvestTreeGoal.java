@@ -8,9 +8,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
 public class HarvestTreeGoal extends TimedVillageGoal<LumberjackEntity> {
+	boolean isRunning;
 
 	public HarvestTreeGoal(LumberjackEntity e, int priority) {
 		super(e, priority);
+		this.isRunning = false;
 	}
 	
 	@Override
@@ -24,12 +26,26 @@ public class HarvestTreeGoal extends TimedVillageGoal<LumberjackEntity> {
 			this.entity.setLumberingLoc(this.entity.getVillage().getLumber().getHarvestLocation());
 		}
 		return this.entity.hasLumberLoc() && this.entity.isInLumberLoc() && 
-				this.entity.getLumberingLoc().getPos().isFull(this.entity.getWorld()); // check if a tree is present
+				this.resetIfNecesary(this.entity.getLumberingLoc().getPos().isFull(this.entity.getWorld())); // check if a tree is present
+	}
+	
+	private boolean resetIfNecesary(boolean empty) {
+		if (!empty && this.isRunning) {
+			this.entity.setLumberingLoc(null);
+		}
+		return empty;
+	}
+	
+	@Override
+	public void start() {
+		super.start();
+		this.isRunning = true;
 	}
 	
 	@Override
 	public void stop() {
 		super.stop();
+		this.isRunning = false;
 		this.entity.setLumberingLoc(null);
 	}
 

@@ -137,12 +137,12 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 	
 	@Override
 	public boolean canLumber() {
-		return this.getAxe() != -1;
+		return true;
 	}
 	
 	@Override
 	public boolean canCraft () {
-		return true;
+		return false;
 	}
 
 	public void requestSapling() {

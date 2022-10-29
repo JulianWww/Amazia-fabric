@@ -31,7 +31,7 @@ public class DepositItemGoal extends BaseAmaziaVillageGoal<AmaziaVillagerEntity>
 	}
 	private boolean getCanStart() {
 		if (!super.canStart()) { return false; }
-		if (item == null || this.target == null && this.entity.getCanUpdate()) {
+		if (item == null || this.target == null) {
 			item = this.entity.getDepositableItems();
 			if (item != null && !item.getA().isEmpty()) {
 				this.target = this.entity.getVillage().getStorage().getDepositLocation((ServerWorld)this.entity.getWorld(), this.getItem());

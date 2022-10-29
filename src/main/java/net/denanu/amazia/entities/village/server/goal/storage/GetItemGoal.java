@@ -29,7 +29,6 @@ public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> impleme
 			if (item != null) {
 				this.target = this.entity.getVillage().getStorage().getRequestLocation((ServerWorld)this.entity.getWorld(), this.getItem());
 				if (this.target == null && this.entity.canCraft()) {
-					Amazia.LOGGER.info(item.toString());
 					this.entity.tryCraftingStart(item);
 				}
 				this.entity.removeRequestedItem(item);

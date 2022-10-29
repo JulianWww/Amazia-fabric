@@ -175,7 +175,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	}
 	
 	public boolean isDeposeting() {
-		//boolean f = !this.hasFreeSlot();
+		boolean f = !this.hasFreeSlot();
 		return isDeposeting || !this.hasFreeSlot();
 	}
 
@@ -237,8 +237,9 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	
 	public void tryCraftingStart(Item itm) {
 		HashMap<Item, ArrayList<CraftingRecipe>> craftables = this.getCraftables();
-		if (this.getCraftables().containsKey(itm)) {
-			CraftingRecipe recipy = JJUtils.getRandomListElement(this.getCraftables().get(itm));
+		if (craftables.containsKey(itm)) {
+			Amazia.LOGGER.info(itm.toString());
+			CraftingRecipe recipy = JJUtils.getRandomListElement(craftables.get(itm));
 			ArrayList<Item> ingredients = new ArrayList<Item>();
 			this.craftInput = CraftingUtils.getRecipyInput(recipy);
 			boolean canCraft = true;

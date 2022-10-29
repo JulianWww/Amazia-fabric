@@ -1,6 +1,8 @@
 package net.denanu.amazia.entities;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.entities.merchants.AmaziaMerchant;
+import net.denanu.amazia.entities.merchants.client.MerchantRenderer;
 import net.denanu.amazia.entities.village.client.FarmerRenderer;
 import net.denanu.amazia.entities.village.client.LumberjackRenderer;
 import net.denanu.amazia.entities.village.client.MinerRenderer;
@@ -32,15 +34,24 @@ public class AmaziaEntities {
 	            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, LumberjackEntity::new)
 	            		.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
 	 
+	 
+	 
+	 public static final EntityType<AmaziaMerchant> MERCHANT = Registry.register(
+	            Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "merchant"),
+	            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, AmaziaMerchant::new)
+	            		.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+	 
 	 public static void registerAttributes() {
 		 FabricDefaultAttributeRegistry.register(FARMER, FarmerEntity.setAttributes());
 		 FabricDefaultAttributeRegistry.register(MINER, MinerEntity.setAttributes());
 		 FabricDefaultAttributeRegistry.register(LUMBERJACK, LumberjackEntity.setAttributes());
+		 FabricDefaultAttributeRegistry.register(MERCHANT, AmaziaMerchant.setAttributes());
 	 }
 	 
 	 public static void registerRenderer() {
 		 EntityRendererRegistry.register(FARMER, FarmerRenderer::new);
 		 EntityRendererRegistry.register(MINER,  MinerRenderer::new);
 		 EntityRendererRegistry.register(LUMBERJACK, LumberjackRenderer::new);
+		 EntityRendererRegistry.register(MERCHANT, MerchantRenderer::new);
 	 }
 }
