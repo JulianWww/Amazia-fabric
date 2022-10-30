@@ -3,5 +3,16 @@
 	"item.amazia.ruby_ore": "Ruby Ore",
 	"item.amazia.deepslate_ruby_ore": "Deepslate Ruby Ore",
 	"item.amazia.ruby_block": "Ruby Block",
-	"item.amazia.mine_marker": "Mine Marker" //Placeholder name
+	"item.amazia.mine_marker": "Mine Marker", //Placeholder name
+	
+	"message.amazia.command.hello": "hello this is Amazia",
+	"messages.amazia.commands.item_value": "The current item value is: ",
+	"messages.amazia.commands.success": "Success",
+	
+	"messages.amazia.erros.non_existant_economy_item": "Amazia economy missing item: ",
+	
+	"entity.amazia.merchant": "Merchant",
+	
+	"profession.amazia.librarian": "Librarian",
+	"profession.amazia.armorer": "Armorer"
 }
