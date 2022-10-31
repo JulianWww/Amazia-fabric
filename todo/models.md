@@ -2,6 +2,7 @@
 - Farmer
 - Miner
 - Lumberjack
+- Merchant
 
 # Blocks
 - Ruby block
