@@ -36,13 +36,13 @@ public class AmaziaPriceModifierCommands {
 		
 		if (economy == null) {
 			context.getSource().sendError(
-					Text.translatable("messages.amazia.erros.non_existant_economy_item")
+					Text.translatable("messages.amazia.erros.non_existant_economy_modifier")
 					.append(Text.translatable(key))); 
 			return 1;
 		}
 		
 		context.getSource().sendMessage(
-				Text.translatable("messages.amazia.commands.item_value")
+				Text.translatable("messages.amazia.commands.modifier_value")
 				.append(Float.toString(economy.getCurrentPrice())));
 		return 1;
 	}
