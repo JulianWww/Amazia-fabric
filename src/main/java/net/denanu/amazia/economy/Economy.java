@@ -9,12 +9,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.denanu.amazia.JJUtils;
+import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentState;
 
 public class Economy extends PersistentState {
 	private static Map<String, ItemEconomyFactory> salePossiblitiesFactory = new HashMap<String, ItemEconomyFactory>();
 	private static Map<String, ArrayList<String>> professionSales = new HashMap<String, ArrayList<String>>();
+	
+	private static Map<String, ModifierEconomy> modifierPossibilities = new HashMap<String, ModifierEconomy>();
 	
 	private Map<String, ItemEconomy> salePossibilites;
 	
@@ -37,6 +41,18 @@ public class Economy extends PersistentState {
 			professionSales.put(profession, new ArrayList<String>());
 		}
 		professionSales.get(profession).add(item);
+	}
+	
+	public static String registerModifier(final String key, final ModifierEconomy economy) {
+		final ModifierEconomy existingValue = modifierPossibilities.put(key, economy);
+        if (existingValue != null) {
+            throw new InvalidParameterException("Duplicate marketId in economy of key " + key);
+        }
+        return key;
+	}
+	
+	public static ModifierEconomy getModifierEconomy(final String mod) {
+		return Economy.modifierPossibilities.get(mod);
 	}
 	
 	public static void trimToSize() {
@@ -103,5 +119,9 @@ public class Economy extends PersistentState {
 		for (Entry<String, ItemEconomy> entry : this.salePossibilites.entrySet()) {
 			entry.getValue().reset();
 		}
+	}
+
+	public static Collection<String> getModifierList() {
+		return Economy.modifierPossibilities.keySet();
 	}
 }

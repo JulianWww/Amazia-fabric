@@ -42,7 +42,7 @@ public class AmaziaTradeOfferList extends ArrayList<AmaziaTradeOffer> {
 	public PacketByteBuf toPacket(PacketByteBuf buf) {
         buf.writeCollection(this, (buf2, offer) -> {
             buf2.writeItemStack(offer.item);
-            buf2.writeFloat(offer.value);
+            buf2.writeFloat(offer.modifiedValue);
             buf2.writeBoolean(offer.buy);
         });
         return buf;
@@ -51,9 +51,9 @@ public class AmaziaTradeOfferList extends ArrayList<AmaziaTradeOffer> {
     public static AmaziaTradeOfferList fromPacketBuf(PacketByteBuf buf) {
         return buf.readCollection(AmaziaTradeOfferList::new, buf2 -> {
         	ItemStack stack = buf2.readItemStack();
-        	float value = buf2.readFloat();
+        	float modifiedValue = buf2.readFloat();
         	boolean buy = buf2.readBoolean();
-            return new AmaziaTradeOffer(stack, value, buy);
+            return new AmaziaTradeOffer(stack, modifiedValue, buy);
         });
     }
     

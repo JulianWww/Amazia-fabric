@@ -1,6 +1,8 @@
-package net.denanu.amazia.economy.offerModifiers;
+package net.denanu.amazia.economy.offerModifiers.item;
 
 import net.denanu.amazia.economy.AmaziaTradeOffer;
+import net.denanu.amazia.economy.offerModifiers.OfferModifier;
+import net.denanu.amazia.economy.offerModifiers.price.AmaziaValueModifiers;
 import net.denanu.amazia.utils.random.RandomCollection;
 import net.minecraft.enchantment.Enchantment;
 
@@ -30,6 +32,8 @@ public class EnchantmentModifier implements OfferModifier {
 	private void enchant(AmaziaTradeOffer offer) {
 		Enchantment enchant = this.possibleEnchants.next();
 		offer.item.addEnchantment(enchant, this.getLvl(enchant));
+		
+		regiserPriceMod(offer, AmaziaValueModifiers.PROTECTION);
 	}
 	
 	private int getLvl(Enchantment enchant) {

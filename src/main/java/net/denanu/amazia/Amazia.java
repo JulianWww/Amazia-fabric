@@ -13,9 +13,11 @@ import com.google.common.collect.ImmutableSet;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.AmaziaBlockEntities;
 import net.denanu.amazia.commands.AmaziaCommand;
+import net.denanu.amazia.commands.args.AmaziaArgumentTypes;
 import net.denanu.amazia.economy.Economy;
 import net.denanu.amazia.economy.EconomyFactory;
 import net.denanu.amazia.economy.ProfessionFactory;
+import net.denanu.amazia.economy.offerModifiers.price.AmaziaValueModifiers;
 import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.entities.village.server.FarmerEntity;
 import net.denanu.amazia.entities.village.server.LumberjackEntity;
@@ -68,18 +70,17 @@ public class Amazia implements ModInitializer {
 		//Economy
 		EconomyFactory.setup();
 		ProfessionFactory.setup();
+		AmaziaValueModifiers.setup();
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+	    	economy = (Economy) server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(Economy::fromNbt, Economy::new, MOD_ID);
+        });
 		
 		//Networking
 		AmaziaNetworking.registerC2SPackets();
 		
-		
+		// commands
+		AmaziaArgumentTypes.setup();
 	    CommandRegistrationCallback.EVENT.register(AmaziaCommand::register);
-	    
-	    
-	    // Economy
-	    ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-	    	economy = (Economy) server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(Economy::fromNbt, Economy::new, MOD_ID);
-        });
 	}
 
 	public static VillageManager getVillageManager() {

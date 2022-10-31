@@ -5,10 +5,8 @@ import java.util.Collection;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.economy.offerModifiers.EnchantmentModifier;
+import net.denanu.amazia.economy.offerModifiers.item.EnchantmentModifier;
 import net.denanu.amazia.utils.random.ConstantValue;
-import net.denanu.amazia.utils.random.ConstrainedGaussianRandom;
-import net.denanu.amazia.utils.random.LinearRandom;
 import net.denanu.amazia.utils.random.RandomnessFactory;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
@@ -16,7 +14,7 @@ import net.minecraft.item.Items;
 
 public class EconomyFactory {
 	public static void setup() {         // value       volatility  return rate | stackSize generator							professions
-		register(Items.COAL, 					0.0666f, 	0.0001f, 	0.99f,	new ConstrainedGaussianRandom(20f, 8f, 64, 1), 	ImmutableSet.of("armorer"));
+		/*register(Items.COAL, 					0.0666f, 	0.0001f, 	0.99f,	new ConstrainedGaussianRandom(20f, 8f, 64, 1), 	ImmutableSet.of("armorer"));
 		register(Items.IRON_HELMET, 			5, 			2f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));
 		register(Items.IRON_CHESTPLATE, 		9, 			2f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));
 		register(Items.IRON_LEGGINGS, 			7, 			2f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));
@@ -32,10 +30,8 @@ public class EconomyFactory {
 		register(Items.SHIELD, 					5, 			2f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer"));
 		register(Items.DIAMOND_HELMET, 			27, 		4f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));
 		register(Items.DIAMOND_CHESTPLATE, 		35, 		4f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));
-		register(Items.DIAMOND_LEGGINGS, 		33, 		4f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));
+		register(Items.DIAMOND_LEGGINGS, 		33, 		4f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));*/
 		register(Items.DIAMOND_BOOTS, 			27, 		4f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));
-		
-		
 	}
 	
 	private static ItemEconomyFactory register(Item itm, float baseValue, float volatility, float returnRate, RandomnessFactory<Integer> stackSizeFactory, Collection<String> professions) {

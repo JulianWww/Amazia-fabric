@@ -1,32 +1,49 @@
 package net.denanu.amazia.economy;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
+import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
 import net.denanu.amazia.economy.offerModifiers.OfferModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
+import net.minecraft.util.Identifier;
 
 public class AmaziaTradeOffer {
 	public ItemStack item;
 	ItemStack seller;
-	float value;
+	public float value;
+	public float modifiedValue;
 	boolean buy, dirty;
 	public int offerId;
+	
+	public List<String> priceModifiers;
 
 	public AmaziaTradeOffer(ItemStack item, float value, boolean buy) {
 		this.item = item;
 		this.value = value;
 		this.buy = buy;
 		this.dirty = true;
+		
+		this.modifiedValue = this.value;
+		
+		this.priceModifiers = new LinkedList<String>();
 	}
 
 	public AmaziaTradeOffer(NbtCompound nbt) {
 		this.item = ItemStack.fromNbt(nbt.getCompound("id"));
 		this.value = nbt.getFloat("value");
+		this.modifiedValue = value;
 		this.buy = nbt.getBoolean("buy");
+		
+		this.fromModifierNbt((NbtList) nbt.get("modifiers"));;
 	}
 	
 	public NbtCompound toNbt() {
@@ -35,9 +52,26 @@ public class AmaziaTradeOffer {
         nbt.put("id",  this.item.writeNbt(new NbtCompound()));
         nbt.putFloat("value", this.value);
         nbt.putBoolean("buy", this.buy);
+        nbt.put("modifiers", this.toModifierNbt());
         return nbt;
     }
 	
+	private NbtElement toModifierNbt() {
+		NbtList arr = new NbtList();
+		for (String mod : this.priceModifiers) {
+			arr.add(NbtString.of(mod));
+		}
+		return arr;
+	}
+	
+	private void fromModifierNbt(NbtList list) {
+		this.priceModifiers = new LinkedList<String>();
+		for (NbtElement val : list) {
+			this.priceModifiers.add(((NbtString)val).asString());
+		}
+		return;
+	}
+
 	public void setDirty() {
 		this.dirty = true;
 	}
@@ -51,6 +85,7 @@ public class AmaziaTradeOffer {
 			this.dirty = true;
 		}
 		this.value = value;
+		this.modifyPrice();
 	}
 	public boolean isBuy() {
 		return this.buy;
@@ -69,7 +104,7 @@ public class AmaziaTradeOffer {
 	}
 	
 	private ItemStack buildSeller() {
-		int v = (int) (this.value * this.item.getCount());
+		int v = (int) (this.modifiedValue * this.item.getCount());
 		if (v <= 64) {
 			return new ItemStack(Items.EMERALD, Math.max(1, v));
 		}
@@ -123,6 +158,7 @@ public class AmaziaTradeOffer {
 
 	private void changePrice(float delta) {
 		this.value = this.value + delta;
+		this.modifyPrice();
 		this.dirty = true;
 	}
 	
@@ -135,5 +171,21 @@ public class AmaziaTradeOffer {
 			modifier.modify(this);
 		}
 		return this;
+	}
+	
+	public AmaziaTradeOffer build() {
+		this.modifyPrice();
+		return this;
+	}
+	
+	private void modifyPrice() {
+		this.modifiedValue = this.value;
+		for (String mod : this.priceModifiers) {
+			ModifierEconomy modifier = Economy.getModifierEconomy(mod);
+			if (modifier != null) {
+				modifier.modifiy(this);
+			}
+		}
+		return;
 	}
 }
