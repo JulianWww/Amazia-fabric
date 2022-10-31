@@ -1,2 +1,2 @@
-# Pathing
-- create abstracted graph
+# Economy
+- item modifiers and price modifiers
