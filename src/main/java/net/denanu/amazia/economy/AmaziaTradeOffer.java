@@ -8,7 +8,9 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
 import net.denanu.amazia.economy.offerModifiers.OfferModifier;
+import net.denanu.amazia.economy.offerModifiers.finalizers.OfferFinalModifer;
 import net.denanu.amazia.exceptions.EconomyMissingModifierEconomyException;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -22,10 +24,11 @@ public class AmaziaTradeOffer {
 	ItemStack seller;
 	public float value;
 	public float modifiedValue;
-	boolean buy, dirty;
+	boolean buy, dirty, valid;
 	public int offerId;
 	
 	public List<String> priceModifiers;
+	public List<OfferFinalModifer> finalizers;
 
 	public AmaziaTradeOffer(ItemStack item, float value, boolean buy) {
 		this.item = item;
@@ -34,8 +37,10 @@ public class AmaziaTradeOffer {
 		this.dirty = true;
 		
 		this.modifiedValue = this.value;
+		this.valid = true;
 		
 		this.priceModifiers = new LinkedList<String>();
+		this.finalizers = new ArrayList<OfferFinalModifer>();
 	}
 
 	public AmaziaTradeOffer(NbtCompound nbt) {
@@ -44,7 +49,8 @@ public class AmaziaTradeOffer {
 		this.modifiedValue = value;
 		this.buy = nbt.getBoolean("buy");
 		
-		this.fromModifierNbt((NbtList) nbt.get("modifiers"));;
+		this.fromModifierNbt ((NbtList) nbt.get("modifiers"));
+		this.fromNbtFinalzers((NbtList) nbt.get("finalizers"));
 	}
 	
 	public NbtCompound toNbt() {
@@ -54,6 +60,7 @@ public class AmaziaTradeOffer {
         nbt.putFloat("value", this.value);
         nbt.putBoolean("buy", this.buy);
         nbt.put("modifiers", this.toModifierNbt());
+        nbt.put("finalizers", this.toFinalizerNbt());
         return nbt;
     }
 	
@@ -71,6 +78,23 @@ public class AmaziaTradeOffer {
 			this.priceModifiers.add(((NbtString)val).asString());
 		}
 		return;
+	}
+	
+	private NbtList toFinalizerNbt() {
+		NbtList nbt = new NbtList();
+		for (OfferFinalModifer mod : this.finalizers) {
+			nbt.add(NbtString.of(mod.ident.toString()));
+		}
+		return nbt;
+	}
+	
+	private void fromNbtFinalzers(NbtList list) {
+		this.finalizers = new ArrayList<OfferFinalModifer>(list != null ? list.size() : 0);
+		for (NbtElement val : list) {
+			this.finalizers.add(Economy.getFinalizer(
+					new Identifier(((NbtString)val).asString())
+				));
+		}
 	}
 
 	public void setDirty() {
@@ -97,7 +121,7 @@ public class AmaziaTradeOffer {
 	}
 
 	public boolean isDisabled() {
-		return false;
+		return !this.valid;
 	}
 	
 	private int getComplexPrice(int v) {
@@ -193,12 +217,30 @@ public class AmaziaTradeOffer {
 		return;
 	}
 
-	public void updateModifiers() {
+	public void updateModifiers(LivingEntity merchant) {
 		for (String mod : this.priceModifiers) {
 			ModifierEconomy modifier = Economy.getModifierEconomy(mod);
 			if (modifier != null) {
 				modifier.update(this.getQuantity(), this.isBuy());;
 			}
 		}
+		
+		this.finalze(merchant);
+	}
+	
+	public void finalze(LivingEntity merchant) {
+		this.valid = true;
+		for (OfferFinalModifer mod : this.finalizers) {
+			mod.modify(this, merchant);
+		}
+	}
+
+	public void disable() {
+		this.valid = false;
+	}
+
+	public AmaziaTradeOffer setFinalizers(ArrayList<OfferFinalModifer> finals) {
+		this.finalizers = finals;
+		return this;
 	}
 }

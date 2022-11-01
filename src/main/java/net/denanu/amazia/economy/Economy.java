@@ -11,7 +11,9 @@ import java.util.Map.Entry;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.economy.itemEconomy.BaseItemEconomy;
 import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
+import net.denanu.amazia.economy.offerModifiers.finalizers.OfferFinalModifer;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentState;
 
 public class Economy extends PersistentState {
@@ -19,6 +21,7 @@ public class Economy extends PersistentState {
 	private static Map<String, ArrayList<String>> professionSales = new HashMap<String, ArrayList<String>>();
 	
 	private static Map<String, ModifierEconomy> modifierPossibilities = new HashMap<String, ModifierEconomy>();
+	private static Map<Identifier, OfferFinalModifer> finalizers = new HashMap<Identifier, OfferFinalModifer>();
 	
 	//private Map<String, IItemEconomy> salePossibilites;
 	
@@ -78,6 +81,17 @@ public class Economy extends PersistentState {
 	
 	public static ModifierEconomy getModifierEconomy(final String mod) {
 		return Economy.modifierPossibilities.get(mod);
+	}
+	
+	public static void registerFinalizer(final Identifier key, final OfferFinalModifer finalzier) {
+		final OfferFinalModifer existingValue = finalizers.put(key, finalzier);
+        if (existingValue != null) {
+            throw new InvalidParameterException("Duplicate marketId in economy of key " + key);
+        }
+	}
+	
+	public static OfferFinalModifer getFinalizer(final Identifier key) {
+		return Economy.finalizers.get(key);
 	}
 	
 	public static void trimToSize() {

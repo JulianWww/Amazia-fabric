@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.jetbrains.annotations.Nullable;
 
 import net.denanu.amazia.Amazia;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -86,9 +87,10 @@ public class AmaziaTradeOfferList extends ArrayList<AmaziaTradeOffer> {
         return null;
     }
 
-	public void update() {
+	public void update(LivingEntity merchant) {
 		for (AmaziaTradeOffer offer : this) {
 			offer.setPrice(Amazia.economy.getItem(offer.getKey()).getCurrentPrice());
+			offer.finalze(merchant);
 		}
 	}
 

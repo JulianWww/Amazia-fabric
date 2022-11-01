@@ -127,7 +127,7 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 			this.offers = Amazia.economy.buildTrades(this);
 		}
 		else {
-			this.offers.update();
+			this.offers.update(this);
 		}
 		return this.offers;
 	}
@@ -183,7 +183,7 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 	private void afterUsing(AmaziaTradeOffer offer) {
 		if (this.world.isClient) { throw new RuntimeException("runnign server script on client"); }
 		
-		offer.updateModifiers();
+		offer.updateModifiers(this);
 		Amazia.economy.getItem(offer.getKey()).updatePrice(offer.getQuantity(), offer.isBuy());
 		ServerPlayNetworking.send((ServerPlayerEntity)this.customer, AmaziaNetworking.SET_TRADE_OFFERS, AmaziaSetTradeOffersS2CPacket.toBuf(this.customer.currentScreenHandler.syncId, this.getOffers()));
 	}
