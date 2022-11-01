@@ -8,13 +8,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
+import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentState;
 
 public class Economy extends PersistentState {
 	private static Map<String, ItemEconomyFactory> salePossiblitiesFactory = new HashMap<String, ItemEconomyFactory>();
 	private static Map<String, ArrayList<String>> professionSales = new HashMap<String, ArrayList<String>>();
+	
+	private static Map<String, ModifierEconomy> modifierPossibilities = new HashMap<String, ModifierEconomy>();
 	
 	private Map<String, ItemEconomy> salePossibilites;
 	
@@ -26,10 +31,39 @@ public class Economy extends PersistentState {
 		Economy out = new Economy();
 		
 		for (Entry<String, ItemEconomy> element : out.salePossibilites.entrySet()) {
-			element.getValue().fromNbt(nbt.getCompound(element.getKey()));
+			if (nbt.contains(element.getKey())) {
+				element.getValue().fromNbt(nbt.getCompound(element.getKey()));
+			}
+		}
+		for (Entry<String, ModifierEconomy> element : modifierPossibilities.entrySet()) {
+			if (nbt.contains(element.getKey())) {
+				element.getValue().fromNbt(nbt.getCompound(element.getKey()));
+			}
 		}
 		
 		return out;
+	}
+	
+	@Override
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.put("items", this.itemEconomyToNbt());
+		nbt.put("modifiers", this.itemModifiersToNbt());
+		return nbt;
+	}
+	
+	private NbtCompound itemEconomyToNbt() {
+		NbtCompound nbt = new NbtCompound();
+		for (Entry<String, ItemEconomy> element : this.salePossibilites.entrySet()) {
+			nbt.put(element.getKey(), element.getValue().toNbt());
+		}
+		return nbt;
+	}
+	private NbtCompound itemModifiersToNbt() {
+		NbtCompound nbt = new NbtCompound();
+		for (Entry<String, ModifierEconomy> element : modifierPossibilities.entrySet()) {
+			nbt.put(element.getKey(), element.getValue().toNbt());
+		}
+		return nbt;
 	}
 	
 	public static void addProfessionItem(final String profession, final String item) {
@@ -37,6 +71,18 @@ public class Economy extends PersistentState {
 			professionSales.put(profession, new ArrayList<String>());
 		}
 		professionSales.get(profession).add(item);
+	}
+	
+	public static String registerModifier(final String key, final ModifierEconomy economy) {
+		final ModifierEconomy existingValue = modifierPossibilities.put(key, economy);
+        if (existingValue != null) {
+            throw new InvalidParameterException("Duplicate marketId in economy of key " + key);
+        }
+        return key;
+	}
+	
+	public static ModifierEconomy getModifierEconomy(final String mod) {
+		return Economy.modifierPossibilities.get(mod);
 	}
 	
 	public static void trimToSize() {
@@ -85,14 +131,6 @@ public class Economy extends PersistentState {
 			this.salePossibilites.put(factory.getKey(), factory.getValue().build());
 		}
 	}
-
-	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		for (Entry<String, ItemEconomy> element : this.salePossibilites.entrySet()) {
-			nbt.put(element.getKey(), element.getValue().toNbt());
-		}
-		return nbt;
-	}
 	
 	@Override
 	public boolean isDirty() {
@@ -102,6 +140,30 @@ public class Economy extends PersistentState {
 	public void reset() {
 		for (Entry<String, ItemEconomy> entry : this.salePossibilites.entrySet()) {
 			entry.getValue().reset();
+		}
+		for (Entry<String, ModifierEconomy> entry : Economy.modifierPossibilities.entrySet()) {
+			entry.getValue().reset();
+		}
+	}
+
+	public static Collection<String> getModifierList() {
+		return Economy.modifierPossibilities.keySet();
+	}
+	
+	
+	public void update(int tick) {
+		if (tick % 1200 == 0) {
+			this.update();
+			return;
+		}
+	}
+
+	private void update() {
+		for (Entry<String, ItemEconomy> entry : this.salePossibilites.entrySet()) {
+			entry.getValue().update();
+		}
+		for (Entry<String, ModifierEconomy> entry : Economy.modifierPossibilities.entrySet()) {
+			entry.getValue().update();
 		}
 	}
 }

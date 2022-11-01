@@ -66,7 +66,7 @@ public class ItemEconomy {
 	}
 	
 	public AmaziaTradeOffer build(IAmaziaMerchant merchant) {
-		return new AmaziaTradeOffer(this.getStack(), this.getCurrentPrice(), JJUtils.rand.nextBoolean()).modify(this.modifiers);
+		return new AmaziaTradeOffer(this.getStack(), this.getCurrentPrice(), JJUtils.rand.nextBoolean()).modify(this.modifiers).build();
 	}
 
 	public void setCurrentValue(float currentPrice) {

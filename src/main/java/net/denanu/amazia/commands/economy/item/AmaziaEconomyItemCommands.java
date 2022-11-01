@@ -1,4 +1,4 @@
-package net.denanu.amazia.commands.economy.value;
+package net.denanu.amazia.commands.economy.item;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -10,7 +10,6 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.economy.Economy;
 import net.denanu.amazia.economy.ItemEconomy;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.ItemStackArgumentType;
@@ -20,19 +19,19 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class AmaziaEconomyValueCommands {
+public class AmaziaEconomyItemCommands {
 	public static LiteralArgumentBuilder<ServerCommandSource> register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess access, CommandManager.RegistrationEnvironment env) {
-		LiteralArgumentBuilder<ServerCommandSource> value = literal("value");
+		LiteralArgumentBuilder<ServerCommandSource> value = literal("item");
 		
 		value.then(literal("get")
 			.then((ArgumentBuilder<ServerCommandSource, ?>)(argument("item", ItemStackArgumentType.itemStack(access)))
-			.executes(AmaziaEconomyValueCommands::get)));
+			.executes(AmaziaEconomyItemCommands::get)));
 		
 		value.then(literal("set")
 			.then((ArgumentBuilder<ServerCommandSource, ?>)(argument("item", ItemStackArgumentType.itemStack(access)))
 			.then((ArgumentBuilder<ServerCommandSource, ?>)(argument("value", FloatArgumentType.floatArg(0, ItemEconomy.MAX_VALUE)))
-			.requires(AmaziaEconomyValueCommands::setRequirements)
-			.executes(AmaziaEconomyValueCommands::set))));
+			.requires(AmaziaEconomyItemCommands::setRequirements)
+			.executes(AmaziaEconomyItemCommands::set))));
 		
 		return value;
 	}
