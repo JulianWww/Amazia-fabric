@@ -10,7 +10,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.economy.ItemEconomy;
+import net.denanu.amazia.economy.itemEconomy.BaseItemEconomy;
+import net.denanu.amazia.economy.itemEconomy.ItemEconomy;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.item.Item;
@@ -39,7 +40,7 @@ public class AmaziaEconomyItemCommands {
 	public static int get(CommandContext<ServerCommandSource> context) {
 		Item itm = ItemStackArgumentType.getItemStackArgument(context, "item").getItem();
 		
-		ItemEconomy economy = Amazia.economy.getItem(itm.getTranslationKey());
+		BaseItemEconomy economy = Amazia.economy.getItem(itm.getTranslationKey());
 		if (economy == null) {
 			context.getSource().sendError(
 					Text.translatable("messages.amazia.erros.non_existant_economy_item")
@@ -57,7 +58,7 @@ public class AmaziaEconomyItemCommands {
 	public static int set(CommandContext<ServerCommandSource> context) {
 		Item itm = ItemStackArgumentType.getItemStackArgument(context, "item").getItem();
 		
-		ItemEconomy economy = Amazia.economy.getItem(itm.getTranslationKey());
+		BaseItemEconomy economy = Amazia.economy.getItem(itm.getTranslationKey());
 		if (economy == null) {
 			context.getSource().sendError(
 					Text.translatable("messages.amazia.erros.non_existant_economy_item")

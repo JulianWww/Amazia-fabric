@@ -8,29 +8,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
+import net.denanu.amazia.economy.itemEconomy.BaseItemEconomy;
 import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentState;
 
 public class Economy extends PersistentState {
-	private static Map<String, ItemEconomyFactory> salePossiblitiesFactory = new HashMap<String, ItemEconomyFactory>();
+	private static Map<String, BaseItemEconomy> salePossibilites = new HashMap<String, BaseItemEconomy>();
 	private static Map<String, ArrayList<String>> professionSales = new HashMap<String, ArrayList<String>>();
 	
 	private static Map<String, ModifierEconomy> modifierPossibilities = new HashMap<String, ModifierEconomy>();
 	
-	private Map<String, ItemEconomy> salePossibilites;
-	
-	public Economy() {
-		this.build();
-	}
+	//private Map<String, IItemEconomy> salePossibilites;
 	
 	public static Economy fromNbt(NbtCompound nbt) {
-		Economy out = new Economy();
-		
-		for (Entry<String, ItemEconomy> element : out.salePossibilites.entrySet()) {
+		for (Entry<String, BaseItemEconomy> element : salePossibilites.entrySet()) {
 			if (nbt.contains(element.getKey())) {
 				element.getValue().fromNbt(nbt.getCompound(element.getKey()));
 			}
@@ -41,7 +34,7 @@ public class Economy extends PersistentState {
 			}
 		}
 		
-		return out;
+		return new Economy();
 	}
 	
 	@Override
@@ -53,8 +46,10 @@ public class Economy extends PersistentState {
 	
 	private NbtCompound itemEconomyToNbt() {
 		NbtCompound nbt = new NbtCompound();
-		for (Entry<String, ItemEconomy> element : this.salePossibilites.entrySet()) {
-			nbt.put(element.getKey(), element.getValue().toNbt());
+		for (Entry<String, BaseItemEconomy> element : salePossibilites.entrySet()) {
+			if (element.getValue().hasNbt()) {
+				nbt.put(element.getKey(), element.getValue().toNbt());
+			}
 		}
 		return nbt;
 	}
@@ -91,14 +86,14 @@ public class Economy extends PersistentState {
 		}
 	}
 	
-	public static void addItem(final ItemEconomyFactory item) {
-		final ItemEconomyFactory existingValue = salePossiblitiesFactory.put(item.getName(), item);
+	public static void addItem(final BaseItemEconomy item) {
+		final BaseItemEconomy existingValue = salePossibilites.put(item.getName(), item);
         if (existingValue != null) {
             throw new InvalidParameterException("Duplicate marketId in economy: " + item.getName());
         }
 	}
 	
-	public ItemEconomy getItem(final String key) {
+	public BaseItemEconomy getItem(final String key) {
 		return salePossibilites.get(key);
 	}
 	
@@ -112,24 +107,7 @@ public class Economy extends PersistentState {
 	}
 	
 	public static List<String> getTrades(int tries, String profession) {
-		ArrayList<String> out = new ArrayList<String>();
-		out.ensureCapacity(tries);
-		List<String> possibilities = professionSales.get(profession);
-		for (int i=0; i<tries; i++) {
-			String element = JJUtils.getRandomListElement(possibilities);
-			if (!out.contains(element)) {
-				out.add(element);
-			}
-		}
-		out.trimToSize();
-		return out;
-	}
-	
-	private void build() {
-		this.salePossibilites = new HashMap<String, ItemEconomy>();
-		for (Entry<String, ItemEconomyFactory> factory : salePossiblitiesFactory.entrySet()) {
-			this.salePossibilites.put(factory.getKey(), factory.getValue().build());
-		}
+		return professionSales.get(profession);
 	}
 	
 	@Override
@@ -138,7 +116,7 @@ public class Economy extends PersistentState {
 	}
 
 	public void reset() {
-		for (Entry<String, ItemEconomy> entry : this.salePossibilites.entrySet()) {
+		for (Entry<String, BaseItemEconomy> entry : salePossibilites.entrySet()) {
 			entry.getValue().reset();
 		}
 		for (Entry<String, ModifierEconomy> entry : Economy.modifierPossibilities.entrySet()) {
@@ -151,15 +129,15 @@ public class Economy extends PersistentState {
 	}
 	
 	
-	public void update(int tick) {
+	public static void update(int tick) {
 		if (tick % 1200 == 0) {
-			this.update();
+			Economy.update();
 			return;
 		}
 	}
 
-	private void update() {
-		for (Entry<String, ItemEconomy> entry : this.salePossibilites.entrySet()) {
+	private static void update() {
+		for (Entry<String, BaseItemEconomy> entry : Economy.salePossibilites.entrySet()) {
 			entry.getValue().update();
 		}
 		for (Entry<String, ModifierEconomy> entry : Economy.modifierPossibilities.entrySet()) {
