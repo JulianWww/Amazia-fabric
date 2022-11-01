@@ -1,6 +1,6 @@
 package net.denanu.amazia.economy.offerModifiers.price;
 
-import net.denanu.amazia.economy.ItemEconomy;
+import net.denanu.amazia.economy.itemEconomy.ItemEconomy;
 
 public class DeficiteModifierEconomy extends SimpleModifierEconomy {
 

@@ -13,7 +13,7 @@ import net.denanu.amazia.commands.args.sugestions.EconomyModifierArgumentSugesti
 import net.denanu.amazia.commands.args.types.EconomyModifierArgumentType;
 import net.denanu.amazia.commands.economy.item.AmaziaEconomyItemCommands;
 import net.denanu.amazia.economy.Economy;
-import net.denanu.amazia.economy.ItemEconomy;
+import net.denanu.amazia.economy.itemEconomy.ItemEconomy;
 import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.ItemStackArgumentType;
