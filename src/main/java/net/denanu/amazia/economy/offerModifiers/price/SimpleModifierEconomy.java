@@ -2,6 +2,7 @@ package net.denanu.amazia.economy.offerModifiers.price;
 
 import net.denanu.amazia.economy.AmaziaTradeOffer;
 import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
+import net.minecraft.nbt.NbtCompound;
 
 public abstract class SimpleModifierEconomy implements ModifierEconomy {
 	protected float currentPrice;
@@ -51,6 +52,18 @@ public abstract class SimpleModifierEconomy implements ModifierEconomy {
 	@Override
 	public void setCurrentPrice(float value) {
 		this.currentPrice = value;
+	}
+	
+	@Override
+	public NbtCompound toNbt() {
+		NbtCompound nbt = new NbtCompound();
+		nbt.putFloat("value", this.currentPrice);
+		return nbt; 
+	}
+	
+	@Override
+	public void fromNbt(NbtCompound nbt) {
+		this.currentPrice = nbt.contains("value") ? nbt.getFloat("value") : this.basePrice;
 	}
 
 }

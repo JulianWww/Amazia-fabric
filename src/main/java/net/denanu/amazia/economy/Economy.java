@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
 import net.minecraft.nbt.NbtCompound;
@@ -30,10 +31,39 @@ public class Economy extends PersistentState {
 		Economy out = new Economy();
 		
 		for (Entry<String, ItemEconomy> element : out.salePossibilites.entrySet()) {
-			element.getValue().fromNbt(nbt.getCompound(element.getKey()));
+			if (nbt.contains(element.getKey())) {
+				element.getValue().fromNbt(nbt.getCompound(element.getKey()));
+			}
+		}
+		for (Entry<String, ModifierEconomy> element : modifierPossibilities.entrySet()) {
+			if (nbt.contains(element.getKey())) {
+				element.getValue().fromNbt(nbt.getCompound(element.getKey()));
+			}
 		}
 		
 		return out;
+	}
+	
+	@Override
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.put("items", this.itemEconomyToNbt());
+		nbt.put("modifiers", this.itemModifiersToNbt());
+		return nbt;
+	}
+	
+	private NbtCompound itemEconomyToNbt() {
+		NbtCompound nbt = new NbtCompound();
+		for (Entry<String, ItemEconomy> element : this.salePossibilites.entrySet()) {
+			nbt.put(element.getKey(), element.getValue().toNbt());
+		}
+		return nbt;
+	}
+	private NbtCompound itemModifiersToNbt() {
+		NbtCompound nbt = new NbtCompound();
+		for (Entry<String, ModifierEconomy> element : modifierPossibilities.entrySet()) {
+			nbt.put(element.getKey(), element.getValue().toNbt());
+		}
+		return nbt;
 	}
 	
 	public static void addProfessionItem(final String profession, final String item) {
@@ -101,14 +131,6 @@ public class Economy extends PersistentState {
 			this.salePossibilites.put(factory.getKey(), factory.getValue().build());
 		}
 	}
-
-	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		for (Entry<String, ItemEconomy> element : this.salePossibilites.entrySet()) {
-			nbt.put(element.getKey(), element.getValue().toNbt());
-		}
-		return nbt;
-	}
 	
 	@Override
 	public boolean isDirty() {
@@ -130,8 +152,9 @@ public class Economy extends PersistentState {
 	
 	
 	public void update(int tick) {
-		if (tick % 20 == 0) {
+		if (tick % 1200 == 0) {
 			this.update();
+			return;
 		}
 	}
 

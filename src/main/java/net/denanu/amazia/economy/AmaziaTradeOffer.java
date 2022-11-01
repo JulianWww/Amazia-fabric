@@ -8,6 +8,7 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
 import net.denanu.amazia.economy.offerModifiers.OfferModifier;
+import net.denanu.amazia.exceptions.EconomyMissingModifierEconomyException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -184,6 +185,9 @@ public class AmaziaTradeOffer {
 			ModifierEconomy modifier = Economy.getModifierEconomy(mod);
 			if (modifier != null) {
 				modifier.modifiy(this);
+			}
+			else {
+				throw new EconomyMissingModifierEconomyException("Missing trade modifer price modifer of key: " + mod + "\nadd with AmaziaValueModifer::register");
 			}
 		}
 		return;

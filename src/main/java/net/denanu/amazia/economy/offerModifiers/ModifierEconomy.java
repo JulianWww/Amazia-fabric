@@ -1,6 +1,7 @@
 package net.denanu.amazia.economy.offerModifiers;
 
 import net.denanu.amazia.economy.AmaziaTradeOffer;
+import net.minecraft.nbt.NbtCompound;
 
 public interface ModifierEconomy {
 	public void modifiy(AmaziaTradeOffer offer);
@@ -11,4 +12,7 @@ public interface ModifierEconomy {
 	public float getCurrentPrice();
 	public void reset();
 	public void setCurrentPrice(float value);
+	
+	public NbtCompound toNbt();
+	public void fromNbt(NbtCompound nbt);
 }

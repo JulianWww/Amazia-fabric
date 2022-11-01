@@ -7,23 +7,26 @@ import net.minecraft.enchantment.Enchantments;
 
 public class AmaziaValueModifiers {
 	public static void setup() {
-		register(Enchantments.FIRE_PROTECTION, new BoonModifierEconomy(5, 1, 0.999f));
-		register(Enchantments.PROJECTILE_PROTECTION, new BoonModifierEconomy(5, 1, 0.999f));
-		register(Enchantments.BLAST_PROTECTION, new BoonModifierEconomy(5, 1, 0.999f));
-		register(Enchantments.PROTECTION, new BoonModifierEconomy(5, 1, 0.999f));
-		register(Enchantments.FEATHER_FALLING, new BoonModifierEconomy(5, 1, 0.999f));
-		register(Enchantments.UNBREAKING, new BoonModifierEconomy(5, 1, 0.999f));
-		register(Enchantments.THORNS, new BoonModifierEconomy(5, 1, 0.999f));
-		register(Enchantments.DEPTH_STRIDER, new BoonModifierEconomy(5, 1, 0.999f));
-		register(Enchantments.SOUL_SPEED, new BoonModifierEconomy(5, 1, 0.999f));
-		register(Enchantments.FROST_WALKER, new BoonModifierEconomy(5, 1, 0.999f));
-		register(Enchantments.MENDING, new BoonModifierEconomy(32, 5, 0.999f));
+		register(Enchantments.FIRE_PROTECTION, 			new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.PROJECTILE_PROTECTION, 	new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.BLAST_PROTECTION, 		new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.PROTECTION, 				new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.FEATHER_FALLING, 			new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.UNBREAKING, 				new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.THORNS, 					new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.DEPTH_STRIDER, 			new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.SOUL_SPEED, 				new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.FROST_WALKER, 			new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.MENDING, 					new BoonModifierEconomy(32, 5, 0.001f));
+		register(Enchantments.AQUA_AFFINITY,			new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.RESPIRATION,				new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.SWIFT_SNEAK, 				new BoonModifierEconomy(5,  1, 0.001f));
 		
 		
 		
 		
-		register(Enchantments.BINDING_CURSE, new DeficiteModifierEconomy(5, 1, 0.999f));
-		register(Enchantments.VANISHING_CURSE, new DeficiteModifierEconomy(5, 1, 0.999f));
+		register(Enchantments.BINDING_CURSE, 			new DeficiteModifierEconomy(5, 1, 0.001f));
+		register(Enchantments.VANISHING_CURSE, 			new DeficiteModifierEconomy(5, 1, 0.001f));
 	}
 			
 			
