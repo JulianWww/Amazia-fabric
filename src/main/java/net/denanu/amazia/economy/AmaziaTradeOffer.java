@@ -188,4 +188,13 @@ public class AmaziaTradeOffer {
 		}
 		return;
 	}
+
+	public void updateModifiers() {
+		for (String mod : this.priceModifiers) {
+			ModifierEconomy modifier = Economy.getModifierEconomy(mod);
+			if (modifier != null) {
+				modifier.update(this.getQuantity(), this.isBuy());;
+			}
+		}
+	}
 }

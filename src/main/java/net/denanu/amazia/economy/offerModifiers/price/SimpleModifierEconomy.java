@@ -21,10 +21,12 @@ public abstract class SimpleModifierEconomy implements ModifierEconomy {
 		offer.modifiedValue = offer.modifiedValue + this.currentPrice;
 	}
 	
+	@Override
 	public void reset() {
 		this.currentPrice = this.basePrice;
 	}
 	
+	@Override
 	public void update() {
 		this.currentPrice = this.currentPrice - (this.currentPrice - this.basePrice) * this.returnRate;
 	}
@@ -44,6 +46,11 @@ public abstract class SimpleModifierEconomy implements ModifierEconomy {
 	@Override
 	public float getCurrentPrice() {
 		return this.currentPrice;
+	}
+	
+	@Override
+	public void setCurrentPrice(float value) {
+		this.currentPrice = value;
 	}
 
 }

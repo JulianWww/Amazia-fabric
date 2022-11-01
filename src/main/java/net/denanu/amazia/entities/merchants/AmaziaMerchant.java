@@ -183,6 +183,7 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 	private void afterUsing(AmaziaTradeOffer offer) {
 		if (this.world.isClient) { throw new RuntimeException("runnign server script on client"); }
 		
+		offer.updateModifiers();
 		Amazia.economy.getItem(offer.getKey()).updatePrice(offer.getQuantity(), offer.isBuy());
 		ServerPlayNetworking.send((ServerPlayerEntity)this.customer, AmaziaNetworking.SET_TRADE_OFFERS, AmaziaSetTradeOffersS2CPacket.toBuf(this.customer.currentScreenHandler.syncId, this.getOffers()));
 	}

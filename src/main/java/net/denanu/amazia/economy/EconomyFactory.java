@@ -13,6 +13,22 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
 public class EconomyFactory {
+	public final static EnchantmentModifier BOOTS_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.3f, 0.8f)
+			.add(Enchantments.FIRE_PROTECTION, 1.0f)
+			.add(Enchantments.PROJECTILE_PROTECTION, 1.0f)
+			.add(Enchantments.BLAST_PROTECTION, 1.0f)
+			.add(Enchantments.PROTECTION, 1.0f)
+			.add(Enchantments.FEATHER_FALLING, 1.0f)
+			.add(Enchantments.UNBREAKING, 1.0f)
+			.add(Enchantments.THORNS, 1.0f)
+			.add(Enchantments.DEPTH_STRIDER, 1.0f)
+			.add(Enchantments.SOUL_SPEED, 1.0f)
+			.add(Enchantments.FROST_WALKER, 1.0f)
+			.add(Enchantments.MENDING, 0.001f)
+			.add(Enchantments.BINDING_CURSE, 5.0f)
+			.add(Enchantments.VANISHING_CURSE, 1.0f);
+			
+	
 	public static void setup() {         // value       volatility  return rate | stackSize generator							professions
 		/*register(Items.COAL, 					0.0666f, 	0.0001f, 	0.99f,	new ConstrainedGaussianRandom(20f, 8f, 64, 1), 	ImmutableSet.of("armorer"));
 		register(Items.IRON_HELMET, 			5, 			2f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));
@@ -31,7 +47,7 @@ public class EconomyFactory {
 		register(Items.DIAMOND_HELMET, 			27, 		4f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));
 		register(Items.DIAMOND_CHESTPLATE, 		35, 		4f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));
 		register(Items.DIAMOND_LEGGINGS, 		33, 		4f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));*/
-		register(Items.DIAMOND_BOOTS, 			27, 		4f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(new EnchantmentModifier().add(Enchantments.PROTECTION, 1));
+		register(Items.DIAMOND_BOOTS, 			27, 		4f, 		0.999f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(BOOTS_ENCHANTMENT_MODIFIER);
 	}
 	
 	private static ItemEconomyFactory register(Item itm, float baseValue, float volatility, float returnRate, RandomnessFactory<Integer> stackSizeFactory, Collection<String> professions) {

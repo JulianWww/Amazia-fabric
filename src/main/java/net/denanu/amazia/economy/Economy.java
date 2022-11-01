@@ -119,9 +119,28 @@ public class Economy extends PersistentState {
 		for (Entry<String, ItemEconomy> entry : this.salePossibilites.entrySet()) {
 			entry.getValue().reset();
 		}
+		for (Entry<String, ModifierEconomy> entry : Economy.modifierPossibilities.entrySet()) {
+			entry.getValue().reset();
+		}
 	}
 
 	public static Collection<String> getModifierList() {
 		return Economy.modifierPossibilities.keySet();
+	}
+	
+	
+	public void update(int tick) {
+		if (tick % 20 == 0) {
+			this.update();
+		}
+	}
+
+	private void update() {
+		for (Entry<String, ItemEconomy> entry : this.salePossibilites.entrySet()) {
+			entry.getValue().update();
+		}
+		for (Entry<String, ModifierEconomy> entry : Economy.modifierPossibilities.entrySet()) {
+			entry.getValue().update();
+		}
 	}
 }
