@@ -1,7 +1,9 @@
 package net.denanu.amazia.economy.offerModifiers.finalizers;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.economy.AmaziaTradeOffer;
 import net.denanu.amazia.utils.random.RandomCollection;
+import net.denanu.amazia.utils.scanners.ChunkScanner;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.map.MapIcon;
@@ -11,10 +13,13 @@ import net.minecraft.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.structure.Structure;
 
 public class MapFinalModifer extends OfferFinalModifer {
-	private final RandomCollection<TagKey<Structure>> structures;
+	private final RandomCollection<Identifier> structures;
 	private final MapIcon.Type icon;
 	private final String nameKey;
 	
@@ -22,11 +27,11 @@ public class MapFinalModifer extends OfferFinalModifer {
 		super(ident);
 		this.nameKey = name;
 		this.icon = icon;
-		this.structures = new RandomCollection<TagKey<Structure>>();
+		this.structures = new RandomCollection<Identifier>();
 	}
 	
 	
-	public MapFinalModifer add(TagKey<Structure> structure, float weight) {
+	public MapFinalModifer add(Identifier structure, float weight) {
 		this.structures.add(weight, structure);
 		return this;
 	}
@@ -35,18 +40,24 @@ public class MapFinalModifer extends OfferFinalModifer {
 	public void modify(AmaziaTradeOffer offer, LivingEntity merchant) {
 		ServerWorld world = (ServerWorld)merchant.world;
 		
-		TagKey<Structure> structure = this.structures.next();
-		BlockPos pos = world.locateStructure(structure, merchant.getBlockPos(), 25, true);
-		offer.setIsBuy(false);
+		Identifier structure = this.structures.next();
+		ChunkPos pos = Amazia.chunkScanner.getPos(structure);
+		offer.item.setCustomName(Text.translatable(this.nameKey));
 		if (pos!= null) {
-			 offer.item = FilledMapItem.createMap(world, pos.getX(), pos.getZ(), (byte)2, true, true);
-			 FilledMapItem.fillExplorationMap(world, offer.item);
-             MapState.addDecorationsNbt(offer.item, pos, "+", this.icon);
-             offer.item.setCustomName(Text.translatable(this.nameKey));
+			BlockPos loc = pos.getBlockPos(6, 0, 6);
+			Amazia.chunkScanner.markDirty(structure);
+			offer.item = FilledMapItem.createMap(world, loc.getX(), loc.getZ(), (byte)2, true, true);
+			MapState.addDecorationsNbt(offer.item, loc, "+", this.icon);
 		}
 		else {
 			offer.disable();
 		}
+	}
+
+
+
+	public MapFinalModifer add(RegistryKey<Structure> key, float weight) {
+		return this.add(key.getValue(), weight);
 	}
 
 }
