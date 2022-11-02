@@ -36,7 +36,8 @@ public class MapFinalModifer extends OfferFinalModifer {
 		ServerWorld world = (ServerWorld)merchant.world;
 		
 		TagKey<Structure> structure = this.structures.next();
-		BlockPos pos = world.locateStructure(structure, merchant.getBlockPos(), 100, true);
+		BlockPos pos = world.locateStructure(structure, merchant.getBlockPos(), 25, true);
+		offer.setIsBuy(false);
 		if (pos!= null) {
 			 offer.item = FilledMapItem.createMap(world, pos.getX(), pos.getZ(), (byte)2, true, true);
 			 FilledMapItem.fillExplorationMap(world, offer.item);

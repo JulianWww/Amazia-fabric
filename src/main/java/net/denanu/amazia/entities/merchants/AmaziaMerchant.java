@@ -108,7 +108,7 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
             }*/
             if (!this.world.isClient) {
                 this.setCustomer(player);
-                this.sendOffers(player, this.getOffers(), this.getName());
+                this.sendOffers(player, this.getOffers(), this.getName(), this);
             }
             return ActionResult.success(this.world.isClient);
 		}
