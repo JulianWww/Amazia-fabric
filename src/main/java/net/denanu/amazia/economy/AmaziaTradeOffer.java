@@ -31,13 +31,16 @@ public class AmaziaTradeOffer {
 	public List<OfferFinalModifer> finalizers;
 
 	public AmaziaTradeOffer(ItemStack item, float value, boolean buy) {
+		this(item, value, buy, true);
+	}
+	public AmaziaTradeOffer(ItemStack item, float value, boolean buy, boolean valid) {
 		this.item = item;
 		this.value = value;
 		this.buy = buy;
 		this.dirty = true;
 		
 		this.modifiedValue = this.value;
-		this.valid = true;
+		this.valid = valid;
 		
 		this.priceModifiers = new LinkedList<String>();
 		this.finalizers = new ArrayList<OfferFinalModifer>();
@@ -224,8 +227,6 @@ public class AmaziaTradeOffer {
 				modifier.update(this.getQuantity(), this.isBuy());;
 			}
 		}
-		
-		this.finalze(merchant);
 	}
 	
 	public void finalze(LivingEntity merchant) {
@@ -242,5 +243,8 @@ public class AmaziaTradeOffer {
 	public AmaziaTradeOffer setFinalizers(ArrayList<OfferFinalModifer> finals) {
 		this.finalizers = finals;
 		return this;
+	}
+	public void setIsBuy(boolean b) {
+		this.buy = b;		
 	}
 }
