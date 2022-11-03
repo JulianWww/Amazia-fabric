@@ -31,6 +31,7 @@ public class ProfessionFactory {
 		register(Amazia.MOD_ID, "mason", 1.0f);
 		register(Amazia.MOD_ID, "shepherd", 1.0f);
 		register(Amazia.MOD_ID, "toolsmith", 1.0f);
+		register(Amazia.MOD_ID, "weaponsmith", 1.0f);
 	}
 }
 
