@@ -11,6 +11,7 @@ import net.denanu.amazia.economy.itemEconomy.BaseItemEconomy;
 import net.denanu.amazia.economy.itemEconomy.ItemCompundEconomy;
 import net.denanu.amazia.economy.itemEconomy.ItemEconomy;
 import net.denanu.amazia.economy.offerModifiers.finalizers.AmaziaFinalModifiers;
+import net.denanu.amazia.economy.offerModifiers.item.DieItemModifier;
 import net.denanu.amazia.economy.offerModifiers.item.EnchantmentModifier;
 import net.denanu.amazia.economy.offerModifiers.item.ItemReselector;
 import net.denanu.amazia.economy.offerModifiers.item.PotionEffectModifier;
@@ -125,6 +126,7 @@ public class EconomyFactory {
 			;
 	
 	public final static PotionEffectModifier ARROW_POTION_EFFECT_MODIFIER = new PotionEffectModifier();
+	public final static DieItemModifier LEATHER_ARMOR_MODIFIER = new DieItemModifier();
 	
 	 																								 // value       volatility  return rate | stackSize generator							professions
 	public final static BaseItemEconomy COAL = 					register(Items.COAL, 					0.0666f, 	0.0001f, 	0.01f,	new ConstrainedGaussianRandom(20f, 8f, 64, 1), 	ImmutableSet.of("armorer", "butcher", "fischerman"));
@@ -172,7 +174,7 @@ public class EconomyFactory {
 	public final static BaseItemEconomy LAPIS_LAZULI =			register(Items.LAPIS_LAZULI,			1f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
 	public final static BaseItemEconomy RABBIT_FOOT =			register(Items.RABBIT_FOOT,				0.5f, 		0.1f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
 	public final static BaseItemEconomy GLOWSTONE =				register(Items.GLOWSTONE,				4f, 		0.1f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
-	public final static BaseItemEconomy SCUTE =					register(Items.SCUTE,					4f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
+	public final static BaseItemEconomy SCUTE =					register(Items.SCUTE,					4f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric", "leatherworker"));
 	public final static BaseItemEconomy GLASS_BOTTLE =			register(Items.GLASS_BOTTLE,			0.1f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
 	public final static BaseItemEconomy ENDER_PEARL =			register(Items.ENDER_PEARL,				5f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
 	public final static BaseItemEconomy NETHER_WART =			register(Items.NETHER_WART,				0.05f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
@@ -205,13 +207,22 @@ public class EconomyFactory {
 	public final static BaseItemEconomy COOKED_SALMON = 		ItemCompundEconomy.register(Items.COOKED_SALMON, ImmutableSet.of(ImmutablePair.of(COD, 1f), ImmutablePair.of(COAL, 0.2f)), new ConstrainedGaussianRandom(32, 8, 64, 1), 	ImmutableSet.of("fischerman"));
 
 	public final static BaseItemEconomy STICK = 				register(Items.STICK,					0.03f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher"));
-	public final static BaseItemEconomy FLINT = 				register(Items.FLINT,					0.03f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher"));
+	public final static BaseItemEconomy FLINT = 				register(Items.FLINT,					0.03f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher", "leatherworker"));
 	public final static BaseItemEconomy FEATHER = 				register(Items.FEATHER,					0.1f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher"));
 	public final static BaseItemEconomy BOW = 					register(Items.BOW,						2f, 		1f,			0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("fletcher")).modify(BOW_ENCHANTMENT_MODIFIER);
 	public final static BaseItemEconomy CROSSBOW = 				register(Items.CROSSBOW,				2f, 		1f,			0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("fletcher")).modify(CROSSBOW_ENCHANTMENT_MODIFIER);
 	public final static BaseItemEconomy TRIPWIRE_HOOK =			register(Items.TRIPWIRE_HOOK,			1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher"));
 	public final static BaseItemEconomy ARROW = 				register(Items.ARROW,					1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher"));
 	public final static BaseItemEconomy TIPPED_ARROW = 			register(Items.TIPPED_ARROW,			2f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher")).modify(ARROW_POTION_EFFECT_MODIFIER);
+	
+	public final static BaseItemEconomy LEATHER =				register(Items.LEATHER, 				0.1f,	 	0.01f, 		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("leatherworker"));
+	public final static BaseItemEconomy RABBIT_HIDE =			register(Items.RABBIT_HIDE,				0.111f, 	0.01f, 		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("leatherworker"));
+	public final static BaseItemEconomy SADDLE =				register(Items.SADDLE,					6f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("leatherworker"));
+	public final static BaseItemEconomy LEATHER_HELMET =		register(Items.LEATHER_HELMET,			5f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("leatherworker")).modify(LEATHER_ARMOR_MODIFIER);
+	public final static BaseItemEconomy LEATHER_CHESTPLATE =	register(Items.LEATHER_CHESTPLATE,		7f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("leatherworker")).modify(LEATHER_ARMOR_MODIFIER);
+	public final static BaseItemEconomy LEATHER_LEGGINGS =		register(Items.LEATHER_LEGGINGS,		3f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("leatherworker")).modify(LEATHER_ARMOR_MODIFIER);
+	public final static BaseItemEconomy LEATHER_BOOTS =			register(Items.LEATHER_BOOTS,			4f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("leatherworker")).modify(LEATHER_ARMOR_MODIFIER);
+	public final static BaseItemEconomy LEATHER_HORSE_ARMOR =	register(Items.LEATHER_HORSE_ARMOR,		6f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("leatherworker")).modify(LEATHER_ARMOR_MODIFIER);
 	
 	
 	
