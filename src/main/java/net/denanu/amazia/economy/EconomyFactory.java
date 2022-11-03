@@ -13,6 +13,7 @@ import net.denanu.amazia.economy.itemEconomy.ItemEconomy;
 import net.denanu.amazia.economy.offerModifiers.finalizers.AmaziaFinalModifiers;
 import net.denanu.amazia.economy.offerModifiers.item.EnchantmentModifier;
 import net.denanu.amazia.economy.offerModifiers.item.ItemReselector;
+import net.denanu.amazia.economy.offerModifiers.item.PotionEffectModifier;
 import net.denanu.amazia.utils.random.ConstantValue;
 import net.denanu.amazia.utils.random.ConstrainedGaussianRandom;
 import net.denanu.amazia.utils.random.LinearRandom;
@@ -87,6 +88,23 @@ public class EconomyFactory {
 			.add(Enchantments.MENDING, 					0.001f)
 			.add(Enchantments.VANISHING_CURSE, 			0.2f);
 	
+	public final static EnchantmentModifier BOW_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.3f, 0.5f)
+			.add(Enchantments.POWER, 					5.0f)
+			.add(Enchantments.PUNCH, 					1.0f)
+			.add(Enchantments.FLAME, 					1.0f)
+			.add(Enchantments.INFINITY, 				1.0f)
+			.add(Enchantments.UNBREAKING, 				1.0f)
+			.add(Enchantments.MENDING, 					0.001f)
+			.add(Enchantments.VANISHING_CURSE, 			0.2f);
+	
+	public final static EnchantmentModifier CROSSBOW_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.3f, 0.5f)
+			.add(Enchantments.QUICK_CHARGE, 			5.0f)
+			.add(Enchantments.MULTISHOT, 				1.0f)
+			.add(Enchantments.PIERCING, 				1.0f)
+			.add(Enchantments.UNBREAKING, 				1.0f)
+			.add(Enchantments.MENDING, 					0.001f)
+			.add(Enchantments.VANISHING_CURSE, 			0.2f);
+	
 	public final static ItemReselector BANNER_COLOR_MODIFIER = new ItemReselector()
 			.add(Items.BLACK_BANNER, 	   10.0f)
 			.add(Items.BLUE_BANNER, 		1.0f)
@@ -105,6 +123,8 @@ public class EconomyFactory {
 			.add(Items.WHITE_BANNER, 	   20.0f)
 			.add(Items.YELLOW_BANNER, 		1.0f)
 			;
+	
+	public final static PotionEffectModifier ARROW_POTION_EFFECT_MODIFIER = new PotionEffectModifier();
 	
 	 																								 // value       volatility  return rate | stackSize generator							professions
 	public final static BaseItemEconomy COAL = 					register(Items.COAL, 					0.0666f, 	0.0001f, 	0.01f,	new ConstrainedGaussianRandom(20f, 8f, 64, 1), 	ImmutableSet.of("armorer", "butcher", "fischerman"));
@@ -173,17 +193,27 @@ public class EconomyFactory {
 	public final static BaseItemEconomy GOLDEN_CARROT =			register(Items.GOLDEN_CARROT,			1f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("farmer"));
 	public final static BaseItemEconomy GLISTERING_MELON_SLICE= register(Items.GLISTERING_MELON_SLICE,	1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("farmer"));
 	
-	public final static BaseItemEconomy STRING = 				register(Items.STRING,					1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
-	public final static BaseItemEconomy COD = 					register(Items.COD,						1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
-	public final static BaseItemEconomy SALMON = 				register(Items.SALMON,					1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
-	public final static BaseItemEconomy CAMPFIRE = 				register(Items.CAMPFIRE,				1.3f, 		0.01f,		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("fischerman"));
-	public final static BaseItemEconomy FISCHING_ROD = 			register(Items.FISHING_ROD,				1.3f, 		1f, 		0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("fischerman")).modify(FISCHING_ROD_ENCHANTMENT_MODIFIER);
-	public final static BaseItemEconomy TROPICAL_FISH = 		register(Items.TROPICAL_FISH,			1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
-	public final static BaseItemEconomy PUFFERFISH = 			register(Items.PUFFERFISH,				1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
-	public final static BaseItemEconomy ACACIA_BOAT = 			register(Items.ACACIA_BOAT,				1.3f, 		0.01f,		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy STRING = 				register(Items.STRING,					0.05f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman", "fletcher"));
+	public final static BaseItemEconomy COD = 					register(Items.COD,						0.1f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy SALMON = 				register(Items.SALMON,					0.1f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy CAMPFIRE = 				register(Items.CAMPFIRE,				2f, 		0.01f,		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy FISCHING_ROD = 			register(Items.FISHING_ROD,				22f, 		1f, 		0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("fischerman")).modify(FISCHING_ROD_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy TROPICAL_FISH = 		register(Items.TROPICAL_FISH,			0.4f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy PUFFERFISH = 			register(Items.PUFFERFISH,				0.25f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy ACACIA_BOAT = 			register(Items.ACACIA_BOAT,				1f, 		0.01f,		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("fischerman"));
 	public final static BaseItemEconomy COOKED_COD = 			ItemCompundEconomy.register(Items.COOKED_COD,    ImmutableSet.of(ImmutablePair.of(COD, 1f), ImmutablePair.of(COAL, 0.2f)), new ConstrainedGaussianRandom(32, 8, 64, 1), 	ImmutableSet.of("fischerman"));
 	public final static BaseItemEconomy COOKED_SALMON = 		ItemCompundEconomy.register(Items.COOKED_SALMON, ImmutableSet.of(ImmutablePair.of(COD, 1f), ImmutablePair.of(COAL, 0.2f)), new ConstrainedGaussianRandom(32, 8, 64, 1), 	ImmutableSet.of("fischerman"));
 
+	public final static BaseItemEconomy STICK = 				register(Items.STICK,					0.03f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher"));
+	public final static BaseItemEconomy FLINT = 				register(Items.FLINT,					0.03f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher"));
+	public final static BaseItemEconomy FEATHER = 				register(Items.FEATHER,					0.1f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher"));
+	public final static BaseItemEconomy BOW = 					register(Items.BOW,						2f, 		1f,			0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("fletcher")).modify(BOW_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy CROSSBOW = 				register(Items.CROSSBOW,				2f, 		1f,			0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("fletcher")).modify(CROSSBOW_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy TRIPWIRE_HOOK =			register(Items.TRIPWIRE_HOOK,			1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher"));
+	public final static BaseItemEconomy ARROW = 				register(Items.ARROW,					1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher"));
+	public final static BaseItemEconomy TIPPED_ARROW = 			register(Items.TIPPED_ARROW,			2f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fletcher")).modify(ARROW_POTION_EFFECT_MODIFIER);
+	
+	
 	
 	
 	public static void setup() { 

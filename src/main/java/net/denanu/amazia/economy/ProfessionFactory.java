@@ -23,8 +23,9 @@ public class ProfessionFactory {
 		register(Amazia.MOD_ID, "butcher", 1.0f);
 		register(Amazia.MOD_ID, "cartographer", 1.0f);
 		register(Amazia.MOD_ID, "cleric", 1.0f);
-		register(Amazia.MOD_ID, "farmer", 1.0f);*/
-		register(Amazia.MOD_ID, "fischerman", 1.0f);
+		register(Amazia.MOD_ID, "farmer", 1.0f);
+		register(Amazia.MOD_ID, "fischerman", 1.0f);*/
+		register(Amazia.MOD_ID, "fletcher", 1.0f);
 	}
 }
 

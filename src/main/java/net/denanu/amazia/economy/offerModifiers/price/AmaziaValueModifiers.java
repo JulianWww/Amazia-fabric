@@ -25,6 +25,15 @@ public class AmaziaValueModifiers {
 		register(Enchantments.LUCK_OF_THE_SEA, 			new BoonModifierEconomy(5,  1, 0.001f));
 		register(Enchantments.LURE,						new BoonModifierEconomy(5,  1, 0.001f));
 		
+		register(Enchantments.POWER, 					new BoonModifierEconomy(5, 1, 0.001f));
+		register(Enchantments.PUNCH,					new BoonModifierEconomy(5, 1, 0.001f));
+		register(Enchantments.INFINITY, 				new BoonModifierEconomy(5, 1, 0.001f));
+		register(Enchantments.FLAME, 					new BoonModifierEconomy(5, 1, 0.001f));
+		
+		register(Enchantments.QUICK_CHARGE, 			new BoonModifierEconomy(5, 1, 0.001f));
+		register(Enchantments.PIERCING, 				new BoonModifierEconomy(5, 1, 0.001f));
+		register(Enchantments.MULTISHOT, 				new BoonModifierEconomy(5, 1, 0.001f));
+		
 		
 		
 		
