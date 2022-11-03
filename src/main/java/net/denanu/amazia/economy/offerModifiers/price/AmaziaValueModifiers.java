@@ -7,40 +7,51 @@ import net.minecraft.enchantment.Enchantments;
 
 public class AmaziaValueModifiers {
 	public static void setup() {
-		register(Enchantments.FIRE_PROTECTION, 			new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.PROJECTILE_PROTECTION, 	new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.BLAST_PROTECTION, 		new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.PROTECTION, 				new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.FEATHER_FALLING, 			new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.UNBREAKING, 				new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.THORNS, 					new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.DEPTH_STRIDER, 			new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.SOUL_SPEED, 				new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.FROST_WALKER, 			new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.MENDING, 					new BoonModifierEconomy(32, 5, 0.001f));
-		register(Enchantments.AQUA_AFFINITY,			new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.RESPIRATION,				new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.SWIFT_SNEAK, 				new BoonModifierEconomy(5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.PROTECTION, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.FIRE_PROTECTION, 			5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.FEATHER_FALLING, 			5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.BLAST_PROTECTION, 			5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.PROJECTILE_PROTECTION, 	5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.RESPIRATION, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.AQUA_AFFINITY, 			5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.THORNS, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.DEPTH_STRIDER, 			5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.FROST_WALKER, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.SOUL_SPEED, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.SWIFT_SNEAK, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.SHARPNESS, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.SMITE, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.BANE_OF_ARTHROPODS, 		5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.KNOCKBACK, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.FIRE_ASPECT, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.LOOTING, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.SWEEPING, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.EFFICIENCY, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.SILK_TOUCH, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.UNBREAKING, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.FORTUNE, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.POWER, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.PUNCH, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.FLAME, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.INFINITY, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.LUCK_OF_THE_SEA, 			5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.LURE, 						5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.LOYALTY, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.IMPALING, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.RIPTIDE, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.CHANNELING, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.MULTISHOT, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.QUICK_CHARGE, 				5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.PIERCING, 					5,  1, 0.001f));
+		register(new BoonEnchantmentModifierEconomy(Enchantments.MENDING, 					5,  1, 0.001f));
 		
-		register(Enchantments.LUCK_OF_THE_SEA, 			new BoonModifierEconomy(5,  1, 0.001f));
-		register(Enchantments.LURE,						new BoonModifierEconomy(5,  1, 0.001f));
-		
-		register(Enchantments.POWER, 					new BoonModifierEconomy(5, 1, 0.001f));
-		register(Enchantments.PUNCH,					new BoonModifierEconomy(5, 1, 0.001f));
-		register(Enchantments.INFINITY, 				new BoonModifierEconomy(5, 1, 0.001f));
-		register(Enchantments.FLAME, 					new BoonModifierEconomy(5, 1, 0.001f));
-		
-		register(Enchantments.QUICK_CHARGE, 			new BoonModifierEconomy(5, 1, 0.001f));
-		register(Enchantments.PIERCING, 				new BoonModifierEconomy(5, 1, 0.001f));
-		register(Enchantments.MULTISHOT, 				new BoonModifierEconomy(5, 1, 0.001f));
-		
-		
-		
-		
-		register(Enchantments.BINDING_CURSE, 			new DeficiteModifierEconomy(5, 1, 0.001f));
-		register(Enchantments.VANISHING_CURSE, 			new DeficiteModifierEconomy(5, 1, 0.001f));
+		register(new DeficiteEnchantmentModifierEconomy(Enchantments.BINDING_CURSE, 		5,  1, 0.001f));
+		register(new DeficiteEnchantmentModifierEconomy(Enchantments.VANISHING_CURSE, 		5,  1, 0.001f));
 	}
-			
+	
+	private static String register(EnchantmentValueModifier mod) {
+		return register(mod.getEnchant(), mod);
+	}
 			
 	private static String register(Enchantment enchant, ModifierEconomy economy) {
 		return register(enchant.getTranslationKey(), economy);

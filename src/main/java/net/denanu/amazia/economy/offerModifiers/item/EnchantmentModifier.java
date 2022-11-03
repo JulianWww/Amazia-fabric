@@ -63,6 +63,6 @@ public class EnchantmentModifier implements OfferModifier {
 	}
 	
 	private int getLvl(Enchantment enchant) {
-		return 1;
+		return enchant.getMaxLevel() > 1 ? JJUtils.rand.nextInt(1, enchant.getMaxLevel()) : 1;
 	}
 }
