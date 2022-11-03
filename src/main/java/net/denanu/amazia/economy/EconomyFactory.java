@@ -11,6 +11,7 @@ import net.denanu.amazia.economy.itemEconomy.BaseItemEconomy;
 import net.denanu.amazia.economy.itemEconomy.ItemCompundEconomy;
 import net.denanu.amazia.economy.itemEconomy.ItemEconomy;
 import net.denanu.amazia.economy.offerModifiers.finalizers.AmaziaFinalModifiers;
+import net.denanu.amazia.economy.offerModifiers.item.BuyOnlyModifier;
 import net.denanu.amazia.economy.offerModifiers.item.DieItemModifier;
 import net.denanu.amazia.economy.offerModifiers.item.EnchantmentModifier;
 import net.denanu.amazia.economy.offerModifiers.item.ItemReselector;
@@ -19,13 +20,13 @@ import net.denanu.amazia.utils.random.ConstantValue;
 import net.denanu.amazia.utils.random.ConstrainedGaussianRandom;
 import net.denanu.amazia.utils.random.LinearRandom;
 import net.denanu.amazia.utils.random.RandomnessFactory;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.util.Pair;
 
 public class EconomyFactory {
+	public final static BuyOnlyModifier BUY_ONLY_MODIFIER = new BuyOnlyModifier();
+	
 	public final static EnchantmentModifier HELMET_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.3f, 0.8f)
 			.add(Enchantments.FIRE_PROTECTION, 			1.0f)
 			.add(Enchantments.PROJECTILE_PROTECTION, 	1.0f)
@@ -106,6 +107,47 @@ public class EconomyFactory {
 			.add(Enchantments.MENDING, 					0.001f)
 			.add(Enchantments.VANISHING_CURSE, 			0.2f);
 	
+	public final static EnchantmentModifier ENCHANTED_BOOK_MODIFIER = new EnchantmentModifier(0.3f, 1.0f)
+			.add(Enchantments.PROTECTION, 				1.0f)
+			.add(Enchantments.FIRE_PROTECTION, 			1.0f)
+			.add(Enchantments.FEATHER_FALLING, 			1.0f)
+			.add(Enchantments.BLAST_PROTECTION, 		1.0f)
+			.add(Enchantments.PROJECTILE_PROTECTION,	1.0f)
+			.add(Enchantments.RESPIRATION, 				1.0f)
+			.add(Enchantments.AQUA_AFFINITY, 			1.0f)
+			.add(Enchantments.THORNS, 					1.0f)
+			.add(Enchantments.DEPTH_STRIDER, 			1.0f)
+			.add(Enchantments.FROST_WALKER, 			1.0f)
+			.add(Enchantments.BINDING_CURSE, 			1.0f)
+			.add(Enchantments.SOUL_SPEED, 				1.0f)
+			.add(Enchantments.SWIFT_SNEAK, 				1.0f)
+			.add(Enchantments.SHARPNESS,				1.0f)
+			.add(Enchantments.SMITE,					1.0f)
+			.add(Enchantments.BANE_OF_ARTHROPODS,		1.0f)
+			.add(Enchantments.KNOCKBACK,				1.0f)
+			.add(Enchantments.FIRE_ASPECT,				1.0f)
+			.add(Enchantments.LOOTING,					1.0f)
+			.add(Enchantments.SWEEPING,					1.0f)
+			.add(Enchantments.EFFICIENCY,				1.0f)
+			.add(Enchantments.SILK_TOUCH,				1.0f)
+			.add(Enchantments.UNBREAKING,				1.0f)
+			.add(Enchantments.FORTUNE,					1.0f)
+			.add(Enchantments.POWER,					1.0f)
+			.add(Enchantments.PUNCH,					1.0f)
+			.add(Enchantments.FLAME,					1.0f)
+			.add(Enchantments.INFINITY,					1.0f)
+			.add(Enchantments.LUCK_OF_THE_SEA,			1.0f)
+			.add(Enchantments.LURE,						1.0f)
+			.add(Enchantments.LOYALTY,					1.0f)
+			.add(Enchantments.IMPALING,					1.0f)
+			.add(Enchantments.RIPTIDE,					1.0f)
+			.add(Enchantments.CHANNELING,				1.0f)
+			.add(Enchantments.MULTISHOT,				1.0f)
+			.add(Enchantments.QUICK_CHARGE,				1.0f)
+			.add(Enchantments.PIERCING,					1.0f)
+			.add(Enchantments.MENDING,					1.0f)
+			.add(Enchantments.VANISHING_CURSE, 			1.0f);
+	
 	public final static ItemReselector BANNER_COLOR_MODIFIER = new ItemReselector()
 			.add(Items.BLACK_BANNER, 	   10.0f)
 			.add(Items.BLUE_BANNER, 		1.0f)
@@ -159,10 +201,10 @@ public class EconomyFactory {
 	public final static BaseItemEconomy DRIED_KELP_BLOCK = 		register(Items.DRIED_KELP_BLOCK, 		0.1f, 		1f,			0.001f, new ConstrainedGaussianRandom(32, 16, 64, 1),	ImmutableSet.of("butcher"));
 	public final static BaseItemEconomy SWEET_BERRIES = 		register(Items.SWEET_BERRIES, 			0.1f, 		1f,			0.001f, new ConstrainedGaussianRandom(32, 16, 64, 1),	ImmutableSet.of("butcher"));
 	
-	public final static BaseItemEconomy PAPER = 				register(Items.PAPER,		 			0.05f, 		1f,			0.001f, new ConstantValue<Integer>(64),					ImmutableSet.of("cartographer"));
+	public final static BaseItemEconomy PAPER = 				register(Items.PAPER,		 			0.05f, 		1f,			0.001f, new ConstantValue<Integer>(64),					ImmutableSet.of("cartographer", "librarian"));
 	public final static BaseItemEconomy MAP = 					register(Items.MAP,		 				7f, 		1f,			0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("cartographer"));
 	public final static BaseItemEconomy GLASS_PANE =			register(Items.GLASS_PANE,		 		11f, 		1f,			0.001f, new ConstrainedGaussianRandom(48, 8, 64, 1),	ImmutableSet.of("cartographer"));
-	public final static BaseItemEconomy COMPASS = 				register(Items.COMPASS,					13f, 		1f,			0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("cartographer"));
+	public final static BaseItemEconomy COMPASS = 				register(Items.COMPASS,					13f, 		1f,			0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("cartographer", "librarian"));
 	public final static BaseItemEconomy EXPLORERS_MAP =			ItemCompundEconomy.register(Items.FILLED_MAP,  ImmutableSet.of(ImmutablePair.of(MAP, 2f), ImmutablePair.of(COMPASS,  2f)), new ConstantValue<Integer>(1), ImmutableSet.of("cartographer")).finalize(AmaziaFinalModifiers.EXPLORER_MAP_BUILDER);
 	public final static BaseItemEconomy ItemFrame = 			register(Items.ITEM_FRAME,				7f, 		1f,			0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("cartographer"));
 	public final static BaseItemEconomy BANNER = 				register(Items.BLACK_BANNER,			13f, 		1f,			0.001f, new ConstrainedGaussianRandom(8, 4, 16, 1),		ImmutableSet.of("cartographer")).modify(BANNER_COLOR_MODIFIER);
@@ -224,6 +266,14 @@ public class EconomyFactory {
 	public final static BaseItemEconomy LEATHER_BOOTS =			register(Items.LEATHER_BOOTS,			4f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("leatherworker")).modify(LEATHER_ARMOR_MODIFIER);
 	public final static BaseItemEconomy LEATHER_HORSE_ARMOR =	register(Items.LEATHER_HORSE_ARMOR,		6f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("leatherworker")).modify(LEATHER_ARMOR_MODIFIER);
 	
+	public final static BaseItemEconomy ENCHANTED_BOOK =		register(Items.ENCHANTED_BOOK,			5f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("librarian")).count(3).modify(BUY_ONLY_MODIFIER).modify(ENCHANTED_BOOK_MODIFIER);
+	public final static BaseItemEconomy BOOKSHELF =				register(Items.BOOKSHELF,				9f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(16, 4, 64, 1),	ImmutableSet.of("librarian"));
+	public final static BaseItemEconomy BOOK =					register(Items.BOOK,					4f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("librarian"));
+	public final static BaseItemEconomy LANTERN =				register(Items.LANTERN,					1f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(16, 4, 64, 1),	ImmutableSet.of("librarian"));
+	public final static BaseItemEconomy GLASS =					register(Items.GLASS,					0.25f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(16, 4, 64, 1),	ImmutableSet.of("librarian"));
+	public final static BaseItemEconomy WRITABLE_BOOK =			register(Items.WRITABLE_BOOK,			1f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("librarian"));
+	public final static BaseItemEconomy CLOCK =					register(Items.CLOCK,					5f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(16, 4, 64, 1),	ImmutableSet.of("librarian"));
+	public final static BaseItemEconomy NAME_TAG =				register(Items.NAME_TAG,				20f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("librarian"));
 	
 	
 	

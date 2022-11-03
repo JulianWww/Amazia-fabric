@@ -1,11 +1,12 @@
 package net.denanu.amazia.economy.offerModifiers.price;
 
 import net.denanu.amazia.economy.itemEconomy.ItemEconomy;
+import net.minecraft.enchantment.Enchantment;
 
-public class BoonModifierEconomy extends SimpleModifierEconomy {
+public class BoonEnchantmentModifierEconomy extends EnchantmentValueModifier {
 
-	public BoonModifierEconomy(float price, float volatility, float returnRate) {
-		super(price, volatility, returnRate);
+	public BoonEnchantmentModifierEconomy(Enchantment enchant, float price, float volatility, float returnRate) {
+		super(price, volatility, returnRate, enchant);
 	}
 
 	@Override

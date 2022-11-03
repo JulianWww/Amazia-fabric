@@ -15,12 +15,14 @@ import net.minecraft.nbt.NbtElement;
 public abstract class BaseItemEconomy {
 	protected final Item itm;
 	protected final ArrayList<OfferModifier> modifiers;
+	private int count;
 	private ArrayList<OfferFinalModifer> finalizers;
 	
 	public BaseItemEconomy(final Item itm) {
 		this.itm = itm;
 		this.modifiers = new ArrayList<OfferModifier>();
 		this.finalizers = new ArrayList<OfferFinalModifer>();
+		this.count = 1;
 	}
 
 	public abstract void fromNbt(NbtCompound compound);
@@ -61,5 +63,14 @@ public abstract class BaseItemEconomy {
 
 	public boolean hasNbt() {
 		return true;
+	}
+
+	public BaseItemEconomy count(int i) {
+		this.count = i;
+		return this;
+	}
+	
+	public int getCount() {
+		return this.count;
 	}
 }

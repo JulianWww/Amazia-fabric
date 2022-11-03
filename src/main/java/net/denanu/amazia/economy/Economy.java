@@ -115,7 +115,10 @@ public class Economy extends PersistentState {
 		AmaziaTradeOfferList out = new AmaziaTradeOfferList();
 		Collection<String> items = merchant.getTradePossibilities();
 		for (String item : items) {
-			out.add(salePossibilites.get(item).build(merchant));
+			BaseItemEconomy economy = salePossibilites.get(item);
+			for (int idx=0; idx < economy.getCount(); idx++) {
+				out.add(economy.build(merchant));
+			}
 		}
 		return out;
 	}
