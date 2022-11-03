@@ -26,6 +26,7 @@ public class AmaziaTradeOffer {
 	public float modifiedValue;
 	boolean buy, dirty, valid;
 	public int offerId;
+	private String key;
 	
 	public List<String> priceModifiers;
 	public List<OfferFinalModifer> finalizers;
@@ -41,6 +42,7 @@ public class AmaziaTradeOffer {
 		
 		this.modifiedValue = this.value;
 		this.valid = valid;
+		this.key = item.getTranslationKey();
 		
 		this.priceModifiers = new LinkedList<String>();
 		this.finalizers = new ArrayList<OfferFinalModifer>();
@@ -51,6 +53,7 @@ public class AmaziaTradeOffer {
 		this.value = nbt.getFloat("value");
 		this.modifiedValue = value;
 		this.buy = nbt.getBoolean("buy");
+		this.key = nbt.getString("economyKey");
 		
 		this.fromModifierNbt ((NbtList) nbt.get("modifiers"));
 		this.fromNbtFinalzers((NbtList) nbt.get("finalizers"));
@@ -64,6 +67,7 @@ public class AmaziaTradeOffer {
         nbt.putBoolean("buy", this.buy);
         nbt.put("modifiers", this.toModifierNbt());
         nbt.put("finalizers", this.toFinalizerNbt());
+        nbt.putString("economyKey", key);
         return nbt;
     }
 	
@@ -105,7 +109,7 @@ public class AmaziaTradeOffer {
 	}
 	
 	public String getKey() {
-		return this.item.getTranslationKey();
+		return this.key;
 	}
 	
 	public void setPrice(float value) {
