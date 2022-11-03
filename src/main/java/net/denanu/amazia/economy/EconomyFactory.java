@@ -138,6 +138,18 @@ public class EconomyFactory {
 	public final static BaseItemEconomy BANNER = 				register(Items.BLACK_BANNER,			13f, 		1f,			0.001f, new ConstrainedGaussianRandom(8, 4, 16, 1),		ImmutableSet.of("cartographer")).modify(BANNER_COLOR_MODIFIER);
 	public final static BaseItemEconomy BANNER_PATTERN =		register(Items.GLOBE_BANNER_PATTERN,	13f, 		1f,			0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("cartographer"));
 	
+	public final static BaseItemEconomy ROTTEN_FLESH =			register(Items.ROTTEN_FLESH,			0.01f, 		0.01f,		0.001f, new ConstantValue<Integer>(64), 				ImmutableSet.of("cleric"));
+	public final static BaseItemEconomy REDSTONE =				register(Items.REDSTONE,				2f, 		0.01f,		0.001f, new ConstantValue<Integer>(64), 				ImmutableSet.of("cleric"));
+	public final static BaseItemEconomy GOLD_INGOT =			register(Items.GOLD_INGOT,				0.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
+	public final static BaseItemEconomy LAPIS_LAZULI =			register(Items.LAPIS_LAZULI,			1f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
+	public final static BaseItemEconomy RABBIT_FOOT =			register(Items.RABBIT_FOOT,				0.5f, 		0.1f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
+	public final static BaseItemEconomy GLOWSTONE =				register(Items.GLOWSTONE,				4f, 		0.1f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
+	public final static BaseItemEconomy SCUTE =					register(Items.SCUTE,					4f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
+	public final static BaseItemEconomy GLASS_BOTTLE =			register(Items.GLASS_BOTTLE,			0.1f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
+	public final static BaseItemEconomy ENDER_PEARL =			register(Items.ENDER_PEARL,				5f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
+	public final static BaseItemEconomy NETHER_WART =			register(Items.NETHER_WART,				0.05f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
+	public final static BaseItemEconomy EXPERIENCE_BOTTLE =		register(Items.EXPERIENCE_BOTTLE,		4f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
+	
 	
 	public static void setup() { 
 		AmaziaFinalModifiers.setup();
