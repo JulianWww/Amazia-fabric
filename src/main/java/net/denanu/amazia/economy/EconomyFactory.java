@@ -150,6 +150,22 @@ public class EconomyFactory {
 	public final static BaseItemEconomy NETHER_WART =			register(Items.NETHER_WART,				0.05f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
 	public final static BaseItemEconomy EXPERIENCE_BOTTLE =		register(Items.EXPERIENCE_BOTTLE,		4f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("cleric"));
 	
+	public final static BaseItemEconomy WHEAT =					register(Items.WHEAT,					0.05f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(20, 8, 64, 1),	ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy POTATO =				register(Items.POTATO,					0.05f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(26, 8, 64, 1),	ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy CARROT =				register(Items.CARROT,					0.05f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(22, 8, 64, 1),	ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy BEETROOT =				register(Items.BEETROOT,				0.05f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(15, 8, 64, 1),	ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy BREAD =					ItemCompundEconomy.register(Items.BREAD, ImmutableSet.of(ImmutablePair.of(WHEAT, 3f)), new ConstantValue<Integer>(1), 	ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy PUMPKIN =				register(Items.PUMPKIN,					0.2f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(16, 2, 64, 1),	ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy PUMPKIN_PIE =			register(Items.PUMPKIN_PIE,				0.4f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(4,  2, 64, 1),	ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy APPLE =					register(Items.APPLE,					0.2f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(16, 8, 64, 1),	ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy MELON =					register(Items.MELON,					0.2f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy COOKIE =				register(Items.COOKIE,					0.16f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy SUSPICIOUS_STEW =		register(Items.SUSPICIOUS_STEW,			1f, 		0.01f,		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("farmer")).finalize(AmaziaFinalModifiers.SUSPICOUS_STEW_FINALIZER);
+	public final static BaseItemEconomy CAKE =					register(Items.CAKE,					1f, 		0.01f,		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy GOLDEN_CARROT =			register(Items.GOLDEN_CARROT,			1f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("farmer"));
+	public final static BaseItemEconomy GLISTERING_MELON_SLICE= register(Items.GLISTERING_MELON_SLICE,	1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("farmer"));
+
+	
 	
 	public static void setup() { 
 		AmaziaFinalModifiers.setup();
