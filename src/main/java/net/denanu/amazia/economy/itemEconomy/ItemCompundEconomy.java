@@ -64,7 +64,7 @@ public class ItemCompundEconomy extends BaseItemEconomy {
 	public float getCurrentPrice() {
 		float value = 0;
 		for (ImmutablePair<BaseItemEconomy, Float> child : this.ingredients) {
-			value += child.getLeft().getCurrentPrice();
+			value += child.getLeft().getCurrentPrice() * child.getRight();
 		}
 		return value;
 	}
