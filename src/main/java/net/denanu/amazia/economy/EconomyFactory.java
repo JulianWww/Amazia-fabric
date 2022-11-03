@@ -167,6 +167,60 @@ public class EconomyFactory {
 			.add(Items.WHITE_BANNER, 	   20.0f)
 			.add(Items.YELLOW_BANNER, 		1.0f);
 	
+	public final static ItemReselector WOOL_COLOR_MODIFIER = new ItemReselector()
+			.add(Items.BLACK_WOOL, 	   10.0f)
+			.add(Items.BLUE_WOOL, 		1.0f)
+			.add(Items.BROWN_WOOL, 		1.0f)
+			.add(Items.CYAN_WOOL, 		1.0f)
+			.add(Items.GRAY_WOOL, 		1.0f)
+			.add(Items.GREEN_WOOL, 		1.0f)
+			.add(Items.LIGHT_BLUE_WOOL, 1.0f)
+			.add(Items.LIGHT_GRAY_WOOL, 1.0f)
+			.add(Items.LIME_WOOL, 		1.0f)
+			.add(Items.MAGENTA_WOOL, 	1.0f)
+			.add(Items.ORANGE_WOOL, 	1.0f)
+			.add(Items.PINK_WOOL, 		1.0f)
+			.add(Items.PURPLE_WOOL, 	1.0f)
+			.add(Items.RED_WOOL, 		1.0f)
+			.add(Items.WHITE_WOOL, 	   20.0f)
+			.add(Items.YELLOW_WOOL, 	1.0f);
+	
+	public final static ItemReselector CARPET_COLOR_MODIFIER = new ItemReselector()
+			.add(Items.BLACK_CARPET, 	   10.0f)
+			.add(Items.BLUE_CARPET, 		1.0f)
+			.add(Items.BROWN_CARPET, 		1.0f)
+			.add(Items.CYAN_CARPET, 		1.0f)
+			.add(Items.GRAY_CARPET, 		1.0f)
+			.add(Items.GREEN_CARPET, 		1.0f)
+			.add(Items.LIGHT_BLUE_CARPET, 	1.0f)
+			.add(Items.LIGHT_GRAY_CARPET, 	1.0f)
+			.add(Items.LIME_CARPET, 		1.0f)
+			.add(Items.MAGENTA_CARPET, 		1.0f)
+			.add(Items.ORANGE_CARPET, 		1.0f)
+			.add(Items.PINK_CARPET, 		1.0f)
+			.add(Items.PURPLE_CARPET, 		1.0f)
+			.add(Items.RED_CARPET, 			1.0f)
+			.add(Items.WHITE_CARPET, 	   20.0f)
+			.add(Items.YELLOW_CARPET, 		1.0f);
+	
+	public final static ItemReselector BED_COLOR_MODIFIER = new ItemReselector()
+			.add(Items.BLACK_BED, 	   10.0f)
+			.add(Items.BLUE_BED, 		1.0f)
+			.add(Items.BROWN_BED, 		1.0f)
+			.add(Items.CYAN_BED, 		1.0f)
+			.add(Items.GRAY_BED, 		1.0f)
+			.add(Items.GREEN_BED, 		1.0f)
+			.add(Items.LIGHT_BLUE_BED, 1.0f)
+			.add(Items.LIGHT_GRAY_BED, 1.0f)
+			.add(Items.LIME_BED, 		1.0f)
+			.add(Items.MAGENTA_BED, 	1.0f)
+			.add(Items.ORANGE_BED, 	1.0f)
+			.add(Items.PINK_BED, 		1.0f)
+			.add(Items.PURPLE_BED, 	1.0f)
+			.add(Items.RED_BED, 		1.0f)
+			.add(Items.WHITE_BED, 	   20.0f)
+			.add(Items.YELLOW_BED, 	1.0f);
+	
 	public final static ItemReselector TERRACOTTA_COLOR_MODIFIER = new ItemReselector()
 			.add(Items.BLACK_TERRACOTTA, 			1.0f)
 			.add(Items.BLUE_TERRACOTTA, 			1.0f)
@@ -206,6 +260,9 @@ public class EconomyFactory {
 	public final static PotionEffectModifier ARROW_POTION_EFFECT_MODIFIER = new PotionEffectModifier();
 	public final static DieItemModifier LEATHER_ARMOR_MODIFIER = new DieItemModifier();
 	
+	
+	public final static RandomnessFactory<Integer> DIE_RANDOMNESS_FACTORY = new ConstrainedGaussianRandom(16, 4, 64, 1);
+	
 	 																								 // value       volatility  return rate | stackSize generator							professions
 	public final static BaseItemEconomy COAL = 					register(Items.COAL, 					0.0666f, 	0.0001f, 	0.01f,	new ConstrainedGaussianRandom(20f, 8f, 64, 1), 	ImmutableSet.of("armorer", "butcher", "fischerman"));
 	public final static BaseItemEconomy IRON_HELMET = 			register(Items.IRON_HELMET, 			5, 			2f, 		0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(HELMET_ENCHANTMENT_MODIFIER);
@@ -243,7 +300,7 @@ public class EconomyFactory {
 	public final static BaseItemEconomy COMPASS = 				register(Items.COMPASS,					13f, 		1f,			0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("cartographer", "librarian"));
 	public final static BaseItemEconomy EXPLORERS_MAP =			ItemCompundEconomy.register(Items.FILLED_MAP,  ImmutableSet.of(ImmutablePair.of(MAP, 2f), ImmutablePair.of(COMPASS,  2f)), new ConstantValue<Integer>(1), ImmutableSet.of("cartographer")).finalize(AmaziaFinalModifiers.EXPLORER_MAP_BUILDER);
 	public final static BaseItemEconomy ItemFrame = 			register(Items.ITEM_FRAME,				7f, 		1f,			0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("cartographer"));
-	public final static BaseItemEconomy BANNER = 				register(Items.BLACK_BANNER,			13f, 		1f,			0.001f, new ConstrainedGaussianRandom(8, 4, 16, 1),		ImmutableSet.of("cartographer")).modify(BANNER_COLOR_MODIFIER);
+	public final static BaseItemEconomy BANNER = 				register(Items.BLACK_BANNER,			13f, 		1f,			0.001f, new ConstrainedGaussianRandom(8, 4, 16, 1),		ImmutableSet.of("cartographer", "shepherd")).modify(BANNER_COLOR_MODIFIER);
 	public final static BaseItemEconomy BANNER_PATTERN =		register(Items.GLOBE_BANNER_PATTERN,	13f, 		1f,			0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("cartographer"));
 	
 	public final static BaseItemEconomy ROTTEN_FLESH =			register(Items.ROTTEN_FLESH,			0.01f, 		0.01f,		0.001f, new ConstantValue<Integer>(64), 				ImmutableSet.of("cleric"));
@@ -325,6 +382,28 @@ public class EconomyFactory {
 	public final static BaseItemEconomy QUARTZ =				register(Items.QUARTZ,					12f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(16, 4, 64, 1),	ImmutableSet.of("mason")).modify(BUY_ONLY_MODIFIER);
 	public final static BaseItemEconomy TERRACOTTA =			register(Items.TERRACOTTA,				1f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(32, 4, 64, 1),	ImmutableSet.of("mason")).modify(TERRACOTTA_COLOR_MODIFIER);
 	public final static BaseItemEconomy QUARTZ_PILLAR =			register(Items.QUARTZ_PILLAR,			1f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(16, 4, 64, 1),	ImmutableSet.of("mason")).modify(SELL_ONLY_MODIFIER);
+	
+	public final static BaseItemEconomy WOOL =					register(Items.BLACK_WOOL,				1f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(32, 4, 64, 1),	ImmutableSet.of("shepherd")).modify(WOOL_COLOR_MODIFIER);
+	public final static BaseItemEconomy CARPET =				register(Items.BLACK_CARPET,			2f, 		1f, 		0.001f, new ConstrainedGaussianRandom(32, 4, 64, 1),	ImmutableSet.of("shepherd")).modify(CARPET_COLOR_MODIFIER);
+	public final static BaseItemEconomy BED =					register(Items.BLACK_BED,				2f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("shepherd")).modify(BED_COLOR_MODIFIER);
+	public final static BaseItemEconomy SHEARS =				register(Items.SHEARS,					2f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy BLACK_DYE =				register(Items.BLACK_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy BLUE_DYE =				register(Items.BLUE_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy BROWN_DYE =				register(Items.BROWN_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy CYAN_DYE =				register(Items.CYAN_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy GRAY_DYE =				register(Items.GRAY_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy GREEN_DYE =				register(Items.GREEN_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy LIGHT_BLUE_DYE =		register(Items.LIGHT_BLUE_DYE,			0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy LIGHT_GRAY_DYE =		register(Items.LIGHT_GRAY_DYE,			0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy LIME_DYE =				register(Items.LIME_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy MAGENTA_DYE =			register(Items.MAGENTA_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy ORANGE_DYE =			register(Items.ORANGE_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy PINK_DYE =				register(Items.PINK_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy PURPLE_DYE =			register(Items.PURPLE_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy RED_DYE =				register(Items.RED_DYE,					0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy WHITE_DYE =				register(Items.WHITE_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+	public final static BaseItemEconomy YELLOW_DYE =			register(Items.YELLOW_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
+
 	
 	
 	

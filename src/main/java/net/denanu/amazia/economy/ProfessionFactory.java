@@ -19,7 +19,7 @@ public class ProfessionFactory {
 	}
 	
 	public static void setup() {
-		/*register(Amazia.MOD_ID, "armorer", 1.0f);
+		register(Amazia.MOD_ID, "armorer", 1.0f);
 		register(Amazia.MOD_ID, "butcher", 1.0f);
 		register(Amazia.MOD_ID, "cartographer", 1.0f);
 		register(Amazia.MOD_ID, "cleric", 1.0f);
@@ -27,8 +27,9 @@ public class ProfessionFactory {
 		register(Amazia.MOD_ID, "fischerman", 1.0f);
 		register(Amazia.MOD_ID, "fletcher", 1.0f);
 		register(Amazia.MOD_ID, "leatherworker", 1.0f);
-		register(Amazia.MOD_ID, "librarian", 1.0f);*/
+		register(Amazia.MOD_ID, "librarian", 1.0f);
 		register(Amazia.MOD_ID, "mason", 1.0f);
+		register(Amazia.MOD_ID, "shepherd", 1.0f);
 	}
 }
 
