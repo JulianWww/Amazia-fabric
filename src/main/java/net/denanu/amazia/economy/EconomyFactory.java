@@ -11,7 +11,7 @@ import net.denanu.amazia.economy.itemEconomy.BaseItemEconomy;
 import net.denanu.amazia.economy.itemEconomy.ItemCompundEconomy;
 import net.denanu.amazia.economy.itemEconomy.ItemEconomy;
 import net.denanu.amazia.economy.offerModifiers.finalizers.AmaziaFinalModifiers;
-import net.denanu.amazia.economy.offerModifiers.item.BuyOnlyModifier;
+import net.denanu.amazia.economy.offerModifiers.item.BuyModifier;
 import net.denanu.amazia.economy.offerModifiers.item.DieItemModifier;
 import net.denanu.amazia.economy.offerModifiers.item.EnchantmentModifier;
 import net.denanu.amazia.economy.offerModifiers.item.ItemReselector;
@@ -25,7 +25,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
 public class EconomyFactory {
-	public final static BuyOnlyModifier BUY_ONLY_MODIFIER = new BuyOnlyModifier();
+	public final static BuyModifier BUY_ONLY_MODIFIER = new BuyModifier(true);
+	public final static BuyModifier SELL_ONLY_MODIFIER = new BuyModifier(false);
 	
 	public final static EnchantmentModifier HELMET_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.3f, 0.8f)
 			.add(Enchantments.FIRE_PROTECTION, 			1.0f)
@@ -164,8 +165,43 @@ public class EconomyFactory {
 			.add(Items.PURPLE_BANNER, 		1.0f)
 			.add(Items.RED_BANNER, 			1.0f)
 			.add(Items.WHITE_BANNER, 	   20.0f)
-			.add(Items.YELLOW_BANNER, 		1.0f)
-			;
+			.add(Items.YELLOW_BANNER, 		1.0f);
+	
+	public final static ItemReselector TERRACOTTA_COLOR_MODIFIER = new ItemReselector()
+			.add(Items.BLACK_TERRACOTTA, 			1.0f)
+			.add(Items.BLUE_TERRACOTTA, 			1.0f)
+			.add(Items.BROWN_TERRACOTTA,	 		1.0f)
+			.add(Items.CYAN_TERRACOTTA, 			1.0f)
+			.add(Items.GRAY_TERRACOTTA, 			1.0f)
+			.add(Items.GREEN_TERRACOTTA, 			1.0f)
+			.add(Items.LIGHT_BLUE_TERRACOTTA, 		1.0f)
+			.add(Items.LIGHT_GRAY_TERRACOTTA, 		1.0f)
+			.add(Items.LIME_TERRACOTTA, 			1.0f)
+			.add(Items.MAGENTA_TERRACOTTA, 			1.0f)
+			.add(Items.ORANGE_TERRACOTTA, 			1.0f)
+			.add(Items.PINK_TERRACOTTA, 			1.0f)
+			.add(Items.PURPLE_TERRACOTTA, 			1.0f)
+			.add(Items.RED_TERRACOTTA, 				1.0f)
+			.add(Items.WHITE_TERRACOTTA, 	    	1.0f)
+			.add(Items.YELLOW_TERRACOTTA, 			1.0f)
+			.add(Items.TERRACOTTA,			  	   20.0f)
+			.add(Items.BLACK_GLAZED_TERRACOTTA, 	1.0f)
+			.add(Items.BLUE_GLAZED_TERRACOTTA, 		1.0f)
+			.add(Items.BROWN_GLAZED_TERRACOTTA,	 	1.0f)
+			.add(Items.CYAN_GLAZED_TERRACOTTA, 		1.0f)
+			.add(Items.GRAY_GLAZED_TERRACOTTA, 		1.0f)
+			.add(Items.GREEN_GLAZED_TERRACOTTA, 	1.0f)
+			.add(Items.LIGHT_BLUE_GLAZED_TERRACOTTA,1.0f)
+			.add(Items.LIGHT_GRAY_GLAZED_TERRACOTTA,1.0f)
+			.add(Items.LIME_GLAZED_TERRACOTTA, 		1.0f)
+			.add(Items.MAGENTA_GLAZED_TERRACOTTA, 	1.0f)
+			.add(Items.ORANGE_GLAZED_TERRACOTTA, 	1.0f)
+			.add(Items.PINK_GLAZED_TERRACOTTA, 		1.0f)
+			.add(Items.PURPLE_GLAZED_TERRACOTTA, 	1.0f)
+			.add(Items.RED_GLAZED_TERRACOTTA, 		1.0f)
+			.add(Items.WHITE_GLAZED_TERRACOTTA, 	1.0f)
+			.add(Items.YELLOW_GLAZED_TERRACOTTA, 	1.0f);
+
 	
 	public final static PotionEffectModifier ARROW_POTION_EFFECT_MODIFIER = new PotionEffectModifier();
 	public final static DieItemModifier LEATHER_ARMOR_MODIFIER = new DieItemModifier();
@@ -266,7 +302,7 @@ public class EconomyFactory {
 	public final static BaseItemEconomy LEATHER_BOOTS =			register(Items.LEATHER_BOOTS,			4f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("leatherworker")).modify(LEATHER_ARMOR_MODIFIER);
 	public final static BaseItemEconomy LEATHER_HORSE_ARMOR =	register(Items.LEATHER_HORSE_ARMOR,		6f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("leatherworker")).modify(LEATHER_ARMOR_MODIFIER);
 	
-	public final static BaseItemEconomy ENCHANTED_BOOK =		register(Items.ENCHANTED_BOOK,			5f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("librarian")).count(3).modify(BUY_ONLY_MODIFIER).modify(ENCHANTED_BOOK_MODIFIER);
+	public final static BaseItemEconomy ENCHANTED_BOOK =		register(Items.ENCHANTED_BOOK,			5f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("librarian")).count(3).modify(SELL_ONLY_MODIFIER).modify(ENCHANTED_BOOK_MODIFIER);
 	public final static BaseItemEconomy BOOKSHELF =				register(Items.BOOKSHELF,				9f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(16, 4, 64, 1),	ImmutableSet.of("librarian"));
 	public final static BaseItemEconomy BOOK =					register(Items.BOOK,					4f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("librarian"));
 	public final static BaseItemEconomy LANTERN =				register(Items.LANTERN,					1f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(16, 4, 64, 1),	ImmutableSet.of("librarian"));
@@ -274,6 +310,21 @@ public class EconomyFactory {
 	public final static BaseItemEconomy WRITABLE_BOOK =			register(Items.WRITABLE_BOOK,			1f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("librarian"));
 	public final static BaseItemEconomy CLOCK =					register(Items.CLOCK,					5f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(16, 4, 64, 1),	ImmutableSet.of("librarian"));
 	public final static BaseItemEconomy NAME_TAG =				register(Items.NAME_TAG,				20f, 		0.01f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("librarian"));
+	
+	public final static BaseItemEconomy CLAY =					register(Items.CLAY,					0.1f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(48, 4, 64, 1),	ImmutableSet.of("mason"));
+	public final static BaseItemEconomy BRICK =					register(Items.BRICK,					0.1f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(48, 4, 64, 1),	ImmutableSet.of("mason"));
+	public final static BaseItemEconomy STONE =					register(Items.STONE,					0.05f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(48, 4, 64, 1),	ImmutableSet.of("mason"));
+	public final static BaseItemEconomy DIORITE =				register(Items.DIORITE,					0.05f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(48, 4, 64, 1),	ImmutableSet.of("mason"));
+	public final static BaseItemEconomy GRANITE =				register(Items.GRANITE,					0.05f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(48, 4, 64, 1),	ImmutableSet.of("mason"));
+	public final static BaseItemEconomy ANDESITE =				register(Items.ANDESITE,				0.05f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(48, 4, 64, 1),	ImmutableSet.of("mason"));
+	public final static BaseItemEconomy POLISHED_ANDESITE =		register(Items.POLISHED_ANDESITE,		0.05f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(48, 4, 64, 1),	ImmutableSet.of("mason"));
+	public final static BaseItemEconomy POLISHED_DIORITE =		register(Items.POLISHED_DIORITE,		0.05f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(48, 4, 64, 1),	ImmutableSet.of("mason"));
+	public final static BaseItemEconomy POLISHED_GRANITE =		register(Items.POLISHED_GRANITE,		0.05f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(48, 4, 64, 1),	ImmutableSet.of("mason"));
+	public final static BaseItemEconomy DRIPSTONE_BLOCK =		register(Items.DRIPSTONE_BLOCK,			0.05f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(48, 4, 64, 1),	ImmutableSet.of("mason"));
+	public final static BaseItemEconomy CHISELED_STONE_BRICKS =	register(Items.CHISELED_STONE_BRICKS,	0.25f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(48, 4, 64, 1),	ImmutableSet.of("mason"));
+	public final static BaseItemEconomy QUARTZ =				register(Items.QUARTZ,					12f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(16, 4, 64, 1),	ImmutableSet.of("mason")).modify(BUY_ONLY_MODIFIER);
+	public final static BaseItemEconomy TERRACOTTA =			register(Items.TERRACOTTA,				1f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(32, 4, 64, 1),	ImmutableSet.of("mason")).modify(TERRACOTTA_COLOR_MODIFIER);
+	public final static BaseItemEconomy QUARTZ_PILLAR =			register(Items.QUARTZ_PILLAR,			1f, 		0.01f, 		0.001f, new ConstrainedGaussianRandom(16, 4, 64, 1),	ImmutableSet.of("mason")).modify(SELL_ONLY_MODIFIER);
 	
 	
 	
