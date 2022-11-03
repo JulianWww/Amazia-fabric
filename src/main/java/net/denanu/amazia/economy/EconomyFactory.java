@@ -17,6 +17,7 @@ import net.denanu.amazia.utils.random.ConstantValue;
 import net.denanu.amazia.utils.random.ConstrainedGaussianRandom;
 import net.denanu.amazia.utils.random.LinearRandom;
 import net.denanu.amazia.utils.random.RandomnessFactory;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -79,6 +80,13 @@ public class EconomyFactory {
 			.add(Enchantments.MENDING, 					0.001f)
 			.add(Enchantments.VANISHING_CURSE, 			0.2f);
 	
+	public final static EnchantmentModifier FISCHING_ROD_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.3f, 0.5f)
+			.add(Enchantments.LURE,						1.0f)
+			.add(Enchantments.LUCK_OF_THE_SEA, 			1.0f)
+			.add(Enchantments.UNBREAKING, 				1.0f)
+			.add(Enchantments.MENDING, 					0.001f)
+			.add(Enchantments.VANISHING_CURSE, 			0.2f);
+	
 	public final static ItemReselector BANNER_COLOR_MODIFIER = new ItemReselector()
 			.add(Items.BLACK_BANNER, 	   10.0f)
 			.add(Items.BLUE_BANNER, 		1.0f)
@@ -99,7 +107,7 @@ public class EconomyFactory {
 			;
 	
 	 																								 // value       volatility  return rate | stackSize generator							professions
-	public final static BaseItemEconomy COAL = 					register(Items.COAL, 					0.0666f, 	0.0001f, 	0.01f,	new ConstrainedGaussianRandom(20f, 8f, 64, 1), 	ImmutableSet.of("armorer", "butcher"));
+	public final static BaseItemEconomy COAL = 					register(Items.COAL, 					0.0666f, 	0.0001f, 	0.01f,	new ConstrainedGaussianRandom(20f, 8f, 64, 1), 	ImmutableSet.of("armorer", "butcher", "fischerman"));
 	public final static BaseItemEconomy IRON_HELMET = 			register(Items.IRON_HELMET, 			5, 			2f, 		0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(HELMET_ENCHANTMENT_MODIFIER);
 	public final static BaseItemEconomy IRON_CHESTPLATE = 		register(Items.IRON_CHESTPLATE, 		9, 			2f, 		0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(CHESTPLATE_ENCHANTMENT_MODIFIER);
 	public final static BaseItemEconomy IRON_LEGGINS =			register(Items.IRON_LEGGINGS, 			7, 			2f, 		0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(LEGGINS_ENCHANTMENT_MODIFIER);
@@ -122,8 +130,8 @@ public class EconomyFactory {
 	public final static BaseItemEconomy PORKCHOP = 				register(Items.PORKCHOP, 				0.14f, 		1f,			0.001f, new ConstrainedGaussianRandom(32, 16, 64, 1),	ImmutableSet.of("butcher"));
 	public final static BaseItemEconomy RABBIT = 				register(Items.RABBIT, 					0.25f, 		1f,			0.001f, new ConstrainedGaussianRandom(32, 16, 64, 1),	ImmutableSet.of("butcher"));
 	public final static BaseItemEconomy RABBIT_STEW = 			register(Items.RABBIT_STEW, 			1, 			1f,			0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("butcher")); // maybe make this a compund as well
-	public final static BaseItemEconomy COOKED_PORKCHOP = 		ItemCompundEconomy.register(Items.COOKED_PORKCHOP, ImmutableSet.of(ImmutablePair.of(COAL, 1/8f), ImmutablePair.of(PORKCHOP, 1f)), new ConstrainedGaussianRandom(32, 16, 64, 1), ImmutableSet.of("butcher"));
-	public final static BaseItemEconomy COOKED_CHICKEN = 		ItemCompundEconomy.register(Items.COOKED_CHICKEN,  ImmutableSet.of(ImmutablePair.of(COAL, 1/8f), ImmutablePair.of(CHICKEN,  1f)), new ConstrainedGaussianRandom(32, 16, 64, 1), ImmutableSet.of("butcher"));
+	public final static BaseItemEconomy COOKED_PORKCHOP = 		ItemCompundEconomy.register(Items.COOKED_PORKCHOP, ImmutableSet.of(ImmutablePair.of(COAL, 0.2f), ImmutablePair.of(PORKCHOP, 1f)), new ConstrainedGaussianRandom(32, 16, 64, 1), ImmutableSet.of("butcher"));
+	public final static BaseItemEconomy COOKED_CHICKEN = 		ItemCompundEconomy.register(Items.COOKED_CHICKEN,  ImmutableSet.of(ImmutablePair.of(COAL, 0.2f), ImmutablePair.of(CHICKEN,  1f)), new ConstrainedGaussianRandom(32, 16, 64, 1), ImmutableSet.of("butcher"));
 	public final static BaseItemEconomy MUTTON = 				register(Items.MUTTON, 					0.14f, 		1f,			0.001f, new ConstrainedGaussianRandom(32, 16, 64, 1),	ImmutableSet.of("butcher"));
 	public final static BaseItemEconomy BEEF = 					register(Items.BEEF, 					0.1f, 		1f,			0.001f, new ConstrainedGaussianRandom(32, 16, 64, 1),	ImmutableSet.of("butcher"));
 	public final static BaseItemEconomy DRIED_KELP_BLOCK = 		register(Items.DRIED_KELP_BLOCK, 		0.1f, 		1f,			0.001f, new ConstrainedGaussianRandom(32, 16, 64, 1),	ImmutableSet.of("butcher"));
@@ -164,6 +172,17 @@ public class EconomyFactory {
 	public final static BaseItemEconomy CAKE =					register(Items.CAKE,					1f, 		0.01f,		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("farmer"));
 	public final static BaseItemEconomy GOLDEN_CARROT =			register(Items.GOLDEN_CARROT,			1f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("farmer"));
 	public final static BaseItemEconomy GLISTERING_MELON_SLICE= register(Items.GLISTERING_MELON_SLICE,	1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("farmer"));
+	
+	public final static BaseItemEconomy STRING = 				register(Items.STRING,					1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy COD = 					register(Items.COD,						1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy SALMON = 				register(Items.SALMON,					1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy CAMPFIRE = 				register(Items.CAMPFIRE,				1.3f, 		0.01f,		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy FISCHING_ROD = 			register(Items.FISHING_ROD,				1.3f, 		1f, 		0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("fischerman")).modify(FISCHING_ROD_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy TROPICAL_FISH = 		register(Items.TROPICAL_FISH,			1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy PUFFERFISH = 			register(Items.PUFFERFISH,				1.3f, 		0.01f,		0.001f, new ConstrainedGaussianRandom(32, 8, 64, 1),	ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy ACACIA_BOAT = 			register(Items.ACACIA_BOAT,				1.3f, 		0.01f,		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy COOKED_COD = 			ItemCompundEconomy.register(Items.COOKED_COD,    ImmutableSet.of(ImmutablePair.of(COD, 1f), ImmutablePair.of(COAL, 0.2f)), new ConstrainedGaussianRandom(32, 8, 64, 1), 	ImmutableSet.of("fischerman"));
+	public final static BaseItemEconomy COOKED_SALMON = 		ItemCompundEconomy.register(Items.COOKED_SALMON, ImmutableSet.of(ImmutablePair.of(COD, 1f), ImmutablePair.of(COAL, 0.2f)), new ConstrainedGaussianRandom(32, 8, 64, 1), 	ImmutableSet.of("fischerman"));
 
 	
 	
