@@ -22,6 +22,9 @@ public class AmaziaValueModifiers {
 		register(Enchantments.RESPIRATION,				new BoonModifierEconomy(5,  1, 0.001f));
 		register(Enchantments.SWIFT_SNEAK, 				new BoonModifierEconomy(5,  1, 0.001f));
 		
+		register(Enchantments.LUCK_OF_THE_SEA, 			new BoonModifierEconomy(5,  1, 0.001f));
+		register(Enchantments.LURE,						new BoonModifierEconomy(5,  1, 0.001f));
+		
 		
 		
 		
