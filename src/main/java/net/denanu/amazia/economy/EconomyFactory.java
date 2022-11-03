@@ -108,7 +108,7 @@ public class EconomyFactory {
 			.add(Enchantments.MENDING, 					0.001f)
 			.add(Enchantments.VANISHING_CURSE, 			0.2f);
 	
-	public final static EnchantmentModifier AXE_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.3f, 1.0f)
+	public final static EnchantmentModifier AXE_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.3f, 0.9f)
 			.add(Enchantments.FORTUNE,					1.0f)
 			.add(Enchantments.SILK_TOUCH,				1.0f)
 			.add(Enchantments.EFFICIENCY,				1.0f)
@@ -123,7 +123,7 @@ public class EconomyFactory {
 			.add(Enchantments.MENDING,					0.001f)
 			.add(Enchantments.VANISHING_CURSE,			0.2f);
 	
-	public final static EnchantmentModifier PICKAXE_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.2f, 1.0f)
+	public final static EnchantmentModifier PICKAXE_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.3f, 0.9f)
 			.add(Enchantments.EFFICIENCY,				5.0f)
 			.add(Enchantments.SILK_TOUCH,				1.0f)
 			.add(Enchantments.FORTUNE,					1.0f)
@@ -131,7 +131,7 @@ public class EconomyFactory {
 			.add(Enchantments.MENDING,					0.001f)
 			.add(Enchantments.VANISHING_CURSE,			0.2f);
 	
-	public final static EnchantmentModifier SHOVEL_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.2f, 1.0f)
+	public final static EnchantmentModifier SHOVEL_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.3f, 0.9f)
 			.add(Enchantments.EFFICIENCY,				5.0f)
 			.add(Enchantments.SILK_TOUCH,				1.0f)
 			.add(Enchantments.FORTUNE,					1.0f)
@@ -139,7 +139,7 @@ public class EconomyFactory {
 			.add(Enchantments.MENDING,					0.001f)
 			.add(Enchantments.VANISHING_CURSE,			0.2f);
 	
-	public final static EnchantmentModifier HOE_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.2f, 1.0f)
+	public final static EnchantmentModifier HOE_ENCHANTMENT_MODIFIER = new EnchantmentModifier(0.3f, 0.9f)
 			.add(Enchantments.EFFICIENCY,				5.0f)
 			.add(Enchantments.SILK_TOUCH,				1.0f)
 			.add(Enchantments.FORTUNE,					1.0f)
@@ -443,18 +443,18 @@ public class EconomyFactory {
 	public final static BaseItemEconomy WHITE_DYE =				register(Items.WHITE_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
 	public final static BaseItemEconomy YELLOW_DYE =			register(Items.YELLOW_DYE,				0.2f, 		0.01f, 		0.001f, DIE_RANDOMNESS_FACTORY,							ImmutableSet.of("shepherd"));
 	
-	public final static BaseItemEconomy STONE_AXE =				register(Items.STONE_AXE,				1f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(AXE_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
-	public final static BaseItemEconomy STONE_PICKAXE =			register(Items.STONE_PICKAXE,			1f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(PICKAXE_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
-	public final static BaseItemEconomy STONE_SHOVEL =			register(Items.STONE_SHOVEL,			1f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SHOVEL_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
-	public final static BaseItemEconomy STONE_HOE =				register(Items.STONE_HOE,				1f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(HOE_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
-	public final static BaseItemEconomy IRON_AXE =				register(Items.IRON_AXE,				20f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(AXE_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
-	public final static BaseItemEconomy IRON_PICKAXE =			register(Items.IRON_PICKAXE,			20f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(PICKAXE_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
-	public final static BaseItemEconomy IRON_SHOVEL =			register(Items.IRON_SHOVEL,				20f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SHOVEL_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
-	public final static BaseItemEconomy IRON_HOE =				register(Items.IRON_HOE,				20f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(HOE_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
-	public final static BaseItemEconomy DIAMOND_AXE =			register(Items.DIAMOND_AXE,				40f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(AXE_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
-	public final static BaseItemEconomy DIAMOND_PICKAXE =		register(Items.DIAMOND_PICKAXE,			40f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(PICKAXE_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
-	public final static BaseItemEconomy DIAMOND_SHOVEL =		register(Items.DIAMOND_SHOVEL,			40f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SHOVEL_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
-	public final static BaseItemEconomy DIAMOND_HOE =			register(Items.DIAMOND_HOE,				40f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(HOE_ENCHANTMENT_MODIFIER).modify(SELL_ONLY_MODIFIER);
+	public final static BaseItemEconomy STONE_AXE =				register(Items.STONE_AXE,				1f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(AXE_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy STONE_PICKAXE =			register(Items.STONE_PICKAXE,			1f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(PICKAXE_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy STONE_SHOVEL =			register(Items.STONE_SHOVEL,			1f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(SHOVEL_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy STONE_HOE =				register(Items.STONE_HOE,				1f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(HOE_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy IRON_AXE =				register(Items.IRON_AXE,				20f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(AXE_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy IRON_PICKAXE =			register(Items.IRON_PICKAXE,			20f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(PICKAXE_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy IRON_SHOVEL =			register(Items.IRON_SHOVEL,				20f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(SHOVEL_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy IRON_HOE =				register(Items.IRON_HOE,				20f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(HOE_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy DIAMOND_AXE =			register(Items.DIAMOND_AXE,				40f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(AXE_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy DIAMOND_PICKAXE =		register(Items.DIAMOND_PICKAXE,			40f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(PICKAXE_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy DIAMOND_SHOVEL =		register(Items.DIAMOND_SHOVEL,			40f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(SHOVEL_ENCHANTMENT_MODIFIER);
+	public final static BaseItemEconomy DIAMOND_HOE =			register(Items.DIAMOND_HOE,				40f, 		1f, 		0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("toolsmith")).modify(SELL_ONLY_MODIFIER).modify(HOE_ENCHANTMENT_MODIFIER);
 	
 	
 	
