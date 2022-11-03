@@ -6,6 +6,7 @@ import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.economy.AmaziaTradeOffer;
 import net.denanu.amazia.economy.IAmaziaMerchant;
 import net.denanu.amazia.economy.offerModifiers.OfferModifier;
+import net.denanu.amazia.economy.offerModifiers.finalizers.OfferFinalModifer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -14,10 +15,12 @@ import net.minecraft.nbt.NbtElement;
 public abstract class BaseItemEconomy {
 	protected final Item itm;
 	protected final ArrayList<OfferModifier> modifiers;
+	private ArrayList<OfferFinalModifer> finalizers;
 	
 	public BaseItemEconomy(final Item itm) {
 		this.itm = itm;
 		this.modifiers = new ArrayList<OfferModifier>();
+		this.finalizers = new ArrayList<OfferFinalModifer>();
 	}
 
 	public abstract void fromNbt(NbtCompound compound);
@@ -45,8 +48,15 @@ public abstract class BaseItemEconomy {
 		return this;
 	}
 	
+	public BaseItemEconomy finalize(OfferFinalModifer mod) {
+		this.finalizers.add(mod);
+		return this;
+	}
+	
 	public AmaziaTradeOffer build(IAmaziaMerchant merchant) {
-		return new AmaziaTradeOffer(this.getStack(), this.getCurrentPrice(), JJUtils.rand.nextBoolean()).modify(this.modifiers).build();
+		this.finalizers.trimToSize();
+		this.modifiers.trimToSize();
+		return new AmaziaTradeOffer(this.getStack(), this.getCurrentPrice(), JJUtils.rand.nextBoolean()).modify(this.modifiers).setFinalizers(this.finalizers).build();
 	}
 
 	public boolean hasNbt() {

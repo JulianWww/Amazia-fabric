@@ -25,6 +25,7 @@ import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.utils.crafting.VillageRecipeManager;
+import net.denanu.amazia.utils.scanners.ChunkScanner;
 import net.denanu.amazia.village.AmaziaData;
 import net.denanu.amazia.village.VillageManager;
 import net.fabricmc.api.ModInitializer;
@@ -50,6 +51,7 @@ public class Amazia implements ModInitializer {
 	
 	
 	public static Economy economy;
+	public static ChunkScanner chunkScanner;
 	
 	
 	
@@ -72,7 +74,12 @@ public class Amazia implements ModInitializer {
 		ProfessionFactory.setup();
 		AmaziaValueModifiers.setup();
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-	    	economy = (Economy) server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(Economy::fromNbt, Economy::new, MOD_ID);
+	    	economy = server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(Economy::fromNbt, Economy::new, MOD_ID + ":economy");
+        });
+		
+		// Scanners
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			chunkScanner = server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(ChunkScanner::fromNbt, ChunkScanner::init, MOD_ID + ":structures");
         });
 		
 		//Networking

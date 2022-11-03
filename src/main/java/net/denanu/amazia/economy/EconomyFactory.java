@@ -10,7 +10,9 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.economy.itemEconomy.BaseItemEconomy;
 import net.denanu.amazia.economy.itemEconomy.ItemCompundEconomy;
 import net.denanu.amazia.economy.itemEconomy.ItemEconomy;
+import net.denanu.amazia.economy.offerModifiers.finalizers.AmaziaFinalModifiers;
 import net.denanu.amazia.economy.offerModifiers.item.EnchantmentModifier;
+import net.denanu.amazia.economy.offerModifiers.item.ItemReselector;
 import net.denanu.amazia.utils.random.ConstantValue;
 import net.denanu.amazia.utils.random.ConstrainedGaussianRandom;
 import net.denanu.amazia.utils.random.LinearRandom;
@@ -77,6 +79,25 @@ public class EconomyFactory {
 			.add(Enchantments.MENDING, 					0.001f)
 			.add(Enchantments.VANISHING_CURSE, 			0.2f);
 	
+	public final static ItemReselector BANNER_COLOR_MODIFIER = new ItemReselector()
+			.add(Items.BLACK_BANNER, 	   10.0f)
+			.add(Items.BLUE_BANNER, 		1.0f)
+			.add(Items.BROWN_BANNER, 		1.0f)
+			.add(Items.CYAN_BANNER, 		1.0f)
+			.add(Items.GRAY_BANNER, 		1.0f)
+			.add(Items.GREEN_BANNER, 		1.0f)
+			.add(Items.LIGHT_BLUE_BANNER, 	1.0f)
+			.add(Items.LIGHT_GRAY_BANNER, 	1.0f)
+			.add(Items.LIME_BANNER, 		1.0f)
+			.add(Items.MAGENTA_BANNER, 		1.0f)
+			.add(Items.ORANGE_BANNER, 		1.0f)
+			.add(Items.PINK_BANNER, 		1.0f)
+			.add(Items.PURPLE_BANNER, 		1.0f)
+			.add(Items.RED_BANNER, 			1.0f)
+			.add(Items.WHITE_BANNER, 	   20.0f)
+			.add(Items.YELLOW_BANNER, 		1.0f)
+			;
+	
 	 																								 // value       volatility  return rate | stackSize generator							professions
 	public final static BaseItemEconomy COAL = 					register(Items.COAL, 					0.0666f, 	0.0001f, 	0.01f,	new ConstrainedGaussianRandom(20f, 8f, 64, 1), 	ImmutableSet.of("armorer", "butcher"));
 	public final static BaseItemEconomy IRON_HELMET = 			register(Items.IRON_HELMET, 			5, 			2f, 		0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("armorer")).modify(HELMET_ENCHANTMENT_MODIFIER);
@@ -107,9 +128,19 @@ public class EconomyFactory {
 	public final static BaseItemEconomy BEEF = 					register(Items.BEEF, 					0.1f, 		1f,			0.001f, new ConstrainedGaussianRandom(32, 16, 64, 1),	ImmutableSet.of("butcher"));
 	public final static BaseItemEconomy DRIED_KELP_BLOCK = 		register(Items.DRIED_KELP_BLOCK, 		0.1f, 		1f,			0.001f, new ConstrainedGaussianRandom(32, 16, 64, 1),	ImmutableSet.of("butcher"));
 	public final static BaseItemEconomy SWEET_BERRIES = 		register(Items.SWEET_BERRIES, 			0.1f, 		1f,			0.001f, new ConstrainedGaussianRandom(32, 16, 64, 1),	ImmutableSet.of("butcher"));
-			
+	
+	public final static BaseItemEconomy PAPER = 				register(Items.PAPER,		 			0.05f, 		1f,			0.001f, new ConstantValue<Integer>(64),					ImmutableSet.of("cartographer"));
+	public final static BaseItemEconomy MAP = 					register(Items.MAP,		 				7f, 		1f,			0.001f, new ConstantValue<Integer>(1),					ImmutableSet.of("cartographer"));
+	public final static BaseItemEconomy GLASS_PANE =			register(Items.GLASS_PANE,		 		11f, 		1f,			0.001f, new ConstrainedGaussianRandom(48, 8, 64, 1),	ImmutableSet.of("cartographer"));
+	public final static BaseItemEconomy COMPASS = 				register(Items.COMPASS,					13f, 		1f,			0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("cartographer"));
+	public final static BaseItemEconomy EXPLORERS_MAP =			ItemCompundEconomy.register(Items.FILLED_MAP,  ImmutableSet.of(ImmutablePair.of(MAP, 2f), ImmutablePair.of(COMPASS,  2f)), new ConstantValue<Integer>(1), ImmutableSet.of("cartographer")).finalize(AmaziaFinalModifiers.EXPLORER_MAP_BUILDER);
+	public final static BaseItemEconomy ItemFrame = 			register(Items.ITEM_FRAME,				7f, 		1f,			0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("cartographer"));
+	public final static BaseItemEconomy BANNER = 				register(Items.BLACK_BANNER,			13f, 		1f,			0.001f, new ConstrainedGaussianRandom(8, 4, 16, 1),		ImmutableSet.of("cartographer")).modify(BANNER_COLOR_MODIFIER);
+	public final static BaseItemEconomy BANNER_PATTERN =		register(Items.GLOBE_BANNER_PATTERN,	13f, 		1f,			0.001f, new ConstantValue<Integer>(1), 					ImmutableSet.of("cartographer"));
+	
 	
 	public static void setup() { 
+		AmaziaFinalModifiers.setup();
 	}
 	
 	private static BaseItemEconomy register(Item itm, float baseValue, float volatility, float returnRate, RandomnessFactory<Integer> stackSizeFactory, Collection<String> professions) {

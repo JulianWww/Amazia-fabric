@@ -39,11 +39,6 @@ public class ItemCompundEconomy extends BaseItemEconomy {
 		return null;
 	}
 
-	@Override
-	public AmaziaTradeOffer build(IAmaziaMerchant merchant) {
-		return new AmaziaTradeOffer(this.getStack(), this.getCurrentPrice(), JJUtils.rand.nextBoolean()).modify(this.modifiers).build();
-	}
-
 	protected ItemStack getStack() {
 		return new ItemStack(this.itm, this.stackSizeFactory.next());
 	}

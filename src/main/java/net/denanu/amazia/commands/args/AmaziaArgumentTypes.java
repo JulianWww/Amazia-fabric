@@ -8,6 +8,6 @@ import net.minecraft.util.Identifier;
 
 public class AmaziaArgumentTypes {
 	public static void setup() {
-		ArgumentTypeRegistry.registerArgumentType(Identifier.of(Amazia.MOD_ID, "economy:modifier"), EconomyModifierArgumentType.class, new EconomyModiferArgumentSerializer());
+		ArgumentTypeRegistry.registerArgumentType(Identifier.of(Amazia.MOD_ID, "economy.modifier"), EconomyModifierArgumentType.class, new EconomyModiferArgumentSerializer());
 	}
 }
