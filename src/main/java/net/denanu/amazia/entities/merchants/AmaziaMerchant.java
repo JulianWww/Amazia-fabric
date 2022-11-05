@@ -50,6 +50,11 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 	}
 	
 	@Override
+    public boolean cannotDespawn() {
+    	return true;
+    }
+	
+	@Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putString("profession", this.profession);
