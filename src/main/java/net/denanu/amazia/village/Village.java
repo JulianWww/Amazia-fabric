@@ -70,19 +70,21 @@ public class Village {
 		}
 	}
 	
-    public void writeNbt(NbtCompound nbt, String name) {
-		nbt.putBoolean("village.isValid", valid);
-		farming.writeNbt(nbt, name + ".farming");
-		storage.writeNbt(nbt, name + ".storage");
-		mineing.writeNbt(nbt, name + ".mineing");
-		lumber. writeNbt(nbt, name + ".lumber");
+    public NbtCompound writeNbt() {
+    	NbtCompound nbt = new NbtCompound();
+		nbt.putBoolean("isValid", valid);
+		nbt.put("farming", farming.writeNbt());
+		nbt.put("storage", storage.writeNbt());
+		nbt.put("mineing", mineing.writeNbt());
+		nbt.put("lumber",  lumber. writeNbt());
+		return nbt;
     }
-    public void readNbt(NbtCompound nbt, String name) {
-    	valid = nbt.getBoolean("village.isValid");
-    	farming.readNbt(nbt, name + ".farming");
-    	storage.readNbt(nbt, name + ".storage");
-    	mineing.readNbt(nbt, name + ".mineing");
-    	lumber. readNbt(nbt, name + ".lumber");
+    public void readNbt(NbtCompound nbt) {
+    	valid = nbt.getBoolean("isValid");
+    	farming.readNbt(nbt.getCompound("farming"));
+    	storage.readNbt(nbt.getCompound("storage"));
+    	mineing.readNbt(nbt.getCompound("mineing"));
+    	lumber. readNbt(nbt.getCompound("lumber"));
     }
 	
 	public boolean isValid() {

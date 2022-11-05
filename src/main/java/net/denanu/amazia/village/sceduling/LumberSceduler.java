@@ -7,9 +7,11 @@ import java.util.List;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.sceduling.utils.LumberPathingData;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
@@ -30,17 +32,19 @@ public class LumberSceduler extends VillageSceduler {
 	}
 
 	@Override
-	public void writeNbt(NbtCompound nbt, String name) {
-		JJUtils.writeNBT(nbt, this.toNbtList(), name + ".blockSetups");
-		JJUtils.writeNBT(nbt, this.emptys, name + ".emptys");
-		JJUtils.writeNBT(nbt, this.filled, name + ".filled");
+	public NbtCompound writeNbt() {
+		NbtCompound nbt = new NbtCompound();
+		nbt.put("blockSetups", NbtUtils.toNbt(this.toNbtList()));
+		nbt.put("emptys", NbtUtils.toNbt(this.emptys));
+		nbt.put("filled", NbtUtils.toNbt(this.filled));
+		return nbt;
 	}
 
 	@Override
-	public void readNbt(NbtCompound nbt, String name) {
-		this.tmp = JJUtils.readNBT(nbt, name + ".blockSetups");
-		this.emptys = JJUtils.readNBT(nbt, name + ".emptys");
-		this.filled = JJUtils.readNBT(nbt, name + ".filled");
+	public void readNbt(NbtCompound nbt) {
+		this.tmp = NbtUtils.toBlockPosList(nbt.getList("blockSetups", NbtList.INT_ARRAY_TYPE));
+		this.emptys = NbtUtils.toBlockPosList(nbt.getList("emptys", NbtList.INT_ARRAY_TYPE));
+		this.filled = NbtUtils.toBlockPosList(nbt.getList("filled", NbtList.INT_ARRAY_TYPE));
 	}
 	
 	private List<BlockPos> toNbtList() {

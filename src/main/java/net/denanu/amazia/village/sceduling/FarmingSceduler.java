@@ -6,6 +6,7 @@ import java.util.List;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,6 +15,7 @@ import net.minecraft.block.CropBlock;
 import net.minecraft.block.SugarCaneBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -30,15 +32,17 @@ public class FarmingSceduler extends VillageSceduler {
 		emptyFarm 		= new ArrayList<BlockPos>();
 	}
 	
-    public void writeNbt(NbtCompound nbt, String name) {
-		JJUtils.writeNBT(nbt, this.possibleFarms, name + ".possibleFarms");
-		JJUtils.writeNBT(nbt, this.crops, name + ".crops");
-		JJUtils.writeNBT(nbt, this.emptyFarm, name + ".emptyFarm");
+    public NbtCompound writeNbt() {
+    	NbtCompound nbt = new NbtCompound();
+    	nbt.put("possibleFarms", NbtUtils.toNbt(this.possibleFarms));
+    	nbt.put("crops", NbtUtils.toNbt(this.crops));
+    	nbt.put("emptyFarm", NbtUtils.toNbt(this.emptyFarm));
+		return nbt;
     }
-    public void readNbt(NbtCompound nbt, String name) {
-    	this.possibleFarms = JJUtils.readNBT(nbt, name + ".possibleFarms");
-    	this.crops = JJUtils.readNBT(nbt, name + ".crops");
-    	this.emptyFarm = JJUtils.readNBT(nbt, name + ".emptyFarm");
+    public void readNbt(NbtCompound nbt) {
+    	this.possibleFarms = NbtUtils.toBlockPosList(nbt.getList("possibleFarms", NbtList.INT_ARRAY_TYPE));
+    	this.crops = NbtUtils.toBlockPosList(nbt.getList("crops", NbtList.INT_ARRAY_TYPE));
+    	this.emptyFarm = NbtUtils.toBlockPosList(nbt.getList("emptyFarm", NbtList.INT_ARRAY_TYPE));
     }
     
     @Override

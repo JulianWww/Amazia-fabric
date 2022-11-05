@@ -20,13 +20,13 @@ public class VillageCoreBlockEntity extends BlockEntity {
 	@Override
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
-        village.writeNbt(nbt, "village");
+        nbt.put("village", village.writeNbt());
     }
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         this.createVillage();
-        village.readNbt(nbt, "village");
+        village.readNbt(nbt.getCompound("village"));
     }
     
     public Village getVillage() {

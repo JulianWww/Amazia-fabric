@@ -18,9 +18,9 @@ public class MineStructure extends VillageStructure {
 	private boolean isEnd;
 	private boolean hasVillager;
 	
-	public MineStructure(BlockPos _center, Village v, NbtCompound nbt, String name) {
-		this(_center, v, null);
-		this.readNbt(nbt, name);
+	public MineStructure(BlockPos _center, Village v, NbtCompound nbt) {
+		this(_center, v, (Direction)null);
+		this.readNbt(nbt);
 	}
 	
 	public MineStructure(BlockPos _center, Village v, Direction _direction) {
@@ -35,13 +35,15 @@ public class MineStructure extends VillageStructure {
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt, String name) {
-		nbt.putBoolean(name + ".Mine." + this.getName() + ".isEnd", this.isEnd);
+	public NbtCompound writeNbt() {
+		NbtCompound nbt = new NbtCompound();
+		nbt.putBoolean("isEnd", this.isEnd);
+		return nbt;
 	}
 
 	@Override
-	public void readNbt(NbtCompound nbt, String name) {
-		this.isEnd = nbt.getBoolean(name + ".Mine." + this.getName() + ".isEnd");
+	public void readNbt(NbtCompound nbt) {
+		this.isEnd = nbt.getBoolean("isEnd");
 	}
 	
 	private static boolean isInFront(int pos, int origin, int direction) {

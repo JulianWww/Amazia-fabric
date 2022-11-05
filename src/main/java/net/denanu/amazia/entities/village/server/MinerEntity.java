@@ -14,6 +14,7 @@ import net.denanu.amazia.entities.village.server.goal.mineing.ExtendMineGoal;
 import net.denanu.amazia.entities.village.server.goal.mineing.FixBrokenMineSeroundingsGoal;
 import net.denanu.amazia.entities.village.server.goal.mineing.LightUpMine;
 import net.denanu.amazia.entities.village.server.goal.mineing.MoveToEndOfMine;
+import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.AmaziaData;
 import net.denanu.amazia.village.structures.MineStructure;
 import net.minecraft.block.Block;
@@ -28,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
@@ -64,13 +66,13 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	@Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        JJUtils.writeNBT(nbt, this.toMineLocations, "amazia.toMineLocations");
+        nbt.put("toMineLocations", NbtUtils.toNbt(this.toMineLocations));
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        this.toMineLocations = JJUtils.readNBT(nbt, "amazia.toMineLocations");
+        this.toMineLocations = NbtUtils.toBlockPosList(nbt.getList("toMineLocations", NbtList.INT_ARRAY_TYPE));
     }
 	
 	@Override

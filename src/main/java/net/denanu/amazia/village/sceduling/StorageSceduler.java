@@ -9,6 +9,7 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.storage.InteractWithContainerGoal;
+import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.sceduling.utils.StoragePathingData;
 import net.minecraft.block.BarrelBlock;
@@ -20,6 +21,7 @@ import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
@@ -35,11 +37,13 @@ public class StorageSceduler extends VillageSceduler {
 		this.blockSetupHolder = new LinkedList<BlockPos>();
 	}
 	
-	public void writeNbt(NbtCompound nbt, String name) {
-		JJUtils.writeNBT(nbt, this.toBlockPosList(), name + ".chests");
+	public NbtCompound writeNbt() {
+		NbtCompound nbt = new NbtCompound();
+		nbt.put("chests", NbtUtils.toNbt(this.toBlockPosList()));
+		return nbt;
     }
-    public void readNbt(NbtCompound nbt, String name) {
-    	this.blockSetupHolder = JJUtils.readNBT(nbt, name + ".chests");
+    public void readNbt(NbtCompound nbt) {
+    	this.blockSetupHolder = NbtUtils.toBlockPosList(nbt.getList("chests", NbtList.INT_ARRAY_TYPE));
     }
     
     private List<BlockPos> toBlockPosList() {

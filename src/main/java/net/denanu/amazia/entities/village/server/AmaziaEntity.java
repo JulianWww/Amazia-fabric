@@ -7,6 +7,7 @@ import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.pathing.PathFinder;
 import net.denanu.amazia.utils.CuboidSampler;
+import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,6 +15,7 @@ import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -48,13 +50,13 @@ public class AmaziaEntity extends PassiveEntity {
 	@Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        JJUtils.wrtieBlockPosNBT(nbt, this.villageCorePos, "amazia.villageLoc");
+        nbt.put("villageLoc", NbtUtils.toNbt(this.villageCorePos));
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        this.villageCorePos = JJUtils.readBlockPosNBT(nbt, "amazia.villageLoc");
+        this.villageCorePos = NbtUtils.toBlockPos(nbt.getList("villageLoc", NbtList.INT_TYPE));
         this.setup();
     }
 	
