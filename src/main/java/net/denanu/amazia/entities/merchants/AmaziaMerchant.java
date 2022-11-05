@@ -10,22 +10,40 @@ import net.denanu.amazia.economy.AmaziaTradeOfferList;
 import net.denanu.amazia.economy.Economy;
 import net.denanu.amazia.economy.IAmaziaMerchant;
 import net.denanu.amazia.economy.ProfessionFactory;
+import net.denanu.amazia.entities.merchants.goals.WonderAroundSameYGoal;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.networking.s2c.AmaziaSetTradeOffersS2CPacket;
+import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.EscapeDangerGoal;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.LookAroundGoal;
+import net.minecraft.entity.ai.goal.LookAtEntityGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.TemptGoal;
+import net.minecraft.entity.ai.goal.WanderAroundGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.annotation.Debug;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -44,9 +62,18 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 	private PlayerEntity customer;
 	@Nullable
 	protected AmaziaTradeOfferList offers;
+	private BlockPos home;
 
 	public AmaziaMerchant(EntityType<? extends PassiveEntity> entityType, World world) {
 		super(entityType, world);
+		return;
+	}
+	
+	@Override
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+		EntityData data = super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+		this.home = this.getBlockPos();
+		return data;
 	}
 	
 	@Override
@@ -55,8 +82,19 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
     }
 	
 	@Override
+    protected void initGoals() {
+		this.goalSelector.add(0, new SwimGoal(this));
+        this.goalSelector.add(1, new EscapeDangerGoal(this, 2.0));
+        this.goalSelector.add(3, new TemptGoal(this, 1, Ingredient.ofItems(Items.EMERALD, Items.EMERALD_BLOCK), false));
+		this.goalSelector.add(7, new WonderAroundSameYGoal(this, 0.5));
+		this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
+		this.goalSelector.add(9, new LookAroundGoal(this));
+	}
+	
+	@Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
+        nbt.put("home", NbtUtils.toNbt(this.home));
         nbt.putString("profession", this.profession);
         if (this.offers != null) { nbt.put("Trades", this.offers.toNbt()); }
     }
@@ -64,6 +102,7 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
+        this.home = NbtUtils.toBlockPos(nbt.getList("home", NbtList.INT_TYPE));
         this.profession = nbt.getString("profession");
         this.offers = new AmaziaTradeOfferList(nbt.getCompound("Trades"));
         return;
