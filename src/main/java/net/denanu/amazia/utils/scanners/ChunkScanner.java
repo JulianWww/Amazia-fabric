@@ -73,8 +73,6 @@ public class ChunkScanner extends PersistentState {
 					
 					structureLocations.put(key, pos);
 					this.dirtys.remove(key);
-					
-					Amazia.LOGGER.info("Found Structure: " + key.toString());
 				}
 			}
 		}
