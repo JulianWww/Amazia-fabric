@@ -37,7 +37,7 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.GeckoLib;
-import static net.minecraft.server.command.CommandManager.literal;
+
 public class Amazia implements ModInitializer {
 	public static final String MOD_ID = "amazia";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
