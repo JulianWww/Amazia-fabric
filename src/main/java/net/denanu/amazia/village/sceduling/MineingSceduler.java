@@ -10,10 +10,12 @@ import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.custom.VillageMarkerBlock;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.structures.MineStructure;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -29,18 +31,20 @@ public class MineingSceduler extends VillageSceduler {
 	}
 	
 	@Override
-	public void writeNbt(NbtCompound nbt, String name) {
-		JJUtils.writeNBT(nbt, this.miningCores, name + ".miningCores");
+	public NbtCompound writeNbt() {
+		NbtCompound nbt = new NbtCompound();
+		nbt.put("miningCores", NbtUtils.toNbt(this.miningCores));
 		for (Entry<BlockPos, MineStructure> element : this.mines.entrySet()) {
-			element.getValue().writeNbt(nbt, name);
+			nbt.put(element.getKey().toShortString(), element.getValue().writeNbt());
 		}
+		return nbt;
 	}
 
 	@Override
-	public void readNbt(NbtCompound nbt, String name) {
-		this.miningCores = JJUtils.readNBT(nbt, name + ".miningCores");
+	public void readNbt(NbtCompound nbt) {
+		this.miningCores = NbtUtils.toBlockPosList(nbt.getList("miningCores", NbtList.INT_ARRAY_TYPE));
 		for (BlockPos pos : this.miningCores) {
-			this.mines.put(pos, new MineStructure(pos, this.getVillage(), nbt, name));
+			this.mines.put(pos, new MineStructure(pos, this.getVillage(), nbt.getCompound(pos.toShortString())));
 		}
 	}
 	

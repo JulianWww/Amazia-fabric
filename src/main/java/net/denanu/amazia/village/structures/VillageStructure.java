@@ -36,8 +36,9 @@ public abstract class VillageStructure extends BlockPos {
 	}
 
 
-	public void writeNbt(NbtCompound nbt, String name) {
+	public NbtCompound writeNbt() {
+		return new NbtCompound();
 	}
-	public void readNbt(NbtCompound nbt, String name) {
+	public void readNbt(NbtCompound nbt) {
 	}
 }

@@ -22,8 +22,8 @@ public abstract class VillageSceduler {
 		return this.village;
 	}
 	
-	public abstract void writeNbt(NbtCompound nbt, String name);
-    public abstract void readNbt(NbtCompound nbt, String name);
+	public abstract NbtCompound writeNbt();
+    public abstract void readNbt(NbtCompound nbt);
 	
 	protected static <E extends Object> E getRandomListElement(List<E> list) {
 		return JJUtils.getRandomListElement(list);
