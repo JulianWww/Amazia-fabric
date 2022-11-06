@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableList;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.block.custom.api.AmaziaTrough;
+import net.denanu.amazia.components.AmaziaComponents;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.minecraft.entity.Entity;
@@ -64,7 +65,7 @@ public class RancherSceduler extends VillageSceduler {
 	
 	public AnimalEntity getUnboundAnimal() {
 		AnimalEntity animal =  JJUtils.getRandomListElement(
-				this.getVillage().getWorld().getEntitiesByClass(AnimalEntity.class, this.getVillage().getBox(), a -> this.hasPen(a))
+				this.getVillage().getWorld().getEntitiesByClass(AnimalEntity.class, this.getVillage().getBox(), a -> !AmaziaComponents.getIsPartOfVillage(a) && this.hasPen(a))
 			);
 		if (animal == null || animal.isLeashed()) return null;
 		return animal;

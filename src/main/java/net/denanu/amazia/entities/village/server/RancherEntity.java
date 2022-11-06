@@ -66,6 +66,18 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 		
         super.registerBaseGoals();
     }
+	
+	@Override 
+	public void mobTick() {
+		this.releaseTargetEntityIfDead();
+	}
+
+	private void releaseTargetEntityIfDead() {
+		if (this.targetAnimal != null && this.targetAnimal.isDead()) {
+			this.targetAnimal = null;
+		}
+		
+	}
 
 	@Override
 	public AnimationFactory getFactory() {
