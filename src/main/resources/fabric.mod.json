@@ -40,5 +40,11 @@
   },
   "suggests": {
     "another-mod": "*"
-  }
+  },
+  
+  "custom": {
+        "cardinal-components": [
+            "amazia:is-part-of-village"
+        ]
+    }
 }
