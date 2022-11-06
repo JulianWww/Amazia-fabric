@@ -100,11 +100,6 @@ public class MineingSceduler extends VillageSceduler {
 		}
 	}
 
-	@Override
-	public BlockPos getRandomPos(ServerWorld world, AmaziaVillagerEntity entity) {
-		return null;
-	}
-
 	public MineStructure getSuggestedMine() {
 		BlockPos key = getRandomListElement(this.miningCores);
 		if (key == null) { return null; }

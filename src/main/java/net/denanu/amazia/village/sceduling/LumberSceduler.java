@@ -170,13 +170,9 @@ public class LumberSceduler extends VillageSceduler {
 	public void initialize() {
 		if (this.tmp != null) {
 			this.fromNbtList(this.tmp);
-			this.setChanged();
+			//this.setChanged();
 			this.tmp = null;
 		}
-	}
-	@Override
-	public BlockPos getRandomPos(ServerWorld world, AmaziaVillagerEntity entity) {
-		return null;
 	}
 
 	public LumberPathingData getHarvestLocation() {

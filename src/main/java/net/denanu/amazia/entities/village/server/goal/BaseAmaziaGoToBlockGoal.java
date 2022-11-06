@@ -32,6 +32,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		super.stop();
 		this.isRunning = false;
 		this.targetPos = null;
+		this.entity.getNavigation().stop();
 	}
 	
 	@Override

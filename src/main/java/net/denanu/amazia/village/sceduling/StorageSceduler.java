@@ -128,11 +128,6 @@ public class StorageSceduler extends VillageSceduler {
 			markBlockAsLost(pos, world);
 		}
 	}
-
-	@Override
-	public BlockPos getRandomPos(ServerWorld world, AmaziaVillagerEntity entity) {
-		return null;
-	}
 	
 	// Pair of contains item type, can add
 	public static Pair<Boolean, Boolean> canAddItem(LootableContainerBlockEntity lootableContainerBlockEntity, ItemStack itm) {

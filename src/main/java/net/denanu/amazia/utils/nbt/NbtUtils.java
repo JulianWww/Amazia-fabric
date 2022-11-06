@@ -2,11 +2,14 @@ package net.denanu.amazia.utils.nbt;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtInt;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
@@ -55,5 +58,20 @@ public class NbtUtils {
 			}
 		}
 		return list;
+	}
+	
+	public static <E extends Map<Identifier, List<BlockPos>>> NbtCompound toNbt(E data){
+		NbtCompound nbt = new NbtCompound();
+		for (Entry<Identifier, List<BlockPos>> entry : data.entrySet()) {
+			nbt.put(entry.getKey().toString(), toNbt(entry.getValue()));
+		}
+		return nbt;
+	}
+	
+	public static <E extends Map<Identifier, List<BlockPos>>> E fromNbt(NbtCompound nbt, E out){
+		for (String key : nbt.getKeys()) {
+			out.put(new Identifier(key), toBlockPosList(nbt.getList(key, NbtList.LIST_TYPE)));
+		}
+		return out;
 	}
 }
