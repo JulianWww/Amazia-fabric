@@ -55,11 +55,11 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 	
 	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
+            //event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
+        //event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
         return PlayState.CONTINUE;
     }
 
