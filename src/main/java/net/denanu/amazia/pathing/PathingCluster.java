@@ -1,6 +1,7 @@
 package net.denanu.amazia.pathing;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 import net.denanu.amazia.pathing.node.PathingNode;
 import net.minecraft.block.Blocks;
@@ -47,7 +48,6 @@ public class PathingCluster {
 		this.parents.remove(node);
 	}
 	public void update(PathingGraph graph) {
-		int a = 1;
 		for (PathingNode node : this.parents) {
 			debugUpdate(graph, node);
 			node.sceduleUpdate(graph);

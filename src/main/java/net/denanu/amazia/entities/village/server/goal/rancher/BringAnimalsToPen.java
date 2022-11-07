@@ -13,7 +13,11 @@ public class BringAnimalsToPen extends AmaziaGoToBlockGoal<RancherEntity> {
 	
 	@Override
 	public boolean canStart() {
-		return this.entity.hasTargetAnimal() && this.entity.targetAnimal.isLeashed() && super.canStart() && this.entity.targetAnimal.getHoldingEntity() == this.entity;
+		return this.entity.hasTargetAnimal() && 
+				this.entity.targetAnimal.isLeashed() && 
+				super.canStart() && 
+				this.entity.targetAnimal.getHoldingEntity() == this.entity && 
+				!AmaziaComponents.getIsPartOfVillage(this.entity.targetAnimal);
 	}
 	
 	@Override

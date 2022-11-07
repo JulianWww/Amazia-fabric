@@ -58,7 +58,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	public static DefaultAttributeContainer.Builder setAttributes() {
         return PassiveEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2f);
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.4f);
     }
 	
 	public void registerBaseGoals() {

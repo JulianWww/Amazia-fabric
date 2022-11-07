@@ -42,9 +42,9 @@ public class LumberSceduler extends VillageSceduler {
 
 	@Override
 	public void readNbt(NbtCompound nbt) {
-		this.tmp = NbtUtils.toBlockPosList(nbt.getList("blockSetups", NbtList.INT_ARRAY_TYPE));
-		this.emptys = NbtUtils.toBlockPosList(nbt.getList("emptys", NbtList.INT_ARRAY_TYPE));
-		this.filled = NbtUtils.toBlockPosList(nbt.getList("filled", NbtList.INT_ARRAY_TYPE));
+		this.tmp = NbtUtils.toBlockPosList(nbt.getList("blockSetups", NbtList.LIST_TYPE));
+		this.emptys = NbtUtils.toBlockPosList(nbt.getList("emptys", NbtList.LIST_TYPE));
+		this.filled = NbtUtils.toBlockPosList(nbt.getList("filled", NbtList.LIST_TYPE));
 	}
 	
 	private List<BlockPos> toNbtList() {

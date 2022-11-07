@@ -63,6 +63,9 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
         	this.reached = false;
         	if (distance < 3) {
             	this.runBackupMotion();
+            	if (this.shouldResetPath()) {
+	                this.recalcPath();
+	            }
             }
         	else {
 	            if (this.shouldResetPath()) {

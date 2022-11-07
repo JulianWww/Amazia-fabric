@@ -65,10 +65,20 @@ public class RancherSceduler extends VillageSceduler {
 	
 	public AnimalEntity getUnboundAnimal() {
 		AnimalEntity animal =  JJUtils.getRandomListElement(
-				this.getVillage().getWorld().getEntitiesByClass(AnimalEntity.class, this.getVillage().getBox(), a -> !AmaziaComponents.getIsPartOfVillage(a) && this.hasPen(a))
+				this.getVillage().getWorld().getEntitiesByClass(AnimalEntity.class, this.getVillage().getBox(), a -> this.canReciveAttention(a))
 			);
 		if (animal == null || animal.isLeashed()) return null;
 		return animal;
+	}
+	
+	private boolean canReciveAttention(AnimalEntity animal) {
+		return this.hasPen(animal) && (
+				!AmaziaComponents.getIsPartOfVillage(animal)
+				|| (
+						!animal.isInLove() &&
+						animal.getBreedingAge() == 0
+					)
+			);
 	}
 
 	@Override

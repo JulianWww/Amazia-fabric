@@ -43,7 +43,8 @@ public class StorageSceduler extends VillageSceduler {
 		return nbt;
     }
     public void readNbt(NbtCompound nbt) {
-    	this.blockSetupHolder = NbtUtils.toBlockPosList(nbt.getList("chests", NbtList.INT_ARRAY_TYPE));
+    	this.blockSetupHolder = NbtUtils.toBlockPosList(nbt.getList("chests", NbtList.LIST_TYPE));
+    	return;
     }
     
     private List<BlockPos> toBlockPosList() {

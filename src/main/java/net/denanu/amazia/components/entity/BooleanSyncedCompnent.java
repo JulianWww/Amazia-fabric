@@ -2,21 +2,21 @@ package net.denanu.amazia.components.entity;
 
 import net.minecraft.nbt.NbtCompound;
 
-public class BooleanCompnent implements IBooleanCompnent {
-	private boolean value = false;
+public class BooleanSyncedCompnent implements IBooleanCompnent {
+	private boolean value;
 
-	public BooleanCompnent(boolean value) {
+	public BooleanSyncedCompnent(boolean value) {
 		this.value = value;
 	}
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		this.value = tag.getBoolean("isVillage");
+		this.value = tag.getBoolean("value");
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		tag.putBoolean("inVillage", this.value);
+		tag.putBoolean("value", this.value);
 	}
 
 	@Override
@@ -28,5 +28,4 @@ public class BooleanCompnent implements IBooleanCompnent {
 	public void setValue(boolean value) {
 		this.value = value;
 	}
-
 }

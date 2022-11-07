@@ -44,7 +44,8 @@
   
   "custom": {
         "cardinal-components": [
-            "amazia:is-part-of-village"
+            "amazia:is-part-of-village",
+            "amazia:can-collide"
         ]
     }
 }
