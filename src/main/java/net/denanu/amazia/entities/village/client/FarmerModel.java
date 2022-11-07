@@ -9,7 +9,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class FarmerModel extends AnimatedGeoModel<FarmerEntity> {
     @Override
     public Identifier getModelResource(FarmerEntity object) {
-        return new Identifier(Amazia.MOD_ID, "models/entity/farmer.geo.json");
+        return new Identifier(Amazia.MOD_ID, "geo/farmer.geo.json");
     }
 
     @Override
