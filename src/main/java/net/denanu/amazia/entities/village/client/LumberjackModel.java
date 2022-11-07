@@ -9,16 +9,16 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class LumberjackModel extends AnimatedGeoModel<LumberjackEntity> {
     @Override
     public Identifier getModelResource(LumberjackEntity object) {
-        return new Identifier(Amazia.MOD_ID, "geo/lumberjack.geo.json");
+        return new Identifier(Amazia.MOD_ID, "geo/farmer.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(LumberjackEntity object) {
-        return new Identifier(Amazia.MOD_ID, "textures/entity/lumberjack.png");
+        return new Identifier(Amazia.MOD_ID, "textures/entity/farmer_tex.png");
     }
 
     @Override
     public Identifier getAnimationResource(LumberjackEntity animatable) {
-        return new Identifier(Amazia.MOD_ID, "animations/lumberjack.anim.json");
+        return new Identifier(Amazia.MOD_ID, "animations/farmer.anim.json");
     }
 }
