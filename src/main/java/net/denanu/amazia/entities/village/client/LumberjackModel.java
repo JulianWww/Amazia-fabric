@@ -9,7 +9,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class LumberjackModel extends AnimatedGeoModel<LumberjackEntity> {
     @Override
     public Identifier getModelResource(LumberjackEntity object) {
-        return new Identifier(Amazia.MOD_ID, "geo/farmer.geo.json");
+        return new Identifier(Amazia.MOD_ID, "models/entity/lumberjack.geo.json");
     }
 
     @Override
