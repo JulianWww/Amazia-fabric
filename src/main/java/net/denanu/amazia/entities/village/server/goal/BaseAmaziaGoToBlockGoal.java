@@ -32,6 +32,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		super.stop();
 		this.isRunning = false;
 		this.targetPos = null;
+		this.entity.getNavigation().stop();
 	}
 	
 	@Override
@@ -62,6 +63,9 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
         	this.reached = false;
         	if (distance < 3) {
             	this.runBackupMotion();
+            	if (this.shouldResetPath()) {
+	                this.recalcPath();
+	            }
             }
         	else {
 	            if (this.shouldResetPath()) {
@@ -93,13 +97,19 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		if (path != null && path.getLength() == 1) {
 			this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() + 1, this.targetPos.getZ() + 0.5, 1);
 		}
+		if (path == null) {
+			this.fail();
+		}
 		nav.startMovingAlong(path, 1);
 		this.ticksStanding = 0;
 	}
 	
+	protected void fail() {};
+
 	private void getNewTargetPos() {
 		if (this.targetPos == null) {
 			this.targetPos = this.getTargetBlock();
+			return;
 		}
 	}
 	

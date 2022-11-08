@@ -25,6 +25,7 @@ import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.utils.crafting.VillageRecipeManager;
+import net.denanu.amazia.utils.registry.AmaziaRegistrys;
 import net.denanu.amazia.utils.scanners.ChunkScanner;
 import net.denanu.amazia.village.AmaziaData;
 import net.denanu.amazia.village.VillageManager;
@@ -88,6 +89,9 @@ public class Amazia implements ModInitializer {
 		// commands
 		AmaziaArgumentTypes.setup();
 	    CommandRegistrationCallback.EVENT.register(AmaziaCommand::register);
+	    
+	    // Registry
+	    AmaziaRegistrys.setup();
 	}
 
 	public static VillageManager getVillageManager() {

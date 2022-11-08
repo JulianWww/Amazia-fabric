@@ -1,12 +1,14 @@
 package net.denanu.amazia.block;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.block.custom.AmaziaTroughBlock;
 import net.denanu.amazia.block.custom.VillageCoreBlock;
 import net.denanu.amazia.block.custom.VillageMarkerBlock;
 import net.denanu.amazia.item.AmaziaItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -37,6 +39,22 @@ public class AmaziaBlocks {
     
     public static final Block TREE_FARM_MARKER = registerBlock("tree_school",
     		new Block(FabricBlockSettings.of(Material.STONE).strength(1f).nonOpaque()
+    				), AmaziaItemGroup.VILLAGE);
+    
+    public static final Block SHEEP_TROUGH = registerBlock("sheep_trough",
+    		new AmaziaTroughBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0f).nonOpaque(), EntityType.SHEEP
+    				), AmaziaItemGroup.VILLAGE);
+    
+    public static final Block COW_TROUGH = registerBlock("cow_trough",
+    		new AmaziaTroughBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0f).nonOpaque(), EntityType.COW
+    				), AmaziaItemGroup.VILLAGE);
+    
+    public static final Block CHICKEN_TROUGH = registerBlock("chicken_trough",
+    		new AmaziaTroughBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0f).nonOpaque(), EntityType.CHICKEN
+    				), AmaziaItemGroup.VILLAGE);
+    
+    public static final Block PIG_TROUGH = registerBlock("pig_trough",
+    		new AmaziaTroughBlock(AbstractBlock.Settings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0f).nonOpaque(), EntityType.PIG
     				), AmaziaItemGroup.VILLAGE);
     
     

@@ -41,6 +41,5 @@ public abstract class VillageSceduler {
 	}
 	
 	public abstract void discover(ServerWorld world, BlockPos pos);
-	public abstract BlockPos getRandomPos(ServerWorld world, AmaziaVillagerEntity entity);
 	public abstract void initialize();
 }

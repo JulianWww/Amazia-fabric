@@ -186,7 +186,7 @@ public class PathingGraph {
 	public BasePathingNode getNodeYRange(int x, int i, int y, int z) {
 		BasePathingNode node = null;
 		
-		for (BlockPos pos = new BlockPos(x, i, y); pos.getY()<=y; pos = pos.up()) {
+		for (BlockPos pos = new BlockPos(x, i, z); pos.getY()<=y; pos = pos.up()) {
 			node = this.getNode(pos);
 			if (node != null) {
 				return node;

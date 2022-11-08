@@ -40,9 +40,9 @@ public class FarmingSceduler extends VillageSceduler {
 		return nbt;
     }
     public void readNbt(NbtCompound nbt) {
-    	this.possibleFarms = NbtUtils.toBlockPosList(nbt.getList("possibleFarms", NbtList.INT_ARRAY_TYPE));
-    	this.crops = NbtUtils.toBlockPosList(nbt.getList("crops", NbtList.INT_ARRAY_TYPE));
-    	this.emptyFarm = NbtUtils.toBlockPosList(nbt.getList("emptyFarm", NbtList.INT_ARRAY_TYPE));
+    	this.possibleFarms = NbtUtils.toBlockPosList(nbt.getList("possibleFarms", NbtList.LIST_TYPE));
+    	this.crops = NbtUtils.toBlockPosList(nbt.getList("crops", NbtList.LIST_TYPE));
+    	this.emptyFarm = NbtUtils.toBlockPosList(nbt.getList("emptyFarm", NbtList.LIST_TYPE));
     }
     
     @Override

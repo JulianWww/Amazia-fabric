@@ -19,8 +19,11 @@ import net.denanu.amazia.pathing.node.BasePathingNode;
 import net.denanu.amazia.pathing.node.PathingNode;
 import net.denanu.amazia.utils.exceptions.UnimplementedException;
 import net.denanu.amazia.utils.queue.PriorityElement;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DoorBlock;
+import net.minecraft.block.FenceGateBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.LandPathNodeMaker;
@@ -39,6 +42,7 @@ import net.minecraft.world.chunk.ChunkCache;
 public class PathFinder extends EntityNavigation {
 	protected AmaziaEntity entity;
 	protected PriorityQueue<PriorityElement<PathingNode>> nodeQueue = new PriorityQueue<PriorityElement<PathingNode>>(PriorityElement.comparator);
+	protected BlockPos currentLoc = BlockPos.ORIGIN;
 	
 	public PathFinder(final AmaziaEntity entityNav) {
 		super(entityNav, entityNav.getWorld());
@@ -373,6 +377,11 @@ public class PathFinder extends EntityNavigation {
 	
 	@Override
 	 protected void continueFollowingPath() {
+		if (this.entity.getBlockPos() != this.currentLoc) {
+			this.closeBlock();
+		}
+		this.currentLoc = this.entity.getBlockPos();
+		
         boolean bl;
         Vec3d vec3d = this.getPos();
         this.nodeReachProximity = this.entity.getWidth() > 0.75f ? this.entity.getWidth() / 2.0f : 0.75f - this.entity.getWidth() / 2.0f;
@@ -386,6 +395,7 @@ public class PathFinder extends EntityNavigation {
         bl = d < (double)this.nodeReachProximity && f < (double)this.nodeReachProximity && e < 1.0;
         if (bl || this.entity.canJumpToNextPathNode(this.currentPath.getCurrentNode().type) && this.shouldJumpToNextNode(vec3d)) {
             this.currentPath.next();
+            this.openBlock();
         }
         this.checkTimeouts(vec3d);
     }
@@ -401,4 +411,27 @@ public class PathFinder extends EntityNavigation {
         }
         return false;
     }
+	
+	private void openBlock() {
+		if (this.currentPath.getCurrentNodeIndex() < this.currentPath.getLength()) {
+			this.setBlocOpenState(true, this.currentPath.getCurrentNode().getBlockPos());
+			this.setBlocOpenState(true, this.entity.getBlockPos());
+		}
+	}
+	
+	private void closeBlock() {
+		this.setBlocOpenState(false, this.currentLoc);
+	}
+	
+	private void setBlocOpenState(boolean value, BlockPos pos) {
+		BlockState state = ((ServerWorld)this.entity.world).getBlockState(pos);
+		
+		if (state.getBlock() instanceof DoorBlock) {
+			((DoorBlock)state.getBlock()).setOpen(this.entity, this.entity.world, state, pos, value);
+		}
+		else if (state.getBlock() instanceof FenceGateBlock) {
+			state = state.with(FenceGateBlock.OPEN, value);
+            world.setBlockState(pos, state, Block.NOTIFY_LISTENERS | Block.REDRAW_ON_MAIN_THREAD);
+		}
+	}
 }

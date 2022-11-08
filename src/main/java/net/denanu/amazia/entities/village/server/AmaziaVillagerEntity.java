@@ -58,7 +58,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	public static DefaultAttributeContainer.Builder setAttributes() {
         return PassiveEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2f);
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.17f);
     }
 	
 	public void registerBaseGoals() {
@@ -312,7 +312,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
         if (this.shouldPickUp(item.getStack())) { InventoryOwner.pickUpItem(this, this, item); }
     }
 	
-	protected boolean hasFreeSlot() {
+	public boolean hasFreeSlot() {
 		for (int i = 0; i < this.getInventory().size(); ++i) {
             ItemStack itemStack = this.getInventory().getStack(i);
             if (itemStack.isEmpty()) {
@@ -320,6 +320,16 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
             }
 		}
 		return false;
+	}
+	
+	public int getItemStack(Item irm) {
+		for (int i = 0; i < this.getInventory().size(); ++i) {
+            ItemStack itemStack = this.getInventory().getStack(i);
+            if (itemStack.isOf(irm)) {
+            	return i;
+            }
+		}
+		return -1;
 	}
 	
 	@Override

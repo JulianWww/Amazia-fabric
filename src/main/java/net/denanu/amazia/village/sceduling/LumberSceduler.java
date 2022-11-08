@@ -42,9 +42,9 @@ public class LumberSceduler extends VillageSceduler {
 
 	@Override
 	public void readNbt(NbtCompound nbt) {
-		this.tmp = NbtUtils.toBlockPosList(nbt.getList("blockSetups", NbtList.INT_ARRAY_TYPE));
-		this.emptys = NbtUtils.toBlockPosList(nbt.getList("emptys", NbtList.INT_ARRAY_TYPE));
-		this.filled = NbtUtils.toBlockPosList(nbt.getList("filled", NbtList.INT_ARRAY_TYPE));
+		this.tmp = NbtUtils.toBlockPosList(nbt.getList("blockSetups", NbtList.LIST_TYPE));
+		this.emptys = NbtUtils.toBlockPosList(nbt.getList("emptys", NbtList.LIST_TYPE));
+		this.filled = NbtUtils.toBlockPosList(nbt.getList("filled", NbtList.LIST_TYPE));
 	}
 	
 	private List<BlockPos> toNbtList() {
@@ -170,13 +170,9 @@ public class LumberSceduler extends VillageSceduler {
 	public void initialize() {
 		if (this.tmp != null) {
 			this.fromNbtList(this.tmp);
-			this.setChanged();
+			//this.setChanged();
 			this.tmp = null;
 		}
-	}
-	@Override
-	public BlockPos getRandomPos(ServerWorld world, AmaziaVillagerEntity entity) {
-		return null;
 	}
 
 	public LumberPathingData getHarvestLocation() {

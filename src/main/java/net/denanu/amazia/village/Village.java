@@ -9,11 +9,13 @@ import net.denanu.amazia.utils.CuboidSampler;
 import net.denanu.amazia.village.sceduling.FarmingSceduler;
 import net.denanu.amazia.village.sceduling.LumberSceduler;
 import net.denanu.amazia.village.sceduling.MineingSceduler;
+import net.denanu.amazia.village.sceduling.RancherSceduler;
 import net.denanu.amazia.village.sceduling.StorageSceduler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
 public class Village {
@@ -28,6 +30,7 @@ public class Village {
 	private StorageSceduler storage;
 	private MineingSceduler mineing;
 	private LumberSceduler  lumber;
+	private RancherSceduler ranching;
 
 	private PathingGraph pathingGraph;
 	
@@ -35,13 +38,25 @@ public class Village {
 	@Nullable
 	private VillageCoreBlockEntity coreBlock;
 	
+	private Box boundingBox;
+	
 	public Village(VillageCoreBlockEntity core) {
 		this.coreBlock = core;
-		this.farming = new FarmingSceduler(this);
-		this.storage = new StorageSceduler(this);
-		this.mineing = new MineingSceduler(this);
-		this.lumber  = new LumberSceduler (this);
+		this.farming 	= new FarmingSceduler(this);
+		this.storage 	= new StorageSceduler(this);
+		this.mineing 	= new MineingSceduler(this);
+		this.lumber 	= new LumberSceduler (this);
+		this.ranching	= new RancherSceduler(this);
 		this.valid = true;
+		
+		this.boundingBox = new Box(
+				core.getPos().getX() + SIZE,
+				400,
+				core.getPos().getZ() + SIZE,
+				core.getPos().getX() - SIZE,
+				-400,
+				core.getPos().getZ() - SIZE
+			);
 	}
 	
 	public void setupVillage() {
@@ -53,6 +68,7 @@ public class Village {
 		this.storage.initialize();
 		this.mineing.initialize();
 		this.lumber.initialize();
+		this.ranching.initialize();
 		
 		this.sampler = new CuboidSampler(this.getOrigin(), SCAN_SIZE, SCAN_SIZE, SCAN_SIZE);
 		
@@ -73,18 +89,20 @@ public class Village {
     public NbtCompound writeNbt() {
     	NbtCompound nbt = new NbtCompound();
 		nbt.putBoolean("isValid", valid);
-		nbt.put("farming", farming.writeNbt());
-		nbt.put("storage", storage.writeNbt());
-		nbt.put("mineing", mineing.writeNbt());
-		nbt.put("lumber",  lumber. writeNbt());
+		nbt.put("farming",  farming. writeNbt());
+		nbt.put("storage",  storage. writeNbt());
+		nbt.put("mineing",  mineing. writeNbt());
+		nbt.put("lumber",   lumber.  writeNbt());
+		nbt.put("ranching", ranching.writeNbt());
 		return nbt;
     }
     public void readNbt(NbtCompound nbt) {
     	valid = nbt.getBoolean("isValid");
-    	farming.readNbt(nbt.getCompound("farming"));
-    	storage.readNbt(nbt.getCompound("storage"));
-    	mineing.readNbt(nbt.getCompound("mineing"));
-    	lumber. readNbt(nbt.getCompound("lumber"));
+    	farming. readNbt(nbt.getCompound("farming"));
+    	storage. readNbt(nbt.getCompound("storage"));
+    	mineing. readNbt(nbt.getCompound("mineing"));
+    	lumber.  readNbt(nbt.getCompound("lumber"));
+    	ranching.readNbt(nbt.getCompound("ranching"));
     }
 	
 	public boolean isValid() {
@@ -114,10 +132,11 @@ public class Village {
 		}
 	}
 	private void discover(ServerWorld world, BlockPos blockPos) {
-		this.farming.discover(world, blockPos);
-		this.storage.discover(world, blockPos);
-		this.mineing.discover(world, blockPos);
-		this.lumber. discover(world, blockPos);
+		this.farming. discover(world, blockPos);
+		this.storage. discover(world, blockPos);
+		this.mineing. discover(world, blockPos);
+		this.lumber.  discover(world, blockPos);
+		this.ranching.discover(world, blockPos);
 	}
 
 
@@ -145,6 +164,9 @@ public class Village {
 	public LumberSceduler getLumber() {
 		return lumber;
 	}
+	public RancherSceduler getRanching() {
+		return this.ranching;
+	}
 
 	public static int getSize() {
 		return Village.SIZE;
@@ -166,6 +188,10 @@ public class Village {
 
 	public ServerWorld getWorld() {
 		return (ServerWorld)this.pathingGraph.getWorld();
+	}
+	
+	public Box getBox() {
+		return this.boundingBox;
 	}
 
 	public void onVillageBlockUpdate(BlockPos pos) {

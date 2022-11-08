@@ -8,7 +8,10 @@ import net.denanu.amazia.pathing.PathingCluster;
 import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.pathing.edge.PathingEdge;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.block.FenceBlock;
+import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.WallBlock;
 import net.minecraft.server.world.ServerWorld;
@@ -120,10 +123,10 @@ public class BasePathingNode extends PathingNode {
 	}
 	public static boolean isPassable(final ServerWorld world, final BlockPos bp) {
 		final BlockState blockState = world.getBlockState(bp);
-        return !blockState.getMaterial().blocksMovement() && !(blockState.getBlock() instanceof FluidBlock) || isPortal(world, bp);
+        return !blockState.getMaterial().blocksMovement() && !(blockState.getBlock() instanceof FluidBlock) || isPortal(blockState);
 	}
-	public static boolean isPortal(final ServerWorld world, final BlockPos bp) {
-		return false;
+	public static boolean isPortal(final BlockState state) {
+		return (state.getBlock() instanceof DoorBlock && !state.isOf(Blocks.IRON_DOOR)) || state.getBlock() instanceof FenceGateBlock;
 	}
 	public boolean canWalkTo(final BasePathingNode node) {
         return (node.getBlockPos().getY() == this.getBlockPos().getY() - 1 && node.getClearanceHeight() >= 3) || node.getBlockPos().getY() == this.getBlockPos().getY() || (node.getBlockPos().getY() == this.getBlockPos().getY() + 1 && this.getClearanceHeight() >= 3);

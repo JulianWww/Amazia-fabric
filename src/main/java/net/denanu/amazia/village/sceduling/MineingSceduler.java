@@ -42,7 +42,7 @@ public class MineingSceduler extends VillageSceduler {
 
 	@Override
 	public void readNbt(NbtCompound nbt) {
-		this.miningCores = NbtUtils.toBlockPosList(nbt.getList("miningCores", NbtList.INT_ARRAY_TYPE));
+		this.miningCores = NbtUtils.toBlockPosList(nbt.getList("miningCores", NbtList.LIST_TYPE));
 		for (BlockPos pos : this.miningCores) {
 			this.mines.put(pos, new MineStructure(pos, this.getVillage(), nbt.getCompound(pos.toShortString())));
 		}
@@ -98,11 +98,6 @@ public class MineingSceduler extends VillageSceduler {
 			markBlockAsLost(pos, world);
 			this.setChanged();
 		}
-	}
-
-	@Override
-	public BlockPos getRandomPos(ServerWorld world, AmaziaVillagerEntity entity) {
-		return null;
 	}
 
 	public MineStructure getSuggestedMine() {
