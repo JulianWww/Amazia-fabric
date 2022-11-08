@@ -27,7 +27,7 @@ public class BringAnimalsToPen extends AmaziaGoToBlockGoal<RancherEntity> {
 			this.entity.targetAnimal.teleport(this.entity.getX(), this.entity.getY(), this.entity.getZ());
 			this.entity.targetAnimal.detachLeash(true, false);
 			AmaziaComponents.setIsPartOfVillage(this.entity.targetAnimal, true);
-			this.entity.targetAnimal = null;
+			this.entity.releaseTargetEntity();
 		}
 	}
 

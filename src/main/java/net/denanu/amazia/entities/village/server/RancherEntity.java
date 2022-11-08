@@ -5,28 +5,24 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.components.AmaziaComponents;
-import net.denanu.amazia.entities.village.server.goal.mineing.EnterMineGoal;
-import net.denanu.amazia.entities.village.server.goal.mineing.ExtendMineGoal;
-import net.denanu.amazia.entities.village.server.goal.mineing.FixBrokenMineSeroundingsGoal;
-import net.denanu.amazia.entities.village.server.goal.mineing.LightUpMine;
-import net.denanu.amazia.entities.village.server.goal.mineing.MoveToEndOfMine;
 import net.denanu.amazia.entities.village.server.goal.rancher.BringAnimalsToPen;
 import net.denanu.amazia.entities.village.server.goal.rancher.FeedAnimalGoal;
 import net.denanu.amazia.entities.village.server.goal.rancher.FetchAnimal;
 import net.denanu.amazia.entities.village.server.goal.rancher.LeashAnimal;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -38,14 +34,20 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
+	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.SHEARS, Items.AIR);
+	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.WHEAT, 32, Items.CARROT, 32, Items.POTATO, 32, Items.BEETROOT, 32, Items.WHEAT_SEEDS, 32);
+	public static final ImmutableSet<Item> CRAFTABLE_ITEMS = ImmutableSet.of();
+	
 	private AnimationFactory factory = new AnimationFactory(this);
 	
 	@Nullable
 	public AnimalEntity targetAnimal;
+	public int animalInteractionAge;
 
 	public RancherEntity(EntityType<? extends PassiveEntity> entityType, World world)  {
 		super(entityType, world);
 		AmaziaComponents.setCanCollide(this, false);
+		this.animalInteractionAge = 0;
 	}
 
 	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -83,13 +85,22 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	@Override 
 	public void mobTick() {
 		this.releaseTargetEntityIfDead();
+		if (this.animalInteractionAge > 0) {
+			this.animalInteractionAge--;
+		}
+	}
+	
+	public void releaseTargetEntity() {
+		if (this.targetAnimal != null && this.targetAnimal.isLeashed()) {
+			this.targetAnimal.detachLeash(true, false);
+		}
+		this.targetAnimal = null;
 	}
 
 	private void releaseTargetEntityIfDead() {
 		if (this.targetAnimal != null && this.targetAnimal.isDead()) {
-			this.targetAnimal = null;
-		}
-		
+			this.releaseTargetEntity();
+		}	
 	}
 
 	@Override
@@ -100,20 +111,28 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	public boolean hasTargetAnimal() {
 		return this.targetAnimal != null && this.targetAnimal.isAlive();
 	}
+	
+	public boolean canInteractWithEntity() {
+		return this.animalInteractionAge == 0;
+	}
+	
+	public void setInteractionAge() {
+		this.animalInteractionAge = 60;
+	}
 
 	@Override
+	public boolean canDepositItems() {
+		return this.getEmptyInventorySlots() == 0 && this.getDepositableItems() != null;
+	}
+	
+	@Override
 	public Triplet<ItemStack, Integer, Integer> getDepositableItems() {
-		return null;
+		return this.getDepositableItems(USABLE_ITEMS, REQUIRED_ITEMS);
 	}
 
 	@Override
 	public HashMap<Item, ArrayList<CraftingRecipe>> getCraftables() {
 		return null;
-	}
-
-	@Override
-	public boolean canDepositItems() {
-		return false;
 	}
 
 	public int getLeashTime() {
@@ -124,9 +143,14 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 		return 20;
 	}
 	
+	public int getEntityInteractTime() {
+		return 20;
+	}
+	
 	@Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
+        nbt.putInt("animalInteractionAge", this.animalInteractionAge);
         if (this.targetAnimal!=null)  nbt.putUuid("targetAnimal", this.targetAnimal.getUuid());
         return;
     }
@@ -134,6 +158,7 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
+        this.animalInteractionAge = nbt.getInt("animalInteractionAge");
 		if (!this.world.isClient && nbt.contains("targetAnimal")) {
         	if (JJUtils.getEntityByUniqueId(nbt.getUuid("targetAnimal"), (ServerWorld)this.world) instanceof AnimalEntity animal) {
         		this.targetAnimal = animal;
@@ -141,5 +166,4 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 		}
 		
     }
-
 }

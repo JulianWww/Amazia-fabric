@@ -14,9 +14,12 @@ public class FetchAnimal extends AmaziaGoToBlockGoal<RancherEntity> {
 	protected BlockPos getTargetBlock() {
 		if (this.entity.targetAnimal == null) {
 			this.entity.searchForTargetAnimal();
-			return null;
 		}
-		return this.entity.targetAnimal.getBlockPos();
+		return this.entity.targetAnimal == null ? null : this.entity.targetAnimal.getBlockPos();
 	}
 
+	@Override
+	public void fail() {
+		this.entity.releaseTargetEntity();
+	}
 }

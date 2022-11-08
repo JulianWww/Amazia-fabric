@@ -11,6 +11,7 @@ import net.denanu.amazia.entities.village.server.FarmerEntity;
 import net.denanu.amazia.entities.village.server.LumberjackEntity;
 import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.denanu.amazia.entities.village.server.RancherEntity;
+import net.denanu.amazia.entities.village.server.goal.rancher.FeedAnimalGoal;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -55,6 +56,10 @@ public class AmaziaEntities {
 		 FabricDefaultAttributeRegistry.register(RANCHER, RancherEntity.setAttributes());
 		 
 		 FabricDefaultAttributeRegistry.register(MERCHANT, AmaziaMerchant.setAttributes());
+		 
+		 
+		 // GOALS
+		 FeedAnimalGoal.setup();
 	 }
 	 
 	 public static void registerRenderer() {
