@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -64,6 +65,14 @@ public class NbtUtils {
 		NbtCompound nbt = new NbtCompound();
 		for (Entry<Identifier, List<BlockPos>> entry : data.entrySet()) {
 			nbt.put(entry.getKey().toString(), toNbt(entry.getValue()));
+		}
+		return nbt;
+	}
+	
+	public static <E extends Set<BlockPos>>NbtList toNbt(E data){
+		NbtList nbt = new NbtList();
+		for (BlockPos entry : data) {
+			nbt.add(NbtUtils.toNbt(entry));
 		}
 		return nbt;
 	}
