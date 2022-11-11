@@ -1,6 +1,8 @@
 package net.denanu.amazia;
 
+import net.denanu.amazia.mixin.MinecraftClientWorldAccessor;
 import net.denanu.amazia.mixin.MinecraftServerWorldAccessor;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
@@ -61,5 +63,11 @@ public class JJUtils {
 	public static Entity getEntityByUniqueId(UUID uniqueId, ServerWorld world) {
 		if (uniqueId == null) return null;
 	    return ((MinecraftServerWorldAccessor)world).getEntityManager().getLookup().get(uniqueId);
+	}
+	
+	@Nullable
+	public static Entity getEntityByUniqueId(UUID uniqueId, ClientWorld world) {
+		if (uniqueId == null) return null;
+	    return ((MinecraftClientWorldAccessor)world).getEntityManager().getLookup().get(uniqueId);
 	}
 }

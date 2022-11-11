@@ -1,13 +1,12 @@
 package net.denanu.amazia.entities.moods;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.entities.village.server.AmaziaEntity;
-import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 
 public class ClientMoodHandler {	
-	public static void handleMood(AmaziaEntity entity, VillagerMoods mood) {
+	public static void handleMood(LivingEntity entity, VillagerMoods mood) {
 		switch(mood) {
 		case HAPPY: handleHappy(entity);
 		case ANGRY: handleAngry(entity);
@@ -16,15 +15,15 @@ public class ClientMoodHandler {
 		}
 	}
 
-	private static void handleHappy(AmaziaEntity entity) {
+	private static void handleHappy(LivingEntity entity) {
 		spawnParticles(entity, ParticleTypes.HAPPY_VILLAGER, entity.getRandom().nextInt(35) + 10);
 	}
 	
-	private static void handleAngry(AmaziaEntity entity) {
+	private static void handleAngry(LivingEntity entity) {
 		spawnParticles(entity, ParticleTypes.ANGRY_VILLAGER, entity.getRandom().nextInt(35) + 10);
 	}
 	
-	private static void spawnParticles(AmaziaEntity entity, ParticleEffect particles, int number) {
+	private static void spawnParticles(LivingEntity entity, ParticleEffect particles, int number) {
 		for (int i = 0; i < number; ++i) {
 			entity.world.addParticle(particles, 
 					entity.getX() + entity.getRandom().nextGaussian() * (double)0.13f, 
