@@ -1,6 +1,7 @@
 package net.denanu.amazia.entities.village.server.goal.enchanting.utils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -12,6 +13,8 @@ import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Util;
 import net.minecraft.util.collection.Weighting;
@@ -29,7 +32,7 @@ public class AmaziaEnchantmentHelper {
         Item item = stack.getItem();
         boolean bl = stack.isOf(Items.BOOK);
         enchantmentLoop: for (Enchantment enchantment : Registry.ENCHANTMENT) {
-            if (enchantment.isTreasure() && !treasureAllowed || !enchantment.isAvailableForRandomSelection() || !enchantment.type.isAcceptableItem(item) && !bl || isAlreadyEnchantedWith(stack, enchantment)) continue;
+            if (enchantment.isTreasure() && !treasureAllowed || !enchantment.isAvailableForRandomSelection() || !enchantment.type.isAcceptableItem(item) && !bl) continue;
             for (int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; --i) {
                 if (power < enchantment.getMinPower(i)) continue;
                 list.add(new EnchantmentLevelEntry(enchantment, i));
@@ -38,14 +41,6 @@ public class AmaziaEnchantmentHelper {
         }
         return list;
     }
-    
-    private static boolean isAlreadyEnchantedWith(ItemStack stack, Enchantment enchantment) {
-    	NbtList nbt = stack.getEnchantments();
-		if (nbt!=null && !nbt.contains(EnchantmentHelper.createNbt(EnchantmentHelper.getEnchantmentId(enchantment), (byte)ikd))) {
-			return true;
-		}
-		return false;
-	}
 
 	/**
      * Generate the enchantments for enchanting the {@code stack}.
@@ -60,6 +55,11 @@ public class AmaziaEnchantmentHelper {
         level += 1 + random.nextInt(i / 4 + 1) + random.nextInt(i / 4 + 1);
         float f = (random.nextFloat() + random.nextFloat() - 1.0f) * 0.15f;
         List<EnchantmentLevelEntry> list2 = AmaziaEnchantmentHelper.getPossibleEntries(level = MathHelper.clamp(Math.round((float)level + (float)level * f), 1, Integer.MAX_VALUE), stack, treasureAllowed);
+        
+		for (Enchantment enchant : EnchantmentHelper.get(stack).keySet()) {
+			AmaziaEnchantmentHelper.removeConflicts(list2, enchant);
+		}
+        
         if (!list2.isEmpty()) {
             Weighting.getRandom(random, list2).ifPresent(list::add);
         }
@@ -86,5 +86,20 @@ public class AmaziaEnchantmentHelper {
             target.addEnchantment(enchantmentLevelEntry.enchantment, enchantmentLevelEntry.level);
         }
         return target;
+    }
+    
+    /**
+     * Remove entries conflicting with the picked entry from the possible
+     * entries.
+     * 
+     * @param possibleEntries the possible entries
+     * @param pickedEntry the picked entry
+     */
+    public static void removeConflicts(List<EnchantmentLevelEntry> possibleEntries, Enchantment enchantment) {
+        Iterator<EnchantmentLevelEntry> iterator = possibleEntries.iterator();
+        while (iterator.hasNext()) {
+            if (enchantment.canCombine(iterator.next().enchantment)) continue;
+            iterator.remove();
+        }
     }
 }

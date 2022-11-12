@@ -92,6 +92,9 @@ public class Amazia implements ModInitializer {
 	    
 	    // Registry
 	    AmaziaRegistrys.setup();
+	    
+	    // static data generated on runtime files
+	    AmaziaData.setup();
 	}
 
 	public static VillageManager getVillageManager() {

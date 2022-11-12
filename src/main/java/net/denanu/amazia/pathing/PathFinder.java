@@ -52,7 +52,7 @@ public class PathFinder extends EntityNavigation {
 	public PathingGraph getGraph() {
 		if (this.entity.hasVillage()) {
 			return this.entity.getVillage().getPathingGraph();
-			}
+		}
 		return null;
 	}
 	
