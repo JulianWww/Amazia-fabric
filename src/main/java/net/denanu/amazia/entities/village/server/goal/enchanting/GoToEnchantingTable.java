@@ -13,7 +13,11 @@ public class GoToEnchantingTable extends AmaziaGoToBlockGoal<EnchanterEntity> {
 	
 	@Override
 	public boolean canStart() {
-		return !this.entity.canDepositItems() && super.canStart() && this.hasOrRequestEnchantableItem();
+		return 
+				this.entity.requestLapisOrCanEnchant() && 
+				!this.entity.canDepositItems() && 
+				super.canStart() &&
+				this.hasOrRequestEnchantableItem();
 	}
 	
 	public boolean hasOrRequestEnchantableItem() {

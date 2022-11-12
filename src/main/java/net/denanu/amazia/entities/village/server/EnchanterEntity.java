@@ -15,6 +15,7 @@ import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -39,6 +40,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	private Optional<Integer> enchantableItem;
 	private BlockPos targetPos;
 	private boolean shouldReturn;
+	private int amountOfLapis;
 
 	public EnchanterEntity(EntityType<? extends PassiveEntity> entityType, World world) {
 		super(entityType, world);
@@ -70,6 +72,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putBoolean("shouldReturnItem", this.shouldReturn);
+        nbt.putInt("amountOfLapis", amountOfLapis);
         if (this.enchantableItem.isPresent()) {
         	nbt.putInt("enchantableItemIdx", this.enchantableItem.get());
         }
@@ -79,6 +82,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         this.shouldReturn = nbt.getBoolean("shouldReturnItem");
+        this.amountOfLapis = nbt.getInt("amountOfLapis");
         if (nbt.contains("enchantableItemIdx", NbtElement.INT_TYPE)) {
         	this.enchantableItem = Optional.of(nbt.getInt("enchantableItemIdx"));
         }
@@ -105,6 +109,9 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 
 	@Override
 	public boolean canDepositItems() {
+		if (!this.hasEnchantItem()) {
+			this.shouldReturn = false;
+		}
 		return this.shouldReturn;
 	}
 
@@ -139,6 +146,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	@Override
 	public void call() {
 		this.findEnchantableItem();
+		this.createHasLapis();
 	}
 
 	public void requestEnchantableItem() {
@@ -164,6 +172,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	
 	public void endReurnItem() {
 		this.shouldReturn = false;
+		this.looseEnchantItem();
 	}
 	
 	@Override
@@ -176,5 +185,31 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 
 	public int getEnchantinAbility() {
 		return 100;
+	}
+
+	public boolean canEnchant() {
+		return this.amountOfLapis > 5;
+	}
+	
+	public void enchantUseLapis()  {
+		this.getInventory().removeItem(Items.LAPIS_LAZULI, 5);
+		this.amountOfLapis = this.amountOfLapis - 5;
+		if (!this.canEnchant()) {
+			this.requestItem(Items.LAPIS_LAZULI);
+		}
+	}
+	
+	public boolean requestLapisOrCanEnchant() {
+		if (!this.canEnchant()) {
+			if (this.age%1 == 0) {
+				this.requestItem(Items.LAPIS_LAZULI);
+			}
+			return false;
+		}
+		return true;
+	}
+	
+	public void createHasLapis() {
+		this.amountOfLapis = this.countItems(Items.LAPIS_LAZULI);
 	}
 }

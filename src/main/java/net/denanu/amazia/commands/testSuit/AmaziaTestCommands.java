@@ -11,6 +11,7 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.math.Vec3d;
@@ -27,9 +28,16 @@ public class AmaziaTestCommands {
 	private static int spawnEnchantmentItems(CommandContext<ServerCommandSource> context) {
 		Vec3d pos = context.getSource().getPosition();
 		for (Item item : AmaziaData.ENCHANTABLES) {
-			ItemStack stack = new ItemStack(item, 1);
+			ItemStack stack = new ItemStack(item, item.getMaxCount());
 			ItemEntity itemEntity = new ItemEntity(context.getSource().getWorld(), pos.x, pos.y, pos.z, stack);
-			itemEntity.setPickupDelay(100);
+			itemEntity.setPickupDelay(10);
+			itemEntity.setVelocity(Vec3d.ZERO);
+			context.getSource().getWorld().spawnEntity(itemEntity);
+		}
+		for (int i=0;i<9;i++) {
+			ItemStack stack = new ItemStack(Items.LAPIS_LAZULI, 64);
+			ItemEntity itemEntity = new ItemEntity(context.getSource().getWorld(), pos.x, pos.y, pos.z, stack);
+			itemEntity.setPickupDelay(10);
 			itemEntity.setVelocity(Vec3d.ZERO);
 			context.getSource().getWorld().spawnEntity(itemEntity);
 		}

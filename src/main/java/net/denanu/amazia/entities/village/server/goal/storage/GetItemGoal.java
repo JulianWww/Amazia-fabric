@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal.storage;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.entities.village.server.EnchanterEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.village.sceduling.utils.StoragePathingData;
@@ -19,7 +20,16 @@ public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> impleme
 	public GetItemGoal(AmaziaVillagerEntity e, int priority, VoidToVoidCallback callback) {
 		super(e, priority);
 		this.pathingSubGoal = new GoToStorageGoal(e, this);
-		this.interactionGoal = new GetItemFromStorage(e, this, callback);
+		this.buildInteractionGoal(e, callback);
+	}
+	
+	private void buildInteractionGoal(AmaziaVillagerEntity e, VoidToVoidCallback callback) {
+		if (this.entity instanceof EnchanterEntity) {
+			this.interactionGoal = new EnchanterGetItemFromStorageGoal(e, this, callback);
+		}
+		else {
+			this.interactionGoal = new GetItemFromStorage(e, this, callback);
+		}
 	}
 	
 	@Override

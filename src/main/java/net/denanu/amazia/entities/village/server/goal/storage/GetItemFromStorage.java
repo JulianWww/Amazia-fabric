@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 
 public class GetItemFromStorage extends InteractWithContainerGoal {
-	private StorageGetInteractionGoalInterface master;
+	protected StorageGetInteractionGoalInterface master;
 	@Nullable
 	private VoidToVoidCallback callback;
 	
@@ -48,7 +48,6 @@ public class GetItemFromStorage extends InteractWithContainerGoal {
 				}
 			}
 		}
-		return;
 	}
 	
 	@Override

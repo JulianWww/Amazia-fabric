@@ -30,7 +30,7 @@ public class AmaziaEnchantmentHelper {
     public static List<EnchantmentLevelEntry> getPossibleEntries(int power, ItemStack stack, boolean treasureAllowed) {
         ArrayList<EnchantmentLevelEntry> list = Lists.newArrayList();
         Item item = stack.getItem();
-        boolean bl = stack.isOf(Items.BOOK);
+        boolean bl = stack.isOf(Items.BOOK) || stack.isOf(Items.ENCHANTED_BOOK);
         enchantmentLoop: for (Enchantment enchantment : Registry.ENCHANTMENT) {
             if (enchantment.isTreasure() && !treasureAllowed || !enchantment.isAvailableForRandomSelection() || !enchantment.type.isAcceptableItem(item) && !bl) continue;
             for (int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; --i) {
@@ -48,10 +48,7 @@ public class AmaziaEnchantmentHelper {
     public static List<EnchantmentLevelEntry> generateEnchantments(Random random, ItemStack stack, int level, boolean treasureAllowed) {
         ArrayList<EnchantmentLevelEntry> list = Lists.newArrayList();
         Item item = stack.getItem();
-        int i = item.getEnchantability();
-        if (i <= 0) {
-            return list;
-        }
+        int i = item.getEnchantability()+1;
         level += 1 + random.nextInt(i / 4 + 1) + random.nextInt(i / 4 + 1);
         float f = (random.nextFloat() + random.nextFloat() - 1.0f) * 0.15f;
         List<EnchantmentLevelEntry> list2 = AmaziaEnchantmentHelper.getPossibleEntries(level = MathHelper.clamp(Math.round((float)level + (float)level * f), 1, Integer.MAX_VALUE), stack, treasureAllowed);
@@ -77,6 +74,9 @@ public class AmaziaEnchantmentHelper {
         boolean bl = target.isOf(Items.BOOK);
         if (bl) {
             target = new ItemStack(Items.ENCHANTED_BOOK);
+        }
+        else {
+        	bl = target.isOf(Items.ENCHANTED_BOOK);
         }
         for (EnchantmentLevelEntry enchantmentLevelEntry : list) {
             if (bl) {
