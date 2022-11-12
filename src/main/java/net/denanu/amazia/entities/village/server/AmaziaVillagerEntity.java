@@ -17,6 +17,7 @@ import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.goal.storage.CraftGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.DepositItemGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.GetItemGoal;
+import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.utils.crafting.CraftingUtils;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
@@ -62,9 +63,12 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
     }
 	
 	public void registerBaseGoals() {
+		this.registerBaseGoals(null, null);
+	}
+	public void registerBaseGoals(VoidToVoidCallback getItemCallback, VoidToVoidCallback depositItemCallback) {
 		this.goalSelector.add(24, new CraftGoal(this, 24));
-		this.goalSelector.add(25, new GetItemGoal(this, 25));
-		this.goalSelector.add(99, new DepositItemGoal(this, 99));
+		this.goalSelector.add(25, new GetItemGoal(this, 25, getItemCallback));
+		this.goalSelector.add(99, new DepositItemGoal(this, 99, depositItemCallback));
         this.goalSelector.add(100, new LookAroundGoal(this));
 	}
 	

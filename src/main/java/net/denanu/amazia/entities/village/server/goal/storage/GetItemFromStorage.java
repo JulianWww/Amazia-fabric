@@ -1,6 +1,9 @@
 package net.denanu.amazia.entities.village.server.goal.storage;
 
+import javax.annotation.Nullable;
+
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.village.sceduling.utils.StoragePathingData;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.item.Item;
@@ -8,11 +11,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 
 public class GetItemFromStorage extends InteractWithContainerGoal {
-	private StorageGetInteractionGoalInterface master;
+	protected StorageGetInteractionGoalInterface master;
+	@Nullable
+	private VoidToVoidCallback callback;
 	
 	public GetItemFromStorage(AmaziaVillagerEntity e, StorageGetInteractionGoalInterface _master) {
+		this(e, _master, null);
+	}
+	
+	public GetItemFromStorage(AmaziaVillagerEntity e, StorageGetInteractionGoalInterface _master, VoidToVoidCallback callback) {
 		super(e);
 		this.master = _master;
+		this.callback = callback;
 	}
 
 	@Override
@@ -38,13 +48,14 @@ public class GetItemFromStorage extends InteractWithContainerGoal {
 				}
 			}
 		}
-		return;
 	}
 	
 	@Override
 	public void stop() {
 		super.stop();
 		master.StorageInteractionDone();
+		if (this.callback != null)
+			this.callback.call();
 	}
 
 	@Override

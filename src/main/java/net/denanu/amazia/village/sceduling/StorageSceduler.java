@@ -163,7 +163,9 @@ public class StorageSceduler extends VillageSceduler {
 		StoragePathingData potential = null;
 		for (Entry<BlockPos, StoragePathingData> pos : this.chests.entrySet()) {
 			Pair<Boolean, Boolean> data = canAddItem(pos.getValue().getStorageInventory(world), item);
-			if (data.getLeft() && data.getRight()) { return pos.getValue(); }
+			if (data.getLeft() && data.getRight()) { 
+				return pos.getValue(); 
+			}
 			if (data.getRight()) {
 				potential = pos.getValue();
 			}

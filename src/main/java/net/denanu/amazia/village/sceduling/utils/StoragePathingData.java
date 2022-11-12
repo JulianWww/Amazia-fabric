@@ -47,10 +47,12 @@ public class StoragePathingData extends BlockAreaPathingData {
 		if (this.getPathingOptions().contains(pos)) {
 			return pos;
 		}
-		if (this.getPathingOptions().contains(pos.down())) {
+		pos = pos.down();
+		if (this.getPathingOptions().contains(pos)) {
 			return pos;
 		}
-		if (this.getPathingOptions().contains(pos.down(2))) {
+		pos = pos.down();
+		if (this.getPathingOptions().contains(pos)) {
 			return pos;
 		}
 		return null;

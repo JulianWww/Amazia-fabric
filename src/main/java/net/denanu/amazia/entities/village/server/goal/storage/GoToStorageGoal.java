@@ -25,7 +25,6 @@ public class GoToStorageGoal extends BaseAmaziaGoToBlockGoal<AmaziaVillagerEntit
 
 	@Override
 	protected BlockPos getTargetBlock() {
-		BlockPos pos = this.master.getTargetBlockPos();
 		return this.master.getTargetBlockPos();
 	}
 

@@ -1,10 +1,14 @@
 package net.denanu.amazia.entities.village.server;
 
+import java.util.List;
+
 import org.apache.logging.log4j.core.tools.picocli.CommandLine.InitializationException;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
+import net.denanu.amazia.entities.moods.ServerMoodEmiter;
+import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.pathing.PathFinder;
 import net.denanu.amazia.utils.CuboidSampler;
 import net.denanu.amazia.utils.nbt.NbtUtils;
@@ -63,6 +67,11 @@ public class AmaziaEntity extends PassiveEntity {
 	@Override
 	public PassiveEntity createChild(ServerWorld var1, PassiveEntity var2) {
 		return null;
+	}
+	
+	//Server only
+	public void emmitMood(VillagerMoods mood) {
+		ServerMoodEmiter.sendMood(this, mood);
 	}
 	
 	private void scanForVillage(BlockPos pos) {

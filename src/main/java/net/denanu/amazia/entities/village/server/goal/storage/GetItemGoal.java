@@ -2,7 +2,9 @@ package net.denanu.amazia.entities.village.server.goal.storage;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.entities.village.server.EnchanterEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
+import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.village.sceduling.utils.StoragePathingData;
 import net.minecraft.item.Item;
 import net.minecraft.server.world.ServerWorld;
@@ -15,10 +17,19 @@ public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> impleme
 	private GoToStorageGoal pathingSubGoal;
 	private GetItemFromStorage interactionGoal;
 
-	public GetItemGoal(AmaziaVillagerEntity e, int priority) {
+	public GetItemGoal(AmaziaVillagerEntity e, int priority, VoidToVoidCallback callback) {
 		super(e, priority);
 		this.pathingSubGoal = new GoToStorageGoal(e, this);
-		this.interactionGoal = new GetItemFromStorage(e, this);
+		this.buildInteractionGoal(e, callback);
+	}
+	
+	private void buildInteractionGoal(AmaziaVillagerEntity e, VoidToVoidCallback callback) {
+		if (this.entity instanceof EnchanterEntity) {
+			this.interactionGoal = new EnchanterGetItemFromStorageGoal(e, this, callback);
+		}
+		else {
+			this.interactionGoal = new GetItemFromStorage(e, this, callback);
+		}
 	}
 	
 	@Override
@@ -27,6 +38,7 @@ public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> impleme
 		if ((item == null || this.target == null) && this.entity.hasRequestedItems()) {
 			item = this.entity.getRandomRequiredItem();
 			if (item != null) {
+				Amazia.LOGGER.info(item.toString());
 				this.target = this.entity.getVillage().getStorage().getRequestLocation((ServerWorld)this.entity.getWorld(), this.getItem());
 				if (this.target == null && this.entity.canCraft()) {
 					this.entity.tryCraftingStart(item);
@@ -35,10 +47,6 @@ public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> impleme
 			}
 		}
 		return this.target != null && item != null && this.pathingSubGoal.canStart();
-	}
-	
-	private boolean runCanStartScan() {
-		return this.entity.getCanUpdate();
 	}
 	
 	@Override

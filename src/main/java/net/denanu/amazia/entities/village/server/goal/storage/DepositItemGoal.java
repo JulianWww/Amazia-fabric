@@ -1,7 +1,10 @@
 package net.denanu.amazia.entities.village.server.goal.storage;
 
+import javax.annotation.Nullable;
+
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.BaseAmaziaVillageGoal;
+import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.village.sceduling.utils.StoragePathingData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -14,11 +17,14 @@ public class DepositItemGoal extends BaseAmaziaVillageGoal<AmaziaVillagerEntity>
 	private boolean isPathing, isDone, containerInteracting;
 	private GoToStorageGoal pathingSubGoal;
 	private PutItemInContainerGoal interactionGoal;
+	@Nullable
+	private VoidToVoidCallback callback;
 
-	public DepositItemGoal(AmaziaVillagerEntity e, int priority) {
+	public DepositItemGoal(AmaziaVillagerEntity e, int priority, VoidToVoidCallback callback) {
 		super(e, priority);
 		this.pathingSubGoal = new GoToStorageGoal(e, this);
 		this.interactionGoal = new PutItemInContainerGoal(e, this);
+		this.callback = callback;
 	}
 	
 	@Override
@@ -60,7 +66,9 @@ public class DepositItemGoal extends BaseAmaziaVillageGoal<AmaziaVillagerEntity>
 		super.stop();
 		this.target = null;
 		this.item = null;
-		return;
+		if (this.callback != null) {
+			callback.call();
+		}
 	}
 	
 	@Override
