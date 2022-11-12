@@ -10,6 +10,7 @@ import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.server.EnchanterEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.entities.village.server.goal.enchanting.utils.AmaziaEnchantmentHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
@@ -41,37 +42,21 @@ public class EnchantGoal extends TimedVillageGoal<EnchanterEntity> {
 
 	@Override
 	protected void takeAction() {
-		int a = 2;
 		Optional<Integer> itmKey = this.entity.getEnchantableItem();
 		if (itmKey.isPresent()) {
 			ItemStack stack = this.entity.getInventory().getStack(itmKey.get());
-			EnchantmentHelper.getPossibleEntries(a, stack, true);
-			List<EnchantmentLevelEntry> enchantments = getPossibleEnchants(stack);
-			EnchantmentLevelEntry enchant = JJUtils.getRandomListElement(enchantments);
+			List<EnchantmentLevelEntry> enchantments = AmaziaEnchantmentHelper.generateEnchantments(this.entity.getRandom(), stack, this.entity.getEnchantinAbility(), true);
 			
-			if (enchant != null) {
-				stack.addEnchantment(enchant.enchantment, enchant.level);
+			if (!enchantments.isEmpty()) {
+				AmaziaEnchantmentHelper.enchant(stack, enchantments);
 				this.entity.emmitMood(VillagerMoods.HAPPY);
+				this.entity.getInventory().setStack(itmKey.get(), stack);
 			}
 			else {
 				this.entity.emmitMood(VillagerMoods.ANGRY);
 			}
-			
-			this.entity.getInventory().setStack(itmKey.get(), stack);
 			this.entity.returnItem();
 			this.entity.looseEnchantItem();
 		}
-		
-	}
-	
-	public static ArrayList<EnchantmentLevelEntry> getPossibleEnchants(ItemStack stack) {
-		ArrayList<EnchantmentLevelEntry> list = Lists.newArrayList();
-	    Item item = stack.getItem();
-	    boolean bl = stack.isOf(Items.BOOK);
-	    for (Enchantment enchantment : Registry.ENCHANTMENT) {
-	        if (enchantment.type.isAcceptableItem(item) && !bl)
-	        	list.add(new EnchantmentLevelEntry(enchantment, 1));
-	    }
-	    return list;
 	}
 }

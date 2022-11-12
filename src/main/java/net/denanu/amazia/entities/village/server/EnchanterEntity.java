@@ -118,9 +118,12 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	
 	public void findEnchantableItem() {
 		this.removeEnchantable();
+		ItemStack stack;
 		for (int i =0; i<this.getInventory().size(); i++) {
-			if (this.getInventory().getStack(i).isEnchantable()) {
+			stack = this.getInventory().getStack(i);
+			if (stack.getItem().isEnchantable(stack)) {
 				this.enchantableItem = Optional.of(i);
+				return;				
 			}
 		}
 	}
@@ -169,5 +172,9 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 		if (!isDeposeting) {
 			this.endReurnItem();
 		}
+	}
+
+	public int getEnchantinAbility() {
+		return 100;
 	}
 }
