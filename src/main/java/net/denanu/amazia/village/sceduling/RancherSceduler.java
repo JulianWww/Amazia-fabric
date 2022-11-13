@@ -5,30 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
-
-import com.google.common.collect.ImmutableList;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.block.custom.api.AmaziaTrough;
 import net.denanu.amazia.components.AmaziaComponents;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.TypeFilter;
 import net.minecraft.util.math.BlockPos;
 
 public class RancherSceduler extends VillageSceduler {
-	private ImmutableList<TypeFilter<Entity, ? extends AnimalEntity>> animals = ImmutableList.of(EntityType.COW, EntityType.SHEEP, EntityType.CHICKEN, EntityType.PIG);
-	
 	private Map<Identifier, List<BlockPos>> troughLocations;
 
 	public RancherSceduler(Village village) {
