@@ -5,14 +5,13 @@ import org.jetbrains.annotations.Nullable;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.pathing.PathingGraph;
-import net.denanu.amazia.utils.CuboidSampler;
+import net.denanu.amazia.village.sceduling.BlacksmithingSceduler;
 import net.denanu.amazia.village.sceduling.EnchantingSceduler;
 import net.denanu.amazia.village.sceduling.FarmingSceduler;
 import net.denanu.amazia.village.sceduling.LumberSceduler;
 import net.denanu.amazia.village.sceduling.MineingSceduler;
 import net.denanu.amazia.village.sceduling.RancherSceduler;
 import net.denanu.amazia.village.sceduling.StorageSceduler;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -21,9 +20,6 @@ import net.minecraft.world.World;
 
 public class Village {
 	private static int SIZE = 16;
-	private static int SCAN_SIZE = 10;
-	private static int THROTTLE = 1;
-	
 	private BlockPos origin;
 	private boolean valid;
 	
@@ -33,10 +29,10 @@ public class Village {
 	private LumberSceduler  lumber;
 	private RancherSceduler ranching;
 	private EnchantingSceduler enchanting;
+	private BlacksmithingSceduler blacksmithing;
 
 	private PathingGraph pathingGraph;
 	
-	private CuboidSampler sampler;
 	@Nullable
 	private VillageCoreBlockEntity coreBlock;
 	
@@ -44,21 +40,22 @@ public class Village {
 	
 	public Village(VillageCoreBlockEntity core) {
 		this.coreBlock = core;
-		this.farming 	= new FarmingSceduler   (this);
-		this.storage 	= new StorageSceduler   (this);
-		this.mineing 	= new MineingSceduler   (this);
-		this.lumber 	= new LumberSceduler    (this);
-		this.ranching	= new RancherSceduler   (this);
-		this.enchanting = new EnchantingSceduler(this);
+		this.farming 		= new FarmingSceduler  		(this);
+		this.storage 		= new StorageSceduler   	(this);
+		this.mineing 		= new MineingSceduler   	(this);
+		this.lumber 		= new LumberSceduler    	(this);
+		this.ranching		= new RancherSceduler   	(this);
+		this.enchanting 	= new EnchantingSceduler	(this);
+		this.blacksmithing 	= new BlacksmithingSceduler	(this);
 		this.valid = true;
 		
 		this.boundingBox = new Box(
-				core.getPos().getX() + SIZE,
+				core.getPos().getX() + Village.SIZE,
 				400,
-				core.getPos().getZ() + SIZE,
-				core.getPos().getX() - SIZE,
+				core.getPos().getZ() + Village.SIZE,
+				core.getPos().getX() - Village.SIZE,
 				-400,
-				core.getPos().getZ() - SIZE
+				core.getPos().getZ() - Village.SIZE
 			);
 	}
 	
@@ -73,8 +70,7 @@ public class Village {
 		this.lumber.initialize();
 		this.ranching.initialize();
 		this.enchanting.initialize();
-		
-		this.sampler = new CuboidSampler(this.getOrigin(), SCAN_SIZE, SCAN_SIZE, SCAN_SIZE);
+		this.blacksmithing.initialize();
 		
 		this.register(this.coreBlock.getWorld());
 	}
@@ -92,23 +88,25 @@ public class Village {
 	
     public NbtCompound writeNbt() {
     	NbtCompound nbt = new NbtCompound();
-		nbt.putBoolean("isValid", valid);
-		nbt.put("farming",    farming.   writeNbt());
-		nbt.put("storage",    storage.   writeNbt());
-		nbt.put("mineing",    mineing.   writeNbt());
-		nbt.put("lumber",     lumber.    writeNbt());
-		nbt.put("ranching",   ranching.  writeNbt());
-		nbt.put("enchanting", enchanting.writeNbt());
+		nbt.putBoolean("isValid", 	this.valid);
+		nbt.put("farming",   		this.farming.   writeNbt());
+		nbt.put("storage",   		this.storage.   writeNbt());
+		nbt.put("mineing",			this.mineing.   writeNbt());
+		nbt.put("lumber",     		this.lumber.    writeNbt());
+		nbt.put("ranching",  		this.ranching.  writeNbt());
+		nbt.put("enchanting",		this.enchanting.writeNbt());
+		nbt.put("blacksmithing", 	this.blacksmithing.writeNbt());
 		return nbt;
     }
     public void readNbt(NbtCompound nbt) {
-    	valid = nbt.getBoolean("isValid");
-    	farming.   readNbt(nbt.getCompound("farming"));
-    	storage.   readNbt(nbt.getCompound("storage"));
-    	mineing.   readNbt(nbt.getCompound("mineing"));
-    	lumber.    readNbt(nbt.getCompound("lumber"));
-    	ranching.  readNbt(nbt.getCompound("ranching"));
-    	enchanting.readNbt(nbt.getCompound("enchanting"));
+    	this.valid = nbt.getBoolean("isValid");
+    	this.farming.   	readNbt(nbt.getCompound("farming"));
+    	this.storage.   	readNbt(nbt.getCompound("storage"));
+    	this.mineing.   	readNbt(nbt.getCompound("mineing"));
+    	this.lumber.    	readNbt(nbt.getCompound("lumber"));
+    	this.ranching. 		readNbt(nbt.getCompound("ranching"));
+    	this.enchanting.	readNbt(nbt.getCompound("enchanting"));
+    	this.blacksmithing.	readNbt(nbt.getCompound("blacksmithing"));
     }
 	
 	public boolean isValid() {
@@ -119,36 +117,25 @@ public class Village {
 	}
 	
 	public void tick(ServerWorld world) {
-		//this.scan(world);
 		this.update();
 		return;
 	}
 	private void update() {
 		this.pathingGraph.update();
-		//this.testPathfinding();
-	}
-	private void scan(ServerWorld world) {
-		PlayerEntity player = world.getClosestPlayer(this.origin.getX(), this.origin.getY(), this.origin.getZ(), 2*SIZE, false);
-		if (player != null) {
-			this.sampler.setPos(player.getPos());
-			for (int idx=0; idx<THROTTLE; idx++) {
-				BlockPos pos = this.sampler.getPos();
-				this.discover(world, pos);
-			}
-		}
 	}
 	private void discover(ServerWorld world, BlockPos blockPos) {
-		this.farming.   discover(world, blockPos);
-		this.storage.   discover(world, blockPos);
-		this.mineing.   discover(world, blockPos);
-		this.lumber.    discover(world, blockPos);
-		this.ranching.  discover(world, blockPos);
-		this.enchanting.discover(world, blockPos);
+		this.farming.   	discover(world, blockPos);
+		this.storage.   	discover(world, blockPos);
+		this.mineing.   	discover(world, blockPos);
+		this.lumber.    	discover(world, blockPos);
+		this.ranching.  	discover(world, blockPos);
+		this.enchanting.	discover(world, blockPos);
+		this.blacksmithing.	discover(world, blockPos);
 	}
 
 
 	public void setChanged() {
-		if (coreBlock != null) {
+		if (this.coreBlock != null) {
 			this.coreBlock._setChanged();
 		}
 	}
@@ -163,20 +150,22 @@ public class Village {
 		return this.farming;
 	}
 	public StorageSceduler getStorage() {
-		return storage;
+		return this.storage;
 	}
 	public MineingSceduler getMineing() {
-		return mineing;
+		return this.mineing;
 	}
 	public LumberSceduler getLumber() {
-		return lumber;
+		return this.lumber;
 	}
 	public RancherSceduler getRanching() {
 		return this.ranching;
 	}
-
 	public EnchantingSceduler getEnchanting() {
-		return enchanting;
+		return this.enchanting;
+	}
+	public BlacksmithingSceduler getBlacksmithing() {
+		return this.blacksmithing;
 	}
 
 	public static int getSize() {
@@ -187,7 +176,7 @@ public class Village {
 		if (this.getOrigin() == null) {
 			return false;
 		}
-        return Math.max(Math.abs(this.getOrigin().getX() - pos.getX()), Math.abs(this.getOrigin().getZ() - pos.getZ())) < SIZE;
+        return Math.max(Math.abs(this.getOrigin().getX() - pos.getX()), Math.abs(this.getOrigin().getZ() - pos.getZ())) < Village.SIZE;
     }
 
 	public void onPathingBlockUpdate(BlockPos pos) {
@@ -198,7 +187,7 @@ public class Village {
 	}
 
 	public ServerWorld getWorld() {
-		return (ServerWorld)this.pathingGraph.getWorld();
+		return this.pathingGraph.getWorld();
 	}
 	
 	public Box getBox() {
@@ -207,7 +196,7 @@ public class Village {
 
 	public void onVillageBlockUpdate(BlockPos pos) {
 		if (this.isInVillage(pos)) {
-			this.discover((ServerWorld)this.getWorld(), pos);
+			this.discover(this.getWorld(), pos);
 		}
 	}
 }
