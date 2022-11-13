@@ -6,10 +6,14 @@ import java.util.Map.Entry;
 
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.entities.village.server.BlacksmithEntity;
 import net.denanu.amazia.mixin.RecipeManagerMixinAcessor;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.RangedWeaponItem;
+import net.minecraft.item.ToolItem;
 import net.minecraft.recipe.BlastingRecipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.server.MinecraftServer;
@@ -30,7 +34,7 @@ public class AmaziaData {
 
 	private static void getEnchantables() {
 		AmaziaData.ENCHANTABLES = new ArrayList<Item>();
-		for (Entry<RegistryKey<Item>, Item> entry : Registry.ITEM.getEntrySet()) {
+		for (final Entry<RegistryKey<Item>, Item> entry : Registry.ITEM.getEntrySet()) {
 			if (entry.getValue().getEnchantability() != 0) {
 				AmaziaData.ENCHANTABLES.add(entry.getValue());
 			}
@@ -38,17 +42,33 @@ public class AmaziaData {
 		AmaziaData.ENCHANTABLES.trimToSize();
 	}
 
-	public static void buildBlastables(MinecraftServer server) {
+	public static void buildBlastables(final MinecraftServer server) {
 		AmaziaData.BLASTABLES = new ArrayList<Item>();
-		List<BlastingRecipe> recipes = ((RecipeManagerMixinAcessor) server.getRecipeManager()).invokeListAllOfType(RecipeType.BLASTING);
-		for (BlastingRecipe recipe : recipes) {
+		final List<BlastingRecipe> recipes = ((RecipeManagerMixinAcessor) server.getRecipeManager()).invokeListAllOfType(RecipeType.BLASTING);
+		for (final BlastingRecipe recipe : recipes) {
 			assert recipe.getIngredients().size() == 1;
-			for (ItemStack stack : recipe.getIngredients().get(0).getMatchingStacks()) {
+			for (final ItemStack stack : recipe.getIngredients().get(0).getMatchingStacks()) {
 				if (stack.getItem().getClass() == Item.class) {
 					AmaziaData.BLASTABLES.add(stack.getItem());
 				}
 			}
 		}
 		AmaziaData.BLASTABLES.trimToSize();
+	}
+
+	public static List<Item> buildBlacksmithCraftables() {
+		final ArrayList<Item> out = new ArrayList<Item>();
+		for (final Item item : Registry.ITEM) {
+			if (
+					item instanceof final ArmorItem armor && BlacksmithEntity.isCraftable(armor) ||
+					item instanceof final RangedWeaponItem ranged && BlacksmithEntity.isCraftable(ranged) ||
+					item instanceof final ToolItem tool && BlacksmithEntity.isCraftable(tool)
+					) {
+				out.add(item);
+			}
+		}
+		out.add(Items.STICK);
+		out.addAll(AmaziaData.PLANKS);
+		return out;
 	}
 }

@@ -11,6 +11,7 @@ import net.denanu.amazia.village.sceduling.LumberSceduler;
 import net.denanu.amazia.village.sceduling.MineingSceduler;
 import net.denanu.amazia.village.sceduling.PathingNoHeightSceduler;
 import net.denanu.amazia.village.sceduling.RancherSceduler;
+import net.denanu.amazia.village.sceduling.ScedulingPredicates;
 import net.denanu.amazia.village.sceduling.StorageSceduler;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.NbtCompound;
@@ -33,6 +34,7 @@ public class Village {
 	private final AbstractFurnaceSceduler smelting;
 	private final AbstractFurnaceSceduler blasting;
 	private final AbstractFurnaceSceduler smoking;
+	private final PathingNoHeightSceduler blacksmithing;
 
 	private PathingGraph pathingGraph;
 
@@ -48,10 +50,11 @@ public class Village {
 		this.mineing 		= new MineingSceduler   		(this);
 		this.lumber 		= new LumberSceduler    		(this);
 		this.ranching		= new RancherSceduler   		(this);
-		this.enchanting 	= new PathingNoHeightSceduler	(this);
+		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable);
 		this.smelting	 	= new AbstractFurnaceSceduler	(this, Blocks.FURNACE.getClass());
 		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass());
 		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass());
+		this.blacksmithing	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isAnvil);
 
 		this.valid = true;
 
@@ -79,6 +82,7 @@ public class Village {
 		this.smelting.initialize();
 		this.blasting.initialize();
 		this.smoking.initialize();
+		this.blacksmithing.initialize();
 
 		this.register(this.coreBlock.getWorld());
 	}
@@ -97,15 +101,16 @@ public class Village {
 	public NbtCompound writeNbt() {
 		final NbtCompound nbt = new NbtCompound();
 		nbt.putBoolean("isValid", 	this.valid);
-		nbt.put("farming",   		this.farming.   writeNbt());
-		nbt.put("storage",   		this.storage.   writeNbt());
-		nbt.put("mineing",			this.mineing.   writeNbt());
-		nbt.put("lumber",     		this.lumber.    writeNbt());
-		nbt.put("ranching",  		this.ranching.  writeNbt());
-		nbt.put("enchanting",		this.enchanting.writeNbt());
-		nbt.put("smelting", 		this.smelting.writeNbt());
-		nbt.put("blasting", 		this.blasting.writeNbt());
-		nbt.put("smoking", 			this.smoking.writeNbt());
+		nbt.put("farming",   		this.farming.   	writeNbt());
+		nbt.put("storage",   		this.storage.  		writeNbt());
+		nbt.put("mineing",			this.mineing.   	writeNbt());
+		nbt.put("lumber",     		this.lumber.    	writeNbt());
+		nbt.put("ranching",  		this.ranching.  	writeNbt());
+		nbt.put("enchanting",		this.enchanting.	writeNbt());
+		nbt.put("smelting", 		this.smelting.		writeNbt());
+		nbt.put("blasting", 		this.blasting.		writeNbt());
+		nbt.put("smoking", 			this.smoking.		writeNbt());
+		nbt.put("blacksmithing",	this.blacksmithing.	writeNbt());
 		return nbt;
 	}
 	public void readNbt(final NbtCompound nbt) {
@@ -119,6 +124,7 @@ public class Village {
 		this.smelting.		readNbt(nbt.getCompound("smelting"));
 		this.blasting.		readNbt(nbt.getCompound("blasting"));
 		this.smoking.		readNbt(nbt.getCompound("smoking"));
+		this.blacksmithing.	readNbt(nbt.getCompound("blacksmithing"));
 	}
 
 	public boolean isValid() {
@@ -145,6 +151,7 @@ public class Village {
 		this.smelting.		discover(world, blockPos);
 		this.blasting.		discover(world, blockPos);
 		this.smoking.		discover(world, blockPos);
+		this.blacksmithing.	discover(world, blockPos);
 	}
 
 
@@ -186,6 +193,10 @@ public class Village {
 	}
 	public AbstractFurnaceSceduler getSmoking() {
 		return this.smoking;
+	}
+
+	public PathingNoHeightSceduler getBlacksmithing() {
+		return this.blacksmithing;
 	}
 
 	public static int getSize() {

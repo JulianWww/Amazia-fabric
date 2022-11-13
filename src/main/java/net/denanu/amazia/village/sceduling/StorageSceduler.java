@@ -23,7 +23,7 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class StorageSceduler extends FacingPathindVillageSceduler {
+public class StorageSceduler extends FacingPathingVillageSceduler {
 	private HashMap<BlockPos, DoubleDownPathingData> chests;
 	private List<BlockPos> blockSetupHolder;
 

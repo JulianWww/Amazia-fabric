@@ -33,7 +33,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.item.Item;
-import net.minecraft.recipe.BlastingRecipe;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.server.MinecraftServer;
@@ -49,8 +48,7 @@ public class Amazia implements ModInitializer {
 	public static HashMap<Item,ArrayList<CraftingRecipe>> FARMER_CRAFTS;
 	public static HashMap<Item,ArrayList<CraftingRecipe>> MINER_CRAFTS;
 	public static HashMap<Item,ArrayList<CraftingRecipe>> LUMBERJACK_CRAFTS;
-
-	public static ArrayList<BlastingRecipe> BLASTABLES;
+	public static HashMap<Item,ArrayList<CraftingRecipe>> BLACKSMITH_CRAFTABLES;
 
 
 
@@ -104,17 +102,18 @@ public class Amazia implements ModInitializer {
 		return Amazia.villageManager;
 	}
 
-	private static Set<Item> union(ImmutableSet<Item> a, ImmutableSet<Item> b) {
-		Set<Item> out = new HashSet<Item>();
+	private static Set<Item> union(final ImmutableSet<Item> a, final ImmutableSet<Item> b) {
+		final Set<Item> out = new HashSet<Item>();
 		out.addAll(b);
 		out.addAll(a);
 		return out;
 	}
 
-	public static void registerCrafters(MinecraftServer server) {
+	public static void registerCrafters(final MinecraftServer server) {
 		Amazia.FARMER_CRAFTS		= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, Amazia.union(FarmerEntity.CRAFTABLES, 		AmaziaData.PLANKS));
 		Amazia.MINER_CRAFTS 		= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, Amazia.union(MinerEntity.CRAFTABLES,			AmaziaData.PLANKS));
-		Amazia.LUMBERJACK_CRAFTS	= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, Amazia.union(LumberjackEntity.CRAFTABLES,	AmaziaData.PLANKS));
+		Amazia.LUMBERJACK_CRAFTS	= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, Amazia.union(LumberjackEntity.CRAFTABLES,		AmaziaData.PLANKS));
+		Amazia.BLACKSMITH_CRAFTABLES= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, AmaziaData.buildBlacksmithCraftables());
 
 		AmaziaData.buildBlastables(server);
 	}

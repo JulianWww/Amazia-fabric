@@ -34,70 +34,70 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable, VoidToVoidCallback {
 	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.LAPIS_LAZULI, 64);
-	private AnimationFactory factory = new AnimationFactory(this);
+	private final AnimationFactory factory = new AnimationFactory(this);
 	private Optional<Integer> enchantableItem;
 	private BlockPos targetPos;
 	private boolean shouldReturn;
 	private int amountOfLapis;
 
-	public EnchanterEntity(EntityType<? extends PassiveEntity> entityType, World world) {
+	public EnchanterEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
 		this.enchantableItem = Optional.empty();
 		this.shouldReturn = false;
 	}
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
-            return PlayState.CONTINUE;
-        }
+	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
+		if (event.isMoving()) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
+			return PlayState.CONTINUE;
+		}
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
-        return PlayState.CONTINUE;
-    }
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
+		return PlayState.CONTINUE;
+	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
+	public void registerControllers(final AnimationData data) {
 		data.addAnimationController(new AnimationController<EnchanterEntity>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
 	public AnimationFactory getFactory() {
-		return factory;
+		return this.factory;
 	}
-	
-	@Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        nbt.putBoolean("shouldReturnItem", this.shouldReturn);
-        nbt.putInt("amountOfLapis", amountOfLapis);
-        if (this.enchantableItem.isPresent()) {
-        	nbt.putInt("enchantableItemIdx", this.enchantableItem.get());
-        }
-    }
 
-    @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        this.shouldReturn = nbt.getBoolean("shouldReturnItem");
-        this.amountOfLapis = nbt.getInt("amountOfLapis");
-        if (nbt.contains("enchantableItemIdx", NbtElement.INT_TYPE)) {
-        	this.enchantableItem = Optional.of(nbt.getInt("enchantableItemIdx"));
-        }
-    }
-	
 	@Override
-    protected void initGoals() {
-		
+	public void writeCustomDataToNbt(final NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		nbt.putBoolean("shouldReturnItem", this.shouldReturn);
+		nbt.putInt("amountOfLapis", this.amountOfLapis);
+		if (this.enchantableItem.isPresent()) {
+			nbt.putInt("enchantableItemIdx", this.enchantableItem.get());
+		}
+	}
+
+	@Override
+	public void readCustomDataFromNbt(final NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		this.shouldReturn = nbt.getBoolean("shouldReturnItem");
+		this.amountOfLapis = nbt.getInt("amountOfLapis");
+		if (nbt.contains("enchantableItemIdx", NbtElement.INT_TYPE)) {
+			this.enchantableItem = Optional.of(nbt.getInt("enchantableItemIdx"));
+		}
+	}
+
+	@Override
+	protected void initGoals() {
+
 		this.goalSelector.add(49, new EnchantGoal(this, 49));
 		this.goalSelector.add(50, new GoToEnchantingTable(this, 50));
-		
-        super.registerBaseGoals(this, this::endReurnItem);
-    }
-	
+
+		super.registerBaseGoals(this, this::endReurnItem);
+	}
+
 	@Override
 	public Triplet<ItemStack, Integer, Integer> getDepositableItems() {
-		return this.getDepositableItems(USABLE_ITEMS, REQUIRED_ITEMS);
+		return this.getDepositableItems(EnchanterEntity.USABLE_ITEMS, EnchanterEntity.REQUIRED_ITEMS);
 	}
 
 	@Override
@@ -116,11 +116,11 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	public boolean hasEnchantItem() {
 		return this.enchantableItem.isPresent();
 	}
-	
+
 	public Optional<Integer> getEnchantableItem() {
 		return this.enchantableItem;
 	}
-	
+
 	public void findEnchantableItem() {
 		this.removeEnchantable();
 		ItemStack stack;
@@ -128,15 +128,15 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 			stack = this.getInventory().getStack(i);
 			if (stack.getItem().isEnchantable(stack)) {
 				this.enchantableItem = Optional.of(i);
-				return;				
+				return;
 			}
 		}
 	}
-	
+
 	public void looseEnchantItem() {
-		this.enchantableItem = Optional.empty();	
+		this.enchantableItem = Optional.empty();
 	}
-	
+
 	public void removeEnchantable() {
 		this.enchantableItem = Optional.empty();
 	}
@@ -149,7 +149,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 
 	public void requestEnchantableItem() {
 		this.requestItem(JJUtils.getRandomListElement(AmaziaData.ENCHANTABLES));
-		
+
 	}
 
 	public int getEnchantTime() {
@@ -159,22 +159,22 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	public BlockPos getTargetPos() {
 		return this.targetPos;
 	}
-	
-	public void setTargetPos(BlockPos pos) {
+
+	public void setTargetPos(final BlockPos pos) {
 		this.targetPos = pos;
 	}
 
 	public void returnItem() {
 		this.shouldReturn = true;
 	}
-	
+
 	public void endReurnItem() {
 		this.shouldReturn = false;
 		this.looseEnchantItem();
 	}
-	
+
 	@Override
-	public void setDeposeting(boolean isDeposeting) {
+	public void setDeposeting(final boolean isDeposeting) {
 		super.setDeposeting(isDeposeting);
 		if (!isDeposeting) {
 			this.endReurnItem();
@@ -188,7 +188,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	public boolean canEnchant() {
 		return this.amountOfLapis > 5;
 	}
-	
+
 	public void enchantUseLapis()  {
 		this.getInventory().removeItem(Items.LAPIS_LAZULI, 5);
 		this.amountOfLapis = this.amountOfLapis - 5;
@@ -196,7 +196,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 			this.requestItem(Items.LAPIS_LAZULI);
 		}
 	}
-	
+
 	public boolean requestLapisOrCanEnchant() {
 		if (!this.canEnchant()) {
 			if (this.age%1 == 0) {
@@ -206,7 +206,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 		}
 		return true;
 	}
-	
+
 	public void createHasLapis() {
 		this.amountOfLapis = this.countItems(Items.LAPIS_LAZULI);
 	}

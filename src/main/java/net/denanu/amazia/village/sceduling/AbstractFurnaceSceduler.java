@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.components.AmaziaBlockComponents;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
@@ -18,7 +19,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class AbstractFurnaceSceduler extends FacingPathindVillageSceduler {
+public class AbstractFurnaceSceduler extends FacingPathingVillageSceduler {
 	public List<BlockPos> location;
 	public List<BlockPos> available;
 	public Map<BlockPos, DoubleDownPathingData> pathing;
@@ -48,7 +49,7 @@ public class AbstractFurnaceSceduler extends FacingPathindVillageSceduler {
 
 	@Override
 	public void discover(final ServerWorld world, final BlockPos pos) {
-		if (world.getBlockState(pos).getBlock().getClass() == this.toFind) {
+		if (world.getBlockState(pos).getBlock().getClass() == this.toFind && !this.location.contains(pos)) {
 			this.location.add(pos);
 			this.setChanged();
 			VillageSceduler.markBlockAsFound(pos, world);
@@ -59,6 +60,7 @@ public class AbstractFurnaceSceduler extends FacingPathindVillageSceduler {
 				if (furnace.getStack(0).isEmpty()) {
 					this.available.add(pos);
 				}
+				this.addPathingOption(pos);
 			}
 		} else if (this.location.remove(pos)) {
 			this.available.remove(pos);
@@ -85,5 +87,12 @@ public class AbstractFurnaceSceduler extends FacingPathindVillageSceduler {
 
 	public void removeAvailableFurnace(final BlockPos pos) {
 		this.available.remove(pos);
+	}
+
+	public DoubleDownPathingData getLocation() {
+		if (this.pathing.size() > 0) {
+			return this.pathing.get(JJUtils.getRandomListElement(this.available));
+		}
+		return null;
 	}
 }
