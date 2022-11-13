@@ -1,11 +1,11 @@
-package net.denanu.amazia.components.entity;
+package net.denanu.amazia.components.components;
 
 import net.minecraft.nbt.NbtCompound;
 
-public class BooleanSyncedCompnent implements IBooleanCompnent {
+public class BooleanCompnent implements IBooleanCompnent {
 	private boolean value;
 
-	public BooleanSyncedCompnent(boolean value) {
+	public BooleanCompnent(boolean value) {
 		this.value = value;
 	}
 

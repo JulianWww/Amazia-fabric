@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
 import net.denanu.amazia.JJUtils;
-import net.denanu.amazia.components.AmaziaComponents;
+import net.denanu.amazia.components.AmaziaEntityComponents;
 import net.denanu.amazia.entities.village.server.RancherEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.mixin.SheepEntityAccessor;
@@ -46,7 +46,7 @@ public class FeedAnimalGoal extends TimedVillageGoal<RancherEntity> {
 	private boolean genreallShouldRun() {
 		return this.entity.hasTargetAnimal() && 
 			super.canStart() && 
-			AmaziaComponents.getIsPartOfVillage(this.entity.targetAnimal) && 
+			AmaziaEntityComponents.getIsPartOfVillage(this.entity.targetAnimal) && 
 			this.entity.getPos().isInRange(this.entity.targetAnimal.getPos(), 2);
 	}
 	

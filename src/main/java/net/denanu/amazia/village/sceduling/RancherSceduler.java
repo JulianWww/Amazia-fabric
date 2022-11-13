@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.block.custom.api.AmaziaTrough;
-import net.denanu.amazia.components.AmaziaComponents;
+import net.denanu.amazia.components.AmaziaEntityComponents;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.minecraft.entity.EntityType;
@@ -65,7 +65,7 @@ public class RancherSceduler extends VillageSceduler {
 	
 	private boolean canReciveAttention(AnimalEntity animal) {
 		return this.hasPen(animal) && (
-				!AmaziaComponents.getIsPartOfVillage(animal)
+				!AmaziaEntityComponents.getIsPartOfVillage(animal)
 				|| (
 						!animal.isInLove() &&
 						animal.getBreedingAge() == 0

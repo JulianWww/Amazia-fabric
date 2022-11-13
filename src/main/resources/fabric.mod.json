@@ -4,7 +4,7 @@
   "version": "0.0.0.1",
 
   "name": "Amazia",
-  "description": "Comming",
+  "description": "WIP",
   "authors": [
     "Julian Wandhoven", "Nico Steiner"
   ],
@@ -14,7 +14,7 @@
   },
 
   "license": "MIT",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/amazia/icon.png",
 
   "environment": "*",
   "entrypoints": {
@@ -25,7 +25,10 @@
       "net.denanu.amazia.AmaziaClient"
     ],
     "cardinal-components-entity": [
-      "net.denanu.amazia.components.AmaziaComponents"
+      "net.denanu.amazia.components.AmaziaEntityComponents"
+    ],
+    "cardinal-components-block": [
+      "net.denanu.amazia.components.AmaziaBlockComponents"
     ]
   },
   "mixins": [
@@ -45,7 +48,8 @@
   "custom": {
         "cardinal-components": [
             "amazia:is-part-of-village",
-            "amazia:can-collide"
+            "amazia:can-collide",
+            "amazia:villages"
         ]
     }
 }
