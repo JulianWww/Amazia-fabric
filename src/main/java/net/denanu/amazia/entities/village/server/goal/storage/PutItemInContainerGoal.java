@@ -1,7 +1,7 @@
 package net.denanu.amazia.entities.village.server.goal.storage;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
-import net.denanu.amazia.village.sceduling.utils.StoragePathingData;
+import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -66,7 +66,7 @@ public class PutItemInContainerGoal extends InteractWithContainerGoal {
 		}
 	}
 	
-	public StoragePathingData getContainerPos() {
+	public DoubleDownPathingData getContainerPos() {
 		return this.master.getTarget();
 	}
 

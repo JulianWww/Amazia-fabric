@@ -3,39 +3,55 @@ package net.denanu.amazia.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.denanu.amazia.Amazia;
+import net.denanu.amazia.components.AmaziaBlockComponents;
+import net.denanu.amazia.village.Village;
+import net.denanu.amazia.village.VillageManager;
+import net.denanu.amazia.village.sceduling.AbstractFurnaceSceduler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.block.entity.BlastFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.block.entity.LockableContainerBlockEntity;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.AbstractCookingRecipe;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
+import net.minecraft.recipe.RecipeInputProvider;
+import net.minecraft.recipe.RecipeUnlocker;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
-@Mixin(BlastFurnaceBlockEntity.class)
-public class BlastFurnaceBlockEntityMixin extends AbstractFurnaceBlockEntity{
-	protected BlastFurnaceBlockEntityMixin(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state,
-			RecipeType<? extends AbstractCookingRecipe> recipeType) {
-		super(blockEntityType, pos, state, recipeType);
+@Mixin(AbstractFurnaceBlockEntity.class)
+public abstract class BlastFurnaceBlockEntityMixin extends LockableContainerBlockEntity implements SidedInventory, RecipeUnlocker, RecipeInputProvider {
+
+	protected BlastFurnaceBlockEntityMixin(final BlockEntityType<?> blockEntityType, final BlockPos blockPos,
+			final BlockState blockState) {
+		super(blockEntityType, blockPos, blockState);
 	}
 
-	@Override
 	@Inject(method="setStack", at=@At("TAIL"))
-	public void setStack(int slot, ItemStack stack) {
-		
+	public void setStack(final int slot, final ItemStack stack, final CallbackInfo info) {
+		if (slot == 0) {
+			if (stack.isEmpty()) {
+				for (final BlockPos villageLoc : AmaziaBlockComponents.getVillages(this)) {
+					this.getHandler(this, villageLoc).makeAvailableFurnace(this.pos);
+				}
+			}
+			else {
+				for (final BlockPos villageLoc : AmaziaBlockComponents.getVillages(this)) {
+					this.getHandler(this, villageLoc).removeAvailableFurnace(this.pos);
+				}
+			}
+		}
 	}
-
-	@Override
-	protected Text getContainerName() {
-		return null;
-	}
-
-	@Override
-	protected ScreenHandler createScreenHandler(int var1, PlayerInventory var2) {
-		return null;
+	private AbstractFurnaceSceduler getHandler(final BlastFurnaceBlockEntityMixin t, final BlockPos pos) {
+		final Village village = VillageManager.getVillage(pos, (ServerWorld) this.world);
+		Amazia.LOGGER.info(BlockEntityType.getId(t.getType()).toString());
+		return switch (BlockEntityType.getId(t.getType()).toString()) {
+		case "minecraft:furnace" -> village.getSmelting();
+		case "minecraft:blast_furnace" -> village.getBlasting();
+		case "minecraft:smoker" -> village.getSmoking();
+		default -> null;
+		};
 	}
 }

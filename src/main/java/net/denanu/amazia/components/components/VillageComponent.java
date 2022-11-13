@@ -17,12 +17,12 @@ public class VillageComponent implements IVillageComponent {
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		tag.put("villages", NbtUtils.toNbt(this.villages));
+		this.villages = NbtUtils.toBlockPosList(tag.getList("villages", NbtElement.LIST_TYPE));
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		this.villages = NbtUtils.toBlockPosList(tag.getList("villages", NbtElement.LIST_TYPE));
+		tag.put("villages", NbtUtils.toNbt(this.villages));
 	}
 
 	@Override

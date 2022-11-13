@@ -5,13 +5,13 @@ import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.EnchanterEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
-import net.denanu.amazia.village.sceduling.utils.StoragePathingData;
+import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
 import net.minecraft.item.Item;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
 public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> implements StorageGetInteractionGoalInterface, StoragePathingInterface {
-	private StoragePathingData target;
+	private DoubleDownPathingData target;
 	private Item item;
 	private boolean isPathing, isDone, containerInteracting;
 	private GoToStorageGoal pathingSubGoal;
@@ -130,7 +130,7 @@ public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> impleme
 	}
 
 	@Override
-	public StoragePathingData getTarget() {
+	public DoubleDownPathingData getTarget() {
 		return this.target;
 	}
 

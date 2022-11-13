@@ -7,21 +7,21 @@ import java.util.List;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
-import net.denanu.amazia.village.sceduling.utils.EnchantingPathingData;
+import net.denanu.amazia.village.sceduling.utils.NoHeightPathingData;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
-public class EnchantingSceduler extends VillageSceduler {
+public class PathingNoHeightSceduler extends VillageSceduler {
 	private List<BlockPos> enchantingTables;
-	private HashMap<BlockPos, EnchantingPathingData> tables;
+	private HashMap<BlockPos, NoHeightPathingData> tables;
 	
-	public EnchantingSceduler(Village _village) {
+	public PathingNoHeightSceduler(Village _village) {
 		super(_village);
 		this.enchantingTables = new ArrayList<BlockPos>();
-		this.tables = new HashMap<BlockPos, EnchantingPathingData>();
+		this.tables = new HashMap<BlockPos, NoHeightPathingData>();
 	}
 
 	@Override
@@ -63,10 +63,10 @@ public class EnchantingSceduler extends VillageSceduler {
 	}
 	
 	private void createTable(BlockPos pos) {
-		this.tables.put(pos, new EnchantingPathingData(pos, this.getVillage()));
+		this.tables.put(pos, new NoHeightPathingData(pos, this.getVillage()));
 	}
 	
-	public EnchantingPathingData getTableLocation() {
+	public NoHeightPathingData getTableLocation() {
 		if (this.tables.size() > 0) {
 			return this.tables.get(JJUtils.getRandomListElement(this.enchantingTables));
 		}

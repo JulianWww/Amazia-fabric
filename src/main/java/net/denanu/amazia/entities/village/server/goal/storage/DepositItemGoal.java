@@ -5,14 +5,14 @@ import javax.annotation.Nullable;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.BaseAmaziaVillageGoal;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
-import net.denanu.amazia.village.sceduling.utils.StoragePathingData;
+import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import oshi.util.tuples.Triplet;
 
 public class DepositItemGoal extends BaseAmaziaVillageGoal<AmaziaVillagerEntity> implements StoragePathingInterface, StoragePutInteractionGoalInterface {
-	private StoragePathingData target;
+	private DoubleDownPathingData target;
 	private Triplet<ItemStack, Integer, Integer> item;
 	private boolean isPathing, isDone, containerInteracting;
 	private GoToStorageGoal pathingSubGoal;
@@ -130,7 +130,7 @@ public class DepositItemGoal extends BaseAmaziaVillageGoal<AmaziaVillagerEntity>
 	}
 
 	@Override
-	public StoragePathingData getTarget() {
+	public DoubleDownPathingData getTarget() {
 		return this.target;
 	}
 

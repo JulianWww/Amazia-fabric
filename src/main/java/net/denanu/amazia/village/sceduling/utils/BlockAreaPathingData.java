@@ -3,7 +3,6 @@ package net.denanu.amazia.village.sceduling.utils;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.denanu.amazia.pathing.PathingEventEmiter;
 import net.denanu.amazia.pathing.interfaces.PathingEventListener;
 import net.denanu.amazia.village.Village;
 import net.minecraft.util.math.BlockPos;
@@ -17,14 +16,14 @@ public abstract class BlockAreaPathingData<E extends BlockPos> implements Pathin
 		this.validPathingNodes = new HashSet<BlockPos>();
 		this.getAccessPoints(new RegisterListener(), pos, _village);
 	}
-	
+
 	protected abstract void getAccessPoints(PathingListenerRegistryOperation operation, BlockPos origin, Village v);
 	public abstract BlockPos getAccessPoint();
-	
+
 	public void destroy(Village village) {
-		this.getAccessPoints(new UnregiserListener(), pos, village);
+		this.getAccessPoints(new UnregiserListener(), this.pos, village);
 	}
-	
+
 	protected void register(Village v, BlockPos pos) {
 		v.getPathingGraph().getEventEmiter().registerListener(this, pos);
 		if (v.getPathingGraph().hasNode(pos)) {
@@ -44,7 +43,7 @@ public abstract class BlockAreaPathingData<E extends BlockPos> implements Pathin
 	public void onDestroy(BlockPos pos) {
 		this.validPathingNodes.remove(pos);
 	}
-	
+
 	public E getPos() {
 		return this.pos;
 	}
