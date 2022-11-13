@@ -1,10 +1,7 @@
 package net.denanu.amazia.entities.village.server;
 
-import java.util.List;
-
 import org.apache.logging.log4j.core.tools.picocli.CommandLine.InitializationException;
 
-import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.entities.moods.ServerMoodEmiter;

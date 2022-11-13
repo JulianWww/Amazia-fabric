@@ -1,7 +1,6 @@
 package net.denanu.amazia.entities.village.client;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.entities.village.server.FarmerEntity;
 import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;

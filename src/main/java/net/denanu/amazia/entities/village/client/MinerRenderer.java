@@ -1,8 +1,6 @@
 package net.denanu.amazia.entities.village.client;
 
-
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.entities.village.server.FarmerEntity;
 import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;

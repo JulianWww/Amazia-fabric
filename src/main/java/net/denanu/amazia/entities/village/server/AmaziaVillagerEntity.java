@@ -2,15 +2,12 @@ package net.denanu.amazia.entities.village.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
-
-import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
@@ -34,7 +31,6 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
@@ -179,7 +175,6 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	}
 	
 	public boolean isDeposeting() {
-		boolean f = !this.hasFreeSlot();
 		return isDeposeting || !this.hasFreeSlot();
 	}
 

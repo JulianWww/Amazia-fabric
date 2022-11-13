@@ -1,6 +1,5 @@
 package net.denanu.amazia.entities.village.client;
 
-
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.EnchanterEntity;
 import net.minecraft.client.render.RenderLayer;
