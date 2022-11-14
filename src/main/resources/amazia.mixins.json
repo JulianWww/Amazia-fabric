@@ -10,13 +10,17 @@
   	"MinecraftServerMixin",
   	"MinecraftServerWorldAccessor",
   	"MinecraftServerWorldMixin",
+  	"MobEntityAccessor",
+  	"MobEntityMixin",
   	"PathAwareEntityMixin",
     "PathingBlockUpdateMixin",
     "PlantBlockMixin",
     "RecipeManagerMixinAcessor",
     "SheepEntityAccessor",
     "TrunkPlacerMixin",
-    "VillageBlockUpdateMixin"
+    "VillageBlockUpdateMixin",
+    
+    "enemies.AbstractSkeletonEntityMixin"
   ],
   "client": [
   ],

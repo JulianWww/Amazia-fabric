@@ -23,7 +23,19 @@ import net.minecraft.world.spawner.Spawner;
 public class MinecraftServerWorldMixin
 {
 	@Inject(at = @At("RETURN"), method = "<init>")
-	public void MinecraftServer(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session, ServerWorldProperties properties, RegistryKey<World> worldKey, DimensionOptions dimensionOptions, WorldGenerationProgressListener worldGenerationProgressListener, boolean debugWorld, long seed, List<Spawner> spawners, boolean shouldTickTime, CallbackInfo info) {
+	public void MinecraftServer(
+			final MinecraftServer server,
+			final Executor workerExecutor,
+			final LevelStorage.Session session,
+			final ServerWorldProperties properties,
+			final RegistryKey<World> worldKey,
+			final DimensionOptions dimensionOptions,
+			final WorldGenerationProgressListener worldGenerationProgressListener,
+			final boolean debugWorld,
+			final long seed,
+			final List<Spawner> spawners,
+			final boolean shouldTickTime,
+			final CallbackInfo info) {
 		if (worldKey == World.OVERWORLD) {
 			Amazia.registerCrafters(server);
 		}
