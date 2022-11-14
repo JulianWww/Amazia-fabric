@@ -1,4 +1,4 @@
-package net.denanu.amazia.components.entity;
+package net.denanu.amazia.components.components;
 
 import dev.onyxstudios.cca.api.v3.component.Component;
 

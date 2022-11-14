@@ -13,20 +13,22 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 	private PathingPath path;
 	private EntityNavigation nav;
 	private int ticksStanding;
+	private boolean directMovement;
 
-	public BaseAmaziaGoToBlockGoal(E e, int priority) {
+	public BaseAmaziaGoToBlockGoal(final E e, final int priority) {
 		super(e, priority);
 	}
-	
+
 	@Override
 	public void start() {
 		super.start();
 		this.isRunning = true;
 		this.reached = false;
 		this.ticksStanding = 0;
+		this.directMovement = false;
 		this.recalcPath();
 	}
-	
+
 	@Override
 	public void stop() {
 		super.stop();
@@ -34,76 +36,75 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		this.targetPos = null;
 		this.entity.getNavigation().stop();
 	}
-	
+
 	@Override
 	public boolean canStart() {
 		if (super.canStart()) {
 			this.getNewTargetPos();
-			return targetPos != null;
+			return this.targetPos != null;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean shouldContinue() {
-		return super.shouldContinue() && path != null && targetPos != null && !this.reached && path.getLength() > 1;
+		return super.shouldContinue() && (this.path != null || this.directMovement) && this.targetPos != null && !this.reached && this.path.getLength() > 1;
 	}
-	
+
 	@Override
-    public void tick() {
-		Vec3d targetPos = new Vec3d(this.targetPos.getX() + 0.5, this.targetPos.getY(), this.targetPos.getZ() + 0.5);
+	public void tick() {
+		final Vec3d targetPos = new Vec3d(this.targetPos.getX() + 0.5, this.targetPos.getY(), this.targetPos.getZ() + 0.5);
 		if (this.nav.isIdle()) {
 			this.ticksStanding++;
 		}
 		else {
 			this.ticksStanding = 0;
 		}
-		double distance = targetPos.squaredDistanceTo(this.entity.getPos());
-        if (distance > this.getDesiredDistanceToTarget()) {
-        	this.reached = false;
-        	if (distance < 3) {
-            	this.runBackupMotion();
-            	if (this.shouldResetPath()) {
-	                this.recalcPath();
-	            }
-            }
-        	else {
-	            if (this.shouldResetPath()) {
-	                this.recalcPath();
-	            }
-        	}
-        }         
-        else {
-            this.reached = true;
-        }
-    }
-	
+		final double distance = targetPos.squaredDistanceTo(this.entity.getPos());
+		if (distance > this.getDesiredDistanceToTarget()) {
+			this.reached = false;
+			this.directMovement = false;
+			if (distance < 4) {
+				this.runBackupMotion();
+				this.directMovement = true;
+				if (this.shouldResetPath()) {
+					this.recalcPath();
+				}
+			} else if (this.shouldResetPath()) {
+				this.recalcPath();
+			}
+		}
+		else {
+			this.reached = true;
+		}
+	}
+
 	private void runBackupMotion() {
 		this.entity.getNavigation().stop();
-    	this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() , this.targetPos.getZ() + 0.5, 1);
+		this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() , this.targetPos.getZ() + 0.5, 1);
 	}
-	
+
 	public boolean shouldResetPath() {
-        return this.ticksStanding > 40;
-    }
-	
+		return this.ticksStanding > 40;
+	}
+
 	public double getDesiredDistanceToTarget() {
-        return 0.5; // note distance squared
-    }
-	
+		return 0.2; // note distance squared
+	}
+
 	protected void recalcPath() {
 		this.nav =  this.entity.getNavigation();
-		path = (PathingPath) nav.findPathTo(this.targetPos, 0);
-		if (path != null && path.getLength() == 1) {
+		this.path = (PathingPath) this.nav.findPathTo(this.targetPos, 0);
+		if (this.path != null && this.path.getLength() == 1) {
 			this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() + 1, this.targetPos.getZ() + 0.5, 1);
 		}
-		if (path == null) {
+		if (this.path == null && !this.directMovement) {
 			this.fail();
 		}
-		nav.startMovingAlong(path, 1);
+		this.nav.startMovingAlong(this.path, 1);
 		this.ticksStanding = 0;
 	}
-	
+
 	protected void fail() {};
 
 	private void getNewTargetPos() {
@@ -112,10 +113,10 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 			return;
 		}
 	}
-	
+
 	protected abstract BlockPos getTargetBlock();
 
 	public boolean isRunning() {
-		return isRunning;
+		return this.isRunning;
 	}
 }

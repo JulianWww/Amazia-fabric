@@ -5,8 +5,8 @@ import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.structures.LumberFarmStructure;
 import net.minecraft.util.math.BlockPos;
 
-public class EnchantingPathingData extends BlockAreaPathingData<LumberFarmStructure> {
-	public EnchantingPathingData(BlockPos pos, Village _village) {
+public class NoHeightPathingData extends BlockAreaPathingData<LumberFarmStructure> {
+	public NoHeightPathingData(BlockPos pos, Village _village) {
 		super(new LumberFarmStructure(pos, _village), _village);
 	}
 

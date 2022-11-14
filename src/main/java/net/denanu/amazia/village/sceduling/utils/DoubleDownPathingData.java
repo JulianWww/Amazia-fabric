@@ -2,26 +2,22 @@ package net.denanu.amazia.village.sceduling.utils;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.village.Village;
-import net.minecraft.block.entity.BarrelBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class StoragePathingData extends BlockAreaPathingData {
+public class DoubleDownPathingData extends BlockAreaPathingData<BlockPos> {
 	private Direction preferedDirection;
 
-	public StoragePathingData(BlockPos pos, Village village, Direction _preferedDirection) {
+	public DoubleDownPathingData(BlockPos pos, Village village, Direction _preferedDirection) {
 		super(pos, village);
 		this.preferedDirection = _preferedDirection;
 	}
 
 	public Direction getPreferedDirection() {
-		return preferedDirection;
+		return this.preferedDirection;
 	}
 
 	public void setPreferedDirection(Direction preferedDirection) {
@@ -36,13 +32,13 @@ public class StoragePathingData extends BlockAreaPathingData {
 		this.registerSide(operation, origin.north(), v);
 		this.registerSide(operation, origin.south(), v);
 	}
-	
+
 	private void registerSide(PathingListenerRegistryOperation operation, BlockPos pos, Village v) {
 		operation.put(this, v, pos);
 		operation.put(this, v, pos.down());
 		operation.put(this, v, pos.down(2));
 	}
-	
+
 	private BlockPos getPosibilityOnSide(BlockPos pos) {
 		if (this.getPathingOptions().contains(pos)) {
 			return pos;
@@ -62,7 +58,8 @@ public class StoragePathingData extends BlockAreaPathingData {
 		return null;
 	}
 
-	
+
+	@Override
 	public BlockPos getAccessPoint() {
 		BlockPos out = this.getPosibilityOnSide(this.getPos().offset(this.preferedDirection));  if (out != null) { return out; }
 		out = this.getPosibilityOnSide(this.getPos().north()); 									if (out != null) { return out; }
@@ -71,7 +68,7 @@ public class StoragePathingData extends BlockAreaPathingData {
 		out = this.getPosibilityOnSide(this.getPos().west());									if (out != null) { return out; }
 		return this.getTopAccess();
 	}
-	
+
 	public LootableContainerBlockEntity getStorageInventory(ServerWorld world) {
 		BlockEntity entity = world.getBlockEntity(this.getPos());
 		if (entity instanceof LootableContainerBlockEntity chest) {

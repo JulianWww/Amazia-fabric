@@ -1,6 +1,6 @@
 package net.denanu.amazia.entities.village.server.goal.rancher;
 
-import net.denanu.amazia.components.AmaziaComponents;
+import net.denanu.amazia.components.AmaziaEntityComponents;
 import net.denanu.amazia.entities.village.server.RancherEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
@@ -17,7 +17,7 @@ public class LeashAnimal extends TimedVillageGoal<RancherEntity> {
 				super.canStart() && 
 				!this.entity.targetAnimal.isLeashed() && 
 				this.entity.getPos().isInRange(this.entity.targetAnimal.getPos(), 2) && 
-				!AmaziaComponents.getIsPartOfVillage(this.entity.targetAnimal);
+				!AmaziaEntityComponents.getIsPartOfVillage(this.entity.targetAnimal);
 	}
 
 	@Override

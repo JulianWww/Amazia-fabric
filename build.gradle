@@ -39,12 +39,11 @@ dependencies {
 
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.2"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.2"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-block:5.0.2"
     
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.2"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.2"
-    //modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-world:5.0.2"
-    //modImplementation "io.github.ladysnake:baritone-api-fabric:1.8.3"
-    //implementation files("libs/baritone-api-fabric-1.8.3.jar")
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-block:5.0.2"
 }
 
 processResources {

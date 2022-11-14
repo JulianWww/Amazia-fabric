@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import dev.onyxstudios.cca.api.v3.component.ComponentAccess;
-import net.denanu.amazia.components.AmaziaComponents;
+import net.denanu.amazia.components.AmaziaEntityComponents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.Entity.RemovalReason;
 import net.minecraft.server.command.CommandOutput;
@@ -28,7 +28,7 @@ CommandOutput,
 ComponentAccess {
 	@Inject(method="adjustMovementForCollisions", at=@At("HEAD"), cancellable=true)
 	public void adjustMovementForCollisions(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
-		if (!AmaziaComponents.getCanCollide((Entity)(Object)this)) {
+		if (!AmaziaEntityComponents.getCanCollide((Entity)(Object)this)) {
 			cir.setReturnValue(movement);
 		}; 
 	}
