@@ -28,5 +28,7 @@
 	"profession.amazia.librarian": "Librarian",
 	"profession.amazia.shepherd": "Shepherd",
 	"profession.amazia.toolsmith": "Toolsmith",
-	"profession.amazia.weaponsmith": "Weaponsmith"
+	"profession.amazia.weaponsmith": "Weaponsmith",
+	
+	"amazia:village-enemies-glow": "Village Enemies Glow"
 }

@@ -16,12 +16,11 @@ import net.minecraft.util.math.Vec3d;
 
 public class AmaziaTestCommands {
 	public static LiteralArgumentBuilder<ServerCommandSource> register(final CommandDispatcher<ServerCommandSource> dispatcher, final CommandRegistryAccess access, final CommandManager.RegistrationEnvironment env) {
-		final LiteralArgumentBuilder<ServerCommandSource> value = CommandManager.literal("tests");
+		final LiteralArgumentBuilder<ServerCommandSource> value = CommandManager.literal("tests").requires(source -> source.hasPermissionLevel(4));
 
-		value.then(CommandManager.literal("enchantmentItems").executes(AmaziaTestCommands::spawnEnchantmentItems));
-		value.then(CommandManager.literal("blastingItems").executes(AmaziaTestCommands::spawnBlastingItems));
-		value.then(CommandManager.literal("blacksmithCraftables").executes(AmaziaTestCommands::spawnBlacksmithCraftableItems));
-
+		value.then(CommandManager.literal("enchantmentItems").		executes(AmaziaTestCommands::spawnEnchantmentItems));
+		value.then(CommandManager.literal("blastingItems").			executes(AmaziaTestCommands::spawnBlastingItems));
+		value.then(CommandManager.literal("blacksmithCraftables").	executes(AmaziaTestCommands::spawnBlacksmithCraftableItems));
 
 		return value;
 	}

@@ -14,6 +14,7 @@ import net.denanu.amazia.village.sceduling.RancherSceduler;
 import net.denanu.amazia.village.sceduling.ScedulingPredicates;
 import net.denanu.amazia.village.sceduling.StorageSceduler;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -229,5 +230,9 @@ public class Village {
 		if (this.isInVillage(pos)) {
 			this.discover(this.getWorld(), pos);
 		}
+	}
+
+	public void addThreat(final MobEntity enemy) {
+		Amazia.LOGGER.info(enemy.toString() + " is now an enemy");
 	}
 }
