@@ -65,7 +65,7 @@ public class BlacksmithEntity extends AmaziaVillagerEntity implements IAnimatabl
 	private BlockPos targetPos;
 	@Nullable
 	private BlockPos targetAnvilPos;
-	private boolean shouldDeposit;
+	public boolean shouldDeposit;
 	public BlacksmithEntity(final EntityType<? extends PassiveEntity> entityType, final World world)  {
 		super(entityType, world);
 		this.blastingItem = Optional.empty();
@@ -124,9 +124,9 @@ public class BlacksmithEntity extends AmaziaVillagerEntity implements IAnimatabl
 				new PutItemsInFurnaceGoal(this, 50)
 				)));
 
-		this.goalSelector.add(24, new SequenceGoal<BlacksmithEntity>(this, ImmutableList.of(
-				new GoToAnvilGoal(this, 24),
-				new CraftAtAnvilGoal(this, 24)
+		this.goalSelector.add(51, new SequenceGoal<BlacksmithEntity>(this, ImmutableList.of(
+				new GoToAnvilGoal(this, 51),
+				new CraftAtAnvilGoal(this, 51)
 				)));
 
 		super.registerBaseGoals(this::scanForCoal, this::scanForCoal, false);
@@ -206,7 +206,7 @@ public class BlacksmithEntity extends AmaziaVillagerEntity implements IAnimatabl
 
 	public void requestCraftable() {
 		if (!this.wantsToCraft()) {
-			this.tryCraftingStart(JJUtils.getRandomSetElement(Amazia.BLACKSMITH_CRAFTABLES.keySet()));
+			this.tryCraftingStart(JJUtils.getRandomListElement(AmaziaData.BLACKSMITH_CRAFTING_ITEMS));
 		}
 	}
 

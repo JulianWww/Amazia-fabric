@@ -14,7 +14,7 @@ public class GoToAnvilGoal extends AmaziaGoToBlockGoal<BlacksmithEntity> {
 
 	@Override
 	public boolean canStart() {
-		return super.canStart() && this.entity.wantsToCraft() && CraftGoal.canCraft(this.entity);
+		return !this.entity.shouldDeposit && super.canStart() && this.entity.wantsToCraft() && CraftGoal.canCraft(this.entity);
 	}
 
 	@Override

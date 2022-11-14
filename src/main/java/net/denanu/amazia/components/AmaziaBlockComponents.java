@@ -18,15 +18,15 @@ public class AmaziaBlockComponents implements BlockComponentInitializer {
 	private static final ComponentKey<IVillageComponent> VILLAGES = ComponentRegistry.getOrCreate(Identifier.of(Amazia.MOD_ID, "villages"), IVillageComponent.class);
 
 	@Override
-	public void registerBlockComponentFactories(BlockComponentFactoryRegistry registry) {
-		registry.registerFor(AbstractFurnaceBlockEntity.class, AmaziaBlockComponents.VILLAGES, e -> new VillageComponent());
+	public void registerBlockComponentFactories(final BlockComponentFactoryRegistry registry) {
+		registry.registerFor(AbstractFurnaceBlockEntity.class, 	AmaziaBlockComponents.VILLAGES, e -> new VillageComponent());
 	}
 
-	public static List<BlockPos> getVillages(Object provider) {
+	public static List<BlockPos> getVillages(final Object provider) {
 		return AmaziaBlockComponents.VILLAGES.get(provider).get();
 	}
 
-	public static void addVillage(Object pricider, Village village) {
+	public static void addVillage(final Object pricider, final Village village) {
 		AmaziaBlockComponents.VILLAGES.get(pricider).add(village.getOrigin());
 	}
 }

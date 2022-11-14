@@ -11,12 +11,13 @@ public class CraftAtAnvilGoal extends CraftGoal<BlacksmithEntity> {
 
 	@Override
 	public boolean canStart() {
-		return super.canStart() && this.entity.getTargetAnvilPos() != null && this.entity.getBlockPos().getManhattanDistance(this.entity.getTargetAnvilPos()) <= 2;
+		return !this.entity.shouldDeposit && super.canStart() && this.entity.getTargetAnvilPos() != null && this.entity.getBlockPos().getManhattanDistance(this.entity.getTargetAnvilPos()) <= 2;
 	}
 
 	@Override
 	public void takeAction() {
 		super.takeAction();
 		this.entity.sceduleDepositing();
+		this.entity.requestCraftable();
 	}
 }

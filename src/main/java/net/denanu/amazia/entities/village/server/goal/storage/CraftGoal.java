@@ -42,7 +42,9 @@ public class CraftGoal<E extends AmaziaVillagerEntity> extends TimedVillageGoal<
 	public static<E extends AmaziaVillagerEntity> boolean canCraft(final E entity) {
 		for (final Entry<Item, Integer> ingredient : entity.getCraftInput().entrySet()) {
 			if (!entity.hasItem(ingredient.getKey(), ingredient.getValue())) {
-				//entity.endCraft();
+				if (!entity.hasRequestedItems()) {
+					entity.endCraft();
+				}
 				return false;
 			}
 		}

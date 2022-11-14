@@ -53,7 +53,7 @@ public abstract class InteractWithContainerGoal extends TimedVillageGoal<AmaziaV
 	}
 
 	public static boolean canMergeItems(final ItemStack first, final ItemStack second) {
-		if (!first.isOf(second.getItem()) || (first.getDamage() != second.getDamage()) || (first.getCount() > first.getMaxCount())) {
+		if (!first.isOf(second.getItem()) || first.getDamage() != second.getDamage() || first.getCount() >= first.getMaxCount()) {
 			return false;
 		}
 		return ItemStack.areNbtEqual(first, second);

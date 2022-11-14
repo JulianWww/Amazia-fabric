@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.entities.village.server.BlacksmithEntity;
@@ -26,6 +27,7 @@ public class AmaziaData {
 	public static final ImmutableSet<Item> PLANKS = ImmutableSet.of(Items.ACACIA_PLANKS, Items.BIRCH_PLANKS, Items.CRIMSON_PLANKS, Items.DARK_OAK_PLANKS, Items.JUNGLE_PLANKS, Items.MANGROVE_PLANKS, Items.OAK_PLANKS, Items.SPRUCE_PLANKS, Items.WARPED_PLANKS);
 	public static       ArrayList<Item> ENCHANTABLES;
 	public static       ArrayList<Item> BLASTABLES;
+	public static       ImmutableList<Item> BLACKSMITH_CRAFTING_ITEMS;
 
 
 	public static void setup() {
@@ -67,6 +69,7 @@ public class AmaziaData {
 				out.add(item);
 			}
 		}
+		AmaziaData.BLACKSMITH_CRAFTING_ITEMS = ImmutableList.copyOf(out);
 		out.add(Items.STICK);
 		out.addAll(AmaziaData.PLANKS);
 		return out;
