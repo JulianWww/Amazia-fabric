@@ -205,7 +205,7 @@ public class BlacksmithEntity extends AmaziaVillagerEntity implements IAnimatabl
 	}
 
 	public void requestCraftable() {
-		if (!this.wantsToCraft()) {
+		if (!this.wantsToCraft() && this.hasVillage()) {
 			this.tryCraftingStart(JJUtils.getRandomListElement(AmaziaData.BLACKSMITH_CRAFTING_ITEMS));
 		}
 	}

@@ -9,6 +9,6 @@ import net.minecraft.world.GameRules.Category;
 
 public class AmaziaGameRules {
 	public static final GameRules.Key<GameRules.BooleanRule> VILLAGE_ENEMIES_GLOW = GameRuleRegistry.register(Identifier.of(Amazia.MOD_ID, "village-enemies-glow").toString(), Category.MISC, GameRuleFactory.createBooleanRule(true));
-	public void setup() {
+	public static void setup() {
 	}
 }

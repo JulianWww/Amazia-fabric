@@ -8,21 +8,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.denanu.amazia.mixin.MobEntityAccessor;
 import net.denanu.amazia.utils.EnemyGoalBuilder;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.RangedAttackMob;
-import net.minecraft.entity.mob.AbstractSkeletonEntity;
-import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.FlyingEntity;
+import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.world.World;
 
-@Mixin(AbstractSkeletonEntity.class)
-public abstract class AbstractSkeletonEntityMixin extends HostileEntity implements RangedAttackMob {
-	protected AbstractSkeletonEntityMixin(final EntityType<? extends HostileEntity> entityType, final World world) {
+@Mixin(PhantomEntity.class)
+public class PhantomEntityMixin extends FlyingEntity {
+	protected PhantomEntityMixin(final EntityType<? extends FlyingEntity> entityType, final World world) {
 		super(entityType, world);
-		throw new RuntimeException("invalidConstructor");
+		throw new RuntimeException("Invalid constructor");
 	}
 
 	@Inject(method="initGoals", at=@At("TAIL"))
 	public void initGoals(final CallbackInfo callback) {
-		final AbstractSkeletonEntity entity = (AbstractSkeletonEntity)(Object)this;
+		final PhantomEntity entity = (PhantomEntity)(Object)this;
 		((MobEntityAccessor)entity).getTargetSelector().add(3, EnemyGoalBuilder.buildAmaziaTargetGoal(entity));
 	}
 }

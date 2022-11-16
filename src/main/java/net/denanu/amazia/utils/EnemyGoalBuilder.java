@@ -1,4 +1,4 @@
-package net.denanu.amazia.mixin.enemies;
+package net.denanu.amazia.utils;
 
 import net.denanu.amazia.entities.village.server.AmaziaEntity;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;

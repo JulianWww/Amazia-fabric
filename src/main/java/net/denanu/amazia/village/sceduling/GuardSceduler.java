@@ -27,15 +27,25 @@ public class GuardSceduler {
 
 	@Nullable
 	public OpponentData getOpponent() {
-		return this.enemyQueue.peek();
+		@Nullable
+		final OpponentData target = this.enemyQueue.peek();
+		if (target == null) {
+			return null;
+		}
+		target.decrementPriority();
+		if (target.getPriority() > 0 || !target.getTarget().isAlive() || !this.village.isInVillage(target.getTarget())) {
+			this.enemyQueue.poll();
+			return this.getOpponent();
+		}
+		return target;
 	}
 
 	public void addOpponent(final MobEntity mob, final int priority) {
 		if (!this.isEnemey(mob)) {
 			this.enemyQueue.add(new OpponentData(mob, priority));
-			if (mob.world.getGameRules().getBoolean(AmaziaGameRules.VILLAGE_ENEMIES_GLOW)) {
-				mob.setGlowing(true);
-			}
+		}
+		if (mob.world.getGameRules().getBoolean(AmaziaGameRules.VILLAGE_ENEMIES_GLOW)) {
+			mob.setGlowing(true);
 		}
 	}
 

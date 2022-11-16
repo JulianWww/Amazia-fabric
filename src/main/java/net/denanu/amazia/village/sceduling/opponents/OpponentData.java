@@ -4,7 +4,7 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class OpponentData implements Comparable<OpponentData> {
 	private final MobEntity target;
-	private final int priority;
+	private int priority;
 
 	public OpponentData(final MobEntity target, final int priority) {
 		this.target = target;
@@ -26,5 +26,9 @@ public class OpponentData implements Comparable<OpponentData> {
 	@Override
 	public int compareTo(final OpponentData o) {
 		return Integer.compare(this.priority, o.priority);
+	}
+
+	public void decrementPriority() {
+		this.priority--;
 	}
 }
