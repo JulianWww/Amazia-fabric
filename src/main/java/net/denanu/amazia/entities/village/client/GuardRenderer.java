@@ -1,32 +1,155 @@
 package net.denanu.amazia.entities.village.client;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.GuardEntity;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShieldItem;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import net.minecraft.util.math.Vec3f;
+import software.bernie.example.client.DefaultBipedBoneIdents;
+import software.bernie.example.client.model.entity.ExampleExtendedRendererEntityModel;
+import software.bernie.geckolib3.GeckoLib;
+import software.bernie.geckolib3.core.processor.IBone;
+import software.bernie.geckolib3.geo.render.built.GeoBone;
+import software.bernie.geckolib3.renderers.geo.ExtendedGeoEntityRenderer;
 
-public class GuardRenderer extends GeoEntityRenderer<GuardEntity> {
-	public GuardRenderer(final EntityRendererFactory.Context ctx) {
-		super(ctx, new GuardModel());
-		this.shadowRadius = 0.4f;
+public class GuardRenderer extends ExtendedGeoEntityRenderer<GuardEntity> {
+
+	private static final Identifier TEXTURE = new Identifier(GeckoLib.ModID,
+			"textures/entity/extendedrendererentity.png");
+	private static final Identifier MODEL_RESLOC = new Identifier(GeckoLib.ModID,
+			"geo/extendedrendererentity.geo.json");
+
+	public GuardRenderer(final EntityRendererFactory.Context renderManager) {
+		super(renderManager, new ExampleExtendedRendererEntityModel<GuardEntity>(GuardRenderer.MODEL_RESLOC, GuardRenderer.TEXTURE,
+				"extendedrendererentity"));
 	}
 
 	@Override
-	public Identifier getTextureResource(final GuardEntity instance) {
-		return new Identifier(Amazia.MOD_ID, "textures/entity/farmer_texture.png");
+	protected ItemStack getHeldItemForBone(final String boneName, final GuardEntity currentEntity) {
+		switch (boneName) {
+		case DefaultBipedBoneIdents.LEFT_HAND_BONE_IDENT:
+			return currentEntity.isLeftHanded() ? this.mainHand : this.offHand;
+		case DefaultBipedBoneIdents.RIGHT_HAND_BONE_IDENT:
+			return currentEntity.isLeftHanded() ? this.offHand : this.mainHand;
+		case DefaultBipedBoneIdents.POTION_BONE_IDENT:
+			break;
+		}
+		return null;
 	}
 
 	@Override
-	public RenderLayer getRenderType(final GuardEntity animatable, final float partialTicks, final MatrixStack stack,
-			final VertexConsumerProvider renderTypeBuffer, final VertexConsumer vertexBuilder,
-			final int packedLightIn, final Identifier textureLocation) {
-		stack.scale(0.8f, 0.8f, 0.8f);
-
-		return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
+	protected Mode getCameraTransformForItemAtBone(final ItemStack boneItem, final String boneName) {
+		return switch (boneName) {
+		case DefaultBipedBoneIdents.LEFT_HAND_BONE_IDENT -> Mode.THIRD_PERSON_RIGHT_HAND;
+		case DefaultBipedBoneIdents.RIGHT_HAND_BONE_IDENT -> Mode.THIRD_PERSON_RIGHT_HAND;
+		default -> Mode.NONE;
+		};
 	}
+
+	@Override
+	protected void preRenderItem(final MatrixStack stack, final ItemStack item, final String boneName, final GuardEntity currentEntity,
+			final IBone bone) {
+		if (item == this.mainHand || item == this.offHand) {
+			stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
+			final boolean shieldFlag = item.getItem() instanceof ShieldItem;
+			if (item == this.mainHand) {
+				if (shieldFlag) {
+					stack.translate(0.0, 0.125, -0.25);
+				} else {
+
+				}
+			}
+			else if (shieldFlag) {
+				stack.translate(0, 0.125, 0.25);
+				stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
+			} else {
+
+			}
+
+			// stack.scale(0.75F, 0.75F, 0.75F);
+		}
+	}
+
+	@Override
+	protected void postRenderItem(final MatrixStack PoseStack, final ItemStack item, final String boneName,
+			final GuardEntity currentEntity, final IBone bone) {
+
+	}
+
+	@Override
+	protected ItemStack getArmorForBone(final String boneName, final GuardEntity currentEntity) {
+		return switch (boneName) {
+		case "armorBipedLeftFoot", "armorBipedRightFoot", "armorBipedLeftFoot2", "armorBipedRightFoot2" -> this.boots;
+		case "armorBipedLeftLeg", "armorBipedRightLeg", "armorBipedLeftLeg2", "armorBipedRightLeg2" -> this.leggings;
+		case "armorBipedBody", "armorBipedRightArm", "armorBipedLeftArm" -> this.chestplate;
+		case "armorBipedHead" -> this.helmet;
+		default -> null;
+		};
+	}
+
+	@Override
+	protected EquipmentSlot getEquipmentSlotForArmorBone(final String boneName, final GuardEntity currentEntity) {
+		return switch (boneName) {
+		case "armorBipedLeftFoot", "armorBipedRightFoot", "armorBipedLeftFoot2", "armorBipedRightFoot2" -> EquipmentSlot.FEET;
+		case "armorBipedLeftLeg", "armorBipedRightLeg", "armorBipedLeftLeg2", "armorBipedRightLeg2" -> EquipmentSlot.LEGS;
+		case "armorBipedRightArm" -> !currentEntity.isLeftHanded() ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+		case "armorBipedLeftArm" -> currentEntity.isLeftHanded() ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+		case "armorBipedBody" -> EquipmentSlot.CHEST;
+		case "armorBipedHead" -> EquipmentSlot.HEAD;
+		default -> null;
+		};
+	}
+
+	@Override
+	protected ModelPart getArmorPartForBone(final String name, final BipedEntityModel<?> armorModel) {
+		return switch (name) {
+		case "armorBipedLeftFoot", "armorBipedLeftLeg", "armorBipedLeftFoot2", "armorBipedLeftLeg2" -> armorModel.leftLeg;
+		case "armorBipedRightFoot", "armorBipedRightLeg", "armorBipedRightFoot2", "armorBipedRightLeg2" -> armorModel.rightLeg;
+		case "armorBipedRightArm" -> armorModel.rightArm;
+		case "armorBipedLeftArm" -> armorModel.leftArm;
+		case "armorBipedBody" -> armorModel.body;
+		case "armorBipedHead" -> armorModel.head;
+		default -> null;
+		};
+	}
+
+	@Override
+	protected BlockState getHeldBlockForBone(final String boneName, final GuardEntity currentEntity) {
+		return null;
+	}
+
+	@Override
+	protected void preRenderBlock(final MatrixStack stack, final BlockState block, final String boneName,
+			final GuardEntity currentEntity) {
+
+	}
+
+	@Override
+	protected void postRenderBlock(final MatrixStack stack, final BlockState block, final String boneName,
+			final GuardEntity currentEntity) {
+	}
+
+	protected final Identifier CAPE_TEXTURE = new Identifier(GeckoLib.ModID,
+			"textures/entity/extendedrendererentity_cape.png");
+
+	@Override
+	protected Identifier getTextureForBone(final String boneName, final GuardEntity currentEntity) {
+		return switch (boneName) {
+		case "bipedCape" -> this.CAPE_TEXTURE;
+		default -> null;
+		};
+	}
+
+	@Override
+	protected boolean isArmorBone(final GeoBone bone) {
+		return bone.getName().startsWith("armor");
+	}
+
 }

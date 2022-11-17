@@ -21,6 +21,7 @@ public class AmaziaTestCommands {
 		value.then(CommandManager.literal("enchantmentItems").		executes(AmaziaTestCommands::spawnEnchantmentItems));
 		value.then(CommandManager.literal("blastingItems").			executes(AmaziaTestCommands::spawnBlastingItems));
 		value.then(CommandManager.literal("blacksmithCraftables").	executes(AmaziaTestCommands::spawnBlacksmithCraftableItems));
+		value.then(CommandManager.literal("guardUsable").			executes(AmaziaTestCommands::spawnGuardUsableItems));
 
 		return value;
 	}
@@ -48,6 +49,14 @@ public class AmaziaTestCommands {
 	private static int spawnBlacksmithCraftableItems(final CommandContext<ServerCommandSource> context) {
 		final Vec3d pos = context.getSource().getPosition();
 		for (final Item item : AmaziaData.buildBlacksmithCraftables()) {
+			AmaziaTestCommands.spawn(context, item, pos);
+		}
+		return 1;
+	}
+
+	private static int spawnGuardUsableItems(final CommandContext<ServerCommandSource> context) {
+		final Vec3d pos = context.getSource().getPosition();
+		for (final Item item : AmaziaData.MELEE_WEAPONS) {
 			AmaziaTestCommands.spawn(context, item, pos);
 		}
 		return 1;

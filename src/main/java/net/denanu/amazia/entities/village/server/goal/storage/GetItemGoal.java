@@ -1,6 +1,5 @@
 package net.denanu.amazia.entities.village.server.goal.storage;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.EnchanterEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
@@ -37,7 +36,6 @@ public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> impleme
 		if (!super.canStart()) { return false; }
 		if ((this.item == null || this.target == null) && this.entity.hasRequestedItems()) {
 			this.item = this.entity.getRandomRequiredItem();
-			Amazia.LOGGER.info(this.item.toString());
 			if (this.item != null) {
 				this.target = this.entity.getVillage().getStorage().getRequestLocation((ServerWorld)this.entity.getWorld(), this.getItem());
 				if (this.target == null && this.entity.canCraft()) {

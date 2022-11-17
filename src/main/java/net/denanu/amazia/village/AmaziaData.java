@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.RangedWeaponItem;
+import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.recipe.BlastingRecipe;
 import net.minecraft.recipe.RecipeType;
@@ -28,6 +29,11 @@ public class AmaziaData {
 	public static       ArrayList<Item> ENCHANTABLES;
 	public static       ArrayList<Item> BLASTABLES;
 	public static       ImmutableList<Item> BLACKSMITH_CRAFTING_ITEMS;
+	public static       ArrayList<SwordItem> MELEE_WEAPONS;
+	public static 		ArrayList<ArmorItem> HEAD_ARMOR;
+	public static 		ArrayList<ArmorItem> CHEST_ARMOR;
+	public static 		ArrayList<ArmorItem> LEG_ARMOR;
+	public static 		ArrayList<ArmorItem> FOOT_ARMOR;
 
 
 	public static void setup() {
@@ -56,6 +62,42 @@ public class AmaziaData {
 			}
 		}
 		AmaziaData.BLASTABLES.trimToSize();
+	}
+
+	public static void buildGuardUsables() {
+		AmaziaData.MELEE_WEAPONS	= new ArrayList<SwordItem>();
+		AmaziaData.HEAD_ARMOR 		= new ArrayList<ArmorItem>();
+		AmaziaData.CHEST_ARMOR		= new ArrayList<ArmorItem>();
+		AmaziaData.LEG_ARMOR		= new ArrayList<ArmorItem>();
+		AmaziaData.FOOT_ARMOR		= new ArrayList<ArmorItem>();
+		for (final Item item : Registry.ITEM) {
+			if (
+					item instanceof final SwordItem sword
+					) {
+				AmaziaData.MELEE_WEAPONS.add(sword);
+			}
+			else if (
+					item instanceof final ArmorItem armor
+					)  {
+				switch ( armor.getSlotType() ) {
+				case CHEST:
+					AmaziaData.CHEST_ARMOR.add(armor);
+					break;
+				case FEET:
+					AmaziaData.FOOT_ARMOR.add(armor);
+					break;
+				case HEAD:
+					AmaziaData.HEAD_ARMOR.add(armor);
+					break;
+				case LEGS:
+					AmaziaData.LEG_ARMOR.add(armor);
+					break;
+				default:
+					break;
+
+				}
+			}
+		}
 	}
 
 	public static List<Item> buildBlacksmithCraftables() {
