@@ -195,6 +195,7 @@ public class PathFinder extends EntityNavigation {
 			for (final BasePathingNode next : current.getRight().ajacentNodes) {
 				if (currentEval!=next.lastEvaluation) {
 					next.movedFromNode = current.getRight();
+					//((ServerWorld)this.entity.world).setBlockState(next.getBlockPos().down(), Blocks.STONE.getDefaultState());
 					if (next == endNode) {
 						return next;
 					}

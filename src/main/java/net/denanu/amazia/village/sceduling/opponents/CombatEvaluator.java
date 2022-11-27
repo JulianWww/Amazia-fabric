@@ -1,6 +1,7 @@
 package net.denanu.amazia.village.sceduling.opponents;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
@@ -9,7 +10,11 @@ import net.minecraft.item.SwordItem;
 
 public class CombatEvaluator {
 	public static float getWeaponPriority(final ItemStack item, final LivingEntity target) {
-		return EnchantmentHelper.getAttackDamage(item, target.getGroup()) + CombatEvaluator.getDamage(item);
+		return CombatEvaluator.getWeaponPriority(item, target.getGroup());
+	}
+
+	public static float getWeaponPriority(final ItemStack item, final EntityGroup group) {
+		return EnchantmentHelper.getAttackDamage(item, group) + CombatEvaluator.getDamage(item);
 	}
 
 	private static float getDamage(final ItemStack item) {

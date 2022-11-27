@@ -9,6 +9,9 @@
 	"messages.amazia.commands.item_value": "The current item value is: ",
 	"messages.amazia.commands.modifier_value": "The current modifier value is: ",
 	"messages.amazia.commands.success": "Success",
+	"messages.amazia.commands.enabled_pathing_render": "Enabled Pathing Overlay",
+	"messages.amazia.commands.disabled_pathing_render": "Disabled Pathing Overlay",
+	 
 	
 	"messages.amazia.erros.non_existant_economy_item": "Amazia economy missing item: ",
 	"messages.amazia.erros.non_existant_economy_modifier": "Amazia economy missing trade modifier: ",

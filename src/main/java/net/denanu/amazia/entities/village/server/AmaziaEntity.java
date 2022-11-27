@@ -6,6 +6,7 @@ import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.entities.moods.ServerMoodEmiter;
 import net.denanu.amazia.entities.moods.VillagerMoods;
+import net.denanu.amazia.entities.village.server.controll.AmaziaEntityMoveControl;
 import net.denanu.amazia.pathing.PathFinder;
 import net.denanu.amazia.utils.CuboidSampler;
 import net.denanu.amazia.utils.nbt.NbtUtils;
@@ -14,6 +15,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -34,6 +36,12 @@ public class AmaziaEntity extends PassiveEntity {
 	protected AmaziaEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
 		this.cannotDespawn();
+		this.moveControl = new AmaziaEntityMoveControl(this);
+	}
+
+	@Override
+	public AmaziaEntityMoveControl getMoveControl() {
+		return (AmaziaEntityMoveControl)this.moveControl;
 	}
 
 	@Deprecated
@@ -111,11 +119,31 @@ public class AmaziaEntity extends PassiveEntity {
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
-		if (!this.world.isClient) {
-			this.update();
+	public void mobTick() {
+		this.update();
+		super.mobTick();
+	}
+
+	@Override
+	public void tickMovement() {
+		if (this.hasVillage() && !this.getVillage().isInVillage(this)) {
+			final BlockPos pos = this.getBlockPos();
+			if (!this.subReneterVillage(pos.west(2)) && !this.subReneterVillage(pos.east(2)) && !this.subReneterVillage(pos.north(2)) && !this.subReneterVillage(pos.south(2))) {
+				this.teleport(
+						this.getVillage().getOrigin().getX(),
+						this.getVillage().getOrigin().getY() + 1,
+						this.getVillage().getOrigin().getZ());
+			};
 		}
+		super.tickMovement();
+	}
+
+	private boolean subReneterVillage(final BlockPos pos) {
+		if (this.getVillage().isInVillage(pos)) {
+			this.getMoveControl().emergencyMoveTo(pos.getX(), pos.getY(), pos.getX(), Math.max(this.getMoveControl().getSpeed(), 1.0));
+			return true;
+		}
+		return false;
 	}
 
 	protected void update() {
@@ -159,4 +187,13 @@ public class AmaziaEntity extends PassiveEntity {
 			this.currentlyRunnginGoal = newGoal;
 		}
 	}
+
+	@Override
+	public boolean damage(final DamageSource source, final float amount) {
+		if (this.hasVillage()) {
+			this.getVillage().getGuarding().addOpponent(source.getAttacker(), 10);
+		}
+		return super.damage(source, amount);
+	}
+
 }

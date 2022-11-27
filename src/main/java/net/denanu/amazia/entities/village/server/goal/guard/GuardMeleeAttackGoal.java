@@ -12,6 +12,12 @@ public class GuardMeleeAttackGoal extends MeleeAttackGoal {
 	}
 
 	@Override
+	public void start() {
+		super.start();
+		this.guard.equipWeapon(this.guard.getTarget());
+	}
+
+	@Override
 	protected int getMaxCooldown() {
 		return this.getTickCount(this.guard.getAttackTime());
 	}

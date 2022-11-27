@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.denanu.amazia.entities.village.server.combat.AttackSensor;
 import net.denanu.amazia.mixin.MobEntityAccessor;
 import net.denanu.amazia.utils.EnemyGoalBuilder;
 import net.minecraft.entity.EntityType;
@@ -18,6 +19,14 @@ public abstract class AbstractSkeletonEntityMixin extends HostileEntity implemen
 	protected AbstractSkeletonEntityMixin(final EntityType<? extends HostileEntity> entityType, final World world) {
 		super(entityType, world);
 		throw new RuntimeException("invalidConstructor");
+	}
+
+	@Inject(method="attack", at=@At("TAIL"))
+	public void attack(final CallbackInfo info) {
+		final AbstractSkeletonEntity entity = (AbstractSkeletonEntity)(Object)this;
+		if (entity.getTarget() instanceof final AttackSensor sensor) {
+			sensor.senceRangedAttack(entity);
+		}
 	}
 
 	@Inject(method="initGoals", at=@At("TAIL"))

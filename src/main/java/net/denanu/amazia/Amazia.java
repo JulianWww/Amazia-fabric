@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.GUI.debug.VillageProjectileTargetingDebugOverlay;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.AmaziaBlockEntities;
 import net.denanu.amazia.commands.AmaziaCommand;
@@ -33,6 +34,7 @@ import net.denanu.amazia.village.VillageManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.RecipeType;
@@ -98,6 +100,9 @@ public class Amazia implements ModInitializer {
 
 		// static data generated on runtime files
 		AmaziaData.setup();
+
+		//DEBUG
+		ServerTickEvents.END_WORLD_TICK.register(VillageProjectileTargetingDebugOverlay::onEndTick);
 	}
 
 	public static VillageManager getVillageManager() {

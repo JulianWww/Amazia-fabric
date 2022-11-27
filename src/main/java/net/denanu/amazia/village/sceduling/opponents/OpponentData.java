@@ -1,12 +1,12 @@
 package net.denanu.amazia.village.sceduling.opponents;
 
-import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.LivingEntity;
 
 public class OpponentData implements Comparable<OpponentData> {
-	private final MobEntity target;
+	private final LivingEntity target;
 	private int priority;
 
-	public OpponentData(final MobEntity target, final int priority) {
+	public OpponentData(final LivingEntity target, final int priority) {
 		this.target = target;
 		this.priority = priority;
 	}
@@ -15,11 +15,11 @@ public class OpponentData implements Comparable<OpponentData> {
 		return this.priority;
 	}
 
-	public boolean equals(final MobEntity mob) {
+	public boolean equals(final LivingEntity mob) {
 		return this.target.getId() == mob.getId();
 	}
 
-	public MobEntity getTarget() {
+	public LivingEntity getTarget() {
 		return this.target;
 	}
 

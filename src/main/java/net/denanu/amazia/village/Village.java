@@ -15,16 +15,17 @@ import net.denanu.amazia.village.sceduling.RancherSceduler;
 import net.denanu.amazia.village.sceduling.ScedulingPredicates;
 import net.denanu.amazia.village.sceduling.StorageSceduler;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class Village {
-	private static int SIZE = 16;
+	private static int SIZE = 120;
 	private BlockPos origin;
 	private boolean valid;
 
@@ -219,7 +220,14 @@ public class Village {
 		return Math.max(Math.abs(this.getOrigin().getX() - pos.getX()), Math.abs(this.getOrigin().getZ() - pos.getZ())) < Village.SIZE;
 	}
 
-	public boolean isInVillage(final LivingEntity entity) {
+	public boolean isInVillage(final Vec3d pos) {
+		if (this.getOrigin() == null) {
+			return false;
+		}
+		return Math.max(Math.abs(this.getOrigin().getX() - pos.getX()), Math.abs(this.getOrigin().getZ() - pos.getZ())) < Village.SIZE;
+	}
+
+	public boolean isInVillage(final Entity entity) {
 		return this.isInVillage(entity.getBlockPos());
 	}
 
