@@ -25,7 +25,7 @@ public class NitwitRandomWanderAroundGoal extends AmaziaGoToBlockGoal<NitwitEnti
 
 	@Override
 	protected BlockPos getTargetBlock() {
-		return null;
+		return this.entity.getVillage().getPathingGraph().getRandomNode();
 	}
 
 }
