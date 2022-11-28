@@ -44,6 +44,9 @@ dependencies {
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.2"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.2"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-block:5.0.2"
+    
+    // https://mvnrepository.com/artifact/commons-math3/commons-math3
+    implementation group: 'commons-math3', name: 'commons-math3', version: '3.6.1'
 }
 
 processResources {
