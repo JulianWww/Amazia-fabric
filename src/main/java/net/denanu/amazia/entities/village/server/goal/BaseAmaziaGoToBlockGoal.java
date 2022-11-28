@@ -12,11 +12,16 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 	protected boolean reached;
 	private PathingPath path;
 	private EntityNavigation nav;
+	private float speed = 1.0f;
 	private int ticksStanding;
 	private boolean directMovement;
 
 	public BaseAmaziaGoToBlockGoal(final E e, final int priority) {
 		super(e, priority);
+	}
+	public BaseAmaziaGoToBlockGoal(final E e, final int priority, final float speed) {
+		super(e, priority);
+		this.speed = speed;
 	}
 
 	@Override
@@ -27,6 +32,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		this.ticksStanding = 0;
 		this.directMovement = false;
 		this.recalcPath();
+		this.entity.getNavigation().setSpeed(this.speed);
 	}
 
 	@Override
@@ -34,6 +40,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		super.stop();
 		this.isRunning = false;
 		this.targetPos = null;
+		this.entity.getNavigation().setSpeed(1.0f);
 		this.entity.getNavigation().stop();
 	}
 
@@ -48,11 +55,12 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 
 	@Override
 	public boolean shouldContinue() {
-		return super.shouldContinue() && (this.path != null || this.directMovement) && this.targetPos != null && !this.reached && this.path.getLength() > 1;
+		return super.shouldContinue() && this.targetPos != null && !this.reached && (this.path != null && this.path.getLength() > 1 || this.directMovement) ;
 	}
 
 	@Override
 	public void tick() {
+		this.entity.getNavigation().setSpeed(this.speed);
 		final Vec3d targetPos = new Vec3d(this.targetPos.getX() + 0.5, this.targetPos.getY(), this.targetPos.getZ() + 0.5);
 		if (this.nav.isIdle()) {
 			this.ticksStanding++;

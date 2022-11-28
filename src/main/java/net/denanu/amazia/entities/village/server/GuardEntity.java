@@ -10,11 +10,12 @@ import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.combat.AttackSensor;
 import net.denanu.amazia.entities.village.server.goal.guard.AmaziaBowUser;
 import net.denanu.amazia.entities.village.server.goal.guard.GuardMeleeAttackGoal;
+import net.denanu.amazia.entities.village.server.goal.guard.LeaveCombatGoal;
 import net.denanu.amazia.entities.village.server.goal.guard.VillageGuardActiveTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.guard.VillageGuardBowAttackGoal;
 import net.denanu.amazia.village.AmaziaData;
 import net.denanu.amazia.village.sceduling.opponents.CombatEvaluator;
-import net.denanu.amazia.village.sceduling.opponents.ProjectileTargetingOld;
+import net.denanu.amazia.village.sceduling.opponents.ProjectileTargeting;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -22,6 +23,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
@@ -51,6 +53,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 
 	private Optional<Integer> bowLocation = Optional.empty();
 	private Optional<Integer> swordLocation = Optional.empty();
+	private boolean shouldFlee;
 
 	public GuardEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
@@ -61,8 +64,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 	public static DefaultAttributeContainer.Builder setAttributes() {
 		return AmaziaVillagerEntity.setAttributes()
 				.add(EntityAttributes.GENERIC_MAX_HEALTH, 40.0D)
-				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0)
-				.add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 100);
+				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0);
 	}
 
 	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
@@ -78,23 +80,18 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 	@Override
 	public void writeCustomDataToNbt(final NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
-		if (this.swordLocation.isPresent()) {
-			nbt.putInt("swordLoc", this.swordLocation.get());
-		}
-		if (this.bowLocation.isPresent()) {
-			nbt.putInt("bowLoc", this.bowLocation.get());
-		}
+		nbt.putBoolean("ShouldFlee", this.shouldFlee);
 	}
 
 	@Override
 	public void readCustomDataFromNbt(final NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
+		this.shouldFlee = nbt.getBoolean("ShouldFlee");
 	}
 
 	@Override
 	public void mobTick() {
 		super.mobTick();
-		this.heal(10); // TODO debut only
 		if (this.age % 200 == 0) {
 			this.getToolIfNotPresant();
 		}
@@ -138,8 +135,9 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 
 	@Override
 	protected void initGoals() {
-		this.goalSelector.add(1, new VillageGuardBowAttackGoal(this, 2f, 50, 50.0f));
-		this.goalSelector.add(2, new GuardMeleeAttackGoal(this, 2.0, true));
+		this.goalSelector.add(1, new LeaveCombatGoal(this, 1, 3.0f));
+		this.goalSelector.add(2, new VillageGuardBowAttackGoal(this, 2f, 50, 50.0f));
+		this.goalSelector.add(3, new GuardMeleeAttackGoal(this, 2.0, true));
 
 		this.targetSelector.add(0, new RevengeGoal(this, PassiveEntity.class));
 		this.targetSelector.add(1, new VillageGuardActiveTargetGoal(this, 10));
@@ -270,7 +268,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 		final ItemStack itemStack = this.getArrowType(this.getStackInHand(ProjectileUtil.getHandPossiblyHolding(this, Items.BOW)));
 		final PersistentProjectileEntity persistentProjectileEntity = this.createArrowProjectile(itemStack, pullProgress);
 
-		final Vec3d v = ProjectileTargetingOld.aimAtTarget(target, persistentProjectileEntity, 3.0f);
+		final Vec3d v = ProjectileTargeting.getTargeting(target, persistentProjectileEntity, 3.0f);
 		if (v==null) {
 			return;
 		}
@@ -292,7 +290,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 		final ItemStack itemStack = this.getArrowType(this.getStackInHand(ProjectileUtil.getHandPossiblyHolding(this, Items.BOW)));
 		final PersistentProjectileEntity persistentProjectileEntity = this.createArrowProjectile(itemStack, pullProgress);
 
-		final Vec3d v = ProjectileTargetingOld.aimAtTarget(pos, persistentProjectileEntity, 3.0f);
+		final Vec3d v = ProjectileTargeting.getTargeting(pos, persistentProjectileEntity, 3.0f);
 		if (v==null) {
 			return;
 		}
@@ -300,5 +298,26 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 		persistentProjectileEntity.setVelocity(v);
 		this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0f, 1.0f / (this.getRandom().nextFloat() * 0.4f + 0.8f));
 		this.world.spawnEntity(persistentProjectileEntity);
+	}
+
+	private boolean isLowHp() {
+		return this.getHealth() < this.getMaxHealth() * 0.25f;
+	}
+
+	@Override
+	public boolean damage(final DamageSource source, final float amount) {
+		final boolean out = super.damage(source, amount);
+		if (!this.world.isClient) {
+			this.shouldFlee = this.isLowHp();
+		}
+		return out;
+	}
+
+	public boolean shouldFlee() {
+		return this.shouldFlee;
+	}
+
+	public void endShouldFlee() {
+		this.shouldFlee = false;
 	}
 }

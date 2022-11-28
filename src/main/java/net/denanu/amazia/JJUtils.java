@@ -87,4 +87,8 @@ public class JJUtils {
 	public static double square(final double d) {
 		return d*d;
 	}
+
+	public static double cube(final double d) {
+		return d*d*d;
+	}
 }

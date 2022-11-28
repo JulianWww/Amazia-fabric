@@ -3,7 +3,6 @@ package net.denanu.amazia;
 import net.denanu.amazia.GUI.AmaziaScreens;
 import net.denanu.amazia.GUI.TradingScreen;
 import net.denanu.amazia.GUI.debug.VillagePathingOverlay;
-import net.denanu.amazia.GUI.debug.VillageProjectileTargetingDebugOverlay;
 import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.fabricmc.api.ClientModInitializer;
@@ -26,7 +25,7 @@ public class AmaziaClient implements ClientModInitializer {
 		VillagePathingOverlay.setup();
 
 		WorldRenderEvents.BEFORE_DEBUG_RENDER.register(VillagePathingOverlay::render);
-		WorldRenderEvents.BEFORE_DEBUG_RENDER.register(VillageProjectileTargetingDebugOverlay::render);
+		//WorldRenderEvents.BEFORE_DEBUG_RENDER.register(VillageProjectileTargetingDebugOverlay::render);
 		ClientTickEvents.END_CLIENT_TICK.register(new VillagePathingOverlay());
 	}
 
