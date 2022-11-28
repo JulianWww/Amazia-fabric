@@ -7,23 +7,23 @@ import net.minecraft.util.math.BlockPos;
 public class BaseAmaziaVillageGoal<E extends AmaziaVillagerEntity> extends Goal {
 	protected E entity;
 	private final int priority;
-	
-	public BaseAmaziaVillageGoal(E e, int priority) {
+
+	public BaseAmaziaVillageGoal(final E e, final int priority) {
 		this.priority = priority;
 		this.entity = e;
 	}
-	
+
 	@Override
 	public boolean shouldRunEveryTick() {
-        return true; // maybe remove this
-    }
-	
+		return true; // maybe remove this
+	}
+
 	@Override
 	public void start() {
 		super.start();
 		this.entity.setCurrentlyRunnginGoal(this.priority);
 	}
-	
+
 	@Override
 	public void stop() {
 		super.start();
@@ -34,12 +34,16 @@ public class BaseAmaziaVillageGoal<E extends AmaziaVillagerEntity> extends Goal 
 	public boolean canStart() {
 		return this.isStartable();
 	}
-	
+
 	public boolean isStartable() {
-		return entity.hasVillage() && this.entity.canStartGoal(this.priority);
+		return BaseAmaziaVillageGoal.isStartable(this.entity, this.priority);
 	}
-	
-	protected void lookAt(BlockPos pos) {
+
+	public static boolean isStartable(final AmaziaVillagerEntity entity, final int priority) {
+		return entity.hasVillage() && entity.canStartGoal(priority);
+	}
+
+	protected void lookAt(final BlockPos pos) {
 		this.entity.getLookControl().lookAt(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 	}
 }

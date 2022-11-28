@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 public class UnregiserListener implements PathingListenerRegistryOperation {
 
 	@Override
-	public void put(BlockAreaPathingData listener, Village village, BlockPos pos) {
+	public void put(final BlockAreaPathingData<?> listener, final Village village, final BlockPos pos) {
 		listener.unregister(village, pos);
 	}
 

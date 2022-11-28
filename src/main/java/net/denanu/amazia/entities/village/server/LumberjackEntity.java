@@ -35,74 +35,74 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_AXE, Items.STICK);
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.ACACIA_SAPLING, 64, Items.BIRCH_SAPLING, 64, Items.DARK_OAK_SAPLING, 64, Items.JUNGLE_SAPLING, 64, Items.OAK_SAPLING, 64, Items.SPRUCE_SAPLING, 64);
 	private static final Vec3i ITEM_PICK_UP_RANGE_EXPANDER_WHILE_LUMBERING = new Vec3i(5, 5, 5);
-	
-	private AnimationFactory factory = new AnimationFactory(this);
+
+	private final AnimationFactory factory = new AnimationFactory(this);
 	private LumberPathingData lumberingLoc;
 	private byte collectTimer;
 
-	public LumberjackEntity(EntityType<? extends PassiveEntity> entityType, World world) {
+	public LumberjackEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
 	}
-	
+
 	@Override
-    protected void initGoals() {
+	protected void initGoals() {
 		this.goalSelector.add(48, new HarvestTreeGoal(this, 48));
 		this.goalSelector.add(49, new PlantSaplingGoal(this, 49));
 		this.goalSelector.add(50, new GoToLumberLocationGoal(this, 50));
-		
-        super.registerBaseGoals();
-    }
-	
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
-            return PlayState.CONTINUE;
-        }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
-        return PlayState.CONTINUE;
-    }
+		super.registerBaseGoals();
+	}
+
+	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
+		if (event.isMoving()) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
+			return PlayState.CONTINUE;
+		}
+
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
+		return PlayState.CONTINUE;
+	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
+	public void registerControllers(final AnimationData data) {
 		data.addAnimationController(new AnimationController<LumberjackEntity>(this, "controller", 0, this::predicate));
 	}
-	
+
 	@Override
 	public boolean canDepositItems() {
 		return this.getEmptyInventorySlots() == 0 && this.getDepositableItems() != null;
 	}
-	
+
 	@Override
 	public Triplet<ItemStack, Integer, Integer> getDepositableItems() {
-		return this.getDepositableItems(USABLE_ITEMS, REQUIRED_ITEMS);
+		return this.getDepositableItems(LumberjackEntity.USABLE_ITEMS, LumberjackEntity.REQUIRED_ITEMS);
 	}
-	
+
 	@Override
 	public AnimationFactory getFactory() {
 		return this.factory;
 	}
-	
+
 	// LumberJacking
-	
+
 	@Override
 	protected Vec3i getItemPickUpRangeExpander() {
 		if (this.collectTimer > 0) {
 			this.collectTimer--;
-			return ITEM_PICK_UP_RANGE_EXPANDER_WHILE_LUMBERING;
+			return LumberjackEntity.ITEM_PICK_UP_RANGE_EXPANDER_WHILE_LUMBERING;
 		}
-        return super.getItemPickUpRangeExpander();
-    }
-	
+		return super.getItemPickUpRangeExpander();
+	}
+
 	public void setCollectTimer() {
 		this.collectTimer = 40;
 	}
 
 	public LumberPathingData getLumberingLoc() {
-		return lumberingLoc;
+		return this.lumberingLoc;
 	}
 
-	public void setLumberingLoc(LumberPathingData lumberingLoc) {
+	public void setLumberingLoc(final LumberPathingData lumberingLoc) {
 		this.lumberingLoc = lumberingLoc;
 	}
 	public boolean hasLumberLoc() {
@@ -111,7 +111,7 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 	public boolean isInLumberLoc() {
 		return this.lumberingLoc.getPos().isIn(this.getBlockPos());
 	}
-	
+
 	public boolean hasSapling() {
 		return this.getInventory().containsAny(AmaziaData.SAPLINGS);
 	}
@@ -123,7 +123,7 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 		}
 		return -1;
 	}
-	
+
 	public int getAxe() {
 		ItemStack itm;
 		for (int idx=0; idx < this.getInventory().size(); idx++) {
@@ -134,25 +134,27 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 		}
 		return -1;
 	}
-	
+
 	@Override
 	public boolean canLumber() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean canCraft () {
 		return false;
 	}
 
 	public void requestSapling() {
-		if (!this.hasRequestedItems())
-		for (Item itm : AmaziaData.SAPLINGS) { this.requestItem(itm); }
+		if (!this.hasRequestedItems()) {
+			for (final Item itm : AmaziaData.SAPLINGS) { this.requestItem(itm); }
+		}
 	}
 
 	public void requestAxe() {
-		if (!this.hasRequestedItems())
-		for (Item itm : LumberjackEntity.USABLE_ITEMS) { this.requestItem(itm); }
+		if (!this.hasRequestedItems()) {
+			for (final Item itm : LumberjackEntity.USABLE_ITEMS) { this.requestItem(itm); }
+		}
 	}
 
 	@Override

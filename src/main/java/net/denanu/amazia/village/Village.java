@@ -7,6 +7,7 @@ import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.village.sceduling.AbstractFurnaceSceduler;
 import net.denanu.amazia.village.sceduling.FarmingSceduler;
+import net.denanu.amazia.village.sceduling.GuardSceduler;
 import net.denanu.amazia.village.sceduling.LumberSceduler;
 import net.denanu.amazia.village.sceduling.MineingSceduler;
 import net.denanu.amazia.village.sceduling.PathingNoHeightSceduler;
@@ -14,14 +15,17 @@ import net.denanu.amazia.village.sceduling.RancherSceduler;
 import net.denanu.amazia.village.sceduling.ScedulingPredicates;
 import net.denanu.amazia.village.sceduling.StorageSceduler;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class Village {
-	private static int SIZE = 16;
+	private static int SIZE = 120;
 	private BlockPos origin;
 	private boolean valid;
 
@@ -35,6 +39,7 @@ public class Village {
 	private final AbstractFurnaceSceduler blasting;
 	private final AbstractFurnaceSceduler smoking;
 	private final PathingNoHeightSceduler blacksmithing;
+	private final GuardSceduler guarding;
 
 	private PathingGraph pathingGraph;
 
@@ -55,6 +60,7 @@ public class Village {
 		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass());
 		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass());
 		this.blacksmithing	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isAnvil);
+		this.guarding		= new GuardSceduler				(this);
 
 		this.valid = true;
 
@@ -111,6 +117,7 @@ public class Village {
 		nbt.put("blasting", 		this.blasting.		writeNbt());
 		nbt.put("smoking", 			this.smoking.		writeNbt());
 		nbt.put("blacksmithing",	this.blacksmithing.	writeNbt());
+		nbt.put("guarding",			this.guarding.		writeNbt());
 		return nbt;
 	}
 	public void readNbt(final NbtCompound nbt) {
@@ -125,6 +132,7 @@ public class Village {
 		this.blasting.		readNbt(nbt.getCompound("blasting"));
 		this.smoking.		readNbt(nbt.getCompound("smoking"));
 		this.blacksmithing.	readNbt(nbt.getCompound("blacksmithing"));
+		this.guarding.		readNbt(nbt.getCompound("guarding"));
 	}
 
 	public boolean isValid() {
@@ -194,9 +202,11 @@ public class Village {
 	public AbstractFurnaceSceduler getSmoking() {
 		return this.smoking;
 	}
-
 	public PathingNoHeightSceduler getBlacksmithing() {
 		return this.blacksmithing;
+	}
+	public GuardSceduler getGuarding() {
+		return this.guarding;
 	}
 
 	public static int getSize() {
@@ -208,6 +218,17 @@ public class Village {
 			return false;
 		}
 		return Math.max(Math.abs(this.getOrigin().getX() - pos.getX()), Math.abs(this.getOrigin().getZ() - pos.getZ())) < Village.SIZE;
+	}
+
+	public boolean isInVillage(final Vec3d pos) {
+		if (this.getOrigin() == null) {
+			return false;
+		}
+		return Math.max(Math.abs(this.getOrigin().getX() - pos.getX()), Math.abs(this.getOrigin().getZ() - pos.getZ())) < Village.SIZE;
+	}
+
+	public boolean isInVillage(final Entity entity) {
+		return this.isInVillage(entity.getBlockPos());
 	}
 
 	public void onPathingBlockUpdate(final BlockPos pos) {
@@ -229,5 +250,9 @@ public class Village {
 		if (this.isInVillage(pos)) {
 			this.discover(this.getWorld(), pos);
 		}
+	}
+
+	public void addThreat(final MobEntity enemy) {
+		this.guarding.addOpponent(enemy, 1);
 	}
 }

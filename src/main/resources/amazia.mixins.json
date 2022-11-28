@@ -10,13 +10,26 @@
   	"MinecraftServerMixin",
   	"MinecraftServerWorldAccessor",
   	"MinecraftServerWorldMixin",
+  	"MobEntityAccessor",
+  	"MobEntityMixin",
   	"PathAwareEntityMixin",
     "PathingBlockUpdateMixin",
+    "PersistentProjectileEntityMixin",
     "PlantBlockMixin",
     "RecipeManagerMixinAcessor",
+    "ServerPlayerEntityMixin",
     "SheepEntityAccessor",
     "TrunkPlacerMixin",
-    "VillageBlockUpdateMixin"
+    "VillageBlockUpdateMixin",
+    
+    "enemies.AbstractSkeletonEntityMixin",
+    "enemies.DrownedEntityMixin",
+    "enemies.GhastEntityMixin",
+    "enemies.PhantomEntityMixin",
+    "enemies.RaiderEntityMixin",
+    "enemies.SilverFishEntityMixin",
+    "enemies.VexEntityMixin",
+    "enemies.ZombieEntityMixin"
   ],
   "client": [
   ],

@@ -17,15 +17,15 @@ public class PathAwareEntityMixin extends MobEntity {
 	}
 
 	@Inject(method="updateLeash", at=@At(value="INVOKE", target="detachLeash(ZZ)V"), cancellable=true)
-	public void updateLeashInject(CallbackInfo callinfo) {
-		PathAwareEntity entity = ((PathAwareEntity)(Object)this);
-		if (entity.getHoldingEntity() instanceof AmaziaEntity holder) {
+	public void updateLeashInject(final CallbackInfo callinfo) {
+		final PathAwareEntity entity = (PathAwareEntity)(Object)this;
+		if (entity.getHoldingEntity() instanceof final AmaziaEntity holder) {
 			Amazia.LOGGER.info("teleported entity");
 			entity.teleport(
 					holder.getX(),
 					holder.getY(),
 					holder.getZ()
-				);
+					);
 			callinfo.cancel();
 		}
 	}

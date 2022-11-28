@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableSet;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.AmaziaBlockEntities;
 import net.denanu.amazia.commands.AmaziaCommand;
+import net.denanu.amazia.commands.AmaziaGameRules;
 import net.denanu.amazia.commands.args.AmaziaArgumentTypes;
 import net.denanu.amazia.economy.Economy;
 import net.denanu.amazia.economy.EconomyFactory;
@@ -90,12 +91,16 @@ public class Amazia implements ModInitializer {
 		// commands
 		AmaziaArgumentTypes.setup();
 		CommandRegistrationCallback.EVENT.register(AmaziaCommand::register);
+		AmaziaGameRules.setup();
 
 		// Registry
 		AmaziaRegistrys.setup();
 
 		// static data generated on runtime files
 		AmaziaData.setup();
+
+		//DEBUG
+		//ServerTickEvents.END_WORLD_TICK.register(VillageProjectileTargetingDebugOverlay::onEndTick);
 	}
 
 	public static VillageManager getVillageManager() {
@@ -116,5 +121,6 @@ public class Amazia implements ModInitializer {
 		Amazia.BLACKSMITH_CRAFTABLES= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, AmaziaData.buildBlacksmithCraftables());
 
 		AmaziaData.buildBlastables(server);
+		AmaziaData.buildGuardUsables();
 	}
 }
