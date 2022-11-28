@@ -46,7 +46,7 @@ dependencies {
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-block:5.0.2"
     
     // https://mvnrepository.com/artifact/org.apache.commons/commons-math3
-    implementation group: 'org.apache.commons', name: 'commons-numbers-docs', version: '1.1'
+    implementation group: 'org.apache.commons', name: 'commons-numbers-rootfinder', version: '1.1'
 }
 
 processResources {
