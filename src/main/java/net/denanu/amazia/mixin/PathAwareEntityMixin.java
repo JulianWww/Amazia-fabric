@@ -11,7 +11,11 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 
 @Mixin(PathAwareEntity.class)
-public abstract class PathAwareEntityMixin extends MobEntity {
+public class PathAwareEntityMixin extends MobEntity {
+	protected PathAwareEntityMixin() {
+		super(null, null);
+	}
+
 	@Inject(method="updateLeash", at=@At(value="INVOKE", target="Lnet/minecraft/entity/mob/PathAwareEntity;detachLeash(ZZ)V"), cancellable=true)
 	public void updateLeashInject(final CallbackInfo callinfo) {
 		final PathAwareEntity entity = (PathAwareEntity)(Object)this;
