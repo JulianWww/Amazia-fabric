@@ -74,7 +74,7 @@ public class AmaziaEntities {
 			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
 
 	public static final EntityType<DruidEntity> DRUID = Registry.register(
-			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "nitwit"),
+			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "druid"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, DruidEntity::new)
 			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
 
@@ -94,7 +94,7 @@ public class AmaziaEntities {
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.BLACKSMITH, AmaziaVillagerEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.GUARD, GuardEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.NITWIT, AmaziaVillagerEntity.setAttributes());
-		FabricDefaultAttributeRegistry.register(AmaziaEntities.NITWIT, AmaziaVillagerEntity.setAttributes());
+		FabricDefaultAttributeRegistry.register(AmaziaEntities.DRUID, AmaziaVillagerEntity.setAttributes());
 
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.MERCHANT, AmaziaMerchant.setAttributes());
 
