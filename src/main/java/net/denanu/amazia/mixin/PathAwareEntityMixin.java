@@ -16,7 +16,7 @@ public class PathAwareEntityMixin extends MobEntity {
 		super(null, null);
 	}
 
-	@Inject(method="updateLeash", at=@At(value="INVOKE", target="detachLeash(ZZ)V"), cancellable=true)
+	@Inject(method="updateLeash", at=@At(value="INVOKE", target="Lnet/minecraft/entity/mob/PathAwareEntity;detachLeash(ZZ)V"), cancellable=true)
 	public void updateLeashInject(final CallbackInfo callinfo) {
 		final PathAwareEntity entity = (PathAwareEntity)(Object)this;
 		if (entity.getHoldingEntity() instanceof final AmaziaEntity holder) {
