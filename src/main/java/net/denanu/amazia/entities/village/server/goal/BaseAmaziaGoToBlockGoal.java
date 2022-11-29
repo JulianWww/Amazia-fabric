@@ -53,9 +53,13 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		return false;
 	}
 
+	protected boolean subShouldContinue() {
+		return this.targetPos != null && !this.reached && (this.path != null && this.path.getLength() > 1 || this.directMovement);
+	}
+
 	@Override
 	public boolean shouldContinue() {
-		return super.shouldContinue() && this.targetPos != null && !this.reached && (this.path != null && this.path.getLength() > 1 || this.directMovement) ;
+		return super.shouldContinue() && this.subShouldContinue();
 	}
 
 	@Override
