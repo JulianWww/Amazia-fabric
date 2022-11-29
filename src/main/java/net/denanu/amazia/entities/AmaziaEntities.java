@@ -4,6 +4,7 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.merchants.AmaziaMerchant;
 import net.denanu.amazia.entities.merchants.client.MerchantRenderer;
 import net.denanu.amazia.entities.village.client.BlacksmithRenderer;
+import net.denanu.amazia.entities.village.client.DruidRenderer;
 import net.denanu.amazia.entities.village.client.EnchanterRenderer;
 import net.denanu.amazia.entities.village.client.FarmerRenderer;
 import net.denanu.amazia.entities.village.client.GuardRenderer;
@@ -13,6 +14,7 @@ import net.denanu.amazia.entities.village.client.NitwitRenderer;
 import net.denanu.amazia.entities.village.client.RancherRenderer;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.BlacksmithEntity;
+import net.denanu.amazia.entities.village.server.DruidEntity;
 import net.denanu.amazia.entities.village.server.EnchanterEntity;
 import net.denanu.amazia.entities.village.server.FarmerEntity;
 import net.denanu.amazia.entities.village.server.GuardEntity;
@@ -71,6 +73,11 @@ public class AmaziaEntities {
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, NitwitEntity::new)
 			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
 
+	public static final EntityType<DruidEntity> DRUID = Registry.register(
+			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "nitwit"),
+			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, DruidEntity::new)
+			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+
 
 
 	public static final EntityType<AmaziaMerchant> MERCHANT = Registry.register(
@@ -86,6 +93,7 @@ public class AmaziaEntities {
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.ENCHANTER, AmaziaVillagerEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.BLACKSMITH, AmaziaVillagerEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.GUARD, GuardEntity.setAttributes());
+		FabricDefaultAttributeRegistry.register(AmaziaEntities.NITWIT, AmaziaVillagerEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.NITWIT, AmaziaVillagerEntity.setAttributes());
 
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.MERCHANT, AmaziaMerchant.setAttributes());
@@ -104,6 +112,7 @@ public class AmaziaEntities {
 		EntityRendererRegistry.register(AmaziaEntities.BLACKSMITH, BlacksmithRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.GUARD, GuardRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.NITWIT, NitwitRenderer::new);
+		EntityRendererRegistry.register(AmaziaEntities.DRUID, DruidRenderer::new);
 
 		EntityRendererRegistry.register(AmaziaEntities.MERCHANT, MerchantRenderer::new);
 	}
