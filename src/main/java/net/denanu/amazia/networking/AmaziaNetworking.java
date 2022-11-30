@@ -7,6 +7,7 @@ import net.denanu.amazia.networking.s2c.AmaziaEntityMoodS2CPacket;
 import net.denanu.amazia.networking.s2c.AmaziaPathingOverlayUpdateS2CPacket;
 import net.denanu.amazia.networking.s2c.AmaziaSetTradeOffersS2CPacket;
 import net.denanu.amazia.networking.s2c.AmaziaSetupVillageReneringS2CPacker;
+import net.denanu.amazia.networking.s2c.VillageExistanceUpdateS2CPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
@@ -18,6 +19,8 @@ public class AmaziaNetworking {
 	public static final Identifier PATHING_OVERLAY_UPDATE_S2C = Identifier.of(Amazia.MOD_ID, "pathing_sc");
 	public static final Identifier PATHING_OVERLAY_UPDATE_C2S = Identifier.of(Amazia.MOD_ID, "pathing_cs");
 	public static final Identifier SETUP_PATHINGOVERLAY = Identifier.of(Amazia.MOD_ID, "setup_pathing");
+	public static final Identifier VILLAGE_BOUNDNG_BOX_UPDATE = Identifier.of(Amazia.MOD_ID, "village_box");
+
 
 	public static void registerC2SPackets() {
 		ServerPlayNetworking.registerGlobalReceiver(AmaziaNetworking.MERCHANT_TRADE_SELECT, AmaziaMerchantTradeSelectC2SPacket::receive);
@@ -30,5 +33,6 @@ public class AmaziaNetworking {
 		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.MERCHANT_TRADE_SELECT, AmaziaPathingOverlayUpdateS2CPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.PATHING_OVERLAY_UPDATE_S2C, AmaziaPathingOverlayUpdateS2CPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.SETUP_PATHINGOVERLAY, AmaziaSetupVillageReneringS2CPacker::receive);
+		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.VILLAGE_BOUNDNG_BOX_UPDATE, VillageExistanceUpdateS2CPacket::receive);
 	}
 }
