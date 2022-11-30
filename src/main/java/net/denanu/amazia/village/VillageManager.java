@@ -37,6 +37,10 @@ public class VillageManager {
 		return null;
 	}
 
+	public HashSet<Village> get() {
+		return this.villages;
+	}
+
 	public static Village getVillage(final BlockPos pos, final ServerWorld world) {
 		final BlockEntity entity = world.getBlockEntity(pos);
 		if (entity instanceof final VillageCoreBlockEntity core) {
