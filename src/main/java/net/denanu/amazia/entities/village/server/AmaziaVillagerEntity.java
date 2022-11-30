@@ -383,7 +383,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		return 20;
 	}
 	public int getMineTime() {
-		return 20;
+		return 2;
 	}
 	public int getCraftingTime() {
 		return 20;

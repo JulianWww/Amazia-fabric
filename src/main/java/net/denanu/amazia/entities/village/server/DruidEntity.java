@@ -3,9 +3,16 @@ package net.denanu.amazia.entities.village.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.entities.village.server.goal.druid.RegeneratMineGoToSubGoal;
+import net.denanu.amazia.entities.village.server.goal.druid.RegenerateMineSubGoal;
+import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
+import net.denanu.amazia.village.structures.MineStructure;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
@@ -26,6 +33,8 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of();
 
 	private final AnimationFactory factory = new AnimationFactory(this);
+
+	private MineStructure mine;
 
 	public DruidEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
@@ -63,8 +72,28 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	@Override
+	protected void initGoals() {
+
+		this.goalSelector.add(50, new SequenceGoal<DruidEntity>(this, ImmutableList.of(
+				new RegeneratMineGoToSubGoal(this, 50),
+				new RegenerateMineSubGoal(this, 50)
+				)));
+
+		super.registerBaseGoals();
+	}
+
+	@Override
 	public boolean canDepositItems() {
 		return !this.hasFreeSlot();
+	}
+
+	@Nullable
+	public MineStructure getMine() {
+		return this.mine;
+	}
+
+	public MineStructure setMine() {
+		return this.mine = this.getVillage().getMineing().getSugerstedRegenerationMine();
 	}
 
 }

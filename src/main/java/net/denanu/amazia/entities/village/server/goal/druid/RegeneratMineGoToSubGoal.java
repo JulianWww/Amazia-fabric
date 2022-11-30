@@ -1,20 +1,15 @@
-package net.denanu.amazia.entities.village.server.goal.mineing;
+package net.denanu.amazia.entities.village.server.goal.druid;
 
-import net.denanu.amazia.entities.village.server.MinerEntity;
+import net.denanu.amazia.entities.village.server.DruidEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal;
 import net.denanu.amazia.village.structures.MineStructure;
 import net.minecraft.util.math.BlockPos;
 
-public class EnterMineGoal extends AmaziaGoToBlockGoal<MinerEntity> {
-
-	public EnterMineGoal(final MinerEntity e, final int priority) {
+public class RegeneratMineGoToSubGoal extends AmaziaGoToBlockGoal<DruidEntity> {
+	public RegeneratMineGoToSubGoal(final DruidEntity e, final int priority) {
 		super(e, priority);
 	}
 
-	@Override
-	public boolean canStart() {
-		return !this.entity.isInMine() && super.canStart() && this.entity.canMine();
-	}
 
 	@Override
 	public void tick() {
@@ -25,10 +20,15 @@ public class EnterMineGoal extends AmaziaGoToBlockGoal<MinerEntity> {
 	}
 
 	@Override
+	public void start() {
+		super.start();
+	}
+
+	@Override
 	public void stop() {
 		super.stop();
-		if (this.entity.getMine() != null && this.entity.getMine().isIn(new BlockPos(this.entity.getPos()))) {
-			this.entity.enterMine();
+		if (this.entity.getMine() != null && this.entity.getMine().isIn(this.entity.getBlockPos())) {
+
 		}
 	}
 
