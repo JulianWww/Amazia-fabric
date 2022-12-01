@@ -1,10 +1,10 @@
 package net.denanu.amazia.economy;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.utils.random.RandomCollection;
+import net.denanu.amazia.utils.random.WeightedRandomCollection;
 
 public class ProfessionFactory {
-	private final static RandomCollection<String> professions = new RandomCollection<String>();
+	private final static WeightedRandomCollection<String> professions = new WeightedRandomCollection<String>();
 	
 	public static void register(String modid, String name, float weight) {
 		professions.add(weight, buildProfession(modid, name));

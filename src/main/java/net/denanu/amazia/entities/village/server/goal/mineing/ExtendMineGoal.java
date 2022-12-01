@@ -1,13 +1,9 @@
 package net.denanu.amazia.entities.village.server.goal.mineing;
 
 import net.denanu.amazia.entities.village.server.MinerEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.OreBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
 
 public class ExtendMineGoal extends TimedMineGoal {
-	public ExtendMineGoal(MinerEntity e, int priority) {
+	public ExtendMineGoal(final MinerEntity e, final int priority) {
 		super(e, priority);
 	}
 
@@ -15,13 +11,13 @@ public class ExtendMineGoal extends TimedMineGoal {
 	protected int getRequiredTime() {
 		return this.entity.getMineTime();
 	}
-	
+
 	@Override
 	public void start() {
 		super.start();
 		//this.entity.setStackInHand(Hand.MAIN_HAND, this.entity.getPick());
 	}
-	
+
 	@Override
 	public void stop() {
 		super.stop();
@@ -31,7 +27,8 @@ public class ExtendMineGoal extends TimedMineGoal {
 	@Override
 	protected void takeAction() {
 		this.entity.getWorld().breakBlock(this.pos, true);
-		this.entity.addSeroundingOreBlock(pos);
+		//Amazia.getVillageManager().onPathingBlockUpdate(this.pos);
+		this.entity.addSeroundingOreBlock(this.pos);
 		this.entity.damage(this.entity.getPick());
 	}
 
@@ -43,6 +40,6 @@ public class ExtendMineGoal extends TimedMineGoal {
 		if (this.pos == null) {
 			this.pos = this.entity.getMine().getBlockToExtend(this.entity);
 		}
-		return pos != null;
+		return this.pos != null;
 	}
 }

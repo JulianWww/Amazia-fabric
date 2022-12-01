@@ -1,7 +1,7 @@
 package net.denanu.amazia.economy.offerModifiers.finalizers;
 
 import net.denanu.amazia.economy.AmaziaTradeOffer;
-import net.denanu.amazia.utils.random.RandomCollection;
+import net.denanu.amazia.utils.random.WeightedRandomCollection;
 import net.denanu.amazia.utils.random.RandomnessFactory;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
@@ -9,12 +9,12 @@ import net.minecraft.item.SuspiciousStewItem;
 import net.minecraft.util.Identifier;
 
 public class SuspiciousStewFinalizer extends OfferFinalModifer {
-	private RandomCollection<StatusEffect> effects;
+	private WeightedRandomCollection<StatusEffect> effects;
 	private RandomnessFactory<Integer> durationFactory;
 
 	public SuspiciousStewFinalizer(Identifier ident, RandomnessFactory<Integer> durationFactory) {
 		super(ident);
-		this.effects = new RandomCollection<StatusEffect>();
+		this.effects = new WeightedRandomCollection<StatusEffect>();
 		this.durationFactory = durationFactory;
 	}
 	

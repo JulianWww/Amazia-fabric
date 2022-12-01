@@ -82,7 +82,7 @@ public class PathingNode implements PathingPathInterface {
 	}
 
 	public void destroy(final PathingGraph graph) {
-		this.destroyed = false;
+		this.destroyed = true;
 		this.breakConnections(graph);
 		if (this.parent != null) {
 			this.parent.destroy(graph);
@@ -219,7 +219,7 @@ public class PathingNode implements PathingPathInterface {
 	}
 
 	public boolean canQueue() {
-		return !this.queued;
+		return !this.queued && !this.destroyed;
 	}
 
 	@Override

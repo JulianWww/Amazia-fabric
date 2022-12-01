@@ -5,11 +5,11 @@ import java.util.TreeMap;
 
 import net.denanu.amazia.JJUtils;
 
-public class RandomCollection<E> {
+public class WeightedRandomCollection<E> {
     private final NavigableMap<Double, E> map = new TreeMap<Double, E>();
     private double total = 0;
 
-    public RandomCollection<E> add(double weight, E result) {
+    public WeightedRandomCollection<E> add(double weight, E result) {
         if (weight <= 0) return this;
         total += weight;
         map.put(total, result);

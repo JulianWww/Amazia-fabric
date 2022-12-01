@@ -25,7 +25,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class Village {
-	private static int SIZE = 120;
+	private static int SIZE = 32;
 	private BlockPos origin;
 	private boolean valid;
 

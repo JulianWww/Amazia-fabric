@@ -60,7 +60,7 @@ public class VillageBorderRenderer {
 		RenderSystem.enablePolygonOffset();
 		RenderSystem.disableCull();
 		final float m = Util.getMeasuringTimeMs() % 3000L / 3000.0f;
-		final float p = (float)(h - MathHelper.fractionalPart(camera.getPos().y));
+		final float p = (float) h;//(float)(h - MathHelper.fractionalPart(camera.getPos().y));
 		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 		double q = Math.max(MathHelper.floor(g - d), worldBorder.getBoundNorth());
 		double r = Math.min(MathHelper.ceil(g + d), worldBorder.getBoundSouth());

@@ -96,4 +96,12 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 		return this.mine = this.getVillage().getMineing().getSugerstedRegenerationMine();
 	}
 
+	public void leaveMine() {
+		this.mine = null;
+	}
+
+	public float getMineRagenerationAbility() {
+		return 0.1f;
+	}
+
 }

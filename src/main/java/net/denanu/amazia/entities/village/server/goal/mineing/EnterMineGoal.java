@@ -13,13 +13,16 @@ public class EnterMineGoal extends AmaziaGoToBlockGoal<MinerEntity> {
 
 	@Override
 	public boolean canStart() {
-		return !this.entity.isInMine() && super.canStart() && this.entity.canMine();
+		final boolean v1 = !this.entity.isInMine();
+		final boolean v2 = super.canStart();
+		final boolean v3 = this.entity.canMine();
+		return v1 && v2 && v3;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.entity.getMine() != null && this.entity.getMine().isIn(this.entity.getBlockPos())) {
+		if (this.entity.getMine() != null && (this.entity.getMine().isIn(this.entity.getBlockPos()) || this.entity.getMine().hasVillager())) {
 			this.reached =  true;
 		}
 	}
@@ -29,6 +32,9 @@ public class EnterMineGoal extends AmaziaGoToBlockGoal<MinerEntity> {
 		super.stop();
 		if (this.entity.getMine() != null && this.entity.getMine().isIn(new BlockPos(this.entity.getPos()))) {
 			this.entity.enterMine();
+		}
+		else {
+			this.entity.leaveMine();
 		}
 	}
 

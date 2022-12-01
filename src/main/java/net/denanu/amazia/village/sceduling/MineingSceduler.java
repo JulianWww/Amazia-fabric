@@ -118,6 +118,6 @@ public class MineingSceduler extends VillageSceduler {
 	@Nullable
 	public MineStructure getSugerstedRegenerationMine() {
 		final MineStructure mine = this.getRandomMine();
-		return mine != null && !mine.hasVillager() && mine.getIsEnd() ? mine : null;
+		return mine != null && !mine.hasVillager() && mine.getIsEnd() && !mine.hasVillager() ? mine : null;
 	}
 }

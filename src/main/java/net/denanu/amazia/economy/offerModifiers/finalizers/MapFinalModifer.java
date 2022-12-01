@@ -2,7 +2,7 @@ package net.denanu.amazia.economy.offerModifiers.finalizers;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.economy.AmaziaTradeOffer;
-import net.denanu.amazia.utils.random.RandomCollection;
+import net.denanu.amazia.utils.random.WeightedRandomCollection;
 import net.denanu.amazia.utils.scanners.ChunkScanner;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.FilledMapItem;
@@ -19,7 +19,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.structure.Structure;
 
 public class MapFinalModifer extends OfferFinalModifer {
-	private final RandomCollection<Identifier> structures;
+	private final WeightedRandomCollection<Identifier> structures;
 	private final MapIcon.Type icon;
 	private final String nameKey;
 	
@@ -27,7 +27,7 @@ public class MapFinalModifer extends OfferFinalModifer {
 		super(ident);
 		this.nameKey = name;
 		this.icon = icon;
-		this.structures = new RandomCollection<Identifier>();
+		this.structures = new WeightedRandomCollection<Identifier>();
 	}
 	
 	

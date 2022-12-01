@@ -24,7 +24,10 @@ public class VillageBoundingBox {
 				);
 	}
 
-	public static PacketByteBuf toBuf(final PacketByteBuf buf, final BlockPos pos, final int range) {
+	public static PacketByteBuf toBuf(final PacketByteBuf buf, BlockPos pos, final int range) {
+		if (pos == null) {
+			pos = BlockPos.ORIGIN;
+		}
 		buf.writeInt(pos.getX() - range);
 		buf.writeInt(pos.getZ() - range);
 		buf.writeInt(pos.getX() + range);
