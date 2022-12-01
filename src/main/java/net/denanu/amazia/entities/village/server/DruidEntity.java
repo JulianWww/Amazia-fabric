@@ -9,6 +9,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.entities.village.server.goal.druid.AdvanceCropAgeGoToGoal;
+import net.denanu.amazia.entities.village.server.goal.druid.AdvanceCropAgeGoal;
 import net.denanu.amazia.entities.village.server.goal.druid.RegeneratMineGoToSubGoal;
 import net.denanu.amazia.entities.village.server.goal.druid.RegenerateMineSubGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
@@ -18,6 +20,7 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -35,6 +38,7 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	private final AnimationFactory factory = new AnimationFactory(this);
 
 	private MineStructure mine;
+	private BlockPos toRegrow;
 
 	public DruidEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
@@ -74,9 +78,13 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	@Override
 	protected void initGoals() {
 
+		this.goalSelector.add(49, new SequenceGoal<DruidEntity>(this, ImmutableList.of(
+				new RegeneratMineGoToSubGoal(this, 49),
+				new RegenerateMineSubGoal(this, 49)
+				)));
 		this.goalSelector.add(50, new SequenceGoal<DruidEntity>(this, ImmutableList.of(
-				new RegeneratMineGoToSubGoal(this, 50),
-				new RegenerateMineSubGoal(this, 50)
+				new AdvanceCropAgeGoToGoal(this, 50),
+				new AdvanceCropAgeGoal(this, 50)
 				)));
 
 		super.registerBaseGoals();
@@ -102,6 +110,24 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	public float getMineRagenerationAbility() {
 		return 0.1f;
+	}
+
+	public int getPlantAdvanceAgeTime() {
+		return 20;
+	}
+
+	/**
+	 * @return the toRegrow
+	 */
+	public BlockPos getToRegrow() {
+		return this.toRegrow;
+	}
+
+	/**
+	 * @param toRegrow the toRegrow to set
+	 */
+	public BlockPos setToRegrow(final BlockPos toRegrow) {
+		return this.toRegrow = toRegrow;
 	}
 
 }
