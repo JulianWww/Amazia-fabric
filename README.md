@@ -13,6 +13,5 @@ For setup instructions please see the [fabric wiki page](https://fabricmc.net/wi
 
 This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
 
-## Todo
-
-rewrite the edge generation script
+## Contact
+amazia.fabric@gmail.com
