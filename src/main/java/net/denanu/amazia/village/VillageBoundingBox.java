@@ -1,14 +1,13 @@
 package net.denanu.amazia.village;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.border.WorldBorderStage;
 
 public class VillageBoundingBox {
-	private final int min_x, min_z, max_x, max_z;
+	private final float min_x, min_z, max_x, max_z;
 
-	public VillageBoundingBox(final int min_x, final int min_z, final int max_x, final int max_z) {
+	public VillageBoundingBox(final float min_x, final float min_z, final float max_x, final float max_z) {
 		this.min_x = min_x;
 		this.min_z = min_z;
 		this.max_x = max_x;
@@ -24,14 +23,11 @@ public class VillageBoundingBox {
 				);
 	}
 
-	public static PacketByteBuf toBuf(final PacketByteBuf buf, BlockPos pos, final int range) {
-		if (pos == null) {
-			pos = BlockPos.ORIGIN;
-		}
-		buf.writeInt(pos.getX() - range);
-		buf.writeInt(pos.getZ() - range);
-		buf.writeInt(pos.getX() + range);
-		buf.writeInt(pos.getZ() + range);
+	public static PacketByteBuf toBuf(final PacketByteBuf buf, Village v) {
+		buf.writeInt((int) v.getBox().minX);
+		buf.writeInt((int) v.getBox().minZ);
+		buf.writeInt((int) v.getBox().maxX);
+		buf.writeInt((int) v.getBox().maxZ);
 		return buf;
 	}
 
@@ -45,10 +41,6 @@ public class VillageBoundingBox {
 					box.max_z == this.max_z;
 		}
 		return false;
-	}
-
-	public static PacketByteBuf toBuf(final BlockPos pos, final int range) {
-		return VillageBoundingBox.toBuf(PacketByteBufs.create(), pos, range);
 	}
 
 	public boolean isIn(final BlockPos pos) {

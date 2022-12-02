@@ -40,7 +40,7 @@ public class VillageExistanceUpdateS2CPacket {
 		final PacketByteBuf buf = PacketByteBufs.create();
 		buf.writeBoolean(true);
 		buf.writeCollection(villages, (buf2, v) -> {
-			VillageBoundingBox.toBuf(buf2, v.getOrigin(), Village.getSize());
+			VillageBoundingBox.toBuf(buf2, v);
 		});
 		return buf;
 	}
@@ -49,7 +49,7 @@ public class VillageExistanceUpdateS2CPacket {
 		final PacketByteBuf buf = PacketByteBufs.create();
 		buf.writeBoolean(false);
 		buf.writeCollection(villages, (buf2, v) -> {
-			VillageBoundingBox.toBuf(buf2, v.getOrigin(), Village.getSize());
+			VillageBoundingBox.toBuf(buf2, v);
 		});
 		return buf;
 	}

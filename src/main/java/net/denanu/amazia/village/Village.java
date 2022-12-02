@@ -217,14 +217,14 @@ public class Village {
 		if (this.getOrigin() == null) {
 			return false;
 		}
-		return Math.max(Math.abs(this.getOrigin().getX() - pos.getX()), Math.abs(this.getOrigin().getZ() - pos.getZ())) < Village.SIZE;
+		return this.boundingBox.contains(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	public boolean isInVillage(final Vec3d pos) {
 		if (this.getOrigin() == null) {
 			return false;
 		}
-		return Math.max(Math.abs(this.getOrigin().getX() - pos.getX()), Math.abs(this.getOrigin().getZ() - pos.getZ())) < Village.SIZE;
+		return this.boundingBox.contains(pos);
 	}
 
 	public boolean isInVillage(final Entity entity) {
