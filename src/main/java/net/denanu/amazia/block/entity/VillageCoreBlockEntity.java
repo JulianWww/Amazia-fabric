@@ -12,40 +12,40 @@ public class VillageCoreBlockEntity extends BlockEntity {
 	private Village village;
 	private boolean initialized = false;
 
-	public VillageCoreBlockEntity(BlockPos pos, BlockState state) {
+	public VillageCoreBlockEntity(final BlockPos pos, final BlockState state) {
 		super(AmaziaBlockEntities.VILLAGE_CORE, pos, state);
 		this.createVillage();
 	}
-	
+
 	@Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
-        nbt.put("village", village.writeNbt());
-    }
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        this.createVillage();
-        village.readNbt(nbt.getCompound("village"));
-    }
-    
-    public Village getVillage() {
-    	return this.village;
-    }
-    
-    private void createVillage() {
-    	this.village = new Village(this);
-    }
-    
-    private void initialize() {
-    	if (!this.initialized) {
+	protected void writeNbt(final NbtCompound nbt) {
+		super.writeNbt(nbt);
+		nbt.put("village", this.village.writeNbt());
+	}
+	@Override
+	public void readNbt(final NbtCompound nbt) {
+		super.readNbt(nbt);
+		this.createVillage();
+		this.village.readNbt(nbt.getCompound("village"));
+	}
+
+	public Village getVillage() {
+		return this.village;
+	}
+
+	private void createVillage() {
+		this.village = new Village(this);
+	}
+
+	private void initialize() {
+		if (!this.initialized) {
 			this.village.setupVillage();
-			this.village.getPathingGraph().seedVillage(pos.up());
-    		this.initialized = true;
-    	}
-    }
-	
-	public static void tick(World world, BlockPos pos, BlockState state, VillageCoreBlockEntity e) {
+			this.village.getPathingGraph().seedVillage(this.pos.up());
+			this.initialized = true;
+		}
+	}
+
+	public static void tick(final World world, final BlockPos pos, final BlockState state, final VillageCoreBlockEntity e) {
 		if (!world.isClient()) {
 			e.initialize();
 			e.village.tick((ServerWorld)world);
@@ -55,13 +55,13 @@ public class VillageCoreBlockEntity extends BlockEntity {
 	public void _setChanged() {
 		this.markDirty();
 	}
-	
+
 	@Override
 	public void markRemoved() {
 		super.markRemoved();
 		this.village.remove(this.getWorld());
 	}
-	
+
 	@Override
 	public void cancelRemoval() {
 		super.cancelRemoval();

@@ -137,4 +137,8 @@ public class VillageBorderRenderer {
 			VillageBorderRenderer.renderWorldBorder(camera, world, clinet, box);
 		}
 	}
+
+	public static void clear(final MinecraftClient client) {
+		VillageBorderRenderer.villageBoxes.clear();
+	}
 }

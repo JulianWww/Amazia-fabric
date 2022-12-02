@@ -18,7 +18,6 @@
     "PlantBlockMixin",
     "RecipeManagerMixinAcessor",
     "ServerPlayerEntityMixin",
-    "ServerPlayNetworkHandlerMixin",
     "SheepEntityAccessor",
     "TrunkPlacerMixin",
     "VillageBlockUpdateMixin",

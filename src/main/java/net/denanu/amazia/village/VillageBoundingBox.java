@@ -1,38 +1,26 @@
 package net.denanu.amazia.village;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.border.WorldBorderStage;
 
 public class VillageBoundingBox {
-	private final int min_x, min_z, max_x, max_z;
+	private final double min_x, min_z, max_x, max_z;
 
-	public VillageBoundingBox(final int min_x, final int min_z, final int max_x, final int max_z) {
+	public VillageBoundingBox(final Box box) {
+		this(
+				box.minX,
+				box.minZ,
+				box.maxX,
+				box.maxZ
+				);
+	}
+
+	public VillageBoundingBox(final double min_x, final double min_z, final double max_x, final double max_z) {
 		this.min_x = min_x;
 		this.min_z = min_z;
 		this.max_x = max_x;
 		this.max_z = max_z;
-	}
-
-	public VillageBoundingBox(final PacketByteBuf buf) {
-		this(
-				buf.readInt(),
-				buf.readInt(),
-				buf.readInt(),
-				buf.readInt()
-				);
-	}
-
-	public static PacketByteBuf toBuf(final PacketByteBuf buf, BlockPos pos, final int range) {
-		if (pos == null) {
-			pos = BlockPos.ORIGIN;
-		}
-		buf.writeInt(pos.getX() - range);
-		buf.writeInt(pos.getZ() - range);
-		buf.writeInt(pos.getX() + range);
-		buf.writeInt(pos.getZ() + range);
-		return buf;
 	}
 
 	@Override
@@ -45,10 +33,6 @@ public class VillageBoundingBox {
 					box.max_z == this.max_z;
 		}
 		return false;
-	}
-
-	public static PacketByteBuf toBuf(final BlockPos pos, final int range) {
-		return VillageBoundingBox.toBuf(PacketByteBufs.create(), pos, range);
 	}
 
 	public boolean isIn(final BlockPos pos) {
@@ -68,7 +52,20 @@ public class VillageBoundingBox {
 	}
 
 	public double getBoundWest() {
-		return this.min_z;
+		return this.min_x;
+	}
+
+	@Override
+	public int hashCode() {
+		long l = Double.doubleToLongBits(this.min_x);
+		int i = (int)(l ^ l >>> 32);
+		l = Double.doubleToLongBits(this.min_z);
+		i = 31 * i + (int)(l ^ l >>> 32);
+		l = Double.doubleToLongBits(this.max_x);
+		i = 31 * i + (int)(l ^ l >>> 32);
+		l = Double.doubleToLongBits(this.max_z);
+		i = 31 * i + (int)(l ^ l >>> 32);
+		return i;
 	}
 
 	public double getDistanceInsideBorder(final double x, final double z) {
