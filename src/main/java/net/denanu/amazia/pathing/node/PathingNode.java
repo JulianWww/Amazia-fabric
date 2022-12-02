@@ -193,7 +193,7 @@ public class PathingNode implements PathingPathInterface {
 	}
 
 	public int update(final ServerWorld world, final PathingGraph graph) {
-		this.debugUpdate(world);
+		//this.debugUpdate(world);
 		if (!this.destroyed) {
 			this.dequeue();
 			final int out = this.updateConnections(world, graph);
@@ -228,9 +228,10 @@ public class PathingNode implements PathingPathInterface {
 		return "[" + this.lvl + "," + this.pos + "]\n";
 	}
 
+	@Debug
 	public void debugUpdate(final ServerWorld world) {
 		Block block = Blocks.GREEN_CONCRETE;
-		int lvl = this.getTopLvl();
+		final int lvl = this.getTopLvl();
 		if (lvl == 1) { block = Blocks.BLUE_CONCRETE;}
 		if (lvl == 2) { block = Blocks.YELLOW_CONCRETE;}
 		if (lvl == 3) { block = Blocks.PURPLE_CONCRETE;}
@@ -239,8 +240,9 @@ public class PathingNode implements PathingPathInterface {
 		world.setBlockState(this.getDebugPos(), block.getDefaultState());
 	}
 
+	@Debug
 	private BlockPos getDebugPos() {
-		return this.getBlockPos().down();
+		return this.getBlockPos().withY(-64);
 	}
 	@Override
 	public int hashCode() {

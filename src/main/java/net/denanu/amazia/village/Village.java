@@ -3,6 +3,7 @@ package net.denanu.amazia.village;
 import org.jetbrains.annotations.Nullable;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.village.sceduling.AbstractFurnaceSceduler;
@@ -97,10 +98,16 @@ public class Village {
 		if (!world.isClient()) {
 			Amazia.getVillageManager().removeVillage(this);
 		}
+		else {
+			VillageBorderRenderer.villageBoxes.remove(new VillageBoundingBox(this.getBox()));
+		}
 	}
 	public void register(final World world) {
 		if (!world.isClient()) {
 			Amazia.getVillageManager().addVillage(this);
+		}
+		else {
+			VillageBorderRenderer.villageBoxes.add(new VillageBoundingBox(this.getBox()));
 		}
 	}
 
