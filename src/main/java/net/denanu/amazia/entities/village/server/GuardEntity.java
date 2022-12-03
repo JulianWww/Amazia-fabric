@@ -300,10 +300,6 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 		this.world.spawnEntity(persistentProjectileEntity);
 	}
 
-	private boolean isLowHp() {
-		return this.getHealth() < this.getMaxHealth() * 0.25f;
-	}
-
 	@Override
 	public boolean damage(final DamageSource source, final float amount) {
 		final boolean out = super.damage(source, amount);

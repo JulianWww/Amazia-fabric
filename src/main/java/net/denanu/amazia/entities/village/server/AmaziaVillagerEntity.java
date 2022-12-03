@@ -20,6 +20,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InventoryOwner;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -343,6 +344,14 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 			}
 		}
 		return -1;
+	}
+
+	protected boolean isLowHp() {
+		return AmaziaVillagerEntity.isLowHpPredicate(this);
+	}
+
+	public static boolean isLowHpPredicate(final LivingEntity e) {
+		return e.getHealth() < e.getMaxHealth() * 0.25;
 	}
 
 	@Override
