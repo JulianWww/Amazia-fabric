@@ -316,4 +316,22 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 	public void endShouldFlee() {
 		this.shouldFlee = false;
 	}
+
+	@Override
+	public void remove(final RemovalReason reason) {
+		super.remove(reason);
+		this.exitCombat();
+	}
+
+	@Override
+	public void enterCombat() {
+		if (this.hasVillage()) {
+			this.village.getGuarding().addCombatant(this);
+		}
+	}
+	public void exitCombat() {
+		if (this.hasVillage()) {
+			this.village.getGuarding().removeCombatant(this);
+		}
+	}
 }

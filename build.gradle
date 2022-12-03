@@ -17,6 +17,7 @@ repositories {
         url = 'https://ladysnake.jfrog.io/artifactory/mods'
     }
 	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+	maven { url 'maven.oracle.com' }
 }
 
 dependencies {
@@ -44,6 +45,7 @@ dependencies {
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.2"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.2"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-block:5.0.2"
+    include "oracle.olapi:18"
 }
 
 processResources {
