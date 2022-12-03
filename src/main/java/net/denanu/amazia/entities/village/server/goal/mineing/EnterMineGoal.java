@@ -7,34 +7,40 @@ import net.minecraft.util.math.BlockPos;
 
 public class EnterMineGoal extends AmaziaGoToBlockGoal<MinerEntity> {
 
-	public EnterMineGoal(MinerEntity e, int priority) {
+	public EnterMineGoal(final MinerEntity e, final int priority) {
 		super(e, priority);
 	}
-	
+
 	@Override
 	public boolean canStart() {
-		return !this.entity.isInMine() && super.canStart() && this.entity.canMine();
+		final boolean v1 = !this.entity.isInMine();
+		final boolean v2 = super.canStart();
+		final boolean v3 = this.entity.canMine();
+		return v1 && v2 && v3;
 	}
-	
+
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.entity.getMine() != null && this.entity.getMine().isIn(this.entity.getBlockPos())) {
+		if (this.entity.getMine() != null && (this.entity.getMine().isIn(this.entity.getBlockPos()) || this.entity.getMine().hasVillager())) {
 			this.reached =  true;
 		}
 	}
-	
+
 	@Override
 	public void stop() {
 		super.stop();
 		if (this.entity.getMine() != null && this.entity.getMine().isIn(new BlockPos(this.entity.getPos()))) {
 			this.entity.enterMine();
 		}
+		else {
+			this.entity.leaveMine();
+		}
 	}
 
 	@Override
 	protected BlockPos getTargetBlock() {
-		MineStructure mine = this.entity.setMine();
+		final MineStructure mine = this.entity.setMine();
 		return mine;
 	}
 

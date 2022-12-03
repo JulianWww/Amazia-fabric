@@ -32,6 +32,8 @@
     "enemies.ZombieEntityMixin"
   ],
   "client": [
+  	"client.WorldRendererAccessor",
+  	"client.WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

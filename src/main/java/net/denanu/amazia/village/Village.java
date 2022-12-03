@@ -3,6 +3,7 @@ package net.denanu.amazia.village;
 import org.jetbrains.annotations.Nullable;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.village.sceduling.AbstractFurnaceSceduler;
@@ -25,7 +26,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class Village {
-	private static int SIZE = 16;
+	private static int SIZE = 32;
 	private BlockPos origin;
 	private boolean valid;
 
@@ -97,10 +98,16 @@ public class Village {
 		if (!world.isClient()) {
 			Amazia.getVillageManager().removeVillage(this);
 		}
+		else {
+			VillageBorderRenderer.villageBoxes.remove(new VillageBoundingBox(this.getBox()));
+		}
 	}
 	public void register(final World world) {
 		if (!world.isClient()) {
 			Amazia.getVillageManager().addVillage(this);
+		}
+		else {
+			VillageBorderRenderer.villageBoxes.add(new VillageBoundingBox(this.getBox()));
 		}
 	}
 
@@ -217,14 +224,14 @@ public class Village {
 		if (this.getOrigin() == null) {
 			return false;
 		}
-		return Math.max(Math.abs(this.getOrigin().getX() - pos.getX()), Math.abs(this.getOrigin().getZ() - pos.getZ())) < Village.SIZE;
+		return this.boundingBox.contains(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	public boolean isInVillage(final Vec3d pos) {
 		if (this.getOrigin() == null) {
 			return false;
 		}
-		return Math.max(Math.abs(this.getOrigin().getX() - pos.getX()), Math.abs(this.getOrigin().getZ() - pos.getZ())) < Village.SIZE;
+		return this.boundingBox.contains(pos);
 	}
 
 	public boolean isInVillage(final Entity entity) {

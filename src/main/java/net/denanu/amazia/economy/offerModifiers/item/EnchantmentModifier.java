@@ -4,19 +4,19 @@ import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.economy.AmaziaTradeOffer;
 import net.denanu.amazia.economy.offerModifiers.OfferModifier;
 import net.denanu.amazia.economy.offerModifiers.price.AmaziaValueModifiers;
-import net.denanu.amazia.utils.random.RandomCollection;
+import net.denanu.amazia.utils.random.WeightedRandomCollection;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.nbt.NbtElement;
 
 public class EnchantmentModifier implements OfferModifier {
-	private RandomCollection<Enchantment> possibleEnchants;
+	private WeightedRandomCollection<Enchantment> possibleEnchants;
 	private final float reselctionProbability;
 	private final float initalProbability;
 	
 	
 	public EnchantmentModifier(final float reselectionProbability, final float initalProbability) {
-		this.possibleEnchants = new RandomCollection<Enchantment>();
+		this.possibleEnchants = new WeightedRandomCollection<Enchantment>();
 		this.reselctionProbability = reselectionProbability;
 		this.initalProbability = initalProbability;
 	}

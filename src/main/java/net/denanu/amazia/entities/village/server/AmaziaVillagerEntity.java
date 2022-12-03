@@ -40,7 +40,7 @@ import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
 public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner {
-	private final SimpleInventory inventory = new SimpleInventory(8);
+	private final SimpleInventory inventory = new SimpleInventory(16);
 	private List<Item> requestedItems;
 	private CraftingRecipe wantsToCraft;
 	private Map<Item, Integer> craftInput;
@@ -383,7 +383,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		return 20;
 	}
 	public int getMineTime() {
-		return 20;
+		return 2;
 	}
 	public int getCraftingTime() {
 		return 20;

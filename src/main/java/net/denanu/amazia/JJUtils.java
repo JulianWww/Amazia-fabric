@@ -92,7 +92,7 @@ public class JJUtils {
 		return d*d;
 	}
 
-	public static double cube(final double d) {
-		return d*d*d;
+	public static int square(final int d) {
+		return d*d;
 	}
 }

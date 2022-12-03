@@ -8,6 +8,7 @@ import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.pathing.PathingUtils;
 import net.denanu.amazia.pathing.edge.PathingEdge;
 import net.denanu.amazia.pathing.interfaces.PathingPathInterface;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Pair;
@@ -82,7 +83,7 @@ public class PathingNode implements PathingPathInterface {
 	}
 
 	public void destroy(final PathingGraph graph) {
-		this.destroyed = false;
+		this.destroyed = true;
 		this.breakConnections(graph);
 		if (this.parent != null) {
 			this.parent.destroy(graph);
@@ -192,7 +193,7 @@ public class PathingNode implements PathingPathInterface {
 	}
 
 	public int update(final ServerWorld world, final PathingGraph graph) {
-		this.debugUpdate(world);
+		//this.debugUpdate(world);
 		if (!this.destroyed) {
 			this.dequeue();
 			final int out = this.updateConnections(world, graph);
@@ -219,7 +220,7 @@ public class PathingNode implements PathingPathInterface {
 	}
 
 	public boolean canQueue() {
-		return !this.queued;
+		return !this.queued && !this.destroyed;
 	}
 
 	@Override
@@ -227,17 +228,22 @@ public class PathingNode implements PathingPathInterface {
 		return "[" + this.lvl + "," + this.pos + "]\n";
 	}
 
-	public void debugUpdate(final ServerWorld world) {/*
+	@Debug
+	public void debugUpdate(final ServerWorld world) {
 		Block block = Blocks.GREEN_CONCRETE;
-		int lvl = this.getTopLvl();
+		final int lvl = this.getTopLvl();
 		if (lvl == 1) { block = Blocks.BLUE_CONCRETE;}
 		if (lvl == 2) { block = Blocks.YELLOW_CONCRETE;}
 		if (lvl == 3) { block = Blocks.PURPLE_CONCRETE;}
 		if (lvl == 4) { block = Blocks.ORANGE_CONCRETE;}
 		if (lvl == 5) { block = Blocks.RED_CONCRETE;}
-		world.setBlockState(this.getDebugPos(), block.getDefaultState());*/
+		world.setBlockState(this.getDebugPos(), block.getDefaultState());
 	}
 
+	@Debug
+	private BlockPos getDebugPos() {
+		return this.getBlockPos().withY(-64);
+	}
 	@Override
 	public int hashCode() {
 		int result = this.getBlockPos().getX() % 1024;

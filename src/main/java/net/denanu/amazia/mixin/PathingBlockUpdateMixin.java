@@ -14,8 +14,9 @@ import net.minecraft.util.math.BlockPos;
 @Mixin(ServerWorld.class)
 public class PathingBlockUpdateMixin {
 	@Inject(at = @At("TAIL"), method = "updateListeners")
-	private void syncWorldEvent(BlockPos pos, BlockState oldState, BlockState newState, int flags, CallbackInfo info) {
-		if (PathingShouldUpdateChecker.shouldUpdate(pos, oldState, newState, flags))
+	private void syncWorldEvent(final BlockPos pos, final BlockState oldState, final BlockState newState, final int flags, final CallbackInfo info) {
+		if (PathingShouldUpdateChecker.shouldUpdate(pos, oldState, newState)) {
 			Amazia.getVillageManager().onPathingBlockUpdate(pos);
+		}
 	}
 }

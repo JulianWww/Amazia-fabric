@@ -119,10 +119,12 @@ public class VillagePathingOverlay implements ClientTickEvents.EndTick {
 		final double cameraY = camera.getPos().y - .005D;
 		final double cameraZ = camera.getPos().z;
 
-		bufferBuilder.vertex(fx - cameraX + 0.5, fy - cameraY + 0.05, fz - cameraZ + 0.5).color(0f, 0f, 0f, 0f).next();
-		bufferBuilder.vertex(fx - cameraX + 0.5, fy - cameraY + 0.05, fz - cameraZ + 0.5).color(1f, 1f, 1f, 1f).next();
-		bufferBuilder.vertex(tx - cameraX + 0.5, ty - cameraY + 0.05, tz - cameraZ + 0.5).color(1f, 1f, 1f, 1f).next();
-		bufferBuilder.vertex(tx - cameraX + 0.5, ty - cameraY + 0.05, tz - cameraZ + 0.5).color(0f, 0f, 0f, 0f).next();
+		final float yOffset = 0.05f;
+
+		bufferBuilder.vertex(fx - cameraX + 0.5, fy - cameraY + yOffset, fz - cameraZ + 0.5).color(0f, 0f, 0f, 0f).next();
+		bufferBuilder.vertex(fx - cameraX + 0.5, fy - cameraY + yOffset, fz - cameraZ + 0.5).color(1f, 0f, 0f, 1f).next();
+		bufferBuilder.vertex(tx - cameraX + 0.5, ty - cameraY + yOffset, tz - cameraZ + 0.5).color(1f, 0f, 0f, 1f).next();
+		bufferBuilder.vertex(tx - cameraX + 0.5, ty - cameraY + yOffset, tz - cameraZ + 0.5).color(0f, 0f, 0f, 0f).next();
 		//bufferBuilder.nextElement();
 	}
 

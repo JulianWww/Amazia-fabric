@@ -17,6 +17,7 @@ import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.structures.MineStructure;
 import net.minecraft.block.Block;
 import net.minecraft.block.OreBlock;
+import net.minecraft.block.RedstoneOreBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -25,7 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -46,54 +47,54 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COBBLESTONE, 64, Items.TORCH, 64, Items.STICK, 64, Items.COAL, 64);
 	public static final ImmutableMap<Item, Integer> MAX_PICKUPS = ImmutableMap.of(Items.COBBLESTONE, 64);
 	private static final Vec3i ITEM_PICK_UP_RANGE_EXPANDER_WHILE_MINEING = new Vec3i(5, 5, 5);
-	
+
 	private MineStructure mine;
 	private boolean inMine;
 	private List<BlockPos> toMineLocations;
-	
-	private AnimationFactory factory = new AnimationFactory(this);
 
-	public MinerEntity(EntityType<? extends PassiveEntity> entityType, World world) {
+	private final AnimationFactory factory = new AnimationFactory(this);
+
+	public MinerEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
 		this.toMineLocations = new ArrayList<BlockPos>();
 	}
-	
-	@Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        nbt.put("toMineLocations", NbtUtils.toNbt(this.toMineLocations));
-    }
 
-    @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        this.toMineLocations = NbtUtils.toBlockPosList(nbt.getList("toMineLocations", NbtList.INT_ARRAY_TYPE));
-    }
-	
 	@Override
-    protected void initGoals() {
-		
+	public void writeCustomDataToNbt(final NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		nbt.put("toMineLocations", NbtUtils.toNbt(this.toMineLocations));
+	}
+
+	@Override
+	public void readCustomDataFromNbt(final NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		this.toMineLocations = NbtUtils.toBlockPosList(nbt.getList("toMineLocations", NbtElement.INT_ARRAY_TYPE));
+	}
+
+	@Override
+	protected void initGoals() {
+
 		this.goalSelector.add(46, new FixBrokenMineSeroundingsGoal(this, 46));
 		this.goalSelector.add(45, new LightUpMine(this, 45));
 		this.goalSelector.add(48, new ExtendMineGoal(this, 48));
 		this.goalSelector.add(49, new MoveToEndOfMine(this, 49));
-		this.goalSelector.add(50, new EnterMineGoal(this, 50));		
-		
-        super.registerBaseGoals();
-    }
-	
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
-            return PlayState.CONTINUE;
-        }
+		this.goalSelector.add(50, new EnterMineGoal(this, 50));
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
-        return PlayState.CONTINUE;
-    }
+		super.registerBaseGoals();
+	}
+
+	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
+		if (event.isMoving()) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
+			return PlayState.CONTINUE;
+		}
+
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
+		return PlayState.CONTINUE;
+	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
+	public void registerControllers(final AnimationData data) {
 		data.addAnimationController(new AnimationController<MinerEntity>(this, "controller", 0, this::predicate));
 	}
 
@@ -101,25 +102,25 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	public AnimationFactory getFactory() {
 		return this.factory;
 	}
-	
+
 	@Override
 	public boolean canDepositItems() {
 		return this.getEmptyInventorySlots() == 0 && this.getDepositableItems() != null;
 	}
-	
+
 	@Override
 	public Triplet<ItemStack, Integer, Integer> getDepositableItems() {
-		return this.getDepositableItems(USABLE_ITEMS, REQUIRED_ITEMS);
+		return this.getDepositableItems(MinerEntity.USABLE_ITEMS, MinerEntity.REQUIRED_ITEMS);
 	}
-	
+
 	// MINER SPECIFIC
-	
-	@Override 
-	public void onDeath(DamageSource damageSource) {
+
+	@Override
+	public void onDeath(final DamageSource damageSource) {
 		super.onDeath(damageSource);
 		this.leaveMine();
 	}
-	
+
 	@Override
 	protected void update() {
 		super.update();
@@ -129,26 +130,26 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 			}
 		}
 	}
-	
-	public void enterMine(MineStructure mine) {
+
+	public void enterMine(final MineStructure mine) {
 		if (mine != null && !mine.hasVillager()) {
 			this.mine = mine;
 			this.mine.registerVillager();
 			this.inMine = true;
 		}
 	}
-	
+
 	public MineStructure setMine() {
 		if (this.mine == null) {
 			this.mine = this.village.getMineing().getSuggestedMine();
 		}
 		return this.mine;
 	}
-	
+
 	public MineStructure getMine() {
 		return this.mine;
 	}
-	
+
 	public void leaveMine() {
 		if (this.mine != null) {
 			this.mine.releaseVillager();
@@ -164,16 +165,16 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	public void enterMine() {
 		this.enterMine(this.getMine());
 	}
-	
-	protected void addOreBlock(BlockPos pos) {
-		Block block = this.getWorld().getBlockState(pos).getBlock();
-		if (block instanceof OreBlock && !this.toMineLocations.contains(pos)) {
+
+	protected void addOreBlock(final BlockPos pos) {
+		final Block block = this.getWorld().getBlockState(pos).getBlock();
+		if ((block instanceof OreBlock || block instanceof RedstoneOreBlock)&& !this.toMineLocations.contains(pos)) {
 			this.toMineLocations.add(pos);
 		}
 	}
 	public BlockPos getNextOreBlock() {
 		while (this.toMineLocations.size() > 0) {
-			BlockPos pos = this.toMineLocations.get(0);
+			final BlockPos pos = this.toMineLocations.get(0);
 			this.toMineLocations.remove(0);
 			if (MineStructure.isSafe(this, pos)) {
 				return pos;
@@ -181,12 +182,12 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 		}
 		return null;
 	}
-	
+
 	public boolean canMineOre() {
 		return this.toMineLocations.size() > 0;
 	}
 
-	public void addSeroundingOreBlock(BlockPos pos) {
+	public void addSeroundingOreBlock(final BlockPos pos) {
 		this.addOreBlock(pos.up());
 		this.addOreBlock(pos.down());
 		this.addOreBlock(pos.east());
@@ -194,30 +195,31 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 		this.addOreBlock(pos.north());
 		this.addOreBlock(pos.south());
 	}
-	
+
 	@Override
 	public HashMap<Item,ArrayList<CraftingRecipe>> getCraftables() { return Amazia.MINER_CRAFTS; };
-	
+
 	@Override
 	protected Vec3i getItemPickUpRangeExpander() {
 		if (this.isInMine()) {
-			return ITEM_PICK_UP_RANGE_EXPANDER_WHILE_MINEING;
+			return MinerEntity.ITEM_PICK_UP_RANGE_EXPANDER_WHILE_MINEING;
 		}
-        return super.getItemPickUpRangeExpander();
-    }
-	
+		return super.getItemPickUpRangeExpander();
+	}
+
 	@Override
-	protected boolean shouldPickUp(ItemStack stack) {
-		if (MAX_PICKUPS.containsKey(stack.getItem())) {
-			return this.countItems(stack.getItem()) < MAX_PICKUPS.get(stack.getItem()) + stack.getMaxCount();
+	protected boolean shouldPickUp(final ItemStack stack) {
+		if (MinerEntity.MAX_PICKUPS.containsKey(stack.getItem())) {
+			return this.countItems(stack.getItem()) < MinerEntity.MAX_PICKUPS.get(stack.getItem()) + stack.getMaxCount();
 		}
 		return true;
 	}
-	
+
+	@Override
 	public boolean canCraft() {
 		return this.hasFreeSlot();
 	}
-	
+
 	public int getPick() {
 		ItemStack itm;
 		for (int idx=0; idx < this.getInventory().size(); idx++) {
@@ -228,9 +230,9 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 		}
 		return -1;
 	}
-	
+
 	private boolean hasPick() {
-		for (ItemStack itm : this.getInventory().stacks) {
+		for (final ItemStack itm : this.getInventory().stacks) {
 			if (itm.getItem() instanceof PickaxeItem) {
 				return true;
 			}
@@ -238,7 +240,7 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 		this.requestPick();
 		return false;
 	}
-	
+
 	private void requestPick() {
 		if (!this.hasRequestedItems()) {
 			this.requestItem(Items.NETHERITE_PICKAXE);
@@ -249,10 +251,10 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 			this.requestItem(Items.WOODEN_PICKAXE);
 		}
 	}
-	
+
 	@Override
 	public boolean canMine() {
-		for (Item itm : MINE_REQUIRED) {
+		for (final Item itm : MinerEntity.MINE_REQUIRED) {
 			if (!this.hasItem(itm, 1)) {
 				this.requestItem(itm);
 				return false;

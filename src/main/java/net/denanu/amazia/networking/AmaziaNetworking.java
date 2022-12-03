@@ -19,6 +19,7 @@ public class AmaziaNetworking {
 	public static final Identifier PATHING_OVERLAY_UPDATE_C2S = Identifier.of(Amazia.MOD_ID, "pathing_cs");
 	public static final Identifier SETUP_PATHINGOVERLAY = Identifier.of(Amazia.MOD_ID, "setup_pathing");
 
+
 	public static void registerC2SPackets() {
 		ServerPlayNetworking.registerGlobalReceiver(AmaziaNetworking.MERCHANT_TRADE_SELECT, AmaziaMerchantTradeSelectC2SPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(AmaziaNetworking.PATHING_OVERLAY_UPDATE_C2S, AmaziaPathingOverlayRequestUpdateC2SPacket::receive);
