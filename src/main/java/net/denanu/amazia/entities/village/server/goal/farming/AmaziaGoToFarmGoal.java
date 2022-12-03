@@ -7,16 +7,16 @@ import net.minecraft.util.math.BlockPos;
 
 public class AmaziaGoToFarmGoal extends AmaziaGoToBlockGoal<AmaziaVillagerEntity> {
 
-	public AmaziaGoToFarmGoal(AmaziaVillagerEntity e, int priority) {
+	public AmaziaGoToFarmGoal(final AmaziaVillagerEntity e, final int priority) {
 		super(e, priority);
 	}
 
 	@Override
 	protected BlockPos getTargetBlock() {
 		if (this.entity.getCanUpdate()) {
-			ServerWorld sword = (ServerWorld) this.entity.getWorld();
-			BlockPos pos = this.entity.getVillage().getFarming().getRandomPos(sword, this.entity);
-			return pos!=null ? pos.up() : null;
+			final ServerWorld sword = (ServerWorld) this.entity.getWorld();
+			final BlockPos pos = this.entity.getVillage().getFarming().getRandomPos(sword, this.entity);
+			return pos == null ? null : pos.up();
 		}
 		return null;
 	}

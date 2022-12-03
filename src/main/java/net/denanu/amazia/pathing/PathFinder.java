@@ -34,6 +34,7 @@ public class PathFinder extends EntityNavigation {
 	protected AmaziaEntity entity;
 	protected PriorityQueue<PriorityElement<PathingNode>> nodeQueue = new PriorityQueue<PriorityElement<PathingNode>>(PriorityElement.comparator);
 	protected BlockPos currentLoc = BlockPos.ORIGIN;
+	protected boolean canSwim = true;
 
 	public PathFinder(final AmaziaEntity entityNav) {
 		super(entityNav, entityNav.getWorld());
@@ -428,5 +429,21 @@ public class PathFinder extends EntityNavigation {
 			state = state.with(FenceGateBlock.OPEN, value);
 			this.world.setBlockState(pos, state, Block.NOTIFY_LISTENERS | Block.REDRAW_ON_MAIN_THREAD);
 		}
+	}
+
+	/**
+	 * @return the canSwim
+	 */
+	@Override
+	public boolean canSwim() {
+		return this.canSwim;
+	}
+
+	/**
+	 * @param canSwim the canSwim to set
+	 */
+	@Override
+	public void setCanSwim(final boolean canSwim) {
+		this.canSwim = canSwim;
 	}
 }
