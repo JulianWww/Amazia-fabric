@@ -354,6 +354,10 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		return e.getHealth() < e.getMaxHealth() * 0.25;
 	}
 
+	public static boolean isNotFullHealth(final LivingEntity e) {
+		return e.getHealth() < e.getMaxHealth();
+	}
+
 	@Override
 	public boolean canGather(final ItemStack stack) {
 		return this.getInventory().canInsert(stack);

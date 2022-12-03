@@ -3,12 +3,19 @@ package net.denanu.amazia.entities.village.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.entities.village.server.goal.cleric.BlessEntityGoal;
+import net.denanu.amazia.entities.village.server.goal.cleric.GoToBlessEntityGoal;
+import net.denanu.amazia.entities.village.server.goal.cleric.HealEntityGoal;
+import net.denanu.amazia.entities.village.server.goal.cleric.SelectHealingTargetGoal;
+import net.denanu.amazia.entities.village.server.goal.utils.AmaziaGoToTargetGoal;
+import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
@@ -70,13 +77,37 @@ public class ClericEntity extends AmaziaVillagerEntity implements IAnimatable {
 	@Override
 	protected void initGoals() {
 
-		this.targetSelector.add(0, new ActiveTargetGoal<AmaziaVillagerEntity>(this, AmaziaVillagerEntity.class, true, AmaziaVillagerEntity::isLowHpPredicate));
+		this.targetSelector.add(0, new SelectHealingTargetGoal<AmaziaVillagerEntity>(this, AmaziaVillagerEntity.class, true, AmaziaVillagerEntity::isNotFullHealth));
+		this.targetSelector.add(1, new SelectHealingTargetGoal<PlayerEntity>(this, PlayerEntity.class, true, AmaziaVillagerEntity::isNotFullHealth));
+
+		this.goalSelector.add(40, new SequenceGoal<ClericEntity>(this, ImmutableList.of(
+				new AmaziaGoToTargetGoal(this, 40),
+				new HealEntityGoal(this, 40)
+				)));
+
+		final GoToBlessEntityGoal goToBlessEntityGoal = new GoToBlessEntityGoal(this, 41, 40);
+		this.goalSelector.add(41, new SequenceGoal<ClericEntity>(this, ImmutableList.of(
+				goToBlessEntityGoal,
+				new BlessEntityGoal(this, 41, goToBlessEntityGoal)
+				)));
 
 		super.registerBaseGoals();
 	}
 
 	public int getHealTime() {
 		return 20;
+	}
+
+	public int getBlessTime() {
+		return 20;
+	}
+
+	public int getBlessLastingTime() {
+		return  6000;
+	}
+
+	public float getHealAmount() {
+		return 5f;
 	}
 
 }

@@ -85,7 +85,8 @@ public class PathFinder extends EntityNavigation {
 			if (endNode == startNode) {
 				return null;
 			}
-			return this.findPathTo(startNode, endNode, graph);
+			final PathingPath out = this.findPathTo(startNode, endNode, graph);
+			return out;
 		}
 		return null;
 	}

@@ -1,8 +1,8 @@
 package net.denanu.amazia.entities.village.server.goal.cleric;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.ClericEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.minecraft.entity.damage.DamageSource;
 
 public class HealEntityGoal extends TimedVillageGoal<ClericEntity> {
 
@@ -23,7 +23,15 @@ public class HealEntityGoal extends TimedVillageGoal<ClericEntity> {
 
 	@Override
 	protected void takeAction() {
-		Amazia.LOGGER.info("Healed entity");
+		if (this.entity.getTarget() != null) {
+			if (this.entity.getTarget().isUndead()) {
+				this.entity.getTarget().damage(DamageSource.mob(this.entity), this.entity.getHealAmount());
+			}
+			else {
+				this.entity.getTarget().heal(this.entity.getHealAmount());
+			}
+		}
+		this.entity.setTarget(null);
 	}
 
 }
