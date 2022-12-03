@@ -14,6 +14,7 @@ import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.sceduling.opponents.OpponentData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 
 public class GuardSceduler {
@@ -44,6 +45,11 @@ public class GuardSceduler {
 			return null;
 		}
 		target.decrementPriority();
+		if (target.getTarget() instanceof final PlayerEntity player) {
+			if (player.isCreative() || player.isSpectator()) {
+				return this.getOpponent();
+			}
+		}
 		if (target.getPriority() < 0 || !target.getTarget().isAlive() || !this.village.isInVillage(target.getTarget())) {
 			this.enemyQueue.poll();
 			if (target.getTarget().world.getGameRules().getBoolean(AmaziaGameRules.VILLAGE_ENEMIES_GLOW)) {
@@ -56,6 +62,11 @@ public class GuardSceduler {
 
 	public void addOpponent(final Entity entity, final int priority) {
 		if (entity instanceof final LivingEntity living && !(living instanceof AmaziaEntity)) {
+			if (living instanceof final PlayerEntity player) {
+				if (player.isCreative() || player.isSpectator()) {
+					return;
+				}
+			}
 			if (!this.isEnemey(living)) {
 				this.enemyQueue.add(new OpponentData(living, priority));
 			}

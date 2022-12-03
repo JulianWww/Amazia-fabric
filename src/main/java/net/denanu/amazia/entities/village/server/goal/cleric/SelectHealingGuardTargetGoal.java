@@ -22,9 +22,10 @@ public class SelectHealingGuardTargetGoal extends SelectHealingTargetGoal<GuardE
 
 	@Override
 	protected void findClosestTarget() {
-		this.targetEntity =  this.getLowestHpEntity(
-				this.cleric.getVillage().getGuarding().getCombatants()
-				);
-
+		if (this.cleric.hasVillage()) {
+			this.targetEntity =  this.getLowestHpEntity(
+					this.cleric.getVillage().getGuarding().getCombatants()
+					);
+		}
 	}
 }

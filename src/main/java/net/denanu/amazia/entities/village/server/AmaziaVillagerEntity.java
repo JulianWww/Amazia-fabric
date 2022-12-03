@@ -21,6 +21,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InventoryOwner;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -70,7 +71,11 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		this.registerBaseGoals(null, null, addCrafter);
 	}
 	public void registerBaseGoals(final VoidToVoidCallback getItemCallback, final VoidToVoidCallback depositItemCallback, final boolean addCrafter) {
+		this.goalSelector.add(0, new EscapeDangerGoal(this, 3.0f));
 		this.registerNonCombatBaseGoals(getItemCallback, depositItemCallback, addCrafter);
+	}
+	public void registerNonCombatBaseGoals() {
+		this.registerNonCombatBaseGoals(null, null, true);
 	}
 	public void registerNonCombatBaseGoals(final VoidToVoidCallback getItemCallback, final VoidToVoidCallback depositItemCallback, final boolean addCrafter) {
 		if (addCrafter) {

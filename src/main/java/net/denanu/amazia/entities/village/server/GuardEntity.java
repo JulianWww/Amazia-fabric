@@ -142,7 +142,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 		this.targetSelector.add(0, new RevengeGoal(this, PassiveEntity.class));
 		this.targetSelector.add(1, new VillageGuardActiveTargetGoal(this, 10));
 
-		this.registerBaseGoals();
+		this.registerNonCombatBaseGoals();
 	}
 
 	@Override
