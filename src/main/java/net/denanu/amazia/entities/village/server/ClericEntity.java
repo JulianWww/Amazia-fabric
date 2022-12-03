@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableSet;
 import net.denanu.amazia.entities.village.server.goal.cleric.BlessEntityGoal;
 import net.denanu.amazia.entities.village.server.goal.cleric.GoToBlessEntityGoal;
 import net.denanu.amazia.entities.village.server.goal.cleric.HealEntityGoal;
+import net.denanu.amazia.entities.village.server.goal.cleric.SelectHealingGuardTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.cleric.SelectHealingTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.AmaziaGoToTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
@@ -77,8 +78,9 @@ public class ClericEntity extends AmaziaVillagerEntity implements IAnimatable {
 	@Override
 	protected void initGoals() {
 
-		this.targetSelector.add(0, new SelectHealingTargetGoal<AmaziaVillagerEntity>(this, AmaziaVillagerEntity.class, true, AmaziaVillagerEntity::isNotFullHealth));
-		this.targetSelector.add(1, new SelectHealingTargetGoal<PlayerEntity>(this, PlayerEntity.class, true, AmaziaVillagerEntity::isNotFullHealth));
+		this.targetSelector.add(0, new SelectHealingGuardTargetGoal(this, GuardEntity.class, true));
+		this.targetSelector.add(1, new SelectHealingTargetGoal<AmaziaVillagerEntity>(this, AmaziaVillagerEntity.class, true, AmaziaVillagerEntity::isNotFullHealth));
+		this.targetSelector.add(2, new SelectHealingTargetGoal<PlayerEntity>(this, PlayerEntity.class, true, AmaziaVillagerEntity::isNotFullHealth));
 
 		this.goalSelector.add(40, new SequenceGoal<ClericEntity>(this, ImmutableList.of(
 				new AmaziaGoToTargetGoal(this, 40),

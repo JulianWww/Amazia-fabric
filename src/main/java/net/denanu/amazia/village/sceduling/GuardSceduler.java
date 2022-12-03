@@ -1,12 +1,12 @@
 package net.denanu.amazia.village.sceduling;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.commands.AmaziaGameRules;
 import net.denanu.amazia.entities.village.server.AmaziaEntity;
 import net.denanu.amazia.entities.village.server.GuardEntity;
@@ -85,7 +85,8 @@ public class GuardSceduler {
 	public boolean isInCombat() {
 		return !this.combatants.isEmpty();
 	}
-	public Entity getCombatant() {
-		return JJUtils.getRandomSetElement(this.combatants);
+
+	public Collection<? extends LivingEntity> getCombatants() {
+		return this.combatants;
 	}
 }

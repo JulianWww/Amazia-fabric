@@ -1,6 +1,6 @@
 package net.denanu.amazia.entities.village.server.goal.cleric;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
@@ -48,7 +48,7 @@ public class SelectHealingTargetGoal<T extends LivingEntity> extends ActiveTarge
 
 
 	@Nullable
-	public LivingEntity getLowestHpEntity(final List<? extends LivingEntity> entityList) {
+	public LivingEntity getLowestHpEntity(final Collection<? extends LivingEntity> entityList) {
 		float maxHp = -1.0f;
 		LivingEntity target = null;
 		for (final LivingEntity current : entityList) {

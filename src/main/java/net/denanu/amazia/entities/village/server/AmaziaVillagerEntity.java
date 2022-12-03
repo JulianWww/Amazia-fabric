@@ -70,6 +70,9 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		this.registerBaseGoals(null, null, addCrafter);
 	}
 	public void registerBaseGoals(final VoidToVoidCallback getItemCallback, final VoidToVoidCallback depositItemCallback, final boolean addCrafter) {
+		this.registerNonCombatBaseGoals(getItemCallback, depositItemCallback, addCrafter);
+	}
+	public void registerNonCombatBaseGoals(final VoidToVoidCallback getItemCallback, final VoidToVoidCallback depositItemCallback, final boolean addCrafter) {
 		if (addCrafter) {
 			this.goalSelector.add(24, new CraftGoal<AmaziaVillagerEntity>(this, 24));
 		}
