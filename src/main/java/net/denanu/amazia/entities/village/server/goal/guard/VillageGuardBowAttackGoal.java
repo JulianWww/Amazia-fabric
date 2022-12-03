@@ -133,10 +133,10 @@ public class VillageGuardBowAttackGoal extends Goal {
 			}
 			this.combatTicks = 0;
 		}
-
-		if (d > this.squaredRange * 0.75f) {
+		final float rangeMod = target.isBaby() ? 0.3f : 1f;
+		if (d > this.squaredRange * 0.75f * rangeMod) {
 			this.backward = false;
-		} else if (d < this.squaredRange * 0.25f) {
+		} else if (d < this.squaredRange * 0.25f * rangeMod) {
 			this.backward = true;
 		}
 

@@ -1,5 +1,7 @@
 package net.denanu.amazia.entities.village.server.goal;
 
+import javax.annotation.Nullable;
+
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.pathing.PathingPath;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
@@ -7,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> extends BaseAmaziaVillageGoal<E> {
-	private BlockPos targetPos;
+	protected BlockPos targetPos;
 	private boolean isRunning;
 	protected boolean reached;
 	private PathingPath path;
@@ -126,6 +128,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		}
 	}
 
+	@Nullable
 	protected abstract BlockPos getTargetBlock();
 
 	public boolean isRunning() {

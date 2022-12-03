@@ -17,6 +17,7 @@ repositories {
         url = 'https://ladysnake.jfrog.io/artifactory/mods'
     }
 	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+	maven { url 'https://maven.oracle.com' }
 }
 
 dependencies {

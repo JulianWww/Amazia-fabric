@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public class ProjectileTargeting {
-	private static float g = 0.047f;
+	private static float g = 0.051f;
 	private static float d = -0.0104f;
 
 	public static Vec3d getTargeting(final Entity target, final Entity shooter, final double v) {

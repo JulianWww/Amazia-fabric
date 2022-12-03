@@ -85,7 +85,8 @@ public class PathFinder extends EntityNavigation {
 			if (endNode == startNode) {
 				return null;
 			}
-			return this.findPathTo(startNode, endNode, graph);
+			final PathingPath out = this.findPathTo(startNode, endNode, graph);
+			return out;
 		}
 		return null;
 	}
@@ -334,7 +335,7 @@ public class PathFinder extends EntityNavigation {
 
 	@Override
 	public boolean startMovingTo(final double x, final double y, final double z, final double speed) throws RuntimeException {
-		throw new RuntimeException("not implmented as I dont see the use");
+		return this.startMovingAlong(this.findPathTo(x, y, z, 1), speed);
 	}
 
 	@Override

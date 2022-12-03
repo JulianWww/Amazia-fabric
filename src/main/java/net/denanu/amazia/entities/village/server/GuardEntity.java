@@ -142,7 +142,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 		this.targetSelector.add(0, new RevengeGoal(this, PassiveEntity.class));
 		this.targetSelector.add(1, new VillageGuardActiveTargetGoal(this, 10));
 
-		this.registerBaseGoals();
+		this.registerNonCombatBaseGoals();
 	}
 
 	@Override
@@ -300,10 +300,6 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 		this.world.spawnEntity(persistentProjectileEntity);
 	}
 
-	private boolean isLowHp() {
-		return this.getHealth() < this.getMaxHealth() * 0.25f;
-	}
-
 	@Override
 	public boolean damage(final DamageSource source, final float amount) {
 		final boolean out = super.damage(source, amount);
@@ -319,5 +315,23 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 
 	public void endShouldFlee() {
 		this.shouldFlee = false;
+	}
+
+	@Override
+	public void remove(final RemovalReason reason) {
+		super.remove(reason);
+		this.exitCombat();
+	}
+
+	@Override
+	public void enterCombat() {
+		if (this.hasVillage()) {
+			this.village.getGuarding().addCombatant(this);
+		}
+	}
+	public void exitCombat() {
+		if (this.hasVillage()) {
+			this.village.getGuarding().removeCombatant(this);
+		}
 	}
 }
