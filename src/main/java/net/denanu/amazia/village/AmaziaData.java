@@ -18,6 +18,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.recipe.BlastingRecipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.SmokingRecipe;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -28,6 +29,7 @@ public class AmaziaData {
 	public static final ImmutableSet<Item> PLANKS = ImmutableSet.of(Items.ACACIA_PLANKS, Items.BIRCH_PLANKS, Items.CRIMSON_PLANKS, Items.DARK_OAK_PLANKS, Items.JUNGLE_PLANKS, Items.MANGROVE_PLANKS, Items.OAK_PLANKS, Items.SPRUCE_PLANKS, Items.WARPED_PLANKS);
 	public static       ArrayList<Item> ENCHANTABLES;
 	public static       ArrayList<Item> BLASTABLES;
+	public static       ArrayList<Item> SMOKABLES;
 	public static       ImmutableList<Item> BLACKSMITH_CRAFTING_ITEMS;
 	public static       ArrayList<SwordItem> MELEE_WEAPONS;
 	public static 		ArrayList<ArmorItem> HEAD_ARMOR;
@@ -62,6 +64,20 @@ public class AmaziaData {
 			}
 		}
 		AmaziaData.BLASTABLES.trimToSize();
+	}
+
+	public static void buildSmokables(final MinecraftServer server) {
+		AmaziaData.SMOKABLES = new ArrayList<Item>();
+		final List<SmokingRecipe> recipes = ((RecipeManagerMixinAcessor) server.getRecipeManager()).invokeListAllOfType(RecipeType.SMOKING);
+		for (final SmokingRecipe recipe : recipes) {
+			assert recipe.getIngredients().size() == 1;
+			for (final ItemStack stack : recipe.getIngredients().get(0).getMatchingStacks()) {
+				if (stack.getItem().getClass() == Item.class) {
+					AmaziaData.SMOKABLES.add(stack.getItem());
+				}
+			}
+		}
+		AmaziaData.SMOKABLES.trimToSize();
 	}
 
 	public static void buildGuardUsables() {

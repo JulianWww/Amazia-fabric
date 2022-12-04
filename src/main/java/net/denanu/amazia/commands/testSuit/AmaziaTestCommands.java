@@ -22,6 +22,7 @@ public class AmaziaTestCommands {
 		value.then(CommandManager.literal("blastingItems").			executes(AmaziaTestCommands::spawnBlastingItems));
 		value.then(CommandManager.literal("blacksmithCraftables").	executes(AmaziaTestCommands::spawnBlacksmithCraftableItems));
 		value.then(CommandManager.literal("guardUsable").			executes(AmaziaTestCommands::spawnGuardUsableItems));
+		value.then(CommandManager.literal("smokableItems").			executes(AmaziaTestCommands::spawnSmeltingItems));
 
 		return value;
 	}
@@ -40,6 +41,14 @@ public class AmaziaTestCommands {
 	private static int spawnBlastingItems(final CommandContext<ServerCommandSource> context) {
 		final Vec3d pos = context.getSource().getPosition();
 		for (final Item item : AmaziaData.BLASTABLES) {
+			AmaziaTestCommands.spawn(context, item, pos);
+		}
+		AmaziaTestCommands.spawn(context, Items.COAL, pos);
+		return 1;
+	}
+	private static int spawnSmeltingItems(final CommandContext<ServerCommandSource> context) {
+		final Vec3d pos = context.getSource().getPosition();
+		for (final Item item : AmaziaData.SMOKABLES) {
 			AmaziaTestCommands.spawn(context, item, pos);
 		}
 		AmaziaTestCommands.spawn(context, Items.COAL, pos);

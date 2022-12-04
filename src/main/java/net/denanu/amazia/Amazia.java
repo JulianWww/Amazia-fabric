@@ -121,6 +121,7 @@ public class Amazia implements ModInitializer {
 		Amazia.BLACKSMITH_CRAFTABLES= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, AmaziaData.buildBlacksmithCraftables());
 
 		AmaziaData.buildBlastables(server);
+		AmaziaData.buildSmokables(server);
 		AmaziaData.buildGuardUsables();
 	}
 }
