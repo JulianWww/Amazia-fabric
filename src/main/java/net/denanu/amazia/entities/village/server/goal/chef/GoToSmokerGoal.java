@@ -1,13 +1,12 @@
-package net.denanu.amazia.entities.village.server.goal.blacksmithing;
+package net.denanu.amazia.entities.village.server.goal.chef;
 
-import net.denanu.amazia.entities.village.server.BlacksmithEntity;
+import net.denanu.amazia.entities.village.server.ChefEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal;
 import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
 import net.minecraft.util.math.BlockPos;
 
-public class GoToBlastFurnaceGoal extends AmaziaGoToBlockGoal<BlacksmithEntity> {
-
-	public GoToBlastFurnaceGoal(final BlacksmithEntity e, final int priority) {
+public class GoToSmokerGoal extends AmaziaGoToBlockGoal<ChefEntity> {
+	public GoToSmokerGoal(final ChefEntity e, final int priority) {
 		super(e, priority);
 	}
 
@@ -35,7 +34,7 @@ public class GoToBlastFurnaceGoal extends AmaziaGoToBlockGoal<BlacksmithEntity> 
 		if (table == null) {
 			return null;
 		}
-		this.entity.setTargetPos(table.getPos());
+		//this.entity.setTargetPos(table.getPos());
 		return table.getAccessPoint();
 	}
 

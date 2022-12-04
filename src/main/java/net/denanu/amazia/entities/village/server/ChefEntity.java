@@ -3,6 +3,8 @@ package net.denanu.amazia.entities.village.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.denanu.amazia.JJUtils;
+import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
@@ -18,7 +20,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class ChefEntity extends AmaziaVillagerEntity implements IAnimatable {
+public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatable {
 	AnimationFactory factory = new AnimationFactory(this);
 
 	public ChefEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
@@ -59,4 +61,13 @@ public class ChefEntity extends AmaziaVillagerEntity implements IAnimatable {
 		return this.factory;
 	}
 
+	@Override
+	public void findSmeltingItem() {
+		this.findSmeltingItem(AmaziaData.SMOKABLES);
+	}
+
+	@Override
+	public void requestSmeltable() {
+		this.requestItem(JJUtils.getRandomListElement(AmaziaData.SMOKABLES));
+	}
 }

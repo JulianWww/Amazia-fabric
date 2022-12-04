@@ -1,5 +1,6 @@
 package net.denanu.amazia.entities.village.server.goal.blacksmithing;
 
+import net.denanu.amazia.entities.village.server.AmaziaSmelterVillagerEntity;
 import net.denanu.amazia.entities.village.server.BlacksmithEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.InteractWithContainerGoal;
@@ -7,7 +8,7 @@ import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 
-public class PutItemsInFurnaceGoal extends TimedVillageGoal<BlacksmithEntity> {
+public class PutItemsInFurnaceGoal<E extends AmaziaSmelterVillagerEntity> extends TimedVillageGoal<BlacksmithEntity> {
 
 	public PutItemsInFurnaceGoal(final BlacksmithEntity e, final int priority) {
 		super(e, priority);
@@ -17,7 +18,7 @@ public class PutItemsInFurnaceGoal extends TimedVillageGoal<BlacksmithEntity> {
 	public boolean canStart() {
 		return
 				super.canStart() &&
-				this.entity.canBlast() &&
+				this.entity.canSmelt() &&
 				this.entity.getBlockPos().getManhattanDistance(this.entity.getTargetPos()) <= 2;
 	}
 
@@ -28,9 +29,9 @@ public class PutItemsInFurnaceGoal extends TimedVillageGoal<BlacksmithEntity> {
 
 	@Override
 	protected void takeAction() {
-		if (this.entity.getBlatingItem().isPresent() && this.entity.hasCoal()) {
+		if (this.entity.getSmeltingItem().isPresent() && this.entity.hasCoal()) {
 			if (((ServerWorld)this.entity.world).getBlockEntity(this.entity.getTargetPos()) instanceof final AbstractFurnaceBlockEntity furnace) {
-				this.moveItems(this.entity.getBlatingItem().get(), 0, furnace);
+				this.moveItems(this.entity.getSmeltingItem().get(), 0, furnace);
 
 				for (int i=0; i<this.entity.getInventory().size(); i++) {
 					this.moveItems(i, 1, furnace);
@@ -38,7 +39,7 @@ public class PutItemsInFurnaceGoal extends TimedVillageGoal<BlacksmithEntity> {
 
 				furnace.setStack(2, this.entity.getInventory().addStack(furnace.getStack(2)));
 
-				this.entity.requestBlastable();
+				this.entity.requestSmeltable();
 			}
 		}
 

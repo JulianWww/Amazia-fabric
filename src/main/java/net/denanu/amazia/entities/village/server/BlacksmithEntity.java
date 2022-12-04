@@ -2,7 +2,6 @@ package net.denanu.amazia.entities.village.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -28,7 +27,6 @@ import net.minecraft.item.Items;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.ToolMaterials;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -41,7 +39,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class BlacksmithEntity extends AmaziaVillagerEntity implements IAnimatable {
+public class BlacksmithEntity extends AmaziaSmelterVillagerEntity implements IAnimatable {
 	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COAL, 64);
 
@@ -57,19 +55,11 @@ public class BlacksmithEntity extends AmaziaVillagerEntity implements IAnimatabl
 
 	// entity
 
-	private Optional<Integer> blastingItem;
-	private int amountOfCoal;
-
 	private final AnimationFactory factory = new AnimationFactory(this);
 	@Nullable
-	private BlockPos targetPos;
-	@Nullable
 	private BlockPos targetAnvilPos;
-	public boolean shouldDeposit;
 	public BlacksmithEntity(final EntityType<? extends PassiveEntity> entityType, final World world)  {
 		super(entityType, world);
-		this.blastingItem = Optional.empty();
-		this.shouldDeposit = false;
 	}
 
 	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
@@ -102,22 +92,6 @@ public class BlacksmithEntity extends AmaziaVillagerEntity implements IAnimatabl
 	}
 
 	@Override
-	public void writeCustomDataToNbt(final NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		if (this.blastingItem.isPresent()) {
-			nbt.putInt("blastingItem", this.blastingItem.get());
-		}
-		nbt.putInt("amountOfCoal", this.amountOfCoal);
-	}
-
-	@Override
-	public void readCustomDataFromNbt(final NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-		this.blastingItem = Optional.ofNullable(nbt.getInt("blastingItem"));
-		this.scanForCoal();
-	}
-
-	@Override
 	protected void initGoals() {
 		this.goalSelector.add(50, new SequenceGoal<BlacksmithEntity>(this, ImmutableList.of(
 				new GoToBlastFurnaceGoal(this, 50),
@@ -142,78 +116,10 @@ public class BlacksmithEntity extends AmaziaVillagerEntity implements IAnimatabl
 		return Amazia.BLACKSMITH_CRAFTABLES;
 	}
 
-	public void requestCoal() {
-		this.requestItem(Items.COAL);
-	}
-
-	@Override
-	public boolean canDepositItems() {
-		return !this.hasFreeSlot() || this.shouldDeposit;
-	}
-
-	public void sceduleDepositing() {
-		this.shouldDeposit = true;
-	}
-
-	public boolean canBlast() {
-		this.findBlastingItem();
-		return this.blastingItem.isPresent();
-	}
-
-	public boolean canOrFindBlast() {
-		if (!this.canBlast()) {
-			this.findBlastingItem();
-		}
-		return this.canBlast();
-	}
-
-	public Optional<Integer> getBlatingItem() {
-		return this.blastingItem;
-	}
-
-	public void findBlastingItem() {
-		this.blastingItem = Optional.empty();
-		for (int i = 0; i<this.getInventory().size(); i++) {
-			if (AmaziaData.BLASTABLES.contains(this.getInventory().getStack(i).getItem())) {
-				this.blastingItem = Optional.of(i);
-				return;
-			}
-		}
-	}
-
-	public void requestBlastable() {
-		this.requestItem(JJUtils.getRandomListElement(AmaziaData.BLASTABLES));
-	}
-
-	public void setTargetPos(final BlockPos pos) {
-		this.targetPos = pos;
-	}
-
-	public BlockPos getTargetPos() {
-		return this.targetPos;
-	}
-
-	public boolean hasCoal() {
-		return this.amountOfCoal > 3;
-	}
-
-	public boolean requestCoalOrCanRun() {
-		if (!this.hasCoal() && this.age % 200 == 0) {
-			this.requestCoal();
-		}
-		return this.hasCoal();
-	}
-
 	public void requestCraftable() {
 		if (!this.wantsToCraft() && this.hasVillage()) {
 			this.tryCraftingStart(JJUtils.getRandomListElement(AmaziaData.BLACKSMITH_CRAFTING_ITEMS));
 		}
-	}
-
-	public void scanForCoal() {
-		this.amountOfCoal = Math.max(this.countItems(Items.COAL), this.countItems(Items.CHARCOAL));
-		this.findBlastingItem();
-		this.shouldDeposit = false;
 	}
 
 	public BlockPos getTargetAnvilPos() {
@@ -227,5 +133,13 @@ public class BlacksmithEntity extends AmaziaVillagerEntity implements IAnimatabl
 	@Override
 	public boolean canCraft () {
 		return false;
+	}
+	@Override
+	public void findSmeltingItem() {
+		this.findSmeltingItem(AmaziaData.BLASTABLES);
+	}
+	@Override
+	public void requestSmeltable() {
+		this.requestItem(JJUtils.getRandomListElement(AmaziaData.BLASTABLES));
 	}
 }
