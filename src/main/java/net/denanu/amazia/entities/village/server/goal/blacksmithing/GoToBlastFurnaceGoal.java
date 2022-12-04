@@ -1,13 +1,13 @@
 package net.denanu.amazia.entities.village.server.goal.blacksmithing;
 
-import net.denanu.amazia.entities.village.server.BlacksmithEntity;
+import net.denanu.amazia.entities.village.server.AmaziaSmelterVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal;
-import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
+import net.denanu.amazia.village.sceduling.utils.BlockAreaPathingData;
 import net.minecraft.util.math.BlockPos;
 
-public class GoToBlastFurnaceGoal extends AmaziaGoToBlockGoal<BlacksmithEntity> {
+public class GoToBlastFurnaceGoal<E extends AmaziaSmelterVillagerEntity> extends AmaziaGoToBlockGoal<E> {
 
-	public GoToBlastFurnaceGoal(final BlacksmithEntity e, final int priority) {
+	public GoToBlastFurnaceGoal(final E e, final int priority) {
 		super(e, priority);
 	}
 
@@ -21,17 +21,21 @@ public class GoToBlastFurnaceGoal extends AmaziaGoToBlockGoal<BlacksmithEntity> 
 	}
 
 	public boolean hasOrRequestBlastableItem() {
-		if (this.entity.canBlast()) {
+		if (this.entity.canSmelt()) {
 			return true;
 		}
 		if (!this.entity.hasRequestedItems() && this.entity.age % 200 == 0) {
-			this.entity.requestBlastable();
+			this.entity.requestSmeltable();
 		}
 		return false;
 	}
 
+	protected BlockAreaPathingData<?> getTarget() {
+		return this.entity.getVillage().getBlasting().getLocation();
+	}
+
 	protected BlockPos subGetTargetBlock() {
-		final DoubleDownPathingData  table = this.entity.getVillage().getBlasting().getLocation();
+		final BlockAreaPathingData<?> table = this.getTarget();
 		if (table == null) {
 			return null;
 		}

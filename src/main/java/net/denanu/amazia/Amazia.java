@@ -50,6 +50,7 @@ public class Amazia implements ModInitializer {
 	public static HashMap<Item,ArrayList<CraftingRecipe>> MINER_CRAFTS;
 	public static HashMap<Item,ArrayList<CraftingRecipe>> LUMBERJACK_CRAFTS;
 	public static HashMap<Item,ArrayList<CraftingRecipe>> BLACKSMITH_CRAFTABLES;
+	public static HashMap<Item,ArrayList<CraftingRecipe>> CHEF_CRAFTABLES;
 
 
 
@@ -119,8 +120,10 @@ public class Amazia implements ModInitializer {
 		Amazia.MINER_CRAFTS 		= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, Amazia.union(MinerEntity.CRAFTABLES,			AmaziaData.PLANKS));
 		Amazia.LUMBERJACK_CRAFTS	= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, Amazia.union(LumberjackEntity.CRAFTABLES,		AmaziaData.PLANKS));
 		Amazia.BLACKSMITH_CRAFTABLES= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, AmaziaData.buildBlacksmithCraftables());
+		Amazia.CHEF_CRAFTABLES		= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, AmaziaData.COOK_CRAFTABLE);
 
 		AmaziaData.buildBlastables(server);
+		AmaziaData.buildSmokables(server);
 		AmaziaData.buildGuardUsables();
 	}
 }

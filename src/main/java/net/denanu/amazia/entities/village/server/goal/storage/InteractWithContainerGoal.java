@@ -26,9 +26,9 @@ public abstract class InteractWithContainerGoal extends TimedVillageGoal<AmaziaV
 	}
 
 	private boolean isWithinRange() {
-		return Math.abs(this.getContainerPos().getPos().getX() + 0.5 - this.entity.getX()) < 1.5 &&
+		return Math.abs(this.getContainerPos().getPos().getX() + 0.5 - this.entity.getX()) < 2 &&
 				Math.abs(this.getContainerPos().getPos().getY() + 0.5 - this.entity.getY()) < 4 &&
-				Math.abs(this.getContainerPos().getPos().getZ() + 0.5 - this.entity.getZ()) < 1.5;
+				Math.abs(this.getContainerPos().getPos().getZ() + 0.5 - this.entity.getZ()) < 2;
 	}
 
 	@Override
