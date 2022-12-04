@@ -25,7 +25,6 @@ import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
@@ -56,7 +55,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	}
 
 	public static DefaultAttributeContainer.Builder setAttributes() {
-		return MobEntity.createMobAttributes()
+		return AmaziaEntity.setAttributes()
 				.add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
 				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.17f);
 	}

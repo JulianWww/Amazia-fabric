@@ -20,6 +20,7 @@ import net.denanu.amazia.economy.EconomyFactory;
 import net.denanu.amazia.economy.ProfessionFactory;
 import net.denanu.amazia.economy.offerModifiers.price.AmaziaValueModifiers;
 import net.denanu.amazia.entities.AmaziaEntities;
+import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.village.server.FarmerEntity;
 import net.denanu.amazia.entities.village.server.LumberjackEntity;
 import net.denanu.amazia.entities.village.server.MinerEntity;
@@ -96,6 +97,7 @@ public class Amazia implements ModInitializer {
 
 		// Registry
 		AmaziaRegistrys.setup();
+		AmaziaEntityAttributes.setup();
 
 		// static data generated on runtime files
 		AmaziaData.setup();

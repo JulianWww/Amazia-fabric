@@ -4,9 +4,11 @@ import org.apache.logging.log4j.core.tools.picocli.CommandLine.InitializationExc
 
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
+import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.moods.ServerMoodEmiter;
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.server.controll.AmaziaEntityMoveControl;
+import net.denanu.amazia.mechanics.hunger.AmaziaFoodConsumerEntity;
 import net.denanu.amazia.pathing.PathFinder;
 import net.denanu.amazia.utils.CuboidSampler;
 import net.denanu.amazia.utils.nbt.NbtUtils;
@@ -15,7 +17,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -25,11 +29,12 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class AmaziaEntity extends PassiveEntity {
+public class AmaziaEntity extends PassiveEntity implements AmaziaFoodConsumerEntity {
 	protected Village village;
 	protected BlockPos villageCorePos;
 	private CuboidSampler villageSampler;
 	private final int SCAN_ATTEMTS = 10;
+	protected double hunger;
 
 	private int currentlyRunnginGoal = -1;
 
@@ -37,11 +42,17 @@ public class AmaziaEntity extends PassiveEntity {
 		super(entityType, world);
 		this.cannotDespawn();
 		this.moveControl = new AmaziaEntityMoveControl(this);
+		this.hunger = this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER);
 	}
 
 	@Override
 	public AmaziaEntityMoveControl getMoveControl() {
 		return (AmaziaEntityMoveControl)this.moveControl;
+	}
+
+	public static DefaultAttributeContainer.Builder setAttributes() {
+		return MobEntity.createMobAttributes()
+				.add(AmaziaEntityAttributes.MAX_HUNGER, 20f);
 	}
 
 	@Deprecated
@@ -196,4 +207,18 @@ public class AmaziaEntity extends PassiveEntity {
 		return super.damage(source, amount);
 	}
 
+	@Override
+	public void reduceFood(final float amount) {
+		this.hunger = Math.max(
+				this.hunger - amount,
+				0.0);
+	}
+
+	@Override
+	public void eatFood(final float amount) {
+		this.hunger = Math.min(
+				this.hunger + amount,
+				this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER)
+				);
+	}
 }
