@@ -179,8 +179,9 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		return count;
 	}
 
-
+	@Nullable
 	public abstract Triplet<ItemStack, Integer, Integer> getDepositableItems();
+	@Nullable
 	public abstract HashMap<Item,ArrayList<CraftingRecipe>> getCraftables();
 
 	protected Map<Item, Integer> getItemCounts(final Map<Item, Integer> minItems) {

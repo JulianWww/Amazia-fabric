@@ -1,16 +1,15 @@
 package net.denanu.amazia.entities.village.server.goal.blacksmithing;
 
 import net.denanu.amazia.entities.village.server.AmaziaSmelterVillagerEntity;
-import net.denanu.amazia.entities.village.server.BlacksmithEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.InteractWithContainerGoal;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 
-public class PutItemsInFurnaceGoal<E extends AmaziaSmelterVillagerEntity> extends TimedVillageGoal<BlacksmithEntity> {
+public class PutItemsInFurnaceGoal<E extends AmaziaSmelterVillagerEntity> extends TimedVillageGoal<E> {
 
-	public PutItemsInFurnaceGoal(final BlacksmithEntity e, final int priority) {
+	public PutItemsInFurnaceGoal(final E e, final int priority) {
 		super(e, priority);
 	}
 

@@ -24,6 +24,11 @@ public class CraftGoal<E extends AmaziaVillagerEntity> extends TimedVillageGoal<
 
 	@Override
 	protected void takeAction() {
+		this.takeCraftAction();
+		this.entity.endCraft();
+	}
+
+	public void takeCraftAction() {
 		if (this.entity.wantsToCraft() && CraftGoal.canCraft(this.entity)) {
 			this.craft();
 		}
@@ -36,7 +41,6 @@ public class CraftGoal<E extends AmaziaVillagerEntity> extends TimedVillageGoal<
 		ItemStack outStack = this.entity.getWantsToCraft().getOutput().copy();
 		outStack = this.entity.getInventory().addStack(outStack);
 		this.entity.dropStack(outStack);
-		this.entity.endCraft();
 	}
 
 	public static<E extends AmaziaVillagerEntity> boolean canCraft(final E entity) {

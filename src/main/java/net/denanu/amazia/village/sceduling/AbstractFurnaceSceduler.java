@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.components.AmaziaBlockComponents;
 import net.denanu.amazia.utils.nbt.NbtUtils;
@@ -49,18 +51,20 @@ public class AbstractFurnaceSceduler extends FacingPathingVillageSceduler {
 
 	@Override
 	public void discover(final ServerWorld world, final BlockPos pos) {
-		if (world.getBlockState(pos).getBlock().getClass() == this.toFind && !this.location.contains(pos)) {
-			this.location.add(pos);
-			this.setChanged();
-			VillageSceduler.markBlockAsFound(pos, world);
+		if (world.getBlockState(pos).getBlock().getClass() == this.toFind) {
+			if (!this.location.contains(pos)) {
+				this.location.add(pos);
+				this.setChanged();
+				VillageSceduler.markBlockAsFound(pos, world);
 
-			final BlockEntity entity = world.getBlockEntity(pos);
-			AmaziaBlockComponents.addVillage(entity, this.getVillage());
-			if (entity instanceof final AbstractFurnaceBlockEntity furnace) {
-				if (furnace.getStack(0).isEmpty()) {
-					this.available.add(pos);
+				final BlockEntity entity = world.getBlockEntity(pos);
+				AmaziaBlockComponents.addVillage(entity, this.getVillage());
+				if (entity instanceof final AbstractFurnaceBlockEntity furnace) {
+					if (furnace.getStack(0).isEmpty()) {
+						this.available.add(pos);
+					}
+					this.addPathingOption(pos);
 				}
-				this.addPathingOption(pos);
 			}
 		} else if (this.location.remove(pos)) {
 			this.available.remove(pos);
@@ -89,9 +93,18 @@ public class AbstractFurnaceSceduler extends FacingPathingVillageSceduler {
 		this.available.remove(pos);
 	}
 
+	@Nullable
 	public DoubleDownPathingData getLocation() {
-		if (this.pathing.size() > 0) {
+		if (!this.pathing.isEmpty()) {
 			return this.pathing.get(JJUtils.getRandomListElement(this.available));
+		}
+		return null;
+	}
+
+	@Nullable
+	public DoubleDownPathingData getKitchenLocation() {
+		if (!this.location.isEmpty()) {
+			return this.pathing.get(JJUtils.getRandomListElement(this.location));
 		}
 		return null;
 	}

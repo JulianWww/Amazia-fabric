@@ -5,20 +5,31 @@ import java.util.Optional;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import oshi.util.tuples.Triplet;
 
 public abstract class AmaziaSmelterVillagerEntity extends AmaziaVillagerEntity {
+	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
+	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COAL, 64);
+
+
 	private Optional<Integer> blastingItem;
 	private int amountOfCoal;
 	@Nullable
 	private BlockPos targetPos;
 	public boolean shouldDeposit;
+	@Nullable
+	private BlockPos targetCraftPos;
 
 	protected AmaziaSmelterVillagerEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
@@ -106,4 +117,27 @@ public abstract class AmaziaSmelterVillagerEntity extends AmaziaVillagerEntity {
 		this.findSmeltingItem();
 		this.shouldDeposit = false;
 	}
+
+	@Override
+	public Triplet<ItemStack, Integer, Integer> getDepositableItems() {
+		return this.getDepositableItems(BlacksmithEntity.USABLE_ITEMS, BlacksmithEntity.REQUIRED_ITEMS);
+	}
+
+	public void setTargetCraftingLocPos(final BlockPos targetCraftPos) {
+		this.targetCraftPos = targetCraftPos;
+	}
+
+	public BlockPos getTargetCraftPos() {
+		return this.targetCraftPos;
+	}
+
+	@Override
+	public void mobTick() {
+		super.mobTick();
+		if (this.age % 200 == 0) {
+			this.requestCraftable();
+		}
+	}
+
+	public abstract void requestCraftable();
 }
