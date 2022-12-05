@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.entities.village.server.BlacksmithEntity;
+import net.denanu.amazia.mechanics.hunger.AmaziaFoodData;
 import net.denanu.amazia.mixin.RecipeManagerMixinAcessor;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
@@ -41,6 +42,7 @@ public class AmaziaData {
 
 	public static void setup() {
 		AmaziaData.getEnchantables();
+		AmaziaFoodData.setup();
 	}
 
 	private static void getEnchantables() {

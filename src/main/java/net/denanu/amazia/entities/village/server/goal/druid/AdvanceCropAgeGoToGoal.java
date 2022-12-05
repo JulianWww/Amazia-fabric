@@ -9,10 +9,6 @@ public class AdvanceCropAgeGoToGoal extends AmaziaGoToBlockGoal<DruidEntity> {
 		super(e, priority);
 	}
 
-	public AdvanceCropAgeGoToGoal(final DruidEntity e, final int priority, final float speed) {
-		super(e, priority, speed);
-	}
-
 	@Override
 	protected BlockPos getTargetBlock() {
 		return this.entity.setToRegrow(this.entity.getVillage().getFarming().getGrowing());

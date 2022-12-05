@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal.cleric;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.ClericEntity;
+import net.denanu.amazia.entities.village.server.goal.BaseAmaziaGoToBlockGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.AmaziaGoToEntityGoal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -17,10 +18,10 @@ public class GoToBlessEntityGoal extends AmaziaGoToEntityGoal<ClericEntity> {
 	private Entity lastTargetEntity;
 
 	public GoToBlessEntityGoal(final ClericEntity e, final int priority, final int chance) {
-		this(e, priority, chance, 1.0f);
+		this(e, priority, chance, BaseAmaziaGoToBlockGoal.BASE_FOOD_USAGE, 1.0f);
 	}
-	public GoToBlessEntityGoal(final ClericEntity e, final int priority, final int chance, final float speed) {
-		super(e, priority, speed);
+	public GoToBlessEntityGoal(final ClericEntity e, final int priority, final int chance, final int food, final float speed) {
+		super(e, priority, food, speed);
 		this.reciprocalChance = chance;
 
 		this.canTargetPlayers = TargetPredicate.createNonAttackable().setBaseMaxDistance(25).setPredicate(GoToBlessEntityGoal::canBlessPlayer);

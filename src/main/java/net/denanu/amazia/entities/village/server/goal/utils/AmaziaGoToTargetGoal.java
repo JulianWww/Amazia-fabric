@@ -8,8 +8,11 @@ public class AmaziaGoToTargetGoal extends AmaziaGoToEntityGoal<AmaziaVillagerEnt
 	public AmaziaGoToTargetGoal(final AmaziaVillagerEntity e, final int priority) {
 		super(e, priority);
 	}
-	public AmaziaGoToTargetGoal(final AmaziaVillagerEntity e, final int priority, final float speed) {
-		super(e, priority, speed);
+	public AmaziaGoToTargetGoal(final AmaziaVillagerEntity e, final int priority, final int food) {
+		super(e, priority, food);
+	}
+	public AmaziaGoToTargetGoal(final AmaziaVillagerEntity e, final int priority, final int food, final float speed) {
+		super(e, priority, food, speed);
 	}
 
 	@Override

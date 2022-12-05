@@ -8,8 +8,6 @@ import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.moods.ServerMoodEmiter;
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.server.controll.AmaziaEntityMoveControl;
-import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
-import net.denanu.amazia.mechanics.hunger.AmaziaFoodConsumerEntity;
 import net.denanu.amazia.pathing.PathFinder;
 import net.denanu.amazia.utils.CuboidSampler;
 import net.denanu.amazia.utils.nbt.NbtUtils;
@@ -22,24 +20,19 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class AmaziaEntity extends PassiveEntity implements AmaziaFoodConsumerEntity, AmaziaMechanicsGuiEntity {
+public class AmaziaEntity extends PassiveEntity {
 	protected Village village;
 	protected BlockPos villageCorePos;
 	private CuboidSampler villageSampler;
 	private final int SCAN_ATTEMTS = 10;
-	protected double hunger;
 
 	private int currentlyRunnginGoal = -1;
 
@@ -47,7 +40,6 @@ public class AmaziaEntity extends PassiveEntity implements AmaziaFoodConsumerEnt
 		super(entityType, world);
 		this.cannotDespawn();
 		this.moveControl = new AmaziaEntityMoveControl(this);
-		this.hunger = this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER);
 	}
 
 	@Override
@@ -210,42 +202,5 @@ public class AmaziaEntity extends PassiveEntity implements AmaziaFoodConsumerEnt
 			this.getVillage().getGuarding().addOpponent(source.getAttacker(), 10);
 		}
 		return super.damage(source, amount);
-	}
-
-	@Override
-	public void reduceFood(final float amount) {
-		this.hunger = Math.max(
-				this.hunger - amount,
-				0.0);
-	}
-
-	@Override
-	public void eatFood(final float amount) {
-		this.hunger = Math.min(
-				this.hunger + amount,
-				this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER)
-				);
-	}
-
-	@Override
-	public double getHunger() {
-		return this.hunger;
-	}
-
-	@Override
-	public ActionResult interactMob(final PlayerEntity player, final Hand hand) {
-		if (this.isAlive()) {
-			if (hand == Hand.MAIN_HAND) {
-				player.incrementStat(Stats.TALKED_TO_VILLAGER);
-			}
-			/*if (this.getOffers().isEmpty()) {
-                return ActionResult.success(this.world.isClient);
-            }*/
-			if (!this.world.isClient) {
-				this.sendVillagerData(player, this.getName());
-			}
-			return ActionResult.success(this.world.isClient);
-		}
-		return super.interactMob(player, hand);
 	}
 }

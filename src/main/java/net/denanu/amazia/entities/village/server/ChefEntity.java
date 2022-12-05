@@ -47,7 +47,7 @@ public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatab
 	@Override
 	@Nullable
 	public Triplet<ItemStack, Integer, Integer> getDepositableItems() {
-		return this.getDepositableItems(BlacksmithEntity.USABLE_ITEMS, BlacksmithEntity.REQUIRED_ITEMS);
+		return this.getDepositableItems(ChefEntity.USABLE_ITEMS, ChefEntity.REQUIRED_ITEMS);
 	}
 
 	@Override

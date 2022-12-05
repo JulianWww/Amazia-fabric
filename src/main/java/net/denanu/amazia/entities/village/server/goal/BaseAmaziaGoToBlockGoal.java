@@ -3,12 +3,14 @@ package net.denanu.amazia.entities.village.server.goal;
 import javax.annotation.Nullable;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.pathing.PathingPath;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> extends BaseAmaziaVillageGoal<E> {
+	public static final int BASE_FOOD_USAGE = 200;
 	protected BlockPos targetPos;
 	private boolean isRunning;
 	protected boolean reached;
@@ -17,13 +19,19 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 	private float speed = 1.0f;
 	private int ticksStanding;
 	private boolean directMovement;
+	private final int foodUsage;
 
 	public BaseAmaziaGoToBlockGoal(final E e, final int priority) {
-		super(e, priority);
+		this(e, priority, BaseAmaziaGoToBlockGoal.BASE_FOOD_USAGE, 1.0f);
 	}
-	public BaseAmaziaGoToBlockGoal(final E e, final int priority, final float speed) {
+
+	public BaseAmaziaGoToBlockGoal(final E e, final int priority, final int foodUsage) {
+		this(e, priority, foodUsage, 1.0f);
+	}
+	public BaseAmaziaGoToBlockGoal(final E e, final int priority, final int foodUsage, final float speed) {
 		super(e, priority);
 		this.speed = speed;
+		this.foodUsage = foodUsage;
 	}
 
 	@Override
@@ -91,6 +99,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		else {
 			this.reached = true;
 		}
+		ActivityFoodConsumerMap.WalkUseFood(this.entity, this.foodUsage);
 	}
 
 	private void runBackupMotion() {

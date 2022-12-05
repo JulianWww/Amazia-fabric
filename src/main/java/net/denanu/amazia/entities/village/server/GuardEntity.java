@@ -113,6 +113,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 		for (int idx=0; idx < this.getInventory().size(); idx++) {
 			stack = this.getInventory().getStack(idx);
 			if (
+					!this.wantToKeepItemInSlot(idx) &&
 					(!this.hasBow() || this.bowLocation.get() != idx) &&
 					(!this.hasSword() || this.swordLocation.get() != idx) &&
 					!(stack.getItem() instanceof ArmorItem) &&
@@ -135,7 +136,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 
 	@Override
 	protected void initGoals() {
-		this.goalSelector.add(1, new LeaveCombatGoal(this, 1, 3.0f));
+		this.goalSelector.add(1, new LeaveCombatGoal(this, 1, 50, 3.0f));
 		this.goalSelector.add(2, new VillageGuardBowAttackGoal(this, 2f, 50, 50.0f));
 		this.goalSelector.add(3, new GuardMeleeAttackGoal(this, 2.0, true));
 

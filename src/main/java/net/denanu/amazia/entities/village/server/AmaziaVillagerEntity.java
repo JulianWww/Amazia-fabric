@@ -5,15 +5,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
+import net.denanu.amazia.GUI.AmaziaVillagerUIScreenHandler;
+import net.denanu.amazia.entities.AmaziaEntityAttributes;
+import net.denanu.amazia.entities.village.server.goal.mechanics.hunger.EatGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.CraftGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.DepositItemGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.GetItemGoal;
+import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
+import net.denanu.amazia.mechanics.hunger.AmaziaFood;
+import net.denanu.amazia.mechanics.hunger.AmaziaFoodConsumerEntity;
+import net.denanu.amazia.mechanics.hunger.AmaziaFoodData;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.utils.crafting.CraftingUtils;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -25,7 +33,12 @@ import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.InventoryChangedListener;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,25 +46,60 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.stat.Stats;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
-public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner {
+public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner, AmaziaFoodConsumerEntity, AmaziaMechanicsGuiEntity, InventoryChangedListener {
 	private final SimpleInventory inventory = new SimpleInventory(16);
 	private List<Item> requestedItems;
 	private CraftingRecipe wantsToCraft;
 	private Map<Item, Integer> craftInput;
 	private boolean isDeposeting = false;
 
+	protected float hunger;
+
+	private Optional<Integer> bestFoodItem;
+
+	private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
+		@Override
+		public int get(final int index) {
+			return switch (index) {
+			case 0 -> (int) AmaziaVillagerEntity.this.getHealth();
+			case 1 -> (int) AmaziaVillagerEntity.this.hunger;
+			default -> 0;
+			};
+		}
+
+		@Override
+		public void set(final int index, final int value) {
+			switch (index) {
+			case 0 -> AmaziaVillagerEntity.this.setHealth(value);
+			}
+		}
+
+		@Override
+		public int size() {
+			return 2;
+		}
+	};
+
 	protected AmaziaVillagerEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
 		this.setCanPickUpLoot(true);
 		this.requestedItems = new ArrayList<Item>();
 		this.craftInput = null;
+		this.hunger = (float) this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER);
+		this.bestFoodItem = Optional.empty();
+
+		this.inventory.addListener(this);
 	}
 
 	public static DefaultAttributeContainer.Builder setAttributes() {
@@ -80,6 +128,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		if (addCrafter) {
 			this.goalSelector.add(24, new CraftGoal<AmaziaVillagerEntity>(this, 24));
 		}
+		this.goalSelector.add(10, new EatGoal(this));
 		this.goalSelector.add(25, new GetItemGoal(this, 25, getItemCallback));
 		this.goalSelector.add(99, new DepositItemGoal(this, 99, depositItemCallback));
 		this.goalSelector.add(100, new LookAroundGoal(this));
@@ -151,12 +200,15 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	public void writeCustomDataToNbt(final NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		nbt.put("Inventory", this.inventory.toNbtList());
+		nbt.putFloat("Hunger", this.hunger);
 	}
 
 	@Override
 	public void readCustomDataFromNbt(final NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
+		this.inventory.clear();
 		this.inventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE));
+		this.hunger = nbt.getFloat("Hunger");
 	}
 
 	@Override
@@ -182,6 +234,10 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	public abstract Triplet<ItemStack, Integer, Integer> getDepositableItems();
 	@Nullable
 	public abstract HashMap<Item,ArrayList<CraftingRecipe>> getCraftables();
+
+	public boolean wantToKeepItemInSlot(final int idx) {
+		return this.bestFoodItem.isPresent() && this.bestFoodItem.get() == idx;
+	}
 
 	protected Map<Item, Integer> getItemCounts(final Map<Item, Integer> minItems) {
 		final Map<Item, Integer> count = new HashMap<Item, Integer>();
@@ -223,7 +279,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 
 		for (int idx=0; idx < this.getInventory().size(); idx++) {
 			final ItemStack itm = this.getInventory().getStack(idx);
-			if (!toIgnore.contains(itm.getItem()) && !itm.isOf(Items.AIR)) {
+			if (!this.wantToKeepItemInSlot(idx) && !toIgnore.contains(itm.getItem()) && !itm.isOf(Items.AIR)) {
 				if (itm.getCount() > counter && (itemCounts.containsKey(itm.getItem()) ? itemCounts.get(itm.getItem()) : 0) > 0) {
 					out = new Triplet<>(itm, idx, Math.min(itm.getCount(), itemCounts.containsKey(itm.getItem()) ? itemCounts.get(itm.getItem()) : 0));
 				}
@@ -352,6 +408,101 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 			}
 		}
 		return -1;
+	}
+
+	@Override
+	public void reduceFood(final float amount) {
+		this.hunger = this.hunger - amount;
+		if (this.hunger < 0) {
+			this.damage(DamageSource.STARVE, -this.hunger);
+			this.hunger = 0;
+		}
+	}
+
+	@Override
+	public void eatFood(final float amount) {
+		this.hunger = (float) Math.min(
+				this.hunger + amount,
+				this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER)
+				);
+	}
+
+	@Override
+	public float getHunger() {
+		return this.hunger;
+	}
+
+	@Override
+	public void setHunger(final float value) {
+		this.hunger = value;
+	}
+
+	@Override
+	public ActionResult interactMob(final PlayerEntity player, final Hand hand) {
+		if (this.isAlive()) {
+			if (hand == Hand.MAIN_HAND) {
+				player.incrementStat(Stats.TALKED_TO_VILLAGER);
+			}
+			/*if (this.getOffers().isEmpty()) {
+                return ActionResult.success(this.world.isClient);
+            }*/
+			if (!this.world.isClient) {
+				this.sendVillagerData(player, this.getName());
+			}
+			return ActionResult.success(this.world.isClient);
+		}
+		return super.interactMob(player, hand);
+	}
+
+	@Override
+	public ScreenHandler createMenu(final int syncId, final PlayerInventory inventory, final PlayerEntity var3) {
+		return new AmaziaVillagerUIScreenHandler(syncId, inventory, this, this.propertyDelegate);
+	}
+
+	@Override
+	public void consumeNutrishousItem() {
+		this.consumeFood(this.bestFoodItem);
+	}
+
+	private void consumeFood(final Optional<Integer> idx) {
+		if (idx.isPresent()) {
+			final ItemStack stack = this.getInventory().getStack(idx.get());
+			final AmaziaFood food = AmaziaFoodData.TO_FOOD_MAP.get(stack.getItem());
+			if (food != null) {
+				this.eatFood(food.getFoodValue());
+				stack.decrement(1);
+				if (stack.isEmpty()) {
+					//this.getInventory().setStack(idx.get(), ItemStack.EMPTY);
+				}
+				else {
+					//this.getInventory().setStack(idx.get(), stack);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onInventoryChanged(final Inventory inventory) {
+		final float maxFood = -1f;
+		this.bestFoodItem = Optional.empty();
+		for (int idx = 0; idx < inventory.size(); idx++) {
+			final AmaziaFood food = AmaziaFoodData.TO_FOOD_MAP.get(inventory.getStack(idx).getItem());
+			if (food != null && maxFood < food.getFoodValue()) {
+				this.bestFoodItem = Optional.of(idx);
+			}
+		}
+	}
+
+	@Override
+	public boolean hasOrRequestFood() {
+		if (this.bestFoodItem.isEmpty()) {
+			if (!this.hasRequestedItems()) {
+				for (final AmaziaFood food : AmaziaFoodData.NUTRISCHOUS_FOODS) {
+					this.requestItem(food.getItem());
+				}
+			}
+		}
+		return this.bestFoodItem.isPresent();
 	}
 
 	protected boolean isLowHp() {
