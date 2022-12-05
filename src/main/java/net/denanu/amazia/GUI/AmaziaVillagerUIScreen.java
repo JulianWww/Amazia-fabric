@@ -31,13 +31,18 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 
 	@Override
 	protected void drawForeground(final MatrixStack matrices, final int mouseX, final int mouseY) {
+		this.textRenderer.draw(
+				matrices,
+				Text.literal("Health: ").append(Integer.toString(1)),
+				this.playerInventoryTitleX,
+				this.playerInventoryTitleY,
+				0x404040);
 	}
 
 	@Override
 	public void render(final MatrixStack matrices, final int mouseX, final int mouseY, final float delta) {
 		this.renderBackground(matrices);
 		super.render(matrices, mouseX, mouseY, delta);
-		//this.drawMouseoverTooltip(matrices, mouseX, mouseY);
 	}
 
 	@Override
