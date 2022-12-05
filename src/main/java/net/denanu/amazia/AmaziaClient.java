@@ -1,6 +1,7 @@
 package net.denanu.amazia;
 
 import net.denanu.amazia.GUI.AmaziaScreens;
+import net.denanu.amazia.GUI.AmaziaVillagerUIScreen;
 import net.denanu.amazia.GUI.TradingScreen;
 import net.denanu.amazia.GUI.debug.VillagePathingOverlay;
 import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
@@ -23,6 +24,7 @@ public class AmaziaClient implements ClientModInitializer {
 		// Screen
 
 		HandledScreens.register(AmaziaScreens.TRADING_SCREEN_HANDLER, TradingScreen::new);
+		HandledScreens.register(AmaziaScreens.VILLAGER_SCREEN_HANDLER, AmaziaVillagerUIScreen::new);
 
 		VillagePathingOverlay.setup();
 

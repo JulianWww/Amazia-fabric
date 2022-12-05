@@ -8,6 +8,7 @@ import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.moods.ServerMoodEmiter;
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.server.controll.AmaziaEntityMoveControl;
+import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.denanu.amazia.mechanics.hunger.AmaziaFoodConsumerEntity;
 import net.denanu.amazia.pathing.PathFinder;
 import net.denanu.amazia.utils.CuboidSampler;
@@ -21,15 +22,19 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.stat.Stats;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class AmaziaEntity extends PassiveEntity implements AmaziaFoodConsumerEntity {
+public class AmaziaEntity extends PassiveEntity implements AmaziaFoodConsumerEntity, AmaziaMechanicsGuiEntity {
 	protected Village village;
 	protected BlockPos villageCorePos;
 	private CuboidSampler villageSampler;
@@ -220,5 +225,27 @@ public class AmaziaEntity extends PassiveEntity implements AmaziaFoodConsumerEnt
 				this.hunger + amount,
 				this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER)
 				);
+	}
+
+	@Override
+	public double getHunger() {
+		return this.hunger;
+	}
+
+	@Override
+	public ActionResult interactMob(final PlayerEntity player, final Hand hand) {
+		if (this.isAlive()) {
+			if (hand == Hand.MAIN_HAND) {
+				player.incrementStat(Stats.TALKED_TO_VILLAGER);
+			}
+			/*if (this.getOffers().isEmpty()) {
+                return ActionResult.success(this.world.isClient);
+            }*/
+			if (!this.world.isClient) {
+				this.sendVillagerData(player, this.getName());
+			}
+			return ActionResult.success(this.world.isClient);
+		}
+		return super.interactMob(player, hand);
 	}
 }
