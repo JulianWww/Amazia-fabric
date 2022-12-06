@@ -1,12 +1,12 @@
 package net.denanu.amazia.entities.village.server.goal.mechanics.hunger;
 
 import net.denanu.amazia.entities.village.server.goal.utils.TimedGoal;
-import net.denanu.amazia.mechanics.hunger.AmaziaFoodConsumerEntity;
+import net.denanu.amazia.mechanics.hunger.IAmaziaFoodConsumerEntity;
 
 public class EatGoal extends TimedGoal {
-	private final AmaziaFoodConsumerEntity entity;
+	private final IAmaziaFoodConsumerEntity entity;
 
-	public EatGoal(final AmaziaFoodConsumerEntity entity) {
+	public EatGoal(final IAmaziaFoodConsumerEntity entity) {
 		this.entity = entity;
 	}
 

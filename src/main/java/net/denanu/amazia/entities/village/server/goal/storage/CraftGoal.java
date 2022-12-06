@@ -4,6 +4,7 @@ import java.util.Map.Entry;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -41,6 +42,7 @@ public class CraftGoal<E extends AmaziaVillagerEntity> extends TimedVillageGoal<
 		ItemStack outStack = this.entity.getWantsToCraft().getOutput().copy();
 		outStack = this.entity.getInventory().addStack(outStack);
 		this.entity.dropStack(outStack);
+		ActivityFoodConsumerMap.craftItemUseFood(this.entity, outStack.getItem());
 	}
 
 	public static<E extends AmaziaVillagerEntity> boolean canCraft(final E entity) {

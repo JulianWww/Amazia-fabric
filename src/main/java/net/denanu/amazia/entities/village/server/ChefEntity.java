@@ -36,6 +36,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatable {
 	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COAL, 64);
+	public static final ImmutableList<Item> CRAFTABLES = ImmutableList.of(Items.GOLDEN_APPLE, Items.GOLDEN_CARROT, Items.BEETROOT_SOUP, Items.CAKE, Items.BREAD, Items.SUGAR, Items.PUMPKIN_PIE, Items.COOKIE);
 
 
 	AnimationFactory factory = new AnimationFactory(this);
@@ -108,7 +109,7 @@ public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatab
 	@Override
 	public void requestCraftable() {
 		if (!this.wantsToCraft() && this.hasVillage()) {
-			this.tryCraftingStart(JJUtils.getRandomListElement(AmaziaData.COOK_CRAFTABLE));
+			this.tryCraftingStart(JJUtils.getRandomListElement(ChefEntity.CRAFTABLES));
 		}
 	}
 }

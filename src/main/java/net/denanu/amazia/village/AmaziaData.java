@@ -32,7 +32,6 @@ public class AmaziaData {
 	public static       ArrayList<Item> BLASTABLES;
 	public static       ArrayList<Item> SMOKABLES;
 	public static       ImmutableList<Item> BLACKSMITH_CRAFTING_ITEMS;
-	public static 		ImmutableList<Item> COOK_CRAFTABLE = ImmutableList.of(Items.GOLDEN_APPLE);//, Items.GOLDEN_CARROT, Items.BEETROOT_SOUP, Items.CAKE, Items.BREAD, Items.SUGAR, Items.PUMPKIN_PIE, Items.COOKIE);
 	public static       ArrayList<SwordItem> MELEE_WEAPONS;
 	public static 		ArrayList<ArmorItem> HEAD_ARMOR;
 	public static 		ArrayList<ArmorItem> CHEST_ARMOR;

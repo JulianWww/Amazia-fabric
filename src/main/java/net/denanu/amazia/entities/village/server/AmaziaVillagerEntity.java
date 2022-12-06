@@ -14,13 +14,14 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.GUI.AmaziaVillagerUIScreenHandler;
 import net.denanu.amazia.entities.AmaziaEntityAttributes;
+import net.denanu.amazia.entities.village.server.goal.AmaziaLookAroundGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.hunger.EatGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.CraftGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.DepositItemGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.GetItemGoal;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
+import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
 import net.denanu.amazia.mechanics.hunger.AmaziaFood;
-import net.denanu.amazia.mechanics.hunger.AmaziaFoodConsumerEntity;
 import net.denanu.amazia.mechanics.hunger.AmaziaFoodData;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.utils.crafting.CraftingUtils;
@@ -30,7 +31,6 @@ import net.minecraft.entity.InventoryOwner;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -57,7 +57,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
-public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner, AmaziaFoodConsumerEntity, AmaziaMechanicsGuiEntity, InventoryChangedListener {
+public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner, AmaziaMechanicsGuiEntity, InventoryChangedListener, IAmaziaDataProviderEntity {
 	private final SimpleInventory inventory = new SimpleInventory(16);
 	private List<Item> requestedItems;
 	private CraftingRecipe wantsToCraft;
@@ -131,7 +131,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		this.goalSelector.add(10, new EatGoal(this));
 		this.goalSelector.add(25, new GetItemGoal(this, 25, getItemCallback));
 		this.goalSelector.add(99, new DepositItemGoal(this, 99, depositItemCallback));
-		this.goalSelector.add(100, new LookAroundGoal(this));
+		this.goalSelector.add(100, new AmaziaLookAroundGoal(this));
 	}
 
 	@Override
@@ -503,6 +503,11 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 			}
 		}
 		return this.bestFoodItem.isPresent();
+	}
+
+	@Override
+	public float getLevel() {
+		return 0f;
 	}
 
 	protected boolean isLowHp() {

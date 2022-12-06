@@ -99,7 +99,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		else {
 			this.reached = true;
 		}
-		ActivityFoodConsumerMap.WalkUseFood(this.entity, this.foodUsage);
+		ActivityFoodConsumerMap.walkUseFood(this.entity, this.foodUsage);
 	}
 
 	private void runBackupMotion() {

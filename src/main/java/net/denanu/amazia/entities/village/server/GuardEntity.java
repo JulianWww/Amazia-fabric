@@ -6,6 +6,9 @@ import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableSet;
+
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.combat.AttackSensor;
 import net.denanu.amazia.entities.village.server.goal.guard.AmaziaBowUser;
@@ -49,6 +52,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, InventoryChangedListener, AmaziaBowUser, AttackSensor {
+	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_SWORD, Items.STICK);
+
 	private final AnimationFactory factory = new AnimationFactory(this);
 
 	private Optional<Integer> bowLocation = Optional.empty();
@@ -126,7 +131,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 
 	@Override
 	public HashMap<Item, ArrayList<CraftingRecipe>> getCraftables() {
-		return null;
+		return Amazia.GUARD_CRAFTABLES;
 	}
 
 	@Override
@@ -262,6 +267,11 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 
 	public int getBow() {
 		return this.bowLocation.get();
+	}
+
+	@Override
+	public boolean canCraft () {
+		return true;
 	}
 
 	@Override

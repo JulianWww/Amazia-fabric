@@ -2,7 +2,7 @@ package net.denanu.amazia.mechanics.hunger;
 
 import net.minecraft.util.math.random.Random;
 
-public interface AmaziaFoodConsumerEntity {
+public interface IAmaziaFoodConsumerEntity {
 	public void reduceFood(float amount);
 	public void eatFood(float amount);
 

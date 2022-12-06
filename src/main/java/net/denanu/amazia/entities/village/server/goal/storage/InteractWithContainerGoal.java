@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal.storage;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
 import net.minecraft.item.ItemStack;
 
@@ -23,6 +24,7 @@ public abstract class InteractWithContainerGoal extends TimedVillageGoal<AmaziaV
 	public void stop() {
 		super.stop();
 		this.isRunning = false;
+		ActivityFoodConsumerMap.interactWithContainerUseFood(this.entity);
 	}
 
 	private boolean isWithinRange() {
