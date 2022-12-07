@@ -1,5 +1,6 @@
 package net.denanu.amazia.entities.village.server.goal.cleric;
 
+import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.ClericEntity;
 import net.denanu.amazia.entities.village.server.GuardEntity;
 
@@ -22,7 +23,10 @@ public class SelectHealingGuardTargetGoal extends SelectHealingTargetGoal<GuardE
 
 	@Override
 	protected void findClosestTarget() {
-		if (this.cleric.hasVillage()) {
+		if (AmaziaVillagerEntity.isNotFullHealth(this.cleric)) {
+			this.targetEntity = this.cleric;
+		}
+		else if (this.cleric.hasVillage()) {
 			this.targetEntity =  this.getLowestHpEntity(
 					this.cleric.getVillage().getGuarding().getCombatants()
 					);

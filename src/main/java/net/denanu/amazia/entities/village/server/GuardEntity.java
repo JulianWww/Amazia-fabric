@@ -141,9 +141,9 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 
 	@Override
 	protected void initGoals() {
-		this.goalSelector.add(1, new LeaveCombatGoal(this, 1, 30, 3.0f));
-		this.goalSelector.add(2, new VillageGuardBowAttackGoal(this, 2f, 25, 50.0f));
-		this.goalSelector.add(3, new GuardMeleeAttackGoal(this, 2.0, true));
+		this.goalSelector.add(1,  new LeaveCombatGoal(this, 1, 100000, 3.0f));
+		this.goalSelector.add(12, new VillageGuardBowAttackGoal(this, 2f, 25, 50.0f));
+		this.goalSelector.add(13, new GuardMeleeAttackGoal(this, 2.0, true));
 
 		this.targetSelector.add(0, new RevengeGoal(this, PassiveEntity.class));
 		this.targetSelector.add(1, new VillageGuardActiveTargetGoal(this, 10));
@@ -254,7 +254,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 	}
 
 	public int getAttackTime() {
-		return 10;
+		return 5;
 	}
 
 	public boolean hasBow() {

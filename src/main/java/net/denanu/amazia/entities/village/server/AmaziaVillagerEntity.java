@@ -208,7 +208,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		super.readCustomDataFromNbt(nbt);
 		this.inventory.clear();
 		this.inventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE));
-		this.hunger = nbt.getFloat("Hunger");
+		this.hunger = nbt.contains("Hunger") ? nbt.getFloat("Hunger") : (float) this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER);
 	}
 
 	@Override
@@ -414,7 +414,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	public void reduceFood(final float amount) {
 		this.hunger = this.hunger - amount;
 		if (this.hunger < 0) {
-			this.damage(DamageSource.STARVE, -this.hunger);
+			this.damage(DamageSource.STARVE, 1);
 			this.hunger = 0;
 		}
 	}
@@ -472,10 +472,10 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 				this.eatFood(food.getFoodValue());
 				stack.decrement(1);
 				if (stack.isEmpty()) {
-					//this.getInventory().setStack(idx.get(), ItemStack.EMPTY);
+					this.getInventory().setStack(idx.get(), ItemStack.EMPTY);
 				}
 				else {
-					//this.getInventory().setStack(idx.get(), stack);
+					this.getInventory().setStack(idx.get(), stack);
 				}
 			}
 		}

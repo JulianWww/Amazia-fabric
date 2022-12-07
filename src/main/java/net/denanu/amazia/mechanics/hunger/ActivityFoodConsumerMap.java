@@ -1,5 +1,6 @@
 package net.denanu.amazia.mechanics.hunger;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
 import net.denanu.amazia.utils.random.LevelBasedLinearRange;
 import net.denanu.amazia.utils.random.LevelBasedRandomnessFactory;
@@ -10,6 +11,7 @@ public class ActivityFoodConsumerMap {
 
 	static void consumeFood(final IAmaziaFoodConsumerEntity entity, final float amount) {
 		entity.reduceFood(amount);
+		Amazia.LOGGER.info("ate");
 	}
 
 	private static void consumeFoodWithProbability(final IAmaziaFoodConsumerEntity entity, final int prob, final float amount) {
@@ -67,15 +69,15 @@ public class ActivityFoodConsumerMap {
 	}
 
 	public static void melleAttackUseFood(final IAmaziaDataProviderEntity entity) {
-		ActivityFoodConsumerMap.consumeFood(entity, 1);
+		//ActivityFoodConsumerMap.consumeFood(entity, 1);
 	}
 
 	public static void rangedAttackUseFood(final IAmaziaDataProviderEntity entity) {
-		ActivityFoodConsumerMap.consumeFood(entity, 1);
+		//ActivityFoodConsumerMap.consumeFood(entity, 1);
 	}
 
 	public static void combatMovementUseFood(final IAmaziaDataProviderEntity entity) {
-		ActivityFoodConsumerMap.consumeFoodWithProbability(entity, 50, 1);
+		//ActivityFoodConsumerMap.consumeFoodWithProbability(entity, 50, 1);
 	}
 
 	public static void harvestTreeUseFood(final IAmaziaDataProviderEntity entity, final int logs) {

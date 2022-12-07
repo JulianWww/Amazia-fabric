@@ -100,7 +100,7 @@ public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatab
 
 		this.goalSelector.add(51, new SequenceGoal<ChefEntity>(this, ImmutableList.of(
 				new GoToKitchenGoal(this, 51),
-				new CraftAtCraftingLocationGoal(this, 51)
+				new CraftAtCraftingLocationGoal(this, 51, true)
 				)));
 
 		super.registerBaseGoals(this::scanForCoal, this::scanForCoal, false);

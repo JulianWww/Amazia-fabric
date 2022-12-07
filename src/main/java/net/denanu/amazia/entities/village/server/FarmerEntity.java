@@ -129,7 +129,7 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	@Override
 	public boolean canPlant() {
 		final boolean can = this.getInventory().containsAny(AmaziaData.CLASSIC_PLANTABLES);
-		if (!can) {
+		if (!can && this.age % 100 == 0) {
 			this.requestItem(JJUtils.getRandomSetElement(AmaziaData.CLASSIC_PLANTABLES));
 		}
 		return can;
@@ -182,13 +182,13 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 			if (!bl) {
 				continue;
 			}
+			ActivityFoodConsumerMap.plantCropUseFood(this);
 			world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_CROP_PLANT, SoundCategory.BLOCKS, 1.0f, 1.0f);
 			itemStack.decrement(1);
 			if (!itemStack.isEmpty()) {
 				break;
 			}
 			simpleInventory.setStack(i, ItemStack.EMPTY);
-			ActivityFoodConsumerMap.plantCropUseFood(this);
 			break;
 		}
 	}

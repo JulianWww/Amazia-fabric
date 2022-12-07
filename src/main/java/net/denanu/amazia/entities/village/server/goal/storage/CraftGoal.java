@@ -40,9 +40,9 @@ public class CraftGoal<E extends AmaziaVillagerEntity> extends TimedVillageGoal<
 			this.entity.removeItemFromInventory(ingredient.getKey(), ingredient.getValue());
 		}
 		ItemStack outStack = this.entity.getWantsToCraft().getOutput().copy();
+		ActivityFoodConsumerMap.craftItemUseFood(this.entity, outStack.getItem());
 		outStack = this.entity.getInventory().addStack(outStack);
 		this.entity.dropStack(outStack);
-		ActivityFoodConsumerMap.craftItemUseFood(this.entity, outStack.getItem());
 	}
 
 	public static<E extends AmaziaVillagerEntity> boolean canCraft(final E entity) {

@@ -75,6 +75,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 	@Override
 	public void tick() {
 		this.entity.getNavigation().setSpeed(this.speed);
+		this.entity.getMoveControl().setSpeed(this.speed);
 		final Vec3d targetPos = new Vec3d(this.targetPos.getX() + 0.5, this.targetPos.getY(), this.targetPos.getZ() + 0.5);
 		if (this.nav.isIdle()) {
 			this.ticksStanding++;

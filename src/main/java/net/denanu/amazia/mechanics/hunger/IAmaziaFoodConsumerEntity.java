@@ -12,7 +12,11 @@ public interface IAmaziaFoodConsumerEntity {
 	public Random getRandom();
 
 	public default boolean shouldEatFood () {
-		return this.getHunger() < 10 && this.hasOrRequestFood();
+		return this.isHungry() && this.hasOrRequestFood();
+	}
+
+	public default boolean isHungry() {
+		return this.getHunger() < 30;
 	}
 
 	public void consumeNutrishousItem();

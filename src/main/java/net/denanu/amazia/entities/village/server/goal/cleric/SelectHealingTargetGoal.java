@@ -43,6 +43,7 @@ public class SelectHealingTargetGoal<T extends LivingEntity> extends ActiveTarge
 						this.mob.world.getPlayers(this.targetPredicate, this.mob, this.getSearchBox(this.getFollowRange())) :
 							this.mob.world.getEntitiesByClass(this.targetClass, this.getSearchBox(this.getFollowRange()), e -> true)
 				);
+		return;
 
 	}
 
@@ -52,7 +53,7 @@ public class SelectHealingTargetGoal<T extends LivingEntity> extends ActiveTarge
 		float maxHp = -1.0f;
 		LivingEntity target = null;
 		for (final LivingEntity current : entityList) {
-			if (!this.targetPredicate.test(this.mob, current) && this.mob != current) {
+			if (!this.targetPredicate.test(this.mob, current)) {
 				continue;
 			}
 			final float currentHp = current.getHealth();

@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
@@ -15,7 +14,6 @@ import net.denanu.amazia.entities.village.server.goal.rancher.BringAnimalsToPen;
 import net.denanu.amazia.entities.village.server.goal.rancher.FeedAnimalGoal;
 import net.denanu.amazia.entities.village.server.goal.rancher.FetchAnimal;
 import net.denanu.amazia.entities.village.server.goal.rancher.LeashAnimal;
-import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -77,20 +75,21 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	protected void initGoals() {
 
 		this.goalSelector.add(47, new FeedAnimalGoal(this, 47));
-		this.goalSelector.add(50, new SequenceGoal<RancherEntity>(this, ImmutableList.of(
+		/*this.goalSelector.add(50, new SequenceGoal<RancherEntity>(this, ImmutableList.of(
 				new FetchAnimal(this, 50),
 				new LeashAnimal(this, 50),
 				new BringAnimalsToPen(this, 50)
-				)));
-		/*this.goalSelector.add(48, new BringAnimalsToPen(this, 48));
+				)));*/
+		this.goalSelector.add(48, new BringAnimalsToPen(this, 48));
 		this.goalSelector.add(49, new LeashAnimal(this, 49));
-		this.goalSelector.add(50, new FetchAnimal(this, 50));*/
+		this.goalSelector.add(50, new FetchAnimal(this, 50));
 
 		super.registerBaseGoals();
 	}
 
 	@Override
 	public void mobTick() {
+		super.mobTick();
 		this.releaseTargetEntityIfDead();
 		if (this.animalInteractionAge > 0) {
 			this.animalInteractionAge--;

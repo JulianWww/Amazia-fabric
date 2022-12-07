@@ -49,7 +49,7 @@ public class AmaziaEntity extends PassiveEntity {
 
 	public static DefaultAttributeContainer.Builder setAttributes() {
 		return MobEntity.createMobAttributes()
-				.add(AmaziaEntityAttributes.MAX_HUNGER, 20f);
+				.add(AmaziaEntityAttributes.MAX_HUNGER);
 	}
 
 	@Deprecated

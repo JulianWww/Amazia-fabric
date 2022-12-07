@@ -1,20 +1,24 @@
 package net.denanu.amazia.entities.village.server.goal.druid;
 
+import java.util.Iterator;
+
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.DruidEntity;
-import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.entities.village.server.goal.TimedMultirunVillageGoal;
 import net.denanu.amazia.entities.village.server.goal.druid.regeneration.AmaziaDruidRegenerator;
 import net.denanu.amazia.entities.village.server.goal.druid.regeneration.DefaultFillerGenerator;
 import net.denanu.amazia.entities.village.server.goal.druid.regeneration.OreRarity;
 import net.denanu.amazia.entities.village.server.goal.druid.regeneration.SingleBlockDruidRegenerator;
 import net.denanu.amazia.entities.village.server.goal.druid.regeneration.probs.GenerationProbabilities;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
+import net.denanu.amazia.utils.blockPos.BlockPosStream;
 import net.denanu.amazia.utils.random.WeightedRandomCollection;
 import net.minecraft.block.Blocks;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
-public class RegenerateMineSubGoal extends TimedVillageGoal<DruidEntity> {
+public class RegenerateMineSubGoal extends TimedMultirunVillageGoal<DruidEntity> {
 	public static WeightedRandomCollection<AmaziaDruidRegenerator> generators = new WeightedRandomCollection<AmaziaDruidRegenerator>();
 
 	public static AmaziaDruidRegenerator COAL_GEN 		= RegenerateMineSubGoal.register(OreRarity.VERY_COMMON,	new SingleBlockDruidRegenerator(GenerationProbabilities.COAL, 		Blocks.COAL_ORE.getDefaultState()));
@@ -26,6 +30,7 @@ public class RegenerateMineSubGoal extends TimedVillageGoal<DruidEntity> {
 	public static AmaziaDruidRegenerator DIAMOND_GEN 	= RegenerateMineSubGoal.register(OreRarity.RARE,		new SingleBlockDruidRegenerator(GenerationProbabilities.DIAMOND,	Blocks.DIAMOND_ORE.getDefaultState()));
 	public static AmaziaDruidRegenerator EMERALD_GEN	= RegenerateMineSubGoal.register(OreRarity.UNCOMMON,	new SingleBlockDruidRegenerator(GenerationProbabilities.EMERALD, 	Blocks.EMERALD_ORE.getDefaultState()));
 
+	private Iterator<BlockPos> iter;
 
 	public static AmaziaDruidRegenerator register(final OreRarity weight, final AmaziaDruidRegenerator val) {
 		return RegenerateMineSubGoal.register(weight.getValue(), val);
@@ -45,30 +50,72 @@ public class RegenerateMineSubGoal extends TimedVillageGoal<DruidEntity> {
 	}
 
 	@Override
+	public void start() {
+		super.start();
+		if (this.iter == null) {
+			this.iter = BlockPosStream.iterate(this.entity.getMine().getBox()).iterator();
+		}
+	}
+
+	@Override
 	protected void takeAction() {
 		Amazia.LOGGER.info("RegeneratedMine");
 
 		final ServerWorld world = (ServerWorld) this.entity.getWorld();
-		if (this.entity.getMine().isEmpty(world, this.entity)) {
-			BlockPos.stream(this.entity.getMine().getBox()).forEach(pos -> {
-				if (this.entity.getMineRagenerationAbility() > this.entity.getRandom().nextFloat()) {
-					final AmaziaDruidRegenerator gen = RegenerateMineSubGoal.getGen();
-					if (gen.test(this.requiredTime, this.entity.getRandom(), pos, world)) {
-						gen.place(world, pos);
-						return;
+		if (this.entity.getMine() != null && this.entity.getMine().isEmpty(world, this.entity)) {
+			boolean done = true;
+			BlockPos pos;
+			int regrow = 0;
+			final int maxRegrow = this.entity.getMaxRegrowMine();
+			for (; this.iter.hasNext();) {
+				pos = this.iter.next();
+				world.spawnParticles(
+						ParticleTypes.CRIT,
+						pos.getX() + 0.5,
+						pos.getY() + 0.5,
+						pos.getZ() + 0.5,
+						1,
+						0.0,
+						0.0,
+						0.0,
+						0.0
+						);
+				if (world.getBlockState(pos).isOf(Blocks.AIR)) {
+					if (this.entity.getMineRagenerationAbility() > this.entity.getRandom().nextFloat()) {
+						final AmaziaDruidRegenerator gen = RegenerateMineSubGoal.getGen();
+						if (gen.test(this.maxCount, this.entity.getRandom(), pos, world)) {
+							gen.place(world, pos);
+							return;
+						}
+					}
+					DefaultFillerGenerator.place(world, pos);
+					ActivityFoodConsumerMap.regrowMineUseFood(this.entity);
+					regrow++;
+					if (this.entity.isHungry() || regrow > maxRegrow) {
+						done = false;
+						break;
 					}
 				}
-				DefaultFillerGenerator.place(world, pos);
-			});
-			Amazia.getVillageManager().onPathingBlockUpdate(this.entity.getMine().getMainEntrance());
-			this.entity.getMine().resetMine();
-			ActivityFoodConsumerMap.regrowMineUseFood(this.entity);
+			}
+			if (done || !this.iter.hasNext()) {
+				Amazia.getVillageManager().onPathingBlockUpdate(this.entity.getMine().getMainEntrance());
+				this.entity.getMine().resetMine();
+				this.leaveMine();
+			}
 		}
-		this.entity.leaveMine();
+		else {
+			this.leaveMine();
+		}
 	}
 
 	private static AmaziaDruidRegenerator getGen() {
 		return RegenerateMineSubGoal.generators.next();
+	}
+
+	private void leaveMine() {
+		this.entity.leaveMine();
+		this.iter = null;
+		this.terminate();
 	}
 
 }
