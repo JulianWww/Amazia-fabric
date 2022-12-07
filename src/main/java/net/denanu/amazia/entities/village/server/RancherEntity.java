@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
@@ -14,6 +15,7 @@ import net.denanu.amazia.entities.village.server.goal.rancher.BringAnimalsToPen;
 import net.denanu.amazia.entities.village.server.goal.rancher.FeedAnimalGoal;
 import net.denanu.amazia.entities.village.server.goal.rancher.FetchAnimal;
 import net.denanu.amazia.entities.village.server.goal.rancher.LeashAnimal;
+import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -37,59 +39,64 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.SHEARS, Items.AIR);
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.WHEAT, 32, Items.CARROT, 32, Items.POTATO, 32, Items.BEETROOT, 32, Items.WHEAT_SEEDS, 32);
 	public static final ImmutableSet<Item> CRAFTABLE_ITEMS = ImmutableSet.of();
-	
-	private AnimationFactory factory = new AnimationFactory(this);
-	
+
+	private final AnimationFactory factory = new AnimationFactory(this);
+
 	@Nullable
 	public AnimalEntity targetAnimal;
 	public int animalInteractionAge;
 
-	public RancherEntity(EntityType<? extends PassiveEntity> entityType, World world)  {
+	public RancherEntity(final EntityType<? extends PassiveEntity> entityType, final World world)  {
 		super(entityType, world);
 		AmaziaEntityComponents.setCanCollide(this, false);
 		this.animalInteractionAge = 0;
 	}
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
-            return PlayState.CONTINUE;
-        }
+	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
+		if (event.isMoving()) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
+			return PlayState.CONTINUE;
+		}
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
-        return PlayState.CONTINUE;
-    }
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
+		return PlayState.CONTINUE;
+	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
+	public void registerControllers(final AnimationData data) {
 		data.addAnimationController(new AnimationController<RancherEntity>(this, "controller", 0, this::predicate));
 	}
-	
+
 	// Rancher
-	
+
 	public void searchForTargetAnimal() {
 		this.targetAnimal = this.village.getRanching().getUnboundAnimal();
 	}
-	
+
 	@Override
-    protected void initGoals() {
-		
+	protected void initGoals() {
+
 		this.goalSelector.add(47, new FeedAnimalGoal(this, 47));
-		this.goalSelector.add(48, new BringAnimalsToPen(this, 48));
+		this.goalSelector.add(50, new SequenceGoal<RancherEntity>(this, ImmutableList.of(
+				new FetchAnimal(this, 50),
+				new LeashAnimal(this, 50),
+				new BringAnimalsToPen(this, 50)
+				)));
+		/*this.goalSelector.add(48, new BringAnimalsToPen(this, 48));
 		this.goalSelector.add(49, new LeashAnimal(this, 49));
-		this.goalSelector.add(50, new FetchAnimal(this, 50));
-		
-        super.registerBaseGoals();
-    }
-	
-	@Override 
+		this.goalSelector.add(50, new FetchAnimal(this, 50));*/
+
+		super.registerBaseGoals();
+	}
+
+	@Override
 	public void mobTick() {
 		this.releaseTargetEntityIfDead();
 		if (this.animalInteractionAge > 0) {
 			this.animalInteractionAge--;
 		}
 	}
-	
+
 	public void releaseTargetEntity() {
 		if (this.targetAnimal != null && this.targetAnimal.isLeashed()) {
 			this.targetAnimal.detachLeash(true, false);
@@ -100,22 +107,22 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	private void releaseTargetEntityIfDead() {
 		if (this.targetAnimal != null && this.targetAnimal.isDead()) {
 			this.releaseTargetEntity();
-		}	
+		}
 	}
 
 	@Override
 	public AnimationFactory getFactory() {
 		return this.factory;
 	}
-	
+
 	public boolean hasTargetAnimal() {
 		return this.targetAnimal != null && this.targetAnimal.isAlive();
 	}
-	
+
 	public boolean canInteractWithEntity() {
 		return this.animalInteractionAge == 0;
 	}
-	
+
 	public void setInteractionAge() {
 		this.animalInteractionAge = 60;
 	}
@@ -124,10 +131,10 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	public boolean canDepositItems() {
 		return this.getEmptyInventorySlots() == 0 && this.getDepositableItems() != null;
 	}
-	
+
 	@Override
 	public Triplet<ItemStack, Integer, Integer> getDepositableItems() {
-		return this.getDepositableItems(USABLE_ITEMS, REQUIRED_ITEMS);
+		return this.getDepositableItems(RancherEntity.USABLE_ITEMS, RancherEntity.REQUIRED_ITEMS);
 	}
 
 	@Override
@@ -142,28 +149,30 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	public int getFeedTime() {
 		return 20;
 	}
-	
+
 	public int getEntityInteractTime() {
 		return 20;
 	}
-	
-	@Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        nbt.putInt("animalInteractionAge", this.animalInteractionAge);
-        if (this.targetAnimal!=null)  nbt.putUuid("targetAnimal", this.targetAnimal.getUuid());
-        return;
-    }
 
-    @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        this.animalInteractionAge = nbt.getInt("animalInteractionAge");
-		if (!this.world.isClient && nbt.contains("targetAnimal")) {
-        	if (JJUtils.getEntityByUniqueId(nbt.getUuid("targetAnimal"), (ServerWorld)this.world) instanceof AnimalEntity animal) {
-        		this.targetAnimal = animal;
-        	}
+	@Override
+	public void writeCustomDataToNbt(final NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		nbt.putInt("animalInteractionAge", this.animalInteractionAge);
+		if (this.targetAnimal!=null) {
+			nbt.putUuid("targetAnimal", this.targetAnimal.getUuid());
 		}
-		
-    }
+		return;
+	}
+
+	@Override
+	public void readCustomDataFromNbt(final NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		this.animalInteractionAge = nbt.getInt("animalInteractionAge");
+		if (!this.world.isClient && nbt.contains("targetAnimal")) {
+			if (JJUtils.getEntityByUniqueId(nbt.getUuid("targetAnimal"), (ServerWorld)this.world) instanceof final AnimalEntity animal) {
+				this.targetAnimal = animal;
+			}
+		}
+
+	}
 }

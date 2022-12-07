@@ -8,6 +8,7 @@ import net.denanu.amazia.entities.village.server.goal.druid.regeneration.Default
 import net.denanu.amazia.entities.village.server.goal.druid.regeneration.OreRarity;
 import net.denanu.amazia.entities.village.server.goal.druid.regeneration.SingleBlockDruidRegenerator;
 import net.denanu.amazia.entities.village.server.goal.druid.regeneration.probs.GenerationProbabilities;
+import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.utils.random.WeightedRandomCollection;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
@@ -61,6 +62,7 @@ public class RegenerateMineSubGoal extends TimedVillageGoal<DruidEntity> {
 			});
 			Amazia.getVillageManager().onPathingBlockUpdate(this.entity.getMine().getMainEntrance());
 			this.entity.getMine().resetMine();
+			ActivityFoodConsumerMap.regrowMineUseFood(this.entity);
 		}
 		this.entity.leaveMine();
 	}

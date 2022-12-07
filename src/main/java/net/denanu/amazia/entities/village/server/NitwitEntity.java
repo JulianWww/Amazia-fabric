@@ -71,7 +71,7 @@ public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
 	@Override
 	protected void initGoals() {
 
-		this.goalSelector.add(50, new NitwitRandomWanderAroundGoal(this, 46));
+		this.goalSelector.add(50, new NitwitRandomWanderAroundGoal(this, 50));
 
 		super.registerBaseGoals();
 	}

@@ -5,6 +5,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.server.DruidEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Fertilizable;
 import net.minecraft.server.world.ServerWorld;
@@ -60,6 +61,7 @@ public class AdvanceCropAgeGoal extends TimedVillageGoal<DruidEntity> {
 		}
 		if (count.getValue() > 0) {
 			this.entity.emmitMood(VillagerMoods.HAPPY);
+			ActivityFoodConsumerMap.growCropUseFood(this.entity);
 		}
 		else {
 			this.entity.emmitMood(VillagerMoods.ANGRY);

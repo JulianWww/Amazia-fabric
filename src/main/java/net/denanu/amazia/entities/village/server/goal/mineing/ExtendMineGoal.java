@@ -1,6 +1,7 @@
 package net.denanu.amazia.entities.village.server.goal.mineing;
 
 import net.denanu.amazia.entities.village.server.MinerEntity;
+import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 
 public class ExtendMineGoal extends TimedMineGoal {
 	public ExtendMineGoal(final MinerEntity e, final int priority) {
@@ -27,9 +28,9 @@ public class ExtendMineGoal extends TimedMineGoal {
 	@Override
 	protected void takeAction() {
 		this.entity.getWorld().breakBlock(this.pos, true);
-		//Amazia.getVillageManager().onPathingBlockUpdate(this.pos);
 		this.entity.addSeroundingOreBlock(this.pos);
 		this.entity.damage(this.entity.getPick());
+		ActivityFoodConsumerMap.mineBlockUseFood(this.entity);
 	}
 
 	@Override
