@@ -11,6 +11,7 @@ import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.components.AmaziaEntityComponents;
 import net.denanu.amazia.entities.village.server.RancherEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.mixin.SheepEntityAccessor;
 import net.denanu.amazia.utils.registry.AmaziaRegistrys;
 import net.minecraft.entity.EntityType;
@@ -111,6 +112,7 @@ public class FeedAnimalGoal extends TimedVillageGoal<RancherEntity> {
 			this.entity.targetAnimal.lovePlayer(null);
 			itm.decrement(1);
 			this.entity.getInventory().setStack(val, itm);
+			ActivityFoodConsumerMap.feedAnimalUseFood(this.entity);
 		}
 	}
 
@@ -151,6 +153,7 @@ public class FeedAnimalGoal extends TimedVillageGoal<RancherEntity> {
 			}
 			rancher.getInventory().setStack(loc, stack);
 			rancher.getInventory().addStack(new ItemStack(Items.MILK_BUCKET, 1));
+			ActivityFoodConsumerMap.harvestFromAnimalUseFood(rancher);
 		}
 	}
 
@@ -172,6 +175,7 @@ public class FeedAnimalGoal extends TimedVillageGoal<RancherEntity> {
 			rancher.getInventory().addStack(
 					new ItemStack(SheepEntityAccessor.getDrops().get(sheep.getColor()), JJUtils.rand.nextInt(3) + 1)
 					);
+			ActivityFoodConsumerMap.harvestFromAnimalUseFood(rancher);
 		}
 	}
 

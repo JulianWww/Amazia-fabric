@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.entities.village.server.BlacksmithEntity;
+import net.denanu.amazia.mechanics.hunger.AmaziaFoodData;
 import net.denanu.amazia.mixin.RecipeManagerMixinAcessor;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
@@ -31,7 +32,6 @@ public class AmaziaData {
 	public static       ArrayList<Item> BLASTABLES;
 	public static       ArrayList<Item> SMOKABLES;
 	public static       ImmutableList<Item> BLACKSMITH_CRAFTING_ITEMS;
-	public static 		ImmutableList<Item> COOK_CRAFTABLE = ImmutableList.of(Items.GOLDEN_APPLE);//, Items.GOLDEN_CARROT, Items.BEETROOT_SOUP, Items.CAKE, Items.BREAD, Items.SUGAR, Items.PUMPKIN_PIE, Items.COOKIE);
 	public static       ArrayList<SwordItem> MELEE_WEAPONS;
 	public static 		ArrayList<ArmorItem> HEAD_ARMOR;
 	public static 		ArrayList<ArmorItem> CHEST_ARMOR;
@@ -41,6 +41,7 @@ public class AmaziaData {
 
 	public static void setup() {
 		AmaziaData.getEnchantables();
+		AmaziaFoodData.setup();
 	}
 
 	private static void getEnchantables() {

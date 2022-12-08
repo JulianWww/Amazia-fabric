@@ -36,6 +36,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatable {
 	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COAL, 64);
+	public static final ImmutableList<Item> CRAFTABLES = ImmutableList.of(Items.GOLDEN_APPLE, Items.GOLDEN_CARROT, Items.BEETROOT_SOUP, Items.CAKE, Items.BREAD, Items.SUGAR, Items.PUMPKIN_PIE, Items.COOKIE);
 
 
 	AnimationFactory factory = new AnimationFactory(this);
@@ -47,7 +48,7 @@ public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatab
 	@Override
 	@Nullable
 	public Triplet<ItemStack, Integer, Integer> getDepositableItems() {
-		return this.getDepositableItems(BlacksmithEntity.USABLE_ITEMS, BlacksmithEntity.REQUIRED_ITEMS);
+		return this.getDepositableItems(ChefEntity.USABLE_ITEMS, ChefEntity.REQUIRED_ITEMS);
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatab
 
 		this.goalSelector.add(51, new SequenceGoal<ChefEntity>(this, ImmutableList.of(
 				new GoToKitchenGoal(this, 51),
-				new CraftAtCraftingLocationGoal(this, 51)
+				new CraftAtCraftingLocationGoal(this, 51, true)
 				)));
 
 		super.registerBaseGoals(this::scanForCoal, this::scanForCoal, false);
@@ -108,7 +109,7 @@ public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatab
 	@Override
 	public void requestCraftable() {
 		if (!this.wantsToCraft() && this.hasVillage()) {
-			this.tryCraftingStart(JJUtils.getRandomListElement(AmaziaData.COOK_CRAFTABLE));
+			this.tryCraftingStart(JJUtils.getRandomListElement(ChefEntity.CRAFTABLES));
 		}
 	}
 }

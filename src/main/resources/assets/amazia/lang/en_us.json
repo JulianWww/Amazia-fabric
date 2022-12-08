@@ -33,5 +33,7 @@
 	"profession.amazia.toolsmith": "Toolsmith",
 	"profession.amazia.weaponsmith": "Weaponsmith",
 	
-	"amazia:village-enemies-glow": "Village Enemies Glow"
+	"amazia:village-enemies-glow": "Village Enemies Glow",
+	
+	"amazia:attribute.villager.max_hunger": "Max Hunger"
 }

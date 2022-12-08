@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.GuardEntity;
+import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -111,7 +112,7 @@ public class VillageGuardBowAttackGoal extends Goal {
 
 	@Override
 	public boolean shouldRunEveryTick() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -142,9 +143,11 @@ public class VillageGuardBowAttackGoal extends Goal {
 
 		this.guard.getMoveControl().strafeTo(this.backward ? -this.speed : this.speed, this.movingToLeft ? this.speed : -this.speed, 1.0f);
 		this.guard.lookAtEntity(target, 30.0f, 30.0f);
+		ActivityFoodConsumerMap.combatMovementUseFood(this.guard);
 
 		if (this.attackCooldown < 0) {
 			this.guard.shootBow(target, BowItem.getPullProgress(this.attackInterval));
+			ActivityFoodConsumerMap.rangedAttackUseFood(this.guard);
 			this.attackCooldown = this.attackInterval;
 		}
 	}

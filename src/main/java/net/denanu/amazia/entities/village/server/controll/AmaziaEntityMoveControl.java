@@ -66,4 +66,8 @@ public class AmaziaEntityMoveControl extends MoveControl {
 		super.moveTo(x, y, z, speed);
 		this.dogeCounter = 10;
 	}
+
+	public void setSpeed(final float speed) {
+		this.speed = speed;
+	}
 }

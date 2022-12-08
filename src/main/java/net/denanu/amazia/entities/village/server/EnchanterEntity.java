@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.goal.enchanting.EnchantGoal;
 import net.denanu.amazia.entities.village.server.goal.enchanting.GoToEnchantingTable;
+import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.entity.EntityType;
@@ -89,8 +91,10 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	@Override
 	protected void initGoals() {
 
-		this.goalSelector.add(49, new EnchantGoal(this, 49));
-		this.goalSelector.add(50, new GoToEnchantingTable(this, 50));
+		this.goalSelector.add(50, new SequenceGoal<EnchanterEntity>(this, ImmutableList.of(
+				new GoToEnchantingTable(this, 50),
+				new EnchantGoal(this, 50)
+				)));
 
 		super.registerBaseGoals(this, this::endReurnItem);
 	}

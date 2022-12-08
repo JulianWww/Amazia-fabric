@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal.cleric;
 
 import net.denanu.amazia.entities.village.server.ClericEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.minecraft.entity.damage.DamageSource;
 
 public class HealEntityGoal extends TimedVillageGoal<ClericEntity> {
@@ -30,6 +31,7 @@ public class HealEntityGoal extends TimedVillageGoal<ClericEntity> {
 			else {
 				this.entity.getTarget().heal(this.entity.getHealAmount());
 			}
+			ActivityFoodConsumerMap.healUseFood(this.entity);
 		}
 		this.entity.setTarget(null);
 	}

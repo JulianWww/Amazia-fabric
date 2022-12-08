@@ -113,7 +113,7 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public int getPlantAdvanceAgeTime() {
-		return 100;
+		return 20;
 	}
 
 	public int getGrowRadius() {
@@ -132,5 +132,9 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	 */
 	public BlockPos setToRegrow(final BlockPos toRegrow) {
 		return this.toRegrow = toRegrow;
+	}
+
+	public int getMaxRegrowMine() {
+		return 2;
 	}
 }

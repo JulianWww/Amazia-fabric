@@ -6,8 +6,8 @@ import net.minecraft.util.math.BlockPos;
 
 public class LeaveCombatGoal extends AmaziaGoToBlockGoal<GuardEntity> {
 
-	public LeaveCombatGoal(final GuardEntity e, final int priority, final float speed) {
-		super(e, priority, speed);
+	public LeaveCombatGoal(final GuardEntity e, final int priority, final int food, final float speed) {
+		super(e, priority, food, speed);
 	}
 
 	@Override

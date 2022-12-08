@@ -10,8 +10,11 @@ import net.minecraft.util.math.BlockPos;
 public abstract class AmaziaGoToEntityGoal<E extends AmaziaVillagerEntity> extends AmaziaGoToBlockGoal<E> {
 	protected Entity targetEntity;
 
-	public AmaziaGoToEntityGoal(final E e, final int priority, final float speed) {
-		super(e, priority, speed);
+	public AmaziaGoToEntityGoal(final E e, final int priority, final int food, final float speed) {
+		super(e, priority, food, speed);
+	}
+	public AmaziaGoToEntityGoal(final E e, final int priority, final int food) {
+		super(e, priority, food);
 	}
 	public AmaziaGoToEntityGoal(final E e, final int priority) {
 		super(e, priority);

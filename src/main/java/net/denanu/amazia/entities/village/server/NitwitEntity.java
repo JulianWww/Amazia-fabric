@@ -3,11 +3,15 @@ package net.denanu.amazia.entities.village.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+
 import net.denanu.amazia.entities.village.server.goal.nitwit.NitwitRandomWanderAroundGoal;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
@@ -20,6 +24,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
+	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.AIR);
+	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of();
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -49,7 +55,7 @@ public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	@Override
 	public Triplet<ItemStack, Integer, Integer> getDepositableItems() {
-		return null;
+		return this.getDepositableItems(NitwitEntity.USABLE_ITEMS, NitwitEntity.REQUIRED_ITEMS);
 	}
 
 	@Override
@@ -59,13 +65,13 @@ public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	@Override
 	public boolean canDepositItems() {
-		return false;
+		return !this.hasFreeSlot();
 	}
 
 	@Override
 	protected void initGoals() {
 
-		this.goalSelector.add(50, new NitwitRandomWanderAroundGoal(this, 46));
+		this.goalSelector.add(50, new NitwitRandomWanderAroundGoal(this, 50));
 
 		super.registerBaseGoals();
 	}

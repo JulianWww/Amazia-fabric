@@ -86,7 +86,7 @@ public class BlacksmithEntity extends AmaziaSmelterVillagerEntity implements IAn
 
 		this.goalSelector.add(51, new SequenceGoal<BlacksmithEntity>(this, ImmutableList.of(
 				new GoToAnvilGoal(this, 51),
-				new CraftAtCraftingLocationGoal(this, 51)
+				new CraftAtCraftingLocationGoal(this, 51, false)
 				)));
 
 		super.registerBaseGoals(this::scanForCoal, this::scanForCoal, false);

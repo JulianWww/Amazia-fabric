@@ -3,6 +3,7 @@ package net.denanu.amazia.entities.village.server.goal.blacksmithing;
 import net.denanu.amazia.entities.village.server.AmaziaSmelterVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.InteractWithContainerGoal;
+import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -61,6 +62,7 @@ public class PutItemsInFurnaceGoal<E extends AmaziaSmelterVillagerEntity> extend
 				furnace.setStack(slot, currentStack);
 				this.entity.getInventory().setStack(blatingItem, blastStack);
 			}
+			ActivityFoodConsumerMap.interactWithContainerUseFood(this.entity);
 		}
 	}
 }

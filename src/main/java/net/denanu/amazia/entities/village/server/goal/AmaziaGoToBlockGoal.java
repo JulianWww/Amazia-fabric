@@ -7,9 +7,12 @@ public abstract class AmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> extend
 	public AmaziaGoToBlockGoal(final E e, final int priority) {
 		super(e, priority);
 	}
+	public AmaziaGoToBlockGoal(final E e, final int priority, final int foodUsage) {
+		super(e, priority, foodUsage);
+	}
 
-	public AmaziaGoToBlockGoal(final E e, final int priority, final float speed) {
-		super(e, priority, speed);
+	public AmaziaGoToBlockGoal(final E e, final int priority, final int foodUsage, final float speed) {
+		super(e, priority, foodUsage, speed);
 	}
 
 	@Override

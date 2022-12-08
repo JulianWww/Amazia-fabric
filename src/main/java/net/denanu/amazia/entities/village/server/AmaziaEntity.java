@@ -4,6 +4,7 @@ import org.apache.logging.log4j.core.tools.picocli.CommandLine.InitializationExc
 
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
+import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.moods.ServerMoodEmiter;
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.server.controll.AmaziaEntityMoveControl;
@@ -15,7 +16,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -42,6 +45,11 @@ public class AmaziaEntity extends PassiveEntity {
 	@Override
 	public AmaziaEntityMoveControl getMoveControl() {
 		return (AmaziaEntityMoveControl)this.moveControl;
+	}
+
+	public static DefaultAttributeContainer.Builder setAttributes() {
+		return MobEntity.createMobAttributes()
+				.add(AmaziaEntityAttributes.MAX_HUNGER);
 	}
 
 	@Deprecated
@@ -195,5 +203,4 @@ public class AmaziaEntity extends PassiveEntity {
 		}
 		return super.damage(source, amount);
 	}
-
 }

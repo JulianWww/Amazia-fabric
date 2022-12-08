@@ -4,9 +4,11 @@ import net.denanu.amazia.entities.village.server.AmaziaSmelterVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.storage.CraftGoal;
 
 public class CraftAtCraftingLocationGoal extends CraftGoal<AmaziaSmelterVillagerEntity> {
+	final boolean doMulticraft;
 
-	public CraftAtCraftingLocationGoal(final AmaziaSmelterVillagerEntity e, final int priority) {
+	public CraftAtCraftingLocationGoal(final AmaziaSmelterVillagerEntity e, final int priority, final boolean doMulitiCraft) {
 		super(e, priority);
+		this.doMulticraft = doMulitiCraft;
 	}
 
 	@Override
@@ -17,7 +19,7 @@ public class CraftAtCraftingLocationGoal extends CraftGoal<AmaziaSmelterVillager
 	@Override
 	public void takeAction() {
 		super.takeCraftAction();
-		if (this.entity.getCraftInput() == null || !CraftGoal.canCraft(this.entity)) {
+		if (!this.doMulticraft || this.entity.getCraftInput() == null || !CraftGoal.canCraft(this.entity)) {
 			this.entity.endCraft();
 			this.entity.sceduleDepositing();
 			//this.entity.requestCraftable();
