@@ -14,6 +14,6 @@ For setup instructions please see the [fabric wiki page](https://fabricmc.net/wi
 This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
 
 ## Credits:
-* [Bless icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/bless)
+* [Blessing Status effect icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/bless)
 ## Contact
 amazia.fabric@gmail.com
