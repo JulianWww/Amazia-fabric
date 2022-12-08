@@ -14,6 +14,7 @@ import net.denanu.amazia.entities.village.server.goal.rancher.BringAnimalsToPen;
 import net.denanu.amazia.entities.village.server.goal.rancher.FeedAnimalGoal;
 import net.denanu.amazia.entities.village.server.goal.rancher.FetchAnimal;
 import net.denanu.amazia.entities.village.server.goal.rancher.LeashAnimal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -23,6 +24,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -173,5 +175,10 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 			}
 		}
 
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.RANCHER;
 	}
 }

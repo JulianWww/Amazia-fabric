@@ -13,6 +13,7 @@ import net.denanu.amazia.entities.village.server.goal.mineing.ExtendMineGoal;
 import net.denanu.amazia.entities.village.server.goal.mineing.FixBrokenMineSeroundingsGoal;
 import net.denanu.amazia.entities.village.server.goal.mineing.LightUpMine;
 import net.denanu.amazia.entities.village.server.goal.mineing.MoveToEndOfMine;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.structures.MineStructure;
 import net.minecraft.block.Block;
@@ -28,6 +29,7 @@ import net.minecraft.item.PickaxeItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -261,5 +263,10 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 			}
 		}
 		return this.hasFreeSlot() && this.hasPick();
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.MINER;
 	}
 }

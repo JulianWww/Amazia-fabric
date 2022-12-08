@@ -13,6 +13,7 @@ import net.denanu.amazia.entities.village.server.goal.farming.HarvestCropsGoal;
 import net.denanu.amazia.entities.village.server.goal.farming.HoeFarmLandGoal;
 import net.denanu.amazia.entities.village.server.goal.farming.PlantCropsGoal;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -29,6 +30,7 @@ import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
@@ -217,5 +219,10 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	@Override
 	public HashMap<Item, ArrayList<CraftingRecipe>> getCraftables() {
 		return Amazia.FARMER_CRAFTS;
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.FARMER;
 	}
 }

@@ -21,8 +21,12 @@ import net.denanu.amazia.entities.village.server.goal.storage.DepositItemGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.GetItemGoal;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
+import net.denanu.amazia.mechanics.education.IAmaziaEducatedEntity;
 import net.denanu.amazia.mechanics.hunger.AmaziaFood;
 import net.denanu.amazia.mechanics.hunger.AmaziaFoodData;
+import net.denanu.amazia.mechanics.intelligence.IAmaziaIntelligenceEntity;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
+import net.denanu.amazia.mechanics.leveling.ProfessionLevelManager;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.utils.crafting.CraftingUtils;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -52,6 +56,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -64,17 +69,22 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	private Map<Item, Integer> craftInput;
 	private boolean isDeposeting = false;
 
-	protected float hunger;
+	private float hunger;
+	private float intelligence;
+	private float education;
+	private final ProfessionLevelManager professionLevelManager;
 
 	private Optional<Integer> bestFoodItem;
 
-	private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
+	public final PropertyDelegate propertyDelegate = new PropertyDelegate() {
 		@Override
 		public int get(final int index) {
 			return switch (index) {
 			case 0 -> (int) AmaziaVillagerEntity.this.getHealth();
 			case 1 -> (int) AmaziaVillagerEntity.this.hunger;
-			default -> 0;
+			case 2 -> (int) AmaziaVillagerEntity.this.intelligence;
+			case 3 -> (int) AmaziaVillagerEntity.this.education;
+			default -> AmaziaVillagerEntity.this.professionLevelManager.getLevelById(index - 4);
 			};
 		}
 
@@ -87,9 +97,13 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 
 		@Override
 		public int size() {
-			return 2;
+			return AmaziaVillagerEntity.propertiCount();
 		}
 	};
+
+	public static int propertiCount() {
+		return 4 + AmaziaProfessions.PROFESSIONS.size();
+	}
 
 	protected AmaziaVillagerEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
@@ -97,7 +111,9 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		this.requestedItems = new ArrayList<Item>();
 		this.craftInput = null;
 		this.hunger = (float) this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER);
+		this.intelligence = 0f;
 		this.bestFoodItem = Optional.empty();
+		this.professionLevelManager = new ProfessionLevelManager();
 
 		this.inventory.addListener(this);
 	}
@@ -201,6 +217,9 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		super.writeCustomDataToNbt(nbt);
 		nbt.put("Inventory", this.inventory.toNbtList());
 		nbt.putFloat("Hunger", this.hunger);
+		nbt.putFloat("Intelligence", this.intelligence);
+		nbt.putFloat("Education", this.education);
+		nbt.put("professions", this.professionLevelManager.save());
 	}
 
 	@Override
@@ -209,6 +228,9 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		this.inventory.clear();
 		this.inventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE));
 		this.hunger = nbt.contains("Hunger") ? nbt.getFloat("Hunger") : (float) this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER);
+		this.intelligence = nbt.contains("Intelligence") ? nbt.getFloat("Intelligence") : IAmaziaIntelligenceEntity.getInitalIntelligence();
+		this.education = nbt.contains("Education") ? nbt.getFloat("Education") : IAmaziaEducatedEntity.baseEducation(this);
+		this.professionLevelManager.load(nbt.getCompound("professions"));
 	}
 
 	@Override
@@ -506,8 +528,37 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	}
 
 	@Override
+	public float getIntelligence() {
+		return this.intelligence;
+	}
+
+	@Override
+	public float getEducation() {
+		return this.education;
+	}
+
+	public abstract Identifier getProfession();
+
+	@Override
+	public void gainXp(final float xpVal) {
+		this.gainXp(this.getProfession(), xpVal);
+	}
+	@Override
+	public void gainXp(final Identifier profession, final float xpVal) {
+		this.professionLevelManager.gainXp(profession, xpVal, this.intelligence);
+	}
+	@Override
 	public float getLevel() {
-		return 0f;
+		return this.getLevel(this.getProfession());
+	}
+	@Override
+	public float getLevel(final Identifier profession) {
+		return this.professionLevelManager.getLevel(profession);
+	}
+
+	@Override
+	public void learn(final float baseAmount) {
+		this.education = this.education + (this.intelligence - this.education) * baseAmount;
 	}
 
 	protected boolean isLowHp() {

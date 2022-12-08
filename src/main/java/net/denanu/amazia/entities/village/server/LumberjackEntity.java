@@ -10,6 +10,7 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.goal.lumber.GoToLumberLocationGoal;
 import net.denanu.amazia.entities.village.server.goal.lumber.HarvestTreeGoal;
 import net.denanu.amazia.entities.village.server.goal.lumber.PlantSaplingGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.village.AmaziaData;
 import net.denanu.amazia.village.sceduling.utils.LumberPathingData;
 import net.minecraft.entity.EntityType;
@@ -19,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
@@ -160,6 +162,11 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 	@Override
 	public HashMap<Item, ArrayList<CraftingRecipe>> getCraftables() {
 		return Amazia.LUMBERJACK_CRAFTS;
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.LUMBERJACK;
 	}
 
 }

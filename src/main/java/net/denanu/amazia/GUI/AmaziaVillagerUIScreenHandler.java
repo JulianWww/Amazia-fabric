@@ -1,5 +1,6 @@
 package net.denanu.amazia.GUI;
 
+import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -18,7 +19,7 @@ public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 	}
 
 	public AmaziaVillagerUIScreenHandler(final int syncId, final PlayerInventory playerInventory) {
-		this(syncId, playerInventory, null, new ArrayPropertyDelegate(2));
+		this(syncId, playerInventory, null, new ArrayPropertyDelegate(AmaziaVillagerEntity.propertiCount()));
 	}
 
 	public AmaziaVillagerUIScreenHandler(final int syncId, final PlayerInventory playerInventory,
@@ -42,9 +43,16 @@ public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 		return this.deleget.get(1);
 	}
 
+	public int getIntelligence() {
+		return this.deleget.get(2);
+	}
+
+	public int getEducation() {
+		return this.deleget.get(3);
+	}
+
 	@Override
 	public boolean canUse(final PlayerEntity var1) {
 		return true;
 	}
-
 }

@@ -14,12 +14,14 @@ import net.denanu.amazia.entities.village.server.goal.druid.AdvanceCropAgeGoal;
 import net.denanu.amazia.entities.village.server.goal.druid.RegeneratMineGoToSubGoal;
 import net.denanu.amazia.entities.village.server.goal.druid.RegenerateMineSubGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.village.structures.MineStructure;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
@@ -136,5 +138,10 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	public int getMaxRegrowMine() {
 		return 2;
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.DRUID;
 	}
 }

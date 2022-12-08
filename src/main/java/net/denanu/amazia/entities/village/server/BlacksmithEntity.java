@@ -14,6 +14,7 @@ import net.denanu.amazia.entities.village.server.goal.blacksmithing.GoToBlastFur
 import net.denanu.amazia.entities.village.server.goal.blacksmithing.PutItemsInFurnaceGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.CraftAtCraftingLocationGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -25,6 +26,7 @@ import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -115,5 +117,9 @@ public class BlacksmithEntity extends AmaziaSmelterVillagerEntity implements IAn
 	@Override
 	public void requestSmeltable() {
 		this.requestItem(JJUtils.getRandomListElement(AmaziaData.BLASTABLES));
+	}
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.BLACKSMITH;
 	}
 }

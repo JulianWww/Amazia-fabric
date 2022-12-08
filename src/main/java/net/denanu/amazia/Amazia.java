@@ -28,6 +28,7 @@ import net.denanu.amazia.entities.village.server.LumberjackEntity;
 import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.mechanics.hunger.CraftingHungerManager;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.utils.crafting.VillageRecipeManager;
 import net.denanu.amazia.utils.registry.AmaziaRegistrys;
@@ -108,6 +109,7 @@ public class Amazia implements ModInitializer {
 
 		// Mechanics
 		CraftingHungerManager.setup();
+		AmaziaProfessions.setup();
 	}
 
 	public static VillageManager getVillageManager() {

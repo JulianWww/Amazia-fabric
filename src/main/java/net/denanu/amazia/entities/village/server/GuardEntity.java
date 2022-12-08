@@ -16,6 +16,7 @@ import net.denanu.amazia.entities.village.server.goal.guard.GuardMeleeAttackGoal
 import net.denanu.amazia.entities.village.server.goal.guard.LeaveCombatGoal;
 import net.denanu.amazia.entities.village.server.goal.guard.VillageGuardActiveTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.guard.VillageGuardBowAttackGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.village.AmaziaData;
 import net.denanu.amazia.village.sceduling.opponents.CombatEvaluator;
 import net.denanu.amazia.village.sceduling.opponents.ProjectileTargeting;
@@ -40,6 +41,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -344,5 +346,10 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 		if (this.hasVillage()) {
 			this.village.getGuarding().removeCombatant(this);
 		}
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.GUARD;
 	}
 }

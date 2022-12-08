@@ -6,6 +6,7 @@ import net.denanu.amazia.GUI.TradingScreen;
 import net.denanu.amazia.GUI.debug.VillagePathingOverlay;
 import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.entities.AmaziaEntities;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -33,6 +34,7 @@ public class AmaziaClient implements ClientModInitializer {
 		ClientTickEvents.END_CLIENT_TICK.register(new VillagePathingOverlay());
 
 		ClientLifecycleEvents.CLIENT_STOPPING.register(VillageBorderRenderer::clear);
+		AmaziaProfessions.setup();
 	}
 
 }

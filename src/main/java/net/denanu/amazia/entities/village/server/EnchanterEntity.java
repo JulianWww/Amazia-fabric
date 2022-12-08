@@ -12,6 +12,7 @@ import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.goal.enchanting.EnchantGoal;
 import net.denanu.amazia.entities.village.server.goal.enchanting.GoToEnchantingTable;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.entity.EntityType;
@@ -22,6 +23,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
@@ -213,5 +215,10 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 
 	public void createHasLapis() {
 		this.amountOfLapis = this.countItems(Items.LAPIS_LAZULI);
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.ENCHANTER;
 	}
 }

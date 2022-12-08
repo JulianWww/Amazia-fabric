@@ -44,6 +44,20 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 				this.playerInventoryTitleX,
 				this.playerInventoryTitleY-10,
 				0x404040);
+
+		this.textRenderer.draw(
+				matrices,
+				Text.literal("IQ: ").append(Integer.toString(this.getScreenHandler().getIntelligence())),
+				this.playerInventoryTitleX,
+				this.playerInventoryTitleY-20,
+				0x404040);
+
+		this.textRenderer.draw(
+				matrices,
+				Text.literal("Education: ").append(Integer.toString(this.getScreenHandler().getEducation())),
+				this.playerInventoryTitleX,
+				this.playerInventoryTitleY-30,
+				0x404040);
 	}
 
 	@Override
