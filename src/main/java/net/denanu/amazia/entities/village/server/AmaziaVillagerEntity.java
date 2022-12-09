@@ -73,6 +73,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	private float intelligence;
 	private float education;
 	private final ProfessionLevelManager professionLevelManager;
+	private float levelBoost;
 
 	private Optional<Integer> bestFoodItem;
 
@@ -101,8 +102,12 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		}
 	};
 
+	public static int nonProfessionPropertyCounts( ) {
+		return 4;
+	}
+
 	public static int propertiCount() {
-		return 4 + AmaziaProfessions.PROFESSIONS.size();
+		return AmaziaVillagerEntity.nonProfessionPropertyCounts() + AmaziaProfessions.PROFESSIONS.size();
 	}
 
 	protected AmaziaVillagerEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
@@ -518,6 +523,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	@Override
 	public boolean hasOrRequestFood() {
 		if (this.bestFoodItem.isEmpty()) {
+			this.endCraft();
 			if (!this.hasRequestedItems()) {
 				for (final AmaziaFood food : AmaziaFoodData.NUTRISCHOUS_FOODS) {
 					this.requestItem(food.getItem());
@@ -553,7 +559,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	}
 	@Override
 	public float getLevel(final Identifier profession) {
-		return this.professionLevelManager.getLevel(profession);
+		return this.professionLevelManager.getLevel(profession) + this.levelBoost;
 	}
 
 	@Override
@@ -615,5 +621,13 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	}
 	public int getCraftingTime() {
 		return 20;
+	}
+
+	public float getLevelBoost() {
+		return this.levelBoost;
+	}
+
+	public void setLevelBoost(final float levelBoost) {
+		this.levelBoost = levelBoost;
 	}
 }

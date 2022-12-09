@@ -3,6 +3,7 @@ package net.denanu.amazia.GUI;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
@@ -35,29 +36,47 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 				matrices,
 				Text.literal("Health: ").append(Integer.toString(this.getScreenHandler().getHealth())),
 				this.playerInventoryTitleX,
-				this.playerInventoryTitleY,
+				this.titleY,
 				0x404040);
 
 		this.textRenderer.draw(
 				matrices,
 				Text.literal("Food: ").append(Integer.toString(this.getScreenHandler().getHunger())),
 				this.playerInventoryTitleX,
-				this.playerInventoryTitleY-10,
+				this.titleY+10,
 				0x404040);
 
 		this.textRenderer.draw(
 				matrices,
 				Text.literal("IQ: ").append(Integer.toString(this.getScreenHandler().getIntelligence())),
 				this.playerInventoryTitleX,
-				this.playerInventoryTitleY-20,
+				this.titleY+20,
 				0x404040);
 
 		this.textRenderer.draw(
 				matrices,
 				Text.literal("Education: ").append(Integer.toString(this.getScreenHandler().getEducation())),
 				this.playerInventoryTitleX,
-				this.playerInventoryTitleY-30,
+				this.titleY+30,
 				0x404040);
+
+		this.renderProfessions(matrices);
+	}
+
+	private void renderProfessions(final MatrixStack matrices) {
+		for (int idx=0; idx < AmaziaProfessions.PROFESSIONS.size(); idx++) {
+			final int lvl = this.getScreenHandler().getProfessionLevel(idx);
+			if (lvl > 0) {
+				this.textRenderer.draw(
+						matrices,
+						Text.translatable(AmaziaProfessions.PROFESSIONS.get(idx).toTranslationKey())
+						.append(": ")
+						.append(Integer.toString(lvl)),
+						this.playerInventoryTitleX,
+						this.titleY + 40 + 10*idx,
+						0x404040);
+			}
+		}
 	}
 
 	@Override

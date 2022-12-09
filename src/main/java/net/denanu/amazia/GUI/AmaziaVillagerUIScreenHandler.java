@@ -55,4 +55,8 @@ public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 	public boolean canUse(final PlayerEntity var1) {
 		return true;
 	}
+
+	public int getProfessionLevel(final int idx) {
+		return this.deleget.get(idx + AmaziaVillagerEntity.nonProfessionPropertyCounts());
+	}
 }

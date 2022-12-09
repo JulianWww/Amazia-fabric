@@ -51,7 +51,7 @@ public class ProfessionLevelManager {
 
 	public int getLevelById(final int idx) {
 		if (idx < AmaziaProfessions.PROFESSIONS.size()) {
-			return (int)(float) this.professionLevel.get(AmaziaProfessions.PROFESSIONS.get(idx)).getValue();
+			return (int) Math.ceil(this.professionLevel.get(AmaziaProfessions.PROFESSIONS.get(idx)).getValue());
 		}
 		return 0;
 	}

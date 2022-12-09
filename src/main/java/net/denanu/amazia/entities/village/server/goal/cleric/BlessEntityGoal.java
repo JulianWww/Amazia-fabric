@@ -3,6 +3,7 @@ package net.denanu.amazia.entities.village.server.goal.cleric;
 import net.denanu.amazia.entities.village.server.ClericEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
+import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,6 +40,7 @@ public class BlessEntityGoal extends TimedVillageGoal<ClericEntity> {
 					this.entity.getBlessLastingTime()
 					));
 			ActivityFoodConsumerMap.blessUseFood(this.entity);
+			AmaziaXpGainMap.gainBlessXp(this.entity);
 		}
 	}
 
