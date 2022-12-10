@@ -17,11 +17,8 @@ def roman(number):
 	return out
 
 out = {}
-for i in range(10, 256):
-	j = i
-	if i >= 128:
-		j = -256 + i
-	out["enchantment.level." + str(j)] = str(i);#roman(i)
+for i in range(10, 101):
+	out["enchantment.level." + str(i)] = roman(i)
 
 with open("../src/main/resources/assets/amazia/lang/_all.json", "w") as file:
 	json.dump(out, file, indent=6)
