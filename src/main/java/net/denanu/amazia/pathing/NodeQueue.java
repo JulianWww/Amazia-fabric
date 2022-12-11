@@ -3,7 +3,6 @@ package net.denanu.amazia.pathing;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.pathing.node.PathingNode;
 
 public class NodeQueue {

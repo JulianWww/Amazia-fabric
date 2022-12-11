@@ -1,8 +1,8 @@
 package net.denanu.amazia.item;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.denanu.amazia.Amazia;
-import net.minecraft.item.*;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 public class AmaziaItems {

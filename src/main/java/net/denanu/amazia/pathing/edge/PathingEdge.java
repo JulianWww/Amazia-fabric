@@ -1,13 +1,10 @@
 package net.denanu.amazia.pathing.edge;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.pathing.interfaces.PathingPathInterface;
-import net.denanu.amazia.pathing.interfaces.PathingUpdateInterface;
 import net.denanu.amazia.pathing.node.PathingNode;
 import net.denanu.amazia.utils.ArrayIterator;
 import net.denanu.amazia.utils.ReverseArrayIterator;

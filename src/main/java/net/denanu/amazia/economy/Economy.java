@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.economy.itemEconomy.BaseItemEconomy;
 import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
 import net.denanu.amazia.economy.offerModifiers.finalizers.OfferFinalModifer;

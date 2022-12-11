@@ -2,7 +2,6 @@ package net.denanu.amazia.utils;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3d;
 
 public class CuboidChunkSampler extends ChunkSampler {
 protected int sampleIdx = 0;

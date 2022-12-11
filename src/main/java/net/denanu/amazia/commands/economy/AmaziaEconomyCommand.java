@@ -2,7 +2,6 @@ package net.denanu.amazia.commands.economy;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -10,7 +9,6 @@ import com.mojang.brigadier.context.CommandContext;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.commands.economy.item.AmaziaEconomyItemCommands;
 import net.denanu.amazia.commands.economy.modifier.AmaziaPriceModifierCommands;
-import net.denanu.amazia.commands.testSuit.AmaziaTestCommands;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;

@@ -6,7 +6,6 @@ import java.util.List;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.block.AmaziaBlocks;
-import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.sceduling.utils.LumberPathingData;
@@ -15,7 +14,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class LumberSceduler extends VillageSceduler {
 	private HashMap<BlockPos, LumberPathingData> schools;

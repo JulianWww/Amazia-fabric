@@ -1,12 +1,10 @@
 package net.denanu.amazia.economy.offerModifiers.item;
 
 import net.denanu.amazia.economy.AmaziaTradeOffer;
-import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
 import net.denanu.amazia.economy.offerModifiers.OfferModifier;
 import net.denanu.amazia.utils.random.WeightedRandomCollection;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 
 public class ItemReselector implements OfferModifier {
 	private WeightedRandomCollection<Item> items;

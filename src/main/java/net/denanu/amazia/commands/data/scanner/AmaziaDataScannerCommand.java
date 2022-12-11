@@ -2,20 +2,16 @@ package net.denanu.amazia.commands.data.scanner;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
-import java.util.Optional;
-
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.utils.nbt.NbtStream;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.NbtDataSource;
 import net.minecraft.text.Text;
 
 public class AmaziaDataScannerCommand {

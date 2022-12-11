@@ -5,16 +5,12 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.JJUtils;
-import net.denanu.amazia.economy.AmaziaTradeOffer;
 import net.denanu.amazia.economy.EconomyFactory;
-import net.denanu.amazia.economy.IAmaziaMerchant;
 import net.denanu.amazia.utils.random.RandomnessFactory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.util.Pair;
 
 /*
  * An item economy that calculates its prices out of a list of ingredients and adds the prices together, also update ingredients.

@@ -1,11 +1,5 @@
 package net.denanu.amazia.economy.itemEconomy;
 
-import java.util.ArrayList;
-
-import net.denanu.amazia.JJUtils;
-import net.denanu.amazia.economy.AmaziaTradeOffer;
-import net.denanu.amazia.economy.IAmaziaMerchant;
-import net.denanu.amazia.economy.offerModifiers.OfferModifier;
 import net.denanu.amazia.utils.random.RandomnessFactory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
