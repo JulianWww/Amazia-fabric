@@ -29,6 +29,7 @@ import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.mechanics.leveling.ProfessionLevelManager;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.utils.crafting.CraftingUtils;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InventoryOwner;
@@ -49,9 +50,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
@@ -62,7 +65,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
-public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner, AmaziaMechanicsGuiEntity, InventoryChangedListener, IAmaziaDataProviderEntity {
+public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner, AmaziaMechanicsGuiEntity, InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactory {
 	private final SimpleInventory inventory = new SimpleInventory(16);
 	private List<Item> requestedItems;
 	private CraftingRecipe wantsToCraft;
@@ -483,7 +486,7 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 
 	@Override
 	public ScreenHandler createMenu(final int syncId, final PlayerInventory inventory, final PlayerEntity var3) {
-		return new AmaziaVillagerUIScreenHandler(syncId, inventory, this, this.propertyDelegate);
+		return new AmaziaVillagerUIScreenHandler(syncId, inventory, this, this.propertyDelegate, this.getStatusEffects());
 	}
 
 	@Override
@@ -630,4 +633,11 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	public void setLevelBoost(final float levelBoost) {
 		this.levelBoost = levelBoost;
 	}
+	
+    @Override
+    public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
+        packetByteBuf.writeCollection(this.getStatusEffects(), (buf2, data) -> {
+        	buf2.writeNbt(data.writeNbt(new NbtCompound()));
+        });
+    }
 }

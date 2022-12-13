@@ -6,6 +6,7 @@ import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.server.DruidEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
+import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Fertilizable;
 import net.minecraft.server.world.ServerWorld;
@@ -25,12 +26,12 @@ public class AdvanceCropAgeGoal extends TimedVillageGoal<DruidEntity> {
 	}
 
 	public static boolean useOnFertilizable(final World world, final BlockPos pos) {
-		final BlockState blockState = world.getBlockState(pos);
-		if (blockState.getBlock() instanceof final Fertilizable fertilizable && fertilizable.isFertilizable(world, pos, blockState, world.isClient)) {
-			if (world instanceof final ServerWorld sworld) {
-				if (fertilizable.canGrow(world, world.random, pos, blockState)) {
-					fertilizable.grow(sworld, world.random, pos, blockState);
-				}
+		final var blockState = world.getBlockState(pos);
+		if (blockState.getBlock() instanceof final Fertilizable fertilizable
+				&& fertilizable.isFertilizable(world, pos, blockState, world.isClient)) {
+			if ((world instanceof final ServerWorld sworld)
+					&& fertilizable.canGrow(world, world.random, pos, blockState)) {
+				fertilizable.grow(sworld, world.random, pos, blockState);
 			}
 			return true;
 		}
@@ -38,32 +39,30 @@ public class AdvanceCropAgeGoal extends TimedVillageGoal<DruidEntity> {
 	}
 
 	public static boolean grow(final ServerWorld world, final BlockPos pos) {
-		final boolean success = AdvanceCropAgeGoal.useOnFertilizable(world, pos);
+		final var success = AdvanceCropAgeGoal.useOnFertilizable(world, pos);
 		if (success) {
 			world.syncWorldEvent(WorldEvents.BONE_MEAL_USED, pos, 0);
 		}
 		return success;
 	}
 
-
 	@Override
 	protected void takeAction() {
-		final BlockPos pos = this.entity.getToRegrow();
-		final ServerWorld world = (ServerWorld) this.entity.world;
-		final MutableInt count = new MutableInt();
-		/*BlockPosStream.circle(pos, this.entity.getGrowRadius()).forEach(pos2 -> {
-			if (AdvanceCropAgeGoal.grow(world, pos2)) {
-				count.add(1);
-			}
-		});*/
+		final var pos = this.entity.getToRegrow();
+		final var world = (ServerWorld) this.entity.world;
+		final var count = new MutableInt();
+		/*
+		 * BlockPosStream.circle(pos, this.entity.getGrowRadius()).forEach(pos2 -> { if
+		 * (AdvanceCropAgeGoal.grow(world, pos2)) { count.add(1); } });
+		 */
 		if (AdvanceCropAgeGoal.grow(world, pos)) {
 			count.add(1);
 		}
 		if (count.getValue() > 0) {
 			this.entity.emmitMood(VillagerMoods.HAPPY);
 			ActivityFoodConsumerMap.growCropUseFood(this.entity);
-		}
-		else {
+			AmaziaXpGainMap.gainCropGrowXp(this.entity);
+		} else {
 			this.entity.emmitMood(VillagerMoods.ANGRY);
 		}
 	}

@@ -3,6 +3,7 @@ package net.denanu.amazia.entities.village.server.goal.lumber;
 import net.denanu.amazia.entities.village.server.LumberjackEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
+import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
@@ -20,7 +21,9 @@ public class PlantSaplingGoal extends TimedVillageGoal<LumberjackEntity> {
 
 	@Override
 	public boolean canStart() {
-		if (!super.canStart()) { return false; }
+		if (!super.canStart()) {
+			return false;
+		}
 		if (!this.entity.hasSapling()) {
 			this.entity.requestSapling();
 			return false;
@@ -28,8 +31,8 @@ public class PlantSaplingGoal extends TimedVillageGoal<LumberjackEntity> {
 		if (!this.entity.hasLumberLoc()) {
 			this.entity.setLumberingLoc(this.entity.getVillage().getLumber().getPlantLocation());
 		}
-		return this.entity.hasLumberLoc() && this.entity.isInLumberLoc() &&
-				this.resetIfNecesary(this.entity.getLumberingLoc().getPos().isEmpty(this.entity.getWorld()));
+		return this.entity.hasLumberLoc() && this.entity.isInLumberLoc()
+				&& this.resetIfNecesary(this.entity.getLumberingLoc().getPos().isEmpty(this.entity.getWorld()));
 	}
 
 	private boolean resetIfNecesary(final boolean empty) {
@@ -61,30 +64,28 @@ public class PlantSaplingGoal extends TimedVillageGoal<LumberjackEntity> {
 	protected void takeAction() {
 		if (this.entity.hasLumberLoc()) {
 			final int sapling = this.entity.getStackPosOfSapleing();
-			if (sapling >= 0) {
-				if (this.placeBlock(sapling, this.entity.getLumberingLoc().getPos().getPlantLoc())) {
-					ActivityFoodConsumerMap.plantSaplingUseFood(this.entity);
-				}
+			if ((sapling >= 0) && this.placeBlock(sapling, this.entity.getLumberingLoc().getPos().getPlantLoc())) {
+				ActivityFoodConsumerMap.plantSaplingUseFood(this.entity);
+				AmaziaXpGainMap.gainPlantSaplingXP(this.entity);
 			}
 		}
 	}
 
 	private boolean placeBlock(final int sapling, final BlockPos pos) {
 		final ItemStack stack = this.entity.getInventory().getStack(sapling);
-		if (
-				this.placeBlockType(stack, Items.ACACIA_SAPLING,	Blocks.ACACIA_SAPLING, 		pos, sapling) ||
-				this.placeBlockType(stack, Items.BIRCH_SAPLING,  	Blocks.BIRCH_SAPLING, 		pos, sapling) ||
-				this.placeBlockType(stack, Items.DARK_OAK_SAPLING,	Blocks.DARK_OAK_SAPLING, 	pos, sapling) ||
-				this.placeBlockType(stack, Items.JUNGLE_SAPLING, 	Blocks.JUNGLE_SAPLING, 		pos, sapling) ||
-				this.placeBlockType(stack, Items.OAK_SAPLING,		Blocks.OAK_SAPLING, 		pos, sapling) ||
-				this.placeBlockType(stack, Items.SPRUCE_SAPLING,	Blocks.SPRUCE_SAPLING, 		pos, sapling)
-				) {
+		if (this.placeBlockType(stack, Items.ACACIA_SAPLING, Blocks.ACACIA_SAPLING, pos, sapling)
+				|| this.placeBlockType(stack, Items.BIRCH_SAPLING, Blocks.BIRCH_SAPLING, pos, sapling)
+				|| this.placeBlockType(stack, Items.DARK_OAK_SAPLING, Blocks.DARK_OAK_SAPLING, pos, sapling)
+				|| this.placeBlockType(stack, Items.JUNGLE_SAPLING, Blocks.JUNGLE_SAPLING, pos, sapling)
+				|| this.placeBlockType(stack, Items.OAK_SAPLING, Blocks.OAK_SAPLING, pos, sapling)
+				|| this.placeBlockType(stack, Items.SPRUCE_SAPLING, Blocks.SPRUCE_SAPLING, pos, sapling)) {
 			return true;
 		}
 		return false;
 	}
 
-	private boolean placeBlockType(final ItemStack stack, final Item itm, final Block block, final BlockPos pos, final int idx) {
+	private boolean placeBlockType(final ItemStack stack, final Item itm, final Block block, final BlockPos pos,
+			final int idx) {
 		if (stack.isOf(itm)) {
 			this.entity.getWorld().setBlockState(pos, block.getDefaultState());
 			stack.decrement(1);

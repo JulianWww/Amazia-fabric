@@ -21,9 +21,10 @@ public class VillageGuardBowAttackGoal extends Goal {
 	private boolean movingToLeft;
 	private boolean backward;
 
-	public VillageGuardBowAttackGoal(final GuardEntity guard, final float speed, final int attackInterval, final float range) {
+	public VillageGuardBowAttackGoal(final GuardEntity guard, final float speed, final int attackInterval,
+			final float range) {
 		this.guard = guard;
-		this.squaredRange = range*range;
+		this.squaredRange = range * range;
 		this.speed = speed;
 		this.attackInterval = attackInterval;
 		this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
@@ -31,11 +32,12 @@ public class VillageGuardBowAttackGoal extends Goal {
 
 	@Override
 	public boolean canStart() {
-		if (((MobEntity)this.guard).getTarget() == null) {
+		if (((MobEntity) this.guard).getTarget() == null) {
 			return false;
 		}
 		final double distance = this.guard.squaredDistanceTo(this.guard.getTarget());
-		return this.isHoldingBow() && this.guard.getTarget().isAlive() && this.guard.canSee(this.guard.getTarget()) && distance > 25f && distance < this.squaredRange;
+		return this.isHoldingBow() && this.guard.getTarget().isAlive() && this.guard.canSee(this.guard.getTarget())
+				&& distance > 25f && distance < this.squaredRange;
 	}
 
 	private boolean isHoldingBow() {
@@ -53,10 +55,7 @@ public class VillageGuardBowAttackGoal extends Goal {
 		this.movingToLeft = this.guard.getRandom().nextBoolean();
 		this.backward = this.guard.getRandom().nextBoolean();
 
-		this.guard.equipStack(
-				EquipmentSlot.MAINHAND,
-				this.guard.getInventory().getStack(this.guard.getBow())
-				);
+		this.guard.equipStack(EquipmentSlot.MAINHAND, this.guard.getInventory().getStack(this.guard.getBow()));
 	}
 
 	/**
@@ -104,8 +103,8 @@ public class VillageGuardBowAttackGoal extends Goal {
 	@Override
 	public void stop() {
 		super.stop();
-		((MobEntity)this.guard).setAttacking(false);
-		((LivingEntity)this.guard).clearActiveItem();
+		((MobEntity) this.guard).setAttacking(false);
+		((LivingEntity) this.guard).clearActiveItem();
 		this.guard.getMoveControl().stop();
 		Amazia.LOGGER.info("stoped combat movement");
 	}
@@ -141,7 +140,8 @@ public class VillageGuardBowAttackGoal extends Goal {
 			this.backward = true;
 		}
 
-		this.guard.getMoveControl().strafeTo(this.backward ? -this.speed : this.speed, this.movingToLeft ? this.speed : -this.speed, 1.0f);
+		this.guard.getMoveControl().strafeTo(this.backward ? -this.speed : this.speed,
+				this.movingToLeft ? this.speed : -this.speed, 1.0f);
 		this.guard.lookAtEntity(target, 30.0f, 30.0f);
 		ActivityFoodConsumerMap.combatMovementUseFood(this.guard);
 

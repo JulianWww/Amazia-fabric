@@ -14,6 +14,7 @@ import net.denanu.amazia.entities.village.server.goal.farming.HoeFarmLandGoal;
 import net.denanu.amazia.entities.village.server.goal.farming.PlantCropsGoal;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
+import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -43,10 +44,12 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
-	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.WOODEN_HOE, Items.STONE_HOE, Items.IRON_HOE, Items.GOLDEN_HOE, Items.DIAMOND_HOE, Items.NETHERITE_HOE, Items.AIR);
+public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable {
+	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.WOODEN_HOE, Items.STONE_HOE,
+			Items.IRON_HOE, Items.GOLDEN_HOE, Items.DIAMOND_HOE, Items.NETHERITE_HOE, Items.AIR);
 	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_HOE, Items.STICK);
-	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.CARROT, 16, Items.POTATO, 16, Items.WHEAT_SEEDS, 16, Items.BEETROOT_SEEDS, 16);
+	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.CARROT, 16, Items.POTATO, 16,
+			Items.WHEAT_SEEDS, 16, Items.BEETROOT_SEEDS, 16);
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -56,9 +59,9 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 
 	@Override
 	protected void initGoals() {
-		this.goalSelector.add(47, new HarvestCropsGoal  (this, 47));
-		this.goalSelector.add(48, new PlantCropsGoal    (this, 48));
-		this.goalSelector.add(49, new HoeFarmLandGoal   (this, 49));
+		this.goalSelector.add(47, new HarvestCropsGoal(this, 47));
+		this.goalSelector.add(48, new PlantCropsGoal(this, 48));
+		this.goalSelector.add(49, new HoeFarmLandGoal(this, 49));
 		this.goalSelector.add(50, new AmaziaGoToFarmGoal(this, 50));
 
 		super.registerBaseGoals();
@@ -76,7 +79,7 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<FarmerEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -88,7 +91,7 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 
 	public int getHoe() {
 		ItemStack itm;
-		for (int idx=0; idx < this.getInventory().size(); idx++) {
+		for (int idx = 0; idx < this.getInventory().size(); idx++) {
 			itm = this.getInventory().getStack(idx);
 			if (itm.getItem() instanceof HoeItem) {
 				return idx;
@@ -119,7 +122,7 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	}
 
 	@Override
-	public boolean canCraft () {
+	public boolean canCraft() {
 		return true;
 	}
 
@@ -184,8 +187,10 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 			if (!bl) {
 				continue;
 			}
+			AmaziaXpGainMap.gainPlantCropXp(this);
 			ActivityFoodConsumerMap.plantCropUseFood(this);
-			world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_CROP_PLANT, SoundCategory.BLOCKS, 1.0f, 1.0f);
+			world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_CROP_PLANT, SoundCategory.BLOCKS,
+					1.0f, 1.0f);
 			itemStack.decrement(1);
 			if (!itemStack.isEmpty()) {
 				break;
@@ -194,26 +199,27 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 			break;
 		}
 	}
+
 	private void harvest(final ServerWorld world, final BlockPos pos) {
 		final BlockState state = world.getBlockState(pos);
-		if (state.getBlock() instanceof final CropBlock crop) {
-			if (crop.isMature(state)) {
-				world.breakBlock(pos, true);
-				ActivityFoodConsumerMap.harvestCropUseFood(this);
-			}
+		if (state.getBlock() instanceof final CropBlock crop && crop.isMature(state)) {
+			world.breakBlock(pos, true);
+			AmaziaXpGainMap.gainHarvestCropXp(this);
+			ActivityFoodConsumerMap.harvestCropUseFood(this);
 		}
 		if (state.getBlock() instanceof final SugarCaneBlock crop) {
 			world.breakBlock(pos, true);
+			AmaziaXpGainMap.gainHarvestCropXp(this);
 			ActivityFoodConsumerMap.harvestCropUseFood(this);
 		}
 	}
 
 	public void plant() {
-		this.plant((ServerWorld)this.world, new BlockPos(this.getPos()).up());
+		this.plant((ServerWorld) this.world, new BlockPos(this.getPos()).up());
 	}
 
 	public void harvest() {
-		this.harvest((ServerWorld)this.world, new BlockPos(this.getPos()).up());
+		this.harvest((ServerWorld) this.world, new BlockPos(this.getPos()).up());
 	}
 
 	@Override

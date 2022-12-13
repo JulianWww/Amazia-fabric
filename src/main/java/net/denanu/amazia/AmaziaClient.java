@@ -8,6 +8,7 @@ import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
+import net.denanu.amazia.utils.Predicates;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -28,9 +29,10 @@ public class AmaziaClient implements ClientModInitializer {
 		HandledScreens.register(AmaziaScreens.VILLAGER_SCREEN_HANDLER, AmaziaVillagerUIScreen::new);
 
 		VillagePathingOverlay.setup();
+		Predicates.setup();
 
 		WorldRenderEvents.BEFORE_DEBUG_RENDER.register(VillagePathingOverlay::render);
-		//WorldRenderEvents.BEFORE_DEBUG_RENDER.register(VillageProjectileTargetingDebugOverlay::render);
+		// WorldRenderEvents.BEFORE_DEBUG_RENDER.register(VillageProjectileTargetingDebugOverlay::render);
 		ClientTickEvents.END_CLIENT_TICK.register(new VillagePathingOverlay());
 
 		ClientLifecycleEvents.CLIENT_STOPPING.register(VillageBorderRenderer::clear);
