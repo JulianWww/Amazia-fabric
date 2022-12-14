@@ -3,6 +3,9 @@ package net.denanu.amazia.entities.village.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -22,10 +25,12 @@ import net.minecraft.block.RedstoneOreBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.CraftingRecipe;
@@ -42,11 +47,11 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
-	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.WOODEN_PICKAXE, Items.STONE_PICKAXE, Items.IRON_PICKAXE, Items.GOLDEN_PICKAXE, Items.DIAMOND_PICKAXE, Items.NETHERITE_PICKAXE, Items.AIR);
+public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable {
+	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
 	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_PICKAXE, Items.TORCH, Items.STICK);
 	public static final ImmutableSet<Item> MINE_REQUIRED = ImmutableSet.of();
-	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COBBLESTONE, 64, Items.TORCH, 64, Items.STICK, 64, Items.COAL, 64);
+	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COBBLESTONE, 32, Items.TORCH, 32, Items.STICK, 32, Items.COAL, 32);
 	public static final ImmutableMap<Item, Integer> MAX_PICKUPS = ImmutableMap.of(Items.COBBLESTONE, 64);
 	private static final Vec3i ITEM_PICK_UP_RANGE_EXPANDER_WHILE_MINEING = new Vec3i(5, 5, 5);
 
@@ -54,11 +59,13 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	private boolean inMine;
 	private List<BlockPos> toMineLocations;
 
+	private Optional<Integer> pickPos;
+
 	private final AnimationFactory factory = new AnimationFactory(this);
 
 	public MinerEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
-		this.toMineLocations = new ArrayList<BlockPos>();
+		this.toMineLocations = new ArrayList<>();
 	}
 
 	@Override
@@ -97,7 +104,7 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<MinerEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -115,7 +122,27 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 		return this.getDepositableItems(MinerEntity.USABLE_ITEMS, MinerEntity.REQUIRED_ITEMS);
 	}
 
+	@Override
+	public boolean wantToKeepItemInSlot(final int idx) {
+		boolean keepPick = this.pickPos.isPresent() && this.pickPos.get() == idx;
+		return keepPick || super.wantToKeepItemInSlot(idx);
+	}
+
 	// MINER SPECIFIC
+
+	@Override
+	public void onInventoryChanged(final Inventory inventory) {
+		super.onInventoryChanged(inventory);
+		@Nullable
+		ToolMaterial bestMaterial = null;
+		this.pickPos = Optional.empty();
+		for (int idx=0; idx < inventory.size(); idx++) {
+			if (inventory.getStack(idx).getItem() instanceof PickaxeItem pick && (bestMaterial == null || bestMaterial.getMiningLevel() < pick.getMaterial().getMiningLevel())) {
+				bestMaterial = pick.getMaterial();
+				this.pickPos = Optional.of(idx);
+			}
+		}
+	}
 
 	@Override
 	public void onDeath(final DamageSource damageSource) {
@@ -126,10 +153,8 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	@Override
 	protected void update() {
 		super.update();
-		if (this.isInMine()) {
-			if (!this.mine.isIn(this.getBlockPos()) || !this.canMine()) {
-				this.leaveMine();
-			}
+		if (this.isInMine() && (!this.mine.isIn(this.getBlockPos()) || !this.canMine())) {
+			this.leaveMine();
 		}
 	}
 
@@ -170,10 +195,11 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 
 	protected void addOreBlock(final BlockPos pos) {
 		final Block block = this.getWorld().getBlockState(pos).getBlock();
-		if ((block instanceof OreBlock || block instanceof RedstoneOreBlock)&& !this.toMineLocations.contains(pos)) {
+		if ((block instanceof OreBlock || block instanceof RedstoneOreBlock) && !this.toMineLocations.contains(pos)) {
 			this.toMineLocations.add(pos);
 		}
 	}
+
 	public BlockPos getNextOreBlock() {
 		while (this.toMineLocations.size() > 0) {
 			final BlockPos pos = this.toMineLocations.get(0);
@@ -199,7 +225,9 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	}
 
 	@Override
-	public HashMap<Item,ArrayList<CraftingRecipe>> getCraftables() { return Amazia.MINER_CRAFTS; };
+	public HashMap<Item, ArrayList<CraftingRecipe>> getCraftables() {
+		return Amazia.MINER_CRAFTS;
+	}
 
 	@Override
 	protected Vec3i getItemPickUpRangeExpander() {
@@ -212,7 +240,8 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 	@Override
 	protected boolean shouldPickUp(final ItemStack stack) {
 		if (MinerEntity.MAX_PICKUPS.containsKey(stack.getItem())) {
-			return this.countItems(stack.getItem()) < MinerEntity.MAX_PICKUPS.get(stack.getItem()) + stack.getMaxCount();
+			return this.countItems(stack.getItem()) < MinerEntity.MAX_PICKUPS.get(stack.getItem())
+					+ stack.getMaxCount();
 		}
 		return true;
 	}
@@ -224,7 +253,7 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable  {
 
 	public int getPick() {
 		ItemStack itm;
-		for (int idx=0; idx < this.getInventory().size(); idx++) {
+		for (int idx = 0; idx < this.getInventory().size(); idx++) {
 			itm = this.getInventory().getStack(idx);
 			if (itm.getItem() instanceof PickaxeItem) {
 				return idx;

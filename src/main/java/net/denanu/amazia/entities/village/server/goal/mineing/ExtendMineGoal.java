@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal.mineing;
 
 import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
+import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 
 public class ExtendMineGoal extends TimedMineGoal {
 	public ExtendMineGoal(final MinerEntity e, final int priority) {
@@ -16,13 +17,13 @@ public class ExtendMineGoal extends TimedMineGoal {
 	@Override
 	public void start() {
 		super.start();
-		//this.entity.setStackInHand(Hand.MAIN_HAND, this.entity.getPick());
+		// this.entity.setStackInHand(Hand.MAIN_HAND, this.entity.getPick());
 	}
 
 	@Override
 	public void stop() {
 		super.stop();
-		//this.entity.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
+		// this.entity.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -31,6 +32,7 @@ public class ExtendMineGoal extends TimedMineGoal {
 		this.entity.addSeroundingOreBlock(this.pos);
 		this.entity.damage(this.entity.getPick());
 		ActivityFoodConsumerMap.mineBlockUseFood(this.entity);
+		AmaziaXpGainMap.gainEnchantXp(this.entity);
 	}
 
 	@Override

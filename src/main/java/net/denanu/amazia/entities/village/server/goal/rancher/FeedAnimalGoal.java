@@ -12,6 +12,7 @@ import net.denanu.amazia.components.AmaziaEntityComponents;
 import net.denanu.amazia.entities.village.server.RancherEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
+import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.denanu.amazia.mixin.SheepEntityAccessor;
 import net.denanu.amazia.utils.registry.AmaziaRegistrys;
 import net.minecraft.entity.EntityType;
@@ -27,8 +28,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class FeedAnimalGoal extends TimedVillageGoal<RancherEntity> {
-	protected static Map<Identifier, InteractionCallbackPredicate> interactionCallbacks  = new HashMap<Identifier, InteractionCallbackPredicate>();
-	protected static Map<Identifier, Predicate<RancherEntity>>     requirementsCallbacks = new HashMap<Identifier, Predicate<RancherEntity>>();
+	protected static Map<Identifier, InteractionCallbackPredicate> interactionCallbacks  = new HashMap<>();
+	protected static Map<Identifier, Predicate<RancherEntity>>     requirementsCallbacks = new HashMap<>();
 
 	public FeedAnimalGoal(final RancherEntity e, final int priority) {
 		super(e, priority);
@@ -154,6 +155,7 @@ public class FeedAnimalGoal extends TimedVillageGoal<RancherEntity> {
 			rancher.getInventory().setStack(loc, stack);
 			rancher.getInventory().addStack(new ItemStack(Items.MILK_BUCKET, 1));
 			ActivityFoodConsumerMap.harvestFromAnimalUseFood(rancher);
+			AmaziaXpGainMap.gainFeedAnimalXp(rancher);
 		}
 	}
 
@@ -176,6 +178,7 @@ public class FeedAnimalGoal extends TimedVillageGoal<RancherEntity> {
 					new ItemStack(SheepEntityAccessor.getDrops().get(sheep.getColor()), JJUtils.rand.nextInt(3) + 1)
 					);
 			ActivityFoodConsumerMap.harvestFromAnimalUseFood(rancher);
+			AmaziaXpGainMap.gainFeedAnimalXp(rancher);
 		}
 	}
 
@@ -191,7 +194,7 @@ public class FeedAnimalGoal extends TimedVillageGoal<RancherEntity> {
 	}
 
 	private interface InteractionCallbackPredicate {
-		public void run(RancherEntity rancher);
+		void run(RancherEntity rancher);
 	}
 
 }

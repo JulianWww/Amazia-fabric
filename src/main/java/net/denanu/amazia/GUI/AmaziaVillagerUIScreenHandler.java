@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -16,18 +17,22 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 
 public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
-	AmaziaMechanicsGuiEntity entity;
 	Collection<StatusEffectInstance> activeStatusEffects = new ArrayList<>();
 	PropertyDelegate deleget;
+	AmaziaMechanicsGuiEntity entity;
 
 	public AmaziaVillagerUIScreenHandler(final ScreenHandlerType<?> type, final int syncId, final PacketByteBuf buf) {
 		super(type, syncId);
 		buf.readUuid();
 	}
 
+	@SuppressWarnings("resource")
 	public AmaziaVillagerUIScreenHandler(final int syncId, final PlayerInventory playerInventory,
 			final PacketByteBuf buf) {
-		this(syncId, playerInventory, null, new ArrayPropertyDelegate(AmaziaVillagerEntity.propertiCount()),
+		this(
+				syncId,
+				playerInventory,
+				(AmaziaMechanicsGuiEntity)MinecraftClient.getInstance().player.getWorld().getEntityById(buf.readInt()), new ArrayPropertyDelegate(AmaziaVillagerEntity.propertiCount()),
 				buf.readCollection(ArrayList<StatusEffectInstance>::new,
 						buf2 -> StatusEffectInstance.fromNbt(buf2.readNbt())));
 	}
@@ -36,9 +41,9 @@ public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 			final AmaziaMechanicsGuiEntity entity, final PropertyDelegate delegate,
 			final Collection<StatusEffectInstance> effects) {
 		super(AmaziaScreens.VILLAGER_SCREEN_HANDLER, syncId);
-		this.entity = entity;
 		this.deleget = delegate;
 		this.addProperties(delegate);
+		this.entity = entity;
 		this.activeStatusEffects = effects;
 	}
 
@@ -56,11 +61,11 @@ public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 	}
 
 	public int getIntelligence() {
-		return this.deleget.get(2);
+		return (int) this.entity.getIntelligence();
 	}
 
 	public int getEducation() {
-		return this.deleget.get(3);
+		return this.deleget.get(2);
 	}
 
 	@Override

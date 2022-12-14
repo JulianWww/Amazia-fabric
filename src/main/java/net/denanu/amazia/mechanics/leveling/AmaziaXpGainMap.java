@@ -61,4 +61,20 @@ public class AmaziaXpGainMap {
 	public static void gainChopTreeXp(final IAmaziaLevelProviderEntity entity) {
 		AmaziaXpGainMap.gainXp(entity, AmaziaXpGainMap.DEFAULT_XP);
 	}
+
+	public static void gainExtendMineXp(final IAmaziaLevelProviderEntity entity) {
+		AmaziaXpGainMap.gainXp(entity, AmaziaXpGainMap.DEFAULT_XP);
+	}
+
+	public static void gainRepairMineXp(final IAmaziaLevelProviderEntity entity) {
+		AmaziaXpGainMap.gainXp(entity, AmaziaXpGainMap.DEFAULT_XP);
+	}
+
+	public static void gainFeedAnimalXp(final IAmaziaLevelProviderEntity entity) {
+		AmaziaXpGainMap.gainXp(entity, AmaziaXpGainMap.DEFAULT_XP);
+	}
+
+	public static void gainMoveAnimalXp(final IAmaziaLevelProviderEntity entity) {
+		AmaziaXpGainMap.gainXp(entity, AmaziaXpGainMap.DEFAULT_XP);
+	}
 }
