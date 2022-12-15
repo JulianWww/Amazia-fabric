@@ -1,19 +1,22 @@
-package net.denanu.amazia.commands.village;
+package net.denanu.amazia.commands.village.scedulers;
+
+import java.util.Collection;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
-import net.denanu.amazia.commands.village.pathing.AmaziaClientVillagePathingCommands;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
-public class AmaziaClientVillageCommands {
+public class ScedulingMarkers {
 	public static LiteralArgumentBuilder<ServerCommandSource> register(final CommandDispatcher<ServerCommandSource> dispatcher, final CommandRegistryAccess access) {
-		final LiteralArgumentBuilder<ServerCommandSource> namespace = CommandManager.literal("village");
+		return CommandManager.literal("sceduling");
+	}
 
-		namespace.then(AmaziaClientVillagePathingCommands.register(dispatcher, access));
+	public static void mark(final World world, final Collection<BlockPos> pos, final boolean active) {
 
-		return namespace;
 	}
 }

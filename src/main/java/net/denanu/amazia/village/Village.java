@@ -41,6 +41,7 @@ public class Village {
 	private final AbstractFurnaceSceduler smoking;
 	private final PathingNoHeightSceduler blacksmithing;
 	private final GuardSceduler guarding;
+	private final PathingNoHeightSceduler library;
 
 	private PathingGraph pathingGraph;
 
@@ -62,6 +63,7 @@ public class Village {
 		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass());
 		this.blacksmithing	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isAnvil);
 		this.guarding		= new GuardSceduler				(this);
+		this.library	 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isBookShelf);
 
 		this.valid = true;
 
@@ -90,6 +92,7 @@ public class Village {
 		this.blasting.initialize();
 		this.smoking.initialize();
 		this.blacksmithing.initialize();
+		this.library.initialize();
 
 		this.register(this.coreBlock.getWorld());
 	}
@@ -125,6 +128,7 @@ public class Village {
 		nbt.put("smoking", 			this.smoking.		writeNbt());
 		nbt.put("blacksmithing",	this.blacksmithing.	writeNbt());
 		nbt.put("guarding",			this.guarding.		writeNbt());
+		nbt.put("library",			this.library.		writeNbt());
 		return nbt;
 	}
 	public void readNbt(final NbtCompound nbt) {
@@ -140,6 +144,7 @@ public class Village {
 		this.smoking.		readNbt(nbt.getCompound("smoking"));
 		this.blacksmithing.	readNbt(nbt.getCompound("blacksmithing"));
 		this.guarding.		readNbt(nbt.getCompound("guarding"));
+		this.library.		readNbt(nbt.getCompound("library"));
 	}
 
 	public boolean isValid() {
@@ -151,7 +156,6 @@ public class Village {
 
 	public void tick(final ServerWorld world) {
 		this.update();
-		return;
 	}
 	private void update() {
 		this.pathingGraph.update();
@@ -214,6 +218,9 @@ public class Village {
 	}
 	public GuardSceduler getGuarding() {
 		return this.guarding;
+	}
+	public PathingNoHeightSceduler getLibrary() {
+		return this.library;
 	}
 
 	public static int getSize() {

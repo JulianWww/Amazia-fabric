@@ -9,6 +9,10 @@ public class ScedulingPredicates {
 		return state.isOf(Blocks.ENCHANTING_TABLE);
 	}
 
+	public static boolean isBookShelf(final BlockState state) {
+		return state.isOf(Blocks.BOOKSHELF);
+	}
+
 	public static boolean isAnvil(final BlockState state) {
 		return state.getBlock() instanceof AnvilBlock;
 	}
