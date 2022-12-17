@@ -1,10 +1,13 @@
 package net.denanu.amazia;
 
+import fi.dy.masa.malilib.config.ConfigManager;
 import net.denanu.amazia.GUI.AmaziaScreens;
 import net.denanu.amazia.GUI.AmaziaVillagerUIScreen;
 import net.denanu.amazia.GUI.TradingScreen;
 import net.denanu.amazia.GUI.debug.VillagePathingOverlay;
+import net.denanu.amazia.GUI.higlighting.ClientBlockHighlighter;
 import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
+import net.denanu.amazia.config.Config;
 import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
@@ -37,6 +40,9 @@ public class AmaziaClient implements ClientModInitializer {
 
 		ClientLifecycleEvents.CLIENT_STOPPING.register(VillageBorderRenderer::clear);
 		AmaziaProfessions.setup();
+
+		WorldRenderEvents.BEFORE_DEBUG_RENDER.register(ClientBlockHighlighter::render);
+		ConfigManager.getInstance().registerConfigHandler(Amazia.MOD_ID, new Config());
 	}
 
 }
