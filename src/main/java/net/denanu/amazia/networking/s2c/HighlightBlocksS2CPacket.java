@@ -18,7 +18,7 @@ public class HighlightBlocksS2CPacket {
 		Collection<BlockPos> poses = buf.readCollection(ArrayList<BlockPos>::new, PacketByteBuf::readBlockPos);
 
 		for (BlockPos pos : poses) {
-			//BlockHighlighting.highlightBlock(client, pos);
+			//ClientBlockHighlighting.highlightBlock(client, pos);
 		}
 
 	}
