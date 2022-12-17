@@ -18,6 +18,8 @@ repositories {
     }
 	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 	maven { url 'https://maven.oracle.com' }
+	maven { url 'https://wandhoven.ddns.net/maven' }
+	maven { url 'https://masa.dy.fi/maven/' }
 }
 
 dependencies {
@@ -29,6 +31,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation 'software.bernie.geckolib:geckolib-fabric-1.19:3.1.22'
+	modImplementation 'net.denanu.ClientBlockHighlighting:ClientBlockHighlighting-1.19.3:1.0.0'
 	
 	implementation group: 'org.javatuples', name: 'javatuples', version: '1.2'
 
