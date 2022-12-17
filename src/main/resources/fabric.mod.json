@@ -24,9 +24,6 @@
     "client": [
       "net.denanu.amazia.AmaziaClient"
     ],
-    "modmenu": [
-	"net.denanu.amazia.compat.modmenu.ModMenuImpl"
-    ],
     "cardinal-components-entity": [
       "net.denanu.amazia.components.AmaziaEntityComponents"
     ],
