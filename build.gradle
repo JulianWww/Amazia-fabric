@@ -29,9 +29,9 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
+	modImplementation 'net.denanu.ClientBlockHighlighting:ClientBlockHighlighting-1.19.3:1.0.0'
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation 'software.bernie.geckolib:geckolib-fabric-1.19:3.1.22'
-	modImplementation 'net.denanu.ClientBlockHighlighting:ClientBlockHighlighting-1.19.3:1.0.0'
 	
 	implementation group: 'org.javatuples', name: 'javatuples', version: '1.2'
 
