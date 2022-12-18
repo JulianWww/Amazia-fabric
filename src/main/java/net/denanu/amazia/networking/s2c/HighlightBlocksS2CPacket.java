@@ -9,16 +9,17 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
+import net.denanu.clientblockhighlighting.rendering.ClientBoxHighlighter;
 
 public class HighlightBlocksS2CPacket {
 	public static void receive(final MinecraftClient client, final ClientPlayNetworkHandler handler,
 			final PacketByteBuf buf, final PacketSender responseSender) {
 
-		buf.readBoolean();
+		boolean active = buf.readBoolean();
 		Collection<BlockPos> poses = buf.readCollection(ArrayList<BlockPos>::new, PacketByteBuf::readBlockPos);
 
 		for (BlockPos pos : poses) {
-			//ClientBlockHighlighting.highlightBlock(client, pos);
+			ClientBoxHighlighter.highlight(pos, active);
 		}
 
 	}
