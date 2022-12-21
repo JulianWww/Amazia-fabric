@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.village.sceduling.AbstractFurnaceSceduler;
 import net.denanu.amazia.village.sceduling.FarmingSceduler;
@@ -57,13 +58,13 @@ public class Village {
 		this.mineing 		= new MineingSceduler   		(this);
 		this.lumber 		= new LumberSceduler    		(this);
 		this.ranching		= new RancherSceduler   		(this);
-		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable);
+		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable, BlockHighlightingAmaziaConfig.ENCHANTING);
 		this.smelting	 	= new AbstractFurnaceSceduler	(this, Blocks.FURNACE.getClass());
 		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass());
 		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass());
-		this.blacksmithing	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isAnvil);
+		this.blacksmithing	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isAnvil, BlockHighlightingAmaziaConfig.FORGE);
 		this.guarding		= new GuardSceduler				(this);
-		this.library	 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isBookShelf);
+		this.library	 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isBookShelf, BlockHighlightingAmaziaConfig.LIBRARY);
 
 		this.valid = true;
 

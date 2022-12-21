@@ -19,6 +19,13 @@ public class BlockHighlightingAmaziaConfig {
 
 	public static HighlightType RANCHING_PENS		 		= BlockHighlightingAmaziaConfig.register("ranching-troughs",	"#FFFFFFFF", "#20FFFFFF");
 
+	public static HighlightType ENCHANTING			 		= BlockHighlightingAmaziaConfig.register("enchanting",			"#FFFFFFFF", "#20FFFFFF");
+
+	public static HighlightType LIBRARY				 		= BlockHighlightingAmaziaConfig.register("library",				"#FFFFFFFF", "#20FFFFFF");
+
+	public static HighlightType FORGE				 		= BlockHighlightingAmaziaConfig.register("forge",			"#FFFFFFFF", "#20FFFFFF");
+
+
 
 	private static HighlightType register(final String name, final String outlineColor, final String fillColor) {
 		return HighlightTypes.register(Amazia.MOD_ID, name, outlineColor, fillColor);
