@@ -11,7 +11,11 @@ public class BlockHighlightingAmaziaConfig {
 	public static HighlightType FARMING_POSSIBLE_FARMS 		= BlockHighlightingAmaziaConfig.register("possible-farms", 		"#FFFFFFFF", "#20FFFFFF");
 
 	public static HighlightType STORAGE					 	= BlockHighlightingAmaziaConfig.register("storage",			 	"#FFFFFFFF", "#20FFFFFF");
+
 	public static HighlightType MINEING					 	= BlockHighlightingAmaziaConfig.register("mineing",			 	"#FFFFFFFF", "#20FFFFFF");
+
+	public static HighlightType LUMBERJACK_FULL			 	= BlockHighlightingAmaziaConfig.register("lumberjack-full",	 	"#FF00FF00", "#2000FF00");
+	public static HighlightType LUMBERJACK_EMPTY		 	= BlockHighlightingAmaziaConfig.register("lumberjack-empty", 	"#FFFFFFFF", "#20FFFFFF");
 
 
 	private static HighlightType register(final String name, final String outlineColor, final String fillColor) {
