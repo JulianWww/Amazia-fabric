@@ -16,6 +16,7 @@ import net.denanu.amazia.entities.village.server.goal.chef.GoToKitchenGoal;
 import net.denanu.amazia.entities.village.server.goal.chef.GoToSmokerGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.CraftAtCraftingLocationGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -23,6 +24,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -111,5 +113,10 @@ public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatab
 		if (!this.wantsToCraft() && this.hasVillage()) {
 			this.tryCraftingStart(JJUtils.getRandomListElement(ChefEntity.CRAFTABLES));
 		}
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.CHEF;
 	}
 }

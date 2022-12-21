@@ -16,6 +16,7 @@ import net.denanu.amazia.entities.village.server.goal.guard.GuardMeleeAttackGoal
 import net.denanu.amazia.entities.village.server.goal.guard.LeaveCombatGoal;
 import net.denanu.amazia.entities.village.server.goal.guard.VillageGuardActiveTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.guard.VillageGuardBowAttackGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.village.AmaziaData;
 import net.denanu.amazia.village.sceduling.opponents.CombatEvaluator;
 import net.denanu.amazia.village.sceduling.opponents.ProjectileTargeting;
@@ -40,6 +41,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -51,7 +53,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, InventoryChangedListener, AmaziaBowUser, AttackSensor {
+public class GuardEntity extends AmaziaVillagerEntity
+		implements IAnimatable, InventoryChangedListener, AmaziaBowUser, AttackSensor {
 	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_SWORD, Items.STICK);
 
 	private final AnimationFactory factory = new AnimationFactory(this);
@@ -67,18 +70,19 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 	}
 
 	public static DefaultAttributeContainer.Builder setAttributes() {
-		return AmaziaVillagerEntity.setAttributes()
-				.add(EntityAttributes.GENERIC_MAX_HEALTH, 40.0D)
+		return AmaziaVillagerEntity.setAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 40.0D)
 				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0);
 	}
 
 	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
-		/*if (event.isMoving()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
-			return PlayState.CONTINUE;
-		}
-
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));*/
+		/*
+		 * if (event.isMoving()) { event.getController().setAnimation(new
+		 * AnimationBuilder().addAnimation("animation.farmer.walk", true)); return
+		 * PlayState.CONTINUE; }
+		 *
+		 * event.getController().setAnimation(new
+		 * AnimationBuilder().addAnimation("animation.farmer.idle", true));
+		 */
 		return PlayState.CONTINUE;
 	}
 
@@ -104,7 +108,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<GuardEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -115,15 +119,12 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 	@Override
 	public Triplet<ItemStack, Integer, Integer> getDepositableItems() {
 		ItemStack stack;
-		for (int idx=0; idx < this.getInventory().size(); idx++) {
+		for (int idx = 0; idx < this.getInventory().size(); idx++) {
 			stack = this.getInventory().getStack(idx);
-			if (
-					!this.wantToKeepItemInSlot(idx) &&
-					(!this.hasBow() || this.bowLocation.get() != idx) &&
-					(!this.hasSword() || this.swordLocation.get() != idx) &&
-					!(stack.getItem() instanceof ArmorItem) &&
-					!stack.isEmpty()) {
-				return new Triplet<ItemStack, Integer, Integer>(this.getInventory().getStack(idx), idx, this.getInventory().getStack(idx).getCount());
+			if (!this.wantToKeepItemInSlot(idx) && (!this.hasBow() || this.bowLocation.get() != idx)
+					&& (!this.hasSword() || this.swordLocation.get() != idx) && !stack.isEmpty()) {
+				return new Triplet<>(this.getInventory().getStack(idx), idx,
+						this.getInventory().getStack(idx).getCount());
 			}
 		}
 		return null;
@@ -141,7 +142,7 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 
 	@Override
 	protected void initGoals() {
-		this.goalSelector.add(1,  new LeaveCombatGoal(this, 1, 100000, 3.0f));
+		this.goalSelector.add(1, new LeaveCombatGoal(this, 1, 100000, 3.0f));
 		this.goalSelector.add(12, new VillageGuardBowAttackGoal(this, 2f, 25, 50.0f));
 		this.goalSelector.add(13, new GuardMeleeAttackGoal(this, 2.0, true));
 
@@ -175,15 +176,19 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 	private void requestBetterChestplate() {
 		this.requestBetterArmor(AmaziaData.CHEST_ARMOR, EquipmentSlot.CHEST);
 	}
+
 	private void requestBetterLeggins() {
 		this.requestBetterArmor(AmaziaData.LEG_ARMOR, EquipmentSlot.LEGS);
 	}
+
 	private void requestBetterHelmet() {
 		this.requestBetterArmor(AmaziaData.HEAD_ARMOR, EquipmentSlot.HEAD);
 	}
+
 	private void requestBetterBoots() {
 		this.requestBetterArmor(AmaziaData.FOOT_ARMOR, EquipmentSlot.FEET);
 	}
+
 	private void requestBetterArmor(final ArrayList<ArmorItem> options, final EquipmentSlot slot) {
 		final ArmorItem item = JJUtils.getRandomListElement(options);
 		if (CombatEvaluator.isBetter(this.getEquippedStack(slot).getItem(), item)) {
@@ -198,7 +203,8 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 	}
 
 	private void getSwordIfNotPresant() {
-		if (this.swordLocation.isPresent() && this.getInventory().getStack(this.swordLocation.get()).getItem() instanceof final SwordItem sword) {
+		if (this.swordLocation.isPresent()
+				&& this.getInventory().getStack(this.swordLocation.get()).getItem() instanceof final SwordItem sword) {
 			this.requestBetterSword(sword);
 		}
 		this.requestItem(JJUtils.getRandomListElement(AmaziaData.MELEE_WEAPONS));
@@ -219,30 +225,30 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 		float swordPriority = -1;
 		float temp;
 		ItemStack current;
-		for (int idx=0; idx < inventory.size(); idx++) {
+		for (int idx = 0; idx < inventory.size(); idx++) {
 			current = inventory.getStack(idx);
 			if (current.getItem() instanceof final ArmorItem armor) {
 				final EquipmentSlot slot = armor.getSlotType();
 				current = this.getEquippedStack(slot);
 				if (CombatEvaluator.isBetter(current.getItem(), armor)) {
 					this.equipStack(slot, inventory.getStack(idx));
+					this.getInventory().stacks.set(idx, current);
 				}
-			}
-			else if (current.isOf(Items.BOW)) {
+			} else if (current.isOf(Items.BOW)) {
 				this.bowLocation = Optional.of(idx);
-			}
-			else if ((temp = CombatEvaluator.getWeaponPriority(current, EntityGroup.ILLAGER)) > swordPriority) {
+			} else if ((temp = CombatEvaluator.getWeaponPriority(current, EntityGroup.ILLAGER)) > swordPriority) {
 				this.swordLocation = Optional.of(idx);
 				swordPriority = temp;
 			}
 		}
 	}
+
 	public void equipWeapon(final LivingEntity target) {
 		ItemStack stack = null;
 		float priority = -1;
 		float tmp;
 
-		for (int idx=0; idx < this.getInventory().size(); idx++) {
+		for (int idx = 0; idx < this.getInventory().size(); idx++) {
 			tmp = CombatEvaluator.getWeaponPriority(this.getInventory().getStack(idx), target);
 			if (tmp > priority) {
 				priority = tmp;
@@ -270,23 +276,26 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 	}
 
 	@Override
-	public boolean canCraft () {
+	public boolean canCraft() {
 		return true;
 	}
 
 	@Override
 	public void shootBow(final LivingEntity target, final float pullProgress) {
-		final ItemStack itemStack = this.getArrowType(this.getStackInHand(ProjectileUtil.getHandPossiblyHolding(this, Items.BOW)));
-		final PersistentProjectileEntity persistentProjectileEntity = this.createArrowProjectile(itemStack, pullProgress);
+		final ItemStack itemStack = this
+				.getArrowType(this.getStackInHand(ProjectileUtil.getHandPossiblyHolding(this, Items.BOW)));
+		final PersistentProjectileEntity persistentProjectileEntity = this.createArrowProjectile(itemStack,
+				pullProgress);
 
 		final Vec3d v = ProjectileTargeting.getTargeting(target, persistentProjectileEntity, 3.0f);
-		if (v==null) {
+		if (v == null) {
 			return;
 		}
 		persistentProjectileEntity.setVelocity(v);
 		this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0f, 1.0f / (this.getRandom().nextFloat() * 0.4f + 0.8f));
 		this.world.spawnEntity(persistentProjectileEntity);
 	}
+
 	protected PersistentProjectileEntity createArrowProjectile(final ItemStack arrow, final float damageModifier) {
 		return ProjectileUtil.createArrowProjectile(this, arrow, damageModifier);
 	}
@@ -298,11 +307,13 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 	}
 
 	public void shootBow(final BlockPos pos, final float pullProgress) {
-		final ItemStack itemStack = this.getArrowType(this.getStackInHand(ProjectileUtil.getHandPossiblyHolding(this, Items.BOW)));
-		final PersistentProjectileEntity persistentProjectileEntity = this.createArrowProjectile(itemStack, pullProgress);
+		final ItemStack itemStack = this
+				.getArrowType(this.getStackInHand(ProjectileUtil.getHandPossiblyHolding(this, Items.BOW)));
+		final PersistentProjectileEntity persistentProjectileEntity = this.createArrowProjectile(itemStack,
+				pullProgress);
 
 		final Vec3d v = ProjectileTargeting.getTargeting(pos, persistentProjectileEntity, 3.0f);
-		if (v==null) {
+		if (v == null) {
 			return;
 		}
 		persistentProjectileEntity.setOnFireFor(10);
@@ -340,9 +351,15 @@ public class GuardEntity extends AmaziaVillagerEntity implements IAnimatable, In
 			this.village.getGuarding().addCombatant(this);
 		}
 	}
+
 	public void exitCombat() {
 		if (this.hasVillage()) {
 			this.village.getGuarding().removeCombatant(this);
 		}
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.GUARD;
 	}
 }

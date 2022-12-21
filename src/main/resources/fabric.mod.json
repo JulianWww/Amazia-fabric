@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "id": "amazia",
-  "version": "0.0.0.1",
+  "version": "${version}",
 
   "name": "Amazia",
-  "description": "WIP",
+  "description": "Better Villagers in Minecraft. Allows For Vilage Creation",
   "authors": [
-    "Julian Wandhoven", "Nico Steiner"
+    "Julian Wandhoven", "Nico Steiner", "Alisia"
   ],
   "contact": {
     "homepage": "https://github.com/JulianWww/Amazia-fabric/issues",

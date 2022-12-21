@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal.utils;
 
 import net.denanu.amazia.entities.village.server.AmaziaSmelterVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.storage.CraftGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 
 public class CraftAtCraftingLocationGoal extends CraftGoal<AmaziaSmelterVillagerEntity> {
 	final boolean doMulticraft;
@@ -24,5 +25,6 @@ public class CraftAtCraftingLocationGoal extends CraftGoal<AmaziaSmelterVillager
 			this.entity.sceduleDepositing();
 			//this.entity.requestCraftable();
 		}
+		AmaziaXpGainMap.gainCraftXp(this.entity);
 	}
 }

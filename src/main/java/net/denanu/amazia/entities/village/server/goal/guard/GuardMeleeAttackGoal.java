@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal.guard;
 
 import net.denanu.amazia.entities.village.server.GuardEntity;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
+import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.util.Hand;
@@ -36,6 +37,7 @@ public class GuardMeleeAttackGoal extends MeleeAttackGoal {
 			this.mob.swingHand(Hand.MAIN_HAND);
 			this.mob.tryAttack(target);
 			ActivityFoodConsumerMap.melleAttackUseFood(this.guard);
+			AmaziaXpGainMap.gainAttackXp(this.guard);
 		}
 	}
 

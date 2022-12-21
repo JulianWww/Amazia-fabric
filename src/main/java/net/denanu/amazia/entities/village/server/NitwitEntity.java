@@ -7,12 +7,14 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.entities.village.server.goal.nitwit.NitwitRandomWanderAroundGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -74,5 +76,10 @@ public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
 		this.goalSelector.add(50, new NitwitRandomWanderAroundGoal(this, 50));
 
 		super.registerBaseGoals();
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.NITWIT;
 	}
 }

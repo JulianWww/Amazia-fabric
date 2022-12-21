@@ -14,12 +14,14 @@ import net.denanu.amazia.entities.village.server.goal.cleric.SelectHealingGuardT
 import net.denanu.amazia.entities.village.server.goal.cleric.SelectHealingTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.AmaziaGoToTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -110,6 +112,11 @@ public class ClericEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	public float getHealAmount() {
 		return 5f;
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.CLERIC;
 	}
 
 }

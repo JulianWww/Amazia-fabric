@@ -2,8 +2,8 @@ package net.denanu.amazia.entities.village.server.goal;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 
-public class AmaziaVillageGoal<E extends AmaziaVillagerEntity> extends BaseAmaziaVillageGoal<E> {
-	public AmaziaVillageGoal(E e, int priority) {
+public abstract class AmaziaVillageGoal<E extends AmaziaVillagerEntity> extends BaseAmaziaVillageGoal<E> {
+	public AmaziaVillageGoal(final E e, final int priority) {
 		super(e, priority);
 	}
 

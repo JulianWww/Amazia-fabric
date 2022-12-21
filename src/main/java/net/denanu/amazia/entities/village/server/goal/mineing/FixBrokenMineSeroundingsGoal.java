@@ -1,11 +1,12 @@
 package net.denanu.amazia.entities.village.server.goal.mineing;
 
 import net.denanu.amazia.entities.village.server.MinerEntity;
+import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
 
 public class FixBrokenMineSeroundingsGoal extends TimedMineGoal {
-	public FixBrokenMineSeroundingsGoal(MinerEntity e, int priority) {
+	public FixBrokenMineSeroundingsGoal(final MinerEntity e, final int priority) {
 		super(e, priority);
 	}
 
@@ -20,8 +21,9 @@ public class FixBrokenMineSeroundingsGoal extends TimedMineGoal {
 			this.entity.world.setBlockState(this.pos, Blocks.COBBLESTONE.getDefaultState());
 			this.entity.removeItemFromInventory(Items.COBBLESTONE, 1);
 			if (!this.entity.hasItem(Items.COBBLESTONE, 1)) {
-				//this.entity.requestItem(Items.COBBLESTONE);
+				// this.entity.requestItem(Items.COBBLESTONE);
 			}
+			AmaziaXpGainMap.gainRepairMineXp(this.entity);
 		}
 	}
 

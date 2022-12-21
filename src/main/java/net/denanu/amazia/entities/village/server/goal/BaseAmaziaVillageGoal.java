@@ -1,6 +1,7 @@
 package net.denanu.amazia.entities.village.server.goal;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.village.scedule.VillageActivityGroups;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
 
@@ -32,7 +33,11 @@ public class BaseAmaziaVillageGoal<E extends AmaziaVillagerEntity> extends Goal 
 
 	@Override
 	public boolean canStart() {
-		return this.isStartable();
+		return this.canRun() && this.isStartable();
+	}
+
+	protected boolean canRun() {
+		return this.entity.getActivityScedule().getPerformActionGroup() == VillageActivityGroups.WORK;
 	}
 
 	public boolean isStartable() {
