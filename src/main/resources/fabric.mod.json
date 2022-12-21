@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "amazia",
-  "version": "0.0.0.1",
+  "version": "${version}",
 
   "name": "Amazia",
   "description": "Better Villagers in Minecraft. Allows For Vilage Creation",
