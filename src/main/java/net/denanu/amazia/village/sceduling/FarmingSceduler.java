@@ -5,8 +5,10 @@ import java.util.List;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
+import net.denanu.clientblockhighlighting.Highlighter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -158,6 +160,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.emptyFarm.add(pos);
 			this.setChanged();
+
+			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_EMPTY_FARMS, pos);
 		}
 	}
 	private void removeEmptyFarmland(final ServerWorld world, final BlockPos pos) {
@@ -165,6 +169,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.emptyFarm.remove(pos);
 			this.setChanged();
+
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_EMPTY_FARMS, pos);
 		}
 	}
 	private void addGrowing(final ServerWorld world, final BlockPos pos) {
