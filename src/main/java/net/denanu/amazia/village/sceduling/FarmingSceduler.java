@@ -27,10 +27,10 @@ public class FarmingSceduler extends VillageSceduler {
 
 	public FarmingSceduler(final Village _village) {
 		super(_village);
-		this.possibleFarms 	= new ArrayList<BlockPos>();
-		this.crops 			= new ArrayList<BlockPos>();
-		this.emptyFarm 		= new ArrayList<BlockPos>();
-		this.growing 		= new ArrayList<BlockPos>();
+		this.possibleFarms 	= new ArrayList<>();
+		this.crops 			= new ArrayList<>();
+		this.emptyFarm 		= new ArrayList<>();
+		this.growing 		= new ArrayList<>();
 	}
 
 	@Override
@@ -79,16 +79,12 @@ public class FarmingSceduler extends VillageSceduler {
 
 	private void discoverCrops(final ServerWorld world, final BlockPos pos) {
 		final BlockState state = world.getBlockState(pos);
-		if (state.getBlock() instanceof final CropBlock crop) {
-			if (crop.isMature(state)) {
-				this.addCrop(world, pos);
-				return;
-			}
+		if (state.getBlock() instanceof final CropBlock crop && crop.isMature(state)) {
+			this.addCrop(world, pos);
+			return;
 		}
-		if (state.getBlock() instanceof final SugarCaneBlock cane) {
-			if (world.getBlockState(pos.down()).isOf(cane) && world.getBlockState(pos.down(2)).isOf(cane)) {
-				this.addCrop(world, pos.down(2));
-			}
+		if (state.getBlock() instanceof final SugarCaneBlock cane && world.getBlockState(pos.down()).isOf(cane) && world.getBlockState(pos.down(2)).isOf(cane)) {
+			this.addCrop(world, pos.down(2));
 		}
 		this.removeCrop(world, pos);
 		this.removeCrop(world, pos.down());
