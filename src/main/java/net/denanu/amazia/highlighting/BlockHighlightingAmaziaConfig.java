@@ -5,11 +5,11 @@ import net.denanu.clientblockhighlighting.config.HighlightType;
 import net.denanu.clientblockhighlighting.config.HighlightTypes;
 
 public class BlockHighlightingAmaziaConfig {
-	public static HighlightType FARMING_EMPTY_FARMS = BlockHighlightingAmaziaConfig.register("emptyfarms");
+	public static HighlightType FARMING_EMPTY_FARMS = BlockHighlightingAmaziaConfig.register("emptyfarms", "#FF6E260E", "#206E260E");
 
 
-	private static HighlightType register(final String name) {
-		return HighlightTypes.register(Amazia.MOD_ID, name);
+	private static HighlightType register(final String name, final String outlineColor, final String fillColor) {
+		return HighlightTypes.register(Amazia.MOD_ID, name, outlineColor, fillColor);
 	}
 
 	public static void setup() {}

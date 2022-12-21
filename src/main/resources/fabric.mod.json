@@ -6,10 +6,10 @@
   "name": "Amazia",
   "description": "Better Villagers in Minecraft. Allows For Vilage Creation",
   "authors": [
-    "Julian Wandhoven", "Nico Steiner", "Alisia"
+	"Denanu", "Nico Steiner", "Alisia"
   ],
   "contact": {
-    "homepage": "https://github.com/JulianWww/Amazia-fabric/issues",
+    "issues": "https://github.com/JulianWww/Amazia-fabric/issues",
     "sources": "https://github.com/JulianWww/amazia-fabric"
   },
 
