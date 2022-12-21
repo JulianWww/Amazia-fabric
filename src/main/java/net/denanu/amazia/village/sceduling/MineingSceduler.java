@@ -10,9 +10,11 @@ import javax.annotation.Nullable;
 
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.custom.VillageMarkerBlock;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.structures.MineStructure;
+import net.denanu.clientblockhighlighting.Highlighter;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -26,8 +28,8 @@ public class MineingSceduler extends VillageSceduler {
 
 	public MineingSceduler(final Village _village) {
 		super(_village);
-		this.miningCores = new ArrayList<BlockPos>();
-		this.mines = new HashMap<BlockPos, MineStructure>();
+		this.miningCores = new ArrayList<>();
+		this.mines = new HashMap<>();
 	}
 
 	@Override
@@ -89,6 +91,8 @@ public class MineingSceduler extends VillageSceduler {
 			this.addMine(pos);
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.setChanged();
+
+			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.MINEING, pos);
 		}
 	}
 	private void removeMiningCore(final ServerWorld world, final BlockPos pos) {
@@ -98,6 +102,8 @@ public class MineingSceduler extends VillageSceduler {
 			this.mines.remove(pos);
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.setChanged();
+
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.MINEING, pos);
 		}
 	}
 
@@ -105,8 +111,7 @@ public class MineingSceduler extends VillageSceduler {
 	private MineStructure getRandomMine() {
 		final BlockPos key = VillageSceduler.getRandomListElement(this.miningCores);
 		if (key == null) { return null; }
-		final MineStructure mine = this.mines.get(key);
-		return mine;
+		return this.mines.get(key);
 	}
 
 	@Nullable

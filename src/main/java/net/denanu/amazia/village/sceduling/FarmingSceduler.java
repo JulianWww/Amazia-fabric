@@ -132,6 +132,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.possibleFarms.add(pos);
 			this.setChanged();
+
+			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_POSSIBLE_FARMS, pos);
 		}
 	}
 	private void removePossibleFarmLand(final ServerWorld world, final BlockPos pos) {
@@ -139,6 +141,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.possibleFarms.remove(pos);
 			this.setChanged();
+
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_POSSIBLE_FARMS, pos);
 		}
 	}
 	private void addCrop(final ServerWorld world, final BlockPos pos) {
@@ -146,6 +150,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.crops.add(pos);
 			this.setChanged();
+
+			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_HARVISTABLE_FARMS, pos);
 		}
 	}
 	private void removeCrop(final ServerWorld world, final BlockPos pos) {
@@ -153,6 +159,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.crops.remove(pos);
 			this.setChanged();
+
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_HARVISTABLE_FARMS, pos);
 		}
 	}
 	private void addEmptyFarmland(final ServerWorld world, final BlockPos pos) {
@@ -178,6 +186,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.growing.add(pos);
 			this.setChanged();
+
+			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_GOWING_FARMS, pos);
 		}
 	}
 	private void removeGrowing(final ServerWorld world, final BlockPos pos) {
@@ -185,6 +195,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.growing.remove(pos);
 			this.setChanged();
+
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_GOWING_FARMS, pos);
 		}
 	}
 
