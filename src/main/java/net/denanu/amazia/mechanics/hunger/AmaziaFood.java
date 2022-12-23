@@ -7,9 +7,12 @@ import net.minecraft.item.Item;
 public class AmaziaFood {
 	private final float food;
 	private final Item item;
-	public AmaziaFood(final Item item, final float foodValue) {
+	private final float happinessValue;
+
+	public AmaziaFood(final Item item, final float foodValue, final float happinessValue) {
 		this.food = foodValue;
 		this.item = item;
+		this.happinessValue = happinessValue;
 	}
 
 	public float getFoodValue() {
@@ -18,6 +21,10 @@ public class AmaziaFood {
 
 	public Item getItem() {
 		return this.item;
+	}
+
+	public float getHappinessValue() {
+		return this.happinessValue;
 	}
 
 	public static class FoodComparator implements Comparator<AmaziaFood> {

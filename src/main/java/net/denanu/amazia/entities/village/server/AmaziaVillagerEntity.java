@@ -562,6 +562,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			final AmaziaFood food = AmaziaFoodData.TO_FOOD_MAP.get(stack.getItem());
 			if (food != null) {
 				this.eatFood(food.getFoodValue());
+				this.applyHappiness(food.getHappinessValue());
 				stack.decrement(1);
 				if (stack.isEmpty()) {
 					this.getInventory().setStack(idx.get(), ItemStack.EMPTY);
