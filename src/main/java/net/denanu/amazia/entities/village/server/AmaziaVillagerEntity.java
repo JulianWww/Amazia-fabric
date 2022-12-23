@@ -712,27 +712,27 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	public abstract boolean canDepositItems();
 
 	public int getHoeingTime() {
-		return this.professionLevelManager.getHoingTime();
+		return this.professionLevelManager.getHoingTime(this.isDepressed());
 	}
 
 	public int getPlantTime() {
-		return this.professionLevelManager.getPlantingTime();
+		return this.professionLevelManager.getPlantingTime(this.isDepressed());
 	}
 
 	public int getHarvestTime() {
-		return this.professionLevelManager.getHarvestingTime();
+		return this.professionLevelManager.getHarvestingTime(this.isDepressed());
 	}
 
 	public int getBlockPlaceTime() {
-		return this.professionLevelManager.getBlockPlaceTime();
+		return this.professionLevelManager.getBlockPlaceTime(this.isDepressed());
 	}
 
 	public int getMineTime() {
-		return this.professionLevelManager.getMineTime();
+		return this.professionLevelManager.getMineTime(this.isDepressed());
 	}
 
 	public int getCraftingTime() {
-		return this.professionLevelManager.getCraftingTime();
+		return this.professionLevelManager.getCraftingTime(this.isDepressed());
 	}
 
 	@Override

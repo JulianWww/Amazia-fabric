@@ -260,7 +260,7 @@ implements IAnimatable, InventoryChangedListener, AmaziaBowUser, AttackSensor {
 	}
 
 	public int getAttackTime() {
-		return this.professionLevelManager.getAttackTime();
+		return this.professionLevelManager.getAttackTime(this.isDepressed());
 	}
 
 	public boolean hasBow() {

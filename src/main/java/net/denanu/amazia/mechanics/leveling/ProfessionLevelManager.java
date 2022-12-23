@@ -88,95 +88,101 @@ public class ProfessionLevelManager {
 		this.updateEfficency(this.getUnmodLevel(profession));
 	}
 
-	private int getTime(final int defaultTime) {
-		return (int)Math.ceil(defaultTime * this.getProfessionEfficency());
+	private int getTime(final int defaultTime, final boolean depressed) {
+		int time = (int)Math.ceil(defaultTime * this.getProfessionEfficency());
+
+		if (depressed) {
+			time = time + 200;
+		}
+
+		return time;
 	}
 
 	private int getBoonTime(final int defaultTime) {
 		return (int)(defaultTime * this.getBoonModifier());
 	}
 
-	public int getHoingTime() {
-		return this.getTime(20);
+	public int getHoingTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getPlantingTime() {
-		return this.getTime(20);
+	public int getPlantingTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getHarvestingTime() {
-		return this.getTime(20);
+	public int getHarvestingTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getBlockPlaceTime() {
-		return this.getTime(20);
+	public int getBlockPlaceTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getMineTime() {
-		return this.getTime(20);
+	public int getMineTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getCraftingTime() {
-		return this.getTime(20);
+	public int getCraftingTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getHealTime() {
-		return this.getTime(20);
+	public int getHealTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getBlessTime() {
-		return this.getTime(20);
+	public int getBlessTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getBlessLastTime() {
+	public int getBlessLastTime(final boolean depressed) {
 		return this.getBoonTime(20000);
 	}
 
-	public float getHealAmount() {
+	public float getHealAmount(final boolean depressed) {
 		return this.getBoonTime(20);
 	}
 
-	public int getPlantGrowTime() {
-		return this.getTime(20);
+	public int getPlantGrowTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public float getMineRegeneration() {
-		return this.getTime(20);
+	public float getMineRegeneration(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getGrowRadius() {
+	public int getGrowRadius(final boolean depressed) {
 		return this.getBoonTime(20);
 	}
 
-	public int getMaxMineRegrowAbility() {
+	public int getMaxMineRegrowAbility(final boolean depressed) {
 		return this.getBoonTime(10);
 	}
 
-	public int getEnchantingTime() {
-		return this.getTime(20);
+	public int getEnchantingTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
 	public int getEnchantAbility(final Identifier profession) {
 		return 1 + (int)this.getLevel(profession);
 	}
 
-	public int getAttackInterval() {
-		return this.getTime(20);
+	public int getAttackInterval(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getLeashTime() {
-		return this.getTime(20);
+	public int getLeashTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getFeedTime() {
-		return this.getTime(20);
+	public int getFeedTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getAnimalInteractionTime() {
-		return this.getTime(20);
+	public int getAnimalInteractionTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 
-	public int getAttackTime() {
-		return this.getTime(20);
+	public int getAttackTime(final boolean depressed) {
+		return this.getTime(20, depressed);
 	}
 }

@@ -159,7 +159,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	}
 
 	public int getEnchantTime() {
-		return this.professionLevelManager.getEnchantingTime();
+		return this.professionLevelManager.getEnchantingTime(this.isDepressed());
 	}
 
 	public BlockPos getTargetPos() {
