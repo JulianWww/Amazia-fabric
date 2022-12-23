@@ -1,6 +1,9 @@
 package net.denanu.amazia.entities.village.server.goal.cleric;
 
+import javax.annotation.Nullable;
+
 import net.denanu.amazia.JJUtils;
+import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.ClericEntity;
 import net.denanu.amazia.entities.village.server.goal.BaseAmaziaGoToBlockGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.AmaziaGoToEntityGoal;
@@ -14,7 +17,7 @@ import net.minecraft.util.math.Box;
 public class GoToBlessEntityGoal extends AmaziaGoToEntityGoal<ClericEntity> {
 	int counter = 0;
 	private final int reciprocalChance;
-	private final TargetPredicate canTargetPlayers;
+	private final TargetPredicate canTarget;
 	private Entity lastTargetEntity;
 
 	public GoToBlessEntityGoal(final ClericEntity e, final int priority, final int chance) {
@@ -24,7 +27,7 @@ public class GoToBlessEntityGoal extends AmaziaGoToEntityGoal<ClericEntity> {
 		super(e, priority, food, speed);
 		this.reciprocalChance = chance;
 
-		this.canTargetPlayers = TargetPredicate.createNonAttackable().setBaseMaxDistance(25).setPredicate(GoToBlessEntityGoal::canBlessPlayer);
+		this.canTarget = TargetPredicate.createNonAttackable().setBaseMaxDistance(25).setPredicate(GoToBlessEntityGoal::canBless);
 	}
 
 	@Override
@@ -53,19 +56,35 @@ public class GoToBlessEntityGoal extends AmaziaGoToEntityGoal<ClericEntity> {
 		return this.subShouldContinue();
 	}
 
+	@Nullable
 	private PlayerEntity getPlayerToBless() {
-		return JJUtils.getRandomListElement(this.entity.world.getPlayers(this.canTargetPlayers, this.entity, this.getBox()));
+		return JJUtils.getRandomListElement(this.entity.world.getPlayers(this.canTarget, this.entity, this.getBox()));
+	}
+
+	@Nullable
+	private Entity getBlessableEntity() {
+		return this.entity.world.getClosestEntity(
+				AmaziaVillagerEntity.class,
+				this.canTarget,
+				this.entity,
+				this.entity.getX(),
+				this.entity.getY(),
+				this.entity.getZ(),
+				this.getBox()
+				);
 	}
 
 	private Box getBox() {
 		return this.entity.getBoundingBox().expand(25, 4, 25);
 	}
-	private static boolean canBlessPlayer(final LivingEntity e) {
+	private static boolean canBless(final LivingEntity e) {
 		return !e.hasStatusEffect(StatusEffects.LUCK);
 	}
 
 	@Override
+	@Nullable
 	protected Entity getTargetEntity() {
-		return this.getPlayerToBless();
+		Entity player;
+		return (player = this.getPlayerToBless()) == null ? this.getBlessableEntity() : player;
 	}
 }

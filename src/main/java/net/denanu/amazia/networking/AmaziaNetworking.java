@@ -28,8 +28,7 @@ public class AmaziaNetworking {
 	public static void registerS2CPackets() {
 		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.SET_TRADE_OFFERS, AmaziaSetTradeOffersS2CPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.MOOD_UPDATE, AmaziaEntityMoodS2CPacket::receive);
-		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.MERCHANT_TRADE_SELECT, AmaziaPathingOverlayUpdateS2CPacket::receive);
-		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.PATHING_OVERLAY_UPDATE_S2C, AmaziaPathingOverlayUpdateS2CPacket::receive);
+		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.PATHING_OVERLAY_UPDATE_S2C, 	AmaziaPathingOverlayUpdateS2CPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.SETUP_PATHINGOVERLAY, AmaziaSetupVillageReneringS2CPacker::receive);
 	}
 }

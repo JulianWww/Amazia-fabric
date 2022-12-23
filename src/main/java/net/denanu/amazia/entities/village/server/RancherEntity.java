@@ -14,6 +14,7 @@ import net.denanu.amazia.entities.village.server.goal.rancher.BringAnimalsToPen;
 import net.denanu.amazia.entities.village.server.goal.rancher.FeedAnimalGoal;
 import net.denanu.amazia.entities.village.server.goal.rancher.FetchAnimal;
 import net.denanu.amazia.entities.village.server.goal.rancher.LeashAnimal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -23,6 +24,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -62,7 +64,7 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<RancherEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	// Rancher
@@ -142,15 +144,15 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public int getLeashTime() {
-		return 20;
+		return this.professionLevelManager.getLeashTime();
 	}
 
 	public int getFeedTime() {
-		return 20;
+		return this.professionLevelManager.getFeedTime();
 	}
 
 	public int getEntityInteractTime() {
-		return 20;
+		return this.professionLevelManager.getAnimalInteractionTime();
 	}
 
 	@Override
@@ -160,18 +162,20 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 		if (this.targetAnimal!=null) {
 			nbt.putUuid("targetAnimal", this.targetAnimal.getUuid());
 		}
-		return;
 	}
 
 	@Override
 	public void readCustomDataFromNbt(final NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		this.animalInteractionAge = nbt.getInt("animalInteractionAge");
-		if (!this.world.isClient && nbt.contains("targetAnimal")) {
-			if (JJUtils.getEntityByUniqueId(nbt.getUuid("targetAnimal"), (ServerWorld)this.world) instanceof final AnimalEntity animal) {
-				this.targetAnimal = animal;
-			}
+		if ((!this.world.isClient && nbt.contains("targetAnimal")) && (JJUtils.getEntityByUniqueId(nbt.getUuid("targetAnimal"), (ServerWorld)this.world) instanceof final AnimalEntity animal)) {
+			this.targetAnimal = animal;
 		}
 
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.RANCHER;
 	}
 }

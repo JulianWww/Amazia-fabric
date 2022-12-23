@@ -12,6 +12,7 @@ import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.goal.enchanting.EnchantGoal;
 import net.denanu.amazia.entities.village.server.goal.enchanting.GoToEnchantingTable;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.entity.EntityType;
@@ -22,6 +23,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
@@ -60,7 +62,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<EnchanterEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -91,7 +93,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	@Override
 	protected void initGoals() {
 
-		this.goalSelector.add(50, new SequenceGoal<EnchanterEntity>(this, ImmutableList.of(
+		this.goalSelector.add(50, new SequenceGoal<>(this, ImmutableList.of(
 				new GoToEnchantingTable(this, 50),
 				new EnchantGoal(this, 50)
 				)));
@@ -157,7 +159,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	}
 
 	public int getEnchantTime() {
-		return 20;
+		return this.professionLevelManager.getEnchantingTime();
 	}
 
 	public BlockPos getTargetPos() {
@@ -186,7 +188,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	}
 
 	public int getEnchantinAbility() {
-		return 100;
+		return this.professionLevelManager.getEnchantAbility(this.getProfession());
 	}
 
 	public boolean canEnchant() {
@@ -213,5 +215,10 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 
 	public void createHasLapis() {
 		this.amountOfLapis = this.countItems(Items.LAPIS_LAZULI);
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.ENCHANTER;
 	}
 }

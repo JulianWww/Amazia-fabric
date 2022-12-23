@@ -14,12 +14,14 @@ import net.denanu.amazia.entities.village.server.goal.cleric.SelectHealingGuardT
 import net.denanu.amazia.entities.village.server.goal.cleric.SelectHealingTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.AmaziaGoToTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -52,7 +54,7 @@ public class ClericEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<ClericEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -79,16 +81,16 @@ public class ClericEntity extends AmaziaVillagerEntity implements IAnimatable {
 	protected void initGoals() {
 
 		this.targetSelector.add(0, new SelectHealingGuardTargetGoal(this, GuardEntity.class, true));
-		this.targetSelector.add(1, new SelectHealingTargetGoal<AmaziaVillagerEntity>(this, AmaziaVillagerEntity.class, true, AmaziaVillagerEntity::isNotFullHealth));
-		this.targetSelector.add(2, new SelectHealingTargetGoal<PlayerEntity>(this, PlayerEntity.class, true, AmaziaVillagerEntity::isNotFullHealth));
+		this.targetSelector.add(1, new SelectHealingTargetGoal<>(this, AmaziaVillagerEntity.class, true, AmaziaVillagerEntity::isNotFullHealth));
+		this.targetSelector.add(2, new SelectHealingTargetGoal<>(this, PlayerEntity.class, true, AmaziaVillagerEntity::isNotFullHealth));
 
-		this.goalSelector.add(40, new SequenceGoal<ClericEntity>(this, ImmutableList.of(
+		this.goalSelector.add(40, new SequenceGoal<>(this, ImmutableList.of(
 				new AmaziaGoToTargetGoal(this, 40),
 				new HealEntityGoal(this, 40)
 				)));
 
 		final GoToBlessEntityGoal goToBlessEntityGoal = new GoToBlessEntityGoal(this, 41, 40);
-		this.goalSelector.add(41, new SequenceGoal<ClericEntity>(this, ImmutableList.of(
+		this.goalSelector.add(41, new SequenceGoal<>(this, ImmutableList.of(
 				goToBlessEntityGoal,
 				new BlessEntityGoal(this, 41, goToBlessEntityGoal)
 				)));
@@ -97,19 +99,24 @@ public class ClericEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public int getHealTime() {
-		return 20;
+		return this.professionLevelManager.getHealTime();
 	}
 
 	public int getBlessTime() {
-		return 20;
+		return this.professionLevelManager.getBlessTime();
 	}
 
 	public int getBlessLastingTime() {
-		return  6000;
+		return this.professionLevelManager.getBlessLastTime();
 	}
 
 	public float getHealAmount() {
-		return 5f;
+		return this.professionLevelManager.getHealAmount();
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.CLERIC;
 	}
 
 }

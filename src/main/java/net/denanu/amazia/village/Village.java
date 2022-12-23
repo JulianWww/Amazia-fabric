@@ -1,11 +1,18 @@
 package net.denanu.amazia.village;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.pathing.PathingGraph;
+import net.denanu.amazia.village.events.EventData;
+import net.denanu.amazia.village.events.IVillageEventListener;
+import net.denanu.amazia.village.events.VillageEvents;
 import net.denanu.amazia.village.sceduling.AbstractFurnaceSceduler;
 import net.denanu.amazia.village.sceduling.FarmingSceduler;
 import net.denanu.amazia.village.sceduling.GuardSceduler;
@@ -41,8 +48,10 @@ public class Village {
 	private final AbstractFurnaceSceduler smoking;
 	private final PathingNoHeightSceduler blacksmithing;
 	private final GuardSceduler guarding;
+	private final PathingNoHeightSceduler library;
 
 	private PathingGraph pathingGraph;
+	private final HashSet<IVillageEventListener> listeners = new HashSet<>();
 
 	@Nullable
 	private final VillageCoreBlockEntity coreBlock;
@@ -56,12 +65,13 @@ public class Village {
 		this.mineing 		= new MineingSceduler   		(this);
 		this.lumber 		= new LumberSceduler    		(this);
 		this.ranching		= new RancherSceduler   		(this);
-		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable);
-		this.smelting	 	= new AbstractFurnaceSceduler	(this, Blocks.FURNACE.getClass());
-		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass());
-		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass());
-		this.blacksmithing	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isAnvil);
+		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable, 	BlockHighlightingAmaziaConfig.ENCHANTING);
+		this.smelting	 	= new AbstractFurnaceSceduler	(this, Blocks.FURNACE.getClass(),				BlockHighlightingAmaziaConfig.NORMAL_FURNACES);
+		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass(), 		BlockHighlightingAmaziaConfig.BLAST_FURNACES);
+		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass(), 				BlockHighlightingAmaziaConfig.SMOKER_FURNACES);
+		this.blacksmithing	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isAnvil, 			BlockHighlightingAmaziaConfig.FORGE);
 		this.guarding		= new GuardSceduler				(this);
+		this.library	 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isBookShelf, 		BlockHighlightingAmaziaConfig.LIBRARY);
 
 		this.valid = true;
 
@@ -90,6 +100,7 @@ public class Village {
 		this.blasting.initialize();
 		this.smoking.initialize();
 		this.blacksmithing.initialize();
+		this.library.initialize();
 
 		this.register(this.coreBlock.getWorld());
 	}
@@ -125,6 +136,7 @@ public class Village {
 		nbt.put("smoking", 			this.smoking.		writeNbt());
 		nbt.put("blacksmithing",	this.blacksmithing.	writeNbt());
 		nbt.put("guarding",			this.guarding.		writeNbt());
+		nbt.put("library",			this.library.		writeNbt());
 		return nbt;
 	}
 	public void readNbt(final NbtCompound nbt) {
@@ -140,6 +152,7 @@ public class Village {
 		this.smoking.		readNbt(nbt.getCompound("smoking"));
 		this.blacksmithing.	readNbt(nbt.getCompound("blacksmithing"));
 		this.guarding.		readNbt(nbt.getCompound("guarding"));
+		this.library.		readNbt(nbt.getCompound("library"));
 	}
 
 	public boolean isValid() {
@@ -151,7 +164,6 @@ public class Village {
 
 	public void tick(final ServerWorld world) {
 		this.update();
-		return;
 	}
 	private void update() {
 		this.pathingGraph.update();
@@ -167,6 +179,7 @@ public class Village {
 		this.blasting.		discover(world, blockPos);
 		this.smoking.		discover(world, blockPos);
 		this.blacksmithing.	discover(world, blockPos);
+		this.library.		discover(world, blockPos);
 	}
 
 
@@ -215,6 +228,9 @@ public class Village {
 	public GuardSceduler getGuarding() {
 		return this.guarding;
 	}
+	public PathingNoHeightSceduler getLibrary() {
+		return this.library;
+	}
 
 	public static int getSize() {
 		return Village.SIZE;
@@ -261,5 +277,31 @@ public class Village {
 
 	public void addThreat(final MobEntity enemy) {
 		this.guarding.addOpponent(enemy, 1);
+	}
+
+
+
+	// Event Handeling
+
+	public void emmitEvent(final VillageEvents event, final Entity emmiter) {
+		this.emmitEvent(event, new EventData(emmiter));
+	}
+
+	public void emmitEvent(final VillageEvents event, final EventData eventData) {
+		for (final IVillageEventListener listener : this.listeners) {
+			listener.receiveEvent(event, eventData);
+		}
+	}
+
+	public void removeListener(final IVillageEventListener listener) {
+		this.listeners.remove(listener);
+	}
+
+	public void registerListener(final IVillageEventListener listener) {
+		this.listeners.add(listener);
+	}
+
+	public Collection<IVillageEventListener> getListeners() {
+		return this.listeners;
 	}
 }

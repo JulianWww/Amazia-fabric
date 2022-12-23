@@ -12,6 +12,9 @@ import net.denanu.amazia.pathing.PathFinder;
 import net.denanu.amazia.utils.CuboidSampler;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
+import net.denanu.amazia.village.events.EventData;
+import net.denanu.amazia.village.events.IVillageEventListener;
+import net.denanu.amazia.village.events.VillageEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityStatuses;
@@ -28,7 +31,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class AmaziaEntity extends PassiveEntity {
+public class AmaziaEntity extends PassiveEntity implements IVillageEventListener {
 	protected Village village;
 	protected BlockPos villageCorePos;
 	private CuboidSampler villageSampler;
@@ -87,7 +90,7 @@ public class AmaziaEntity extends PassiveEntity {
 		ServerMoodEmiter.sendMood(this, mood);
 	}
 
-	protected void setVillage() {};
+	protected void setVillage() {}
 
 	private void scanForVillage(final BlockPos pos) {
 		final BlockState state =  this.world.getBlockState(pos);
@@ -98,6 +101,7 @@ public class AmaziaEntity extends PassiveEntity {
 				throw new InitializationException("Village Core Block at " + pos.toString() + " missing block entity");
 			}
 			this.village = core.getVillage();
+			this.village.registerListener(this);
 			this.setVillage();
 			this.navigation = new PathFinder(this);
 			//this.moveControl = new AmaziaMoveControll(this);
@@ -141,7 +145,7 @@ public class AmaziaEntity extends PassiveEntity {
 						this.getVillage().getOrigin().getX(),
 						this.getVillage().getOrigin().getY() + 1,
 						this.getVillage().getOrigin().getZ());
-			};
+			}
 		}
 		super.tickMovement();
 	}
@@ -155,7 +159,7 @@ public class AmaziaEntity extends PassiveEntity {
 	}
 
 	protected void update() {
-		if (this.village == null) { this.discoverVillage(); return; }
+		if (this.village == null) { this.discoverVillage(); }
 	}
 
 	@Override
@@ -202,5 +206,17 @@ public class AmaziaEntity extends PassiveEntity {
 			this.getVillage().getGuarding().addOpponent(source.getAttacker(), 10);
 		}
 		return super.damage(source, amount);
+	}
+
+	@Override
+	public void remove(final RemovalReason reason) {
+		super.remove(reason);
+		if (this.hasVillage()) {
+			this.village.removeListener(this);
+		}
+	}
+
+	@Override
+	public void receiveEvent(final VillageEvents event, final EventData data) {
 	}
 }

@@ -2,7 +2,9 @@ package net.denanu.amazia.entities.village.server.goal.farming;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
+import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.denanu.amazia.utils.BlockChecks;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -14,7 +16,8 @@ public class HoeFarmLandGoal extends TimedVillageGoal<AmaziaVillagerEntity> {
 
 	@Override
 	public boolean canStart() {
-		return super.canStart() && this.entity.getVillage().getFarming().isHoable(this.entity.getPos()) && this.entity.canHoe();
+		return super.canStart() && this.entity.getVillage().getFarming().isHoable(this.entity.getPos())
+				&& this.entity.canHoe();
 	}
 
 	@Override
@@ -33,6 +36,8 @@ public class HoeFarmLandGoal extends TimedVillageGoal<AmaziaVillagerEntity> {
 		if (BlockChecks.isHoable(this.entity.getWorld().getBlockState(pos.down()).getBlock())) {
 			this.entity.getWorld().setBlockState(pos.down(), Blocks.FARMLAND.getDefaultState());
 			ActivityFoodConsumerMap.tillLandUseFood(this.entity);
+			AmaziaXpGainMap.gainTillFarmLandXp(this.entity);
+			HappynessMap.looseTillDirtHappyness(this.entity);
 		}
 	}
 }

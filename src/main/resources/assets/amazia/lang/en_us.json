@@ -35,5 +35,21 @@
 	
 	"amazia:village-enemies-glow": "Village Enemies Glow",
 	
-	"amazia:attribute.villager.max_hunger": "Max Hunger"
+	"amazia:attribute.villager.max_hunger": "Max Hunger",
+	
+	"amazia.blacksmith": "Blacksmith",
+	"amazia.chef": "Chef",
+	"amazia.cleric": "Cleric",
+	"amazia.druid": "Druid",
+	"amazia.enchanter": "Enchanter",
+	"amazia.farmer": "Farmer",
+	"amazia.guard": "Guard",
+	"amazia.lumberjack": "Lumberjack",
+	"amazia.miner": "Miner",
+	"amazia.nitwit": "Nitwit",
+	"amazia.rancher": "Rancher",
+	
+	"effect.amazia.blessing": "Blessing",
+	
+	"item.amazia.book_of_intelligence": "Book of Intelligence"
 }

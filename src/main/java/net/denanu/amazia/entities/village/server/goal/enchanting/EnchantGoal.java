@@ -1,15 +1,11 @@
 package net.denanu.amazia.entities.village.server.goal.enchanting;
 
-import java.util.List;
-import java.util.Optional;
-
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.server.EnchanterEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.entities.village.server.goal.enchanting.utils.AmaziaEnchantmentHelper;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
-import net.minecraft.enchantment.EnchantmentLevelEntry;
-import net.minecraft.item.ItemStack;
+import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.minecraft.item.Items;
 
 public class EnchantGoal extends TimedVillageGoal<EnchanterEntity> {
@@ -20,13 +16,9 @@ public class EnchantGoal extends TimedVillageGoal<EnchanterEntity> {
 
 	@Override
 	public boolean canStart() {
-		return
-				this.entity.canEnchant() &&
-				!this.entity.canDepositItems() &&
-				super.canStart() &&
-				this.entity.hasEnchantItem() &&
-				this.entity.getTargetPos() != null &&
-				this.entity.getBlockPos().getManhattanDistance(this.entity.getTargetPos()) <= 1;
+		return this.entity.canEnchant() && !this.entity.canDepositItems() && super.canStart()
+				&& this.entity.hasEnchantItem() && this.entity.getTargetPos() != null
+				&& this.entity.getBlockPos().getManhattanDistance(this.entity.getTargetPos()) <= 1;
 	}
 
 	@Override
@@ -47,10 +39,11 @@ public class EnchantGoal extends TimedVillageGoal<EnchanterEntity> {
 
 	@Override
 	protected void takeAction() {
-		final Optional<Integer> itmKey = this.entity.getEnchantableItem();
+		final var itmKey = this.entity.getEnchantableItem();
 		if (itmKey.isPresent()) {
-			ItemStack stack = this.entity.getInventory().getStack(itmKey.get());
-			final List<EnchantmentLevelEntry> enchantments = AmaziaEnchantmentHelper.generateEnchantments(this.entity.getRandom(), stack, this.entity.getEnchantinAbility(), true);
+			var stack = this.entity.getInventory().getStack(itmKey.get());
+			final var enchantments = AmaziaEnchantmentHelper.generateEnchantments(this.entity.getRandom(), stack,
+					this.entity.getEnchantinAbility(), true);
 
 			if (!enchantments.isEmpty()) {
 				stack = AmaziaEnchantmentHelper.enchant(stack, enchantments);
@@ -58,11 +51,11 @@ public class EnchantGoal extends TimedVillageGoal<EnchanterEntity> {
 				this.entity.getInventory().setStack(itmKey.get(), stack);
 				this.entity.enchantUseLapis();
 				ActivityFoodConsumerMap.enchantUseFood(this.entity);
+				AmaziaXpGainMap.gainEnchantXp(this.entity);
 				if (this.entity.getRandom().nextFloat() < 0.2 || !stack.isOf(Items.ENCHANTED_BOOK)) {
 					this.entity.returnItem();
 				}
-			}
-			else {
+			} else {
 				this.entity.emmitMood(VillagerMoods.ANGRY);
 				this.entity.returnItem();
 			}

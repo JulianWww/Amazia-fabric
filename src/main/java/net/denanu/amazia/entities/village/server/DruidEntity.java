@@ -14,12 +14,14 @@ import net.denanu.amazia.entities.village.server.goal.druid.AdvanceCropAgeGoal;
 import net.denanu.amazia.entities.village.server.goal.druid.RegeneratMineGoToSubGoal;
 import net.denanu.amazia.entities.village.server.goal.druid.RegenerateMineSubGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.village.structures.MineStructure;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
@@ -57,7 +59,7 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<DruidEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -78,11 +80,11 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	@Override
 	protected void initGoals() {
 
-		this.goalSelector.add(49, new SequenceGoal<DruidEntity>(this, ImmutableList.of(
+		this.goalSelector.add(49, new SequenceGoal<>(this, ImmutableList.of(
 				new RegeneratMineGoToSubGoal(this, 49),
 				new RegenerateMineSubGoal(this, 49)
 				)));
-		this.goalSelector.add(50, new SequenceGoal<DruidEntity>(this, ImmutableList.of(
+		this.goalSelector.add(50, new SequenceGoal<>(this, ImmutableList.of(
 				new AdvanceCropAgeGoToGoal(this, 50),
 				new AdvanceCropAgeGoal(this, 50)
 				)));
@@ -109,15 +111,15 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public float getMineRagenerationAbility() {
-		return 0.1f;
+		return this.professionLevelManager.getMineRegeneration();
 	}
 
 	public int getPlantAdvanceAgeTime() {
-		return 20;
+		return this.professionLevelManager.getPlantGrowTime();
 	}
 
 	public int getGrowRadius() {
-		return 10;
+		return this.professionLevelManager.getGrowRadius();
 	}
 
 	/**
@@ -135,6 +137,11 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public int getMaxRegrowMine() {
-		return 2;
+		return this.professionLevelManager.getMaxMineRegrowAbility();
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return AmaziaProfessions.DRUID;
 	}
 }

@@ -1,6 +1,7 @@
 package net.denanu.amazia.entities.village.server.goal.storage;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.item.ItemStack;
@@ -9,20 +10,20 @@ import net.minecraft.server.world.ServerWorld;
 public class PutItemInContainerGoal extends InteractWithContainerGoal {
 	protected StoragePutInteractionGoalInterface master;
 
-	public PutItemInContainerGoal(AmaziaVillagerEntity e, StoragePutInteractionGoalInterface _master) {
+	public PutItemInContainerGoal(final AmaziaVillagerEntity e, final StoragePutInteractionGoalInterface _master) {
 		super(e);
 		this.master = _master;
 	}
-	
+
 	@Override
 	public boolean canStart() {
 		return this.isStartable();
 	}
-	
+
 	@Override
 	public void stop() {
 		super.stop();
-		master.StorageInteractionDone();
+		this.master.StorageInteractionDone();
 	}
 
 	@Override
@@ -32,30 +33,31 @@ public class PutItemInContainerGoal extends InteractWithContainerGoal {
 
 	@Override
 	protected void takeAction() {
-		LootableContainerBlockEntity inventory = this.master.getTarget().getStorageInventory((ServerWorld)this.entity.getWorld());
+		final LootableContainerBlockEntity inventory = this.master.getTarget().getStorageInventory((ServerWorld)this.entity.getWorld());
 		if (inventory != null) {
 			int maxDepositable = this.master.getMaxDepositable();
 			ItemStack toPut = this.getItem();
 			for (int idx=0; idx < inventory.size(); idx++) {
-				ItemStack itemStack = inventory.getStack(idx);
+				final ItemStack itemStack = inventory.getStack(idx);
 				if (itemStack.isEmpty()) {
 					inventory.setStack(idx, toPut.copy());
-					
-					int depostiAmount = Math.min(toPut.getCount(), maxDepositable);
+
+					final int depostiAmount = Math.min(toPut.getCount(), maxDepositable);
 					inventory.getStack(idx).setCount( depostiAmount);
 					toPut.setCount(toPut.getCount() - depostiAmount);
 					break;
-	            } else if (canMergeItems(itemStack, toPut)) {
-	                int i = toPut.getMaxCount() - itemStack.getCount();
-	                int j = Math.min(toPut.getCount(), Math.min(i, maxDepositable));
-	                toPut.decrement(j);
-	                itemStack.increment(j);
-	                
-	                maxDepositable = maxDepositable - j;
-	                if (maxDepositable == 0) {
-	                	break;
-	                }
-	            }
+				}
+				if (InteractWithContainerGoal.canMergeItems(itemStack, toPut)) {
+					final int i = toPut.getMaxCount() - itemStack.getCount();
+					final int j = Math.min(toPut.getCount(), Math.min(i, maxDepositable));
+					toPut.decrement(j);
+					itemStack.increment(j);
+
+					maxDepositable = maxDepositable - j;
+					if (maxDepositable == 0) {
+						break;
+					}
+				}
 				if (toPut.isEmpty()) { break; }
 			}
 			if (toPut.isEmpty()) {
@@ -63,17 +65,19 @@ public class PutItemInContainerGoal extends InteractWithContainerGoal {
 			}
 			this.entity.getInventory().setStack(this.getItemIdx(), toPut);
 			inventory.markDirty();
+			HappynessMap.looseDropOfItemsHappyness(this.entity);
 		}
 	}
-	
+
+	@Override
 	public DoubleDownPathingData getContainerPos() {
 		return this.master.getTarget();
 	}
 
 	public ItemStack getItem() {
-		return master.getItem();
+		return this.master.getItem();
 	}
 	protected int getItemIdx() {
-		return master.getItemIdx();
+		return this.master.getItemIdx();
 	}
 }

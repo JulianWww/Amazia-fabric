@@ -6,7 +6,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.denanu.amazia.commands.data.AmaziaDataCommand;
 import net.denanu.amazia.commands.economy.AmaziaEconomyCommand;
 import net.denanu.amazia.commands.testSuit.AmaziaTestCommands;
-import net.denanu.amazia.commands.village.AmaziaClientVillageCommands;
+import net.denanu.amazia.commands.village.AmaziaVillageCommands;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -18,7 +18,7 @@ public class AmaziaCommand {
 		namespace.then(AmaziaEconomyCommand.register(dispatcher, access, env));
 		namespace.then(AmaziaDataCommand.register(dispatcher, access, env));
 		namespace.then(AmaziaTestCommands.register(dispatcher, access, env));
-		namespace.then(AmaziaClientVillageCommands.register(dispatcher, access));
+		namespace.then(AmaziaVillageCommands.register(dispatcher, access));
 
 		dispatcher.register(namespace);
 	}

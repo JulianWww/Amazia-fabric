@@ -26,9 +26,13 @@ import net.denanu.amazia.entities.village.server.FarmerEntity;
 import net.denanu.amazia.entities.village.server.GuardEntity;
 import net.denanu.amazia.entities.village.server.LumberjackEntity;
 import net.denanu.amazia.entities.village.server.MinerEntity;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.mechanics.hunger.CraftingHungerManager;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
+import net.denanu.amazia.status_effects.AmaziaStatusEffects;
+import net.denanu.amazia.utils.Predicates;
 import net.denanu.amazia.utils.crafting.VillageRecipeManager;
 import net.denanu.amazia.utils.registry.AmaziaRegistrys;
 import net.denanu.amazia.utils.scanners.ChunkScanner;
@@ -50,19 +54,15 @@ public class Amazia implements ModInitializer {
 
 	public static final int LOWER_WORLD_BORDER = -64;
 
-	public static HashMap<Item,ArrayList<CraftingRecipe>> FARMER_CRAFTS;
-	public static HashMap<Item,ArrayList<CraftingRecipe>> MINER_CRAFTS;
-	public static HashMap<Item,ArrayList<CraftingRecipe>> LUMBERJACK_CRAFTS;
-	public static HashMap<Item,ArrayList<CraftingRecipe>> BLACKSMITH_CRAFTABLES;
-	public static HashMap<Item,ArrayList<CraftingRecipe>> CHEF_CRAFTABLES;
-	public static HashMap<Item,ArrayList<CraftingRecipe>> GUARD_CRAFTABLES;
-
-
+	public static HashMap<Item, ArrayList<CraftingRecipe>> FARMER_CRAFTS;
+	public static HashMap<Item, ArrayList<CraftingRecipe>> MINER_CRAFTS;
+	public static HashMap<Item, ArrayList<CraftingRecipe>> LUMBERJACK_CRAFTS;
+	public static HashMap<Item, ArrayList<CraftingRecipe>> BLACKSMITH_CRAFTABLES;
+	public static HashMap<Item, ArrayList<CraftingRecipe>> CHEF_CRAFTABLES;
+	public static HashMap<Item, ArrayList<CraftingRecipe>> GUARD_CRAFTABLES;
 
 	public static Economy economy;
 	public static ChunkScanner chunkScanner;
-
-
 
 	private static VillageManager villageManager;
 
@@ -78,20 +78,22 @@ public class Amazia implements ModInitializer {
 
 		Amazia.villageManager = new VillageManager();
 
-		//Economy
+		// Economy
 		EconomyFactory.setup();
 		ProfessionFactory.setup();
 		AmaziaValueModifiers.setup();
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			Amazia.economy = server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(Economy::fromNbt, Economy::new, Amazia.MOD_ID + ":economy");
+			Amazia.economy = server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(Economy::fromNbt,
+					Economy::new, Amazia.MOD_ID + ":economy");
 		});
 
 		// Scanners
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			Amazia.chunkScanner = server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(ChunkScanner::fromNbt, ChunkScanner::init, Amazia.MOD_ID + ":structures");
+			Amazia.chunkScanner = server.getWorld(World.OVERWORLD).getPersistentStateManager()
+					.getOrCreate(ChunkScanner::fromNbt, ChunkScanner::init, Amazia.MOD_ID + ":structures");
 		});
 
-		//Networking
+		// Networking
 		AmaziaNetworking.registerC2SPackets();
 
 		// commands
@@ -99,15 +101,23 @@ public class Amazia implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register(AmaziaCommand::register);
 		AmaziaGameRules.setup();
 
+		//Configs
+		BlockHighlightingAmaziaConfig.setup();
+
 		// Registry
 		AmaziaRegistrys.setup();
 		AmaziaEntityAttributes.setup();
 
 		// static data generated on runtime files
 		AmaziaData.setup();
+		Predicates.setup();
 
 		// Mechanics
 		CraftingHungerManager.setup();
+		AmaziaProfessions.setup();
+
+		// Status effects
+		AmaziaStatusEffects.setup();
 	}
 
 	public static VillageManager getVillageManager() {
@@ -115,19 +125,25 @@ public class Amazia implements ModInitializer {
 	}
 
 	private static Set<Item> union(final ImmutableSet<Item> a, final ImmutableSet<Item> b) {
-		final Set<Item> out = new HashSet<Item>();
+		final Set<Item> out = new HashSet<>();
 		out.addAll(b);
 		out.addAll(a);
 		return out;
 	}
 
 	public static void registerCrafters(final MinecraftServer server) {
-		Amazia.FARMER_CRAFTS		= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, Amazia.union(FarmerEntity.CRAFTABLES, 		AmaziaData.PLANKS));
-		Amazia.MINER_CRAFTS 		= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, Amazia.union(MinerEntity.CRAFTABLES,			AmaziaData.PLANKS));
-		Amazia.LUMBERJACK_CRAFTS	= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, Amazia.union(LumberjackEntity.CRAFTABLES,		AmaziaData.PLANKS));
-		Amazia.BLACKSMITH_CRAFTABLES= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, AmaziaData.buildBlacksmithCraftables());
-		Amazia.CHEF_CRAFTABLES		= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, ChefEntity.CRAFTABLES);
-		Amazia.GUARD_CRAFTABLES		= VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(), RecipeType.CRAFTING, Amazia.union(GuardEntity.CRAFTABLES, AmaziaData.PLANKS));
+		Amazia.FARMER_CRAFTS = VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(),
+				RecipeType.CRAFTING, Amazia.union(FarmerEntity.CRAFTABLES, AmaziaData.PLANKS));
+		Amazia.MINER_CRAFTS = VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(),
+				RecipeType.CRAFTING, Amazia.union(MinerEntity.CRAFTABLES, AmaziaData.PLANKS));
+		Amazia.LUMBERJACK_CRAFTS = VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(),
+				RecipeType.CRAFTING, Amazia.union(LumberjackEntity.CRAFTABLES, AmaziaData.PLANKS));
+		Amazia.BLACKSMITH_CRAFTABLES = VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(),
+				RecipeType.CRAFTING, AmaziaData.buildBlacksmithCraftables());
+		Amazia.CHEF_CRAFTABLES = VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(),
+				RecipeType.CRAFTING, ChefEntity.CRAFTABLES);
+		Amazia.GUARD_CRAFTABLES = VillageRecipeManager.getAllCraftableRecipes(server.getRecipeManager(),
+				RecipeType.CRAFTING, Amazia.union(GuardEntity.CRAFTABLES, AmaziaData.PLANKS));
 
 		AmaziaData.buildBlastables(server);
 		AmaziaData.buildSmokables(server);

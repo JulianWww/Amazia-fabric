@@ -1,7 +1,7 @@
 package net.denanu.amazia.economy.offerModifiers.finalizers;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.utils.random.ConstrainedGaussianRandom;
+import net.denanu.amazia.utils.random.ConstrainedGaussianIntRandom;
 import net.denanu.amazia.utils.scanners.ChunkScanner;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.map.MapIcon;
@@ -14,7 +14,7 @@ public class AmaziaFinalModifiers {
 			.add(StructureKeys.BURIED_TREASURE, 10.0f);
 	
 	public static SuspiciousStewFinalizer SUSPICOUS_STEW_FINALIZER =
-			new SuspiciousStewFinalizer(Identifier.of(Amazia.MOD_ID, "suspicious_stew_finalizer"), new ConstrainedGaussianRandom(1200, 500, 12000, 0))
+			new SuspiciousStewFinalizer(Identifier.of(Amazia.MOD_ID, "suspicious_stew_finalizer"), new ConstrainedGaussianIntRandom(1200, 500, 12000, 0))
 			.add(StatusEffects.SPEED, 			1.0f)
 			.add(StatusEffects.SLOWNESS,		1.0f)
 			.add(StatusEffects.HASTE, 			1.0f)

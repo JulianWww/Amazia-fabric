@@ -3,10 +3,10 @@ package net.denanu.amazia.utils.random;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.mechanics.leveling.IAmaziaLevelProviderEntity;
 
-public class GaussianRandom implements RandomnessFactory<Integer>, LevelBasedRandomnessFactory<Integer> {
+public class GaussianIntRandom implements RandomnessFactory<Integer>, LevelBasedRandomnessFactory<Integer> {
 	private final float mean, deriv;
 
-	public GaussianRandom(final float mean, final float deriv) {
+	public GaussianIntRandom(final float mean, final float deriv) {
 		this.mean = mean;
 		this.deriv = deriv;
 	}
@@ -20,6 +20,4 @@ public class GaussianRandom implements RandomnessFactory<Integer>, LevelBasedRan
 	public Integer next(final IAmaziaLevelProviderEntity entity) {
 		return this.next();
 	}
-
-
 }
