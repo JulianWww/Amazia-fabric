@@ -203,7 +203,13 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	private void harvest(final ServerWorld world, final BlockPos pos) {
 		final BlockState state = world.getBlockState(pos);
-		if ((state.getBlock() instanceof final CropBlock crop && crop.isMature(state)) || (state.getBlock() instanceof final SugarCaneBlock crop)) {
+		if (state.getBlock() instanceof final CropBlock crop && crop.isMature(state)) {
+			world.breakBlock(pos, true);
+			AmaziaXpGainMap.gainHarvestCropXp(this);
+			ActivityFoodConsumerMap.harvestCropUseFood(this);
+			HappynessMap.looseHarvestCropHappyness(this);
+		}
+		if  (state.getBlock() instanceof final SugarCaneBlock crop) {
 			world.breakBlock(pos, true);
 			AmaziaXpGainMap.gainHarvestCropXp(this);
 			ActivityFoodConsumerMap.harvestCropUseFood(this);
