@@ -62,7 +62,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<EnchanterEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	@Override
 	protected void initGoals() {
 
-		this.goalSelector.add(50, new SequenceGoal<EnchanterEntity>(this, ImmutableList.of(
+		this.goalSelector.add(50, new SequenceGoal<>(this, ImmutableList.of(
 				new GoToEnchantingTable(this, 50),
 				new EnchantGoal(this, 50)
 				)));
@@ -159,7 +159,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	}
 
 	public int getEnchantTime() {
-		return 20;
+		return this.professionLevelManager.getEnchantingTime();
 	}
 
 	public BlockPos getTargetPos() {
@@ -188,7 +188,7 @@ public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable
 	}
 
 	public int getEnchantinAbility() {
-		return 100;
+		return this.professionLevelManager.getEnchantAbility(this.getProfession());
 	}
 
 	public boolean canEnchant() {

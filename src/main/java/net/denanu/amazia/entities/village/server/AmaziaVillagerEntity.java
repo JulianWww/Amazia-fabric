@@ -93,8 +93,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	private float hunger;
 	private static final TrackedData<Float> INTELLIGENCE = DataTracker.registerData(AmaziaVillagerEntity.class, TrackedDataHandlerRegistry.FLOAT);
 	private float education;
-	private final ProfessionLevelManager professionLevelManager;
-	private float levelBoost;
+	protected final ProfessionLevelManager professionLevelManager;
 	private float happyness;
 
 	private Optional<Integer> bestFoodItem;
@@ -299,7 +298,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		this.dataTracker.set(AmaziaVillagerEntity.INTELLIGENCE, nbt.contains("Intelligence") ? nbt.getFloat("Intelligence") : IAmaziaIntelligenceEntity.getInitalIntelligence());
 		this.education = nbt.contains("Education") ? nbt.getFloat("Education") : IAmaziaEducatedEntity.baseEducation(this);
 		this.happyness = nbt.contains("Happyness") ? nbt.getFloat("Happyness") : IAmaziaHappynessEntity.getDefaultHappyness();
-		this.professionLevelManager.load(nbt.getCompound("professions"));
+		this.professionLevelManager.load(nbt.getCompound("professions"), this.getProfession());
 		this.activityScedule.readCustomNbt(nbt.getCompound("Scedule"));
 	}
 
@@ -661,7 +660,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 	@Override
 	public float getLevel(final Identifier profession) {
-		return this.professionLevelManager.getLevel(profession) + this.levelBoost;
+		return this.professionLevelManager.getLevel(profession);
 	}
 
 	@Override
@@ -713,37 +712,37 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	public abstract boolean canDepositItems();
 
 	public int getHoeingTime() {
-		return 20;
+		return this.professionLevelManager.getHoingTime();
 	}
 
 	public int getPlantTime() {
-		return 20;
+		return this.professionLevelManager.getPlantingTime();
 	}
 
 	public int getHarvestTime() {
-		return 20;
+		return this.professionLevelManager.getHarvestingTime();
 	}
 
 	public int getBlockPlaceTime() {
-		return 2;
+		return this.professionLevelManager.getBlockPlaceTime();
 	}
 
 	public int getMineTime() {
-		return 2;
+		return this.professionLevelManager.getMineTime();
 	}
 
 	public int getCraftingTime() {
-		return 20;
+		return this.professionLevelManager.getCraftingTime();
 	}
 
 	@Override
 	public float getLevelBoost() {
-		return this.levelBoost;
+		return this.professionLevelManager.getLevelBoost();
 	}
 
 	@Override
 	public void setLevelBoost(final float levelBoost) {
-		this.levelBoost = levelBoost;
+		this.professionLevelManager.setLevelBoost(levelBoost, this.getProfession());
 	}
 
 	@Override

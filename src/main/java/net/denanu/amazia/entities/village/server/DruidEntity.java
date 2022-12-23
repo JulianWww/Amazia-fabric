@@ -59,7 +59,7 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<DruidEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -80,11 +80,11 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	@Override
 	protected void initGoals() {
 
-		this.goalSelector.add(49, new SequenceGoal<DruidEntity>(this, ImmutableList.of(
+		this.goalSelector.add(49, new SequenceGoal<>(this, ImmutableList.of(
 				new RegeneratMineGoToSubGoal(this, 49),
 				new RegenerateMineSubGoal(this, 49)
 				)));
-		this.goalSelector.add(50, new SequenceGoal<DruidEntity>(this, ImmutableList.of(
+		this.goalSelector.add(50, new SequenceGoal<>(this, ImmutableList.of(
 				new AdvanceCropAgeGoToGoal(this, 50),
 				new AdvanceCropAgeGoal(this, 50)
 				)));
@@ -111,15 +111,15 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public float getMineRagenerationAbility() {
-		return 0.1f;
+		return this.professionLevelManager.getMineRegeneration();
 	}
 
 	public int getPlantAdvanceAgeTime() {
-		return 20;
+		return this.professionLevelManager.getPlantGrowTime();
 	}
 
 	public int getGrowRadius() {
-		return 10;
+		return this.professionLevelManager.getGrowRadius();
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public int getMaxRegrowMine() {
-		return 2;
+		return this.professionLevelManager.getMaxMineRegrowAbility();
 	}
 
 	@Override

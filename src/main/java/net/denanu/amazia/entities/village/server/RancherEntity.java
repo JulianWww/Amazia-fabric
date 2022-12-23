@@ -64,7 +64,7 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<RancherEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	// Rancher
@@ -144,15 +144,15 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public int getLeashTime() {
-		return 20;
+		return this.professionLevelManager.getLeashTime();
 	}
 
 	public int getFeedTime() {
-		return 20;
+		return this.professionLevelManager.getFeedTime();
 	}
 
 	public int getEntityInteractTime() {
-		return 20;
+		return this.professionLevelManager.getAnimalInteractionTime();
 	}
 
 	@Override
@@ -162,17 +162,14 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 		if (this.targetAnimal!=null) {
 			nbt.putUuid("targetAnimal", this.targetAnimal.getUuid());
 		}
-		return;
 	}
 
 	@Override
 	public void readCustomDataFromNbt(final NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		this.animalInteractionAge = nbt.getInt("animalInteractionAge");
-		if (!this.world.isClient && nbt.contains("targetAnimal")) {
-			if (JJUtils.getEntityByUniqueId(nbt.getUuid("targetAnimal"), (ServerWorld)this.world) instanceof final AnimalEntity animal) {
-				this.targetAnimal = animal;
-			}
+		if ((!this.world.isClient && nbt.contains("targetAnimal")) && (JJUtils.getEntityByUniqueId(nbt.getUuid("targetAnimal"), (ServerWorld)this.world) instanceof final AnimalEntity animal)) {
+			this.targetAnimal = animal;
 		}
 
 	}
