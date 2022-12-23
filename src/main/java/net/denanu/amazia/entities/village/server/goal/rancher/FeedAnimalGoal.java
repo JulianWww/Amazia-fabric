@@ -11,6 +11,7 @@ import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.components.AmaziaEntityComponents;
 import net.denanu.amazia.entities.village.server.RancherEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.denanu.amazia.mixin.SheepEntityAccessor;
@@ -156,6 +157,7 @@ public class FeedAnimalGoal extends TimedVillageGoal<RancherEntity> {
 			rancher.getInventory().addStack(new ItemStack(Items.MILK_BUCKET, 1));
 			ActivityFoodConsumerMap.harvestFromAnimalUseFood(rancher);
 			AmaziaXpGainMap.gainFeedAnimalXp(rancher);
+			HappynessMap.looseFeedAnimalHappyness(rancher);
 		}
 	}
 
@@ -179,6 +181,7 @@ public class FeedAnimalGoal extends TimedVillageGoal<RancherEntity> {
 					);
 			ActivityFoodConsumerMap.harvestFromAnimalUseFood(rancher);
 			AmaziaXpGainMap.gainFeedAnimalXp(rancher);
+			HappynessMap.looseFeedAnimalHappyness(rancher);
 		}
 	}
 

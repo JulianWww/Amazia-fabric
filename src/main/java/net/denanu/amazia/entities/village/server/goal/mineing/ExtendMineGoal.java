@@ -1,6 +1,7 @@
 package net.denanu.amazia.entities.village.server.goal.mineing;
 
 import net.denanu.amazia.entities.village.server.MinerEntity;
+import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 
@@ -33,6 +34,7 @@ public class ExtendMineGoal extends TimedMineGoal {
 		this.entity.damage(this.entity.getPick());
 		ActivityFoodConsumerMap.mineBlockUseFood(this.entity);
 		AmaziaXpGainMap.gainEnchantXp(this.entity);
+		HappynessMap.gainMinerFindOreHappyness(this.entity);
 	}
 
 	@Override

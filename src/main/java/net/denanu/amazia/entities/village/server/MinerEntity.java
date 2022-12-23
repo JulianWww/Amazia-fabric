@@ -16,6 +16,7 @@ import net.denanu.amazia.entities.village.server.goal.mineing.ExtendMineGoal;
 import net.denanu.amazia.entities.village.server.goal.mineing.FixBrokenMineSeroundingsGoal;
 import net.denanu.amazia.entities.village.server.goal.mineing.LightUpMine;
 import net.denanu.amazia.entities.village.server.goal.mineing.MoveToEndOfMine;
+import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.structures.MineStructure;
@@ -124,7 +125,7 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	@Override
 	public boolean wantToKeepItemInSlot(final int idx) {
-		boolean keepPick = this.pickPos.isPresent() && this.pickPos.get() == idx;
+		final boolean keepPick = this.pickPos.isPresent() && this.pickPos.get() == idx;
 		return keepPick || super.wantToKeepItemInSlot(idx);
 	}
 
@@ -137,7 +138,7 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable {
 		ToolMaterial bestMaterial = null;
 		this.pickPos = Optional.empty();
 		for (int idx=0; idx < inventory.size(); idx++) {
-			if (inventory.getStack(idx).getItem() instanceof PickaxeItem pick && (bestMaterial == null || bestMaterial.getMiningLevel() < pick.getMaterial().getMiningLevel())) {
+			if (inventory.getStack(idx).getItem() instanceof final PickaxeItem pick && (bestMaterial == null || bestMaterial.getMiningLevel() < pick.getMaterial().getMiningLevel())) {
 				bestMaterial = pick.getMaterial();
 				this.pickPos = Optional.of(idx);
 			}
@@ -197,6 +198,7 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable {
 		final Block block = this.getWorld().getBlockState(pos).getBlock();
 		if ((block instanceof OreBlock || block instanceof RedstoneOreBlock) && !this.toMineLocations.contains(pos)) {
 			this.toMineLocations.add(pos);
+			HappynessMap.gainMinerFindOreHappyness(this);
 		}
 	}
 

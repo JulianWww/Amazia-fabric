@@ -35,6 +35,7 @@ public class HealEntityGoal extends TimedVillageGoal<ClericEntity> {
 				this.entity.getTarget().heal(this.entity.getHealAmount());
 				if (this.entity.getTarget() instanceof final IAmaziaHappynessEntity happy) {
 					HappynessMap.getHealedGainHappyness(happy);
+					HappynessMap.gainHealOtherVillagerHappyness(this.entity);
 				}
 			}
 			ActivityFoodConsumerMap.healUseFood(this.entity);

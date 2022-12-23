@@ -24,6 +24,7 @@ import net.denanu.amazia.entities.village.server.goal.storage.CraftGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.DepositItemGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.GetItemGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
+import net.denanu.amazia.entities.village.server.goal.utils.combat.AmaziaEscapeDangerGoal;
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
@@ -37,6 +38,9 @@ import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.mechanics.leveling.ProfessionLevelManager;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.utils.crafting.CraftingUtils;
+import net.denanu.amazia.village.events.EventData;
+import net.denanu.amazia.village.events.VillageDieEventData;
+import net.denanu.amazia.village.events.VillageEvents;
 import net.denanu.amazia.village.scedule.VillagerScedule;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -45,7 +49,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.InventoryOwner;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -74,7 +77,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
@@ -169,7 +171,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 	public void registerBaseGoals(final VoidToVoidCallback getItemCallback,
 			final VoidToVoidCallback depositItemCallback, final boolean addCrafter) {
-		this.goalSelector.add(0, new EscapeDangerGoal(this, 3.0f));
+		this.goalSelector.add(0, new AmaziaEscapeDangerGoal(this, 3.0f));
 		this.registerNonCombatBaseGoals(getItemCallback, depositItemCallback, addCrafter);
 	}
 
@@ -195,12 +197,18 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	}
 
 	@Override
+	public void onDeath(final DamageSource source) {
+		super.onDeath(source);
+		if (this.hasVillage()) {
+
+		}
+	}
+
+	@Override
 	protected void dropInventory() {
 		super.dropInventory();
-		if (!this.world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
-			this.vanishCursedItems();
-			this.dropAll();
-		}
+		this.vanishCursedItems();
+		this.dropAll();
 	}
 
 	protected void dropAll() {
@@ -209,7 +217,9 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			if (itemStack.isEmpty()) {
 				continue;
 			}
-			this.dropItem(itemStack, true, false);
+			this.world.spawnEntity(
+					this.dropItem(itemStack, true, false)
+					);
 			this.inventory.setStack(i, ItemStack.EMPTY);
 		}
 	}
@@ -222,16 +232,16 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		if (this.world.isClient) {
 			this.swingHand(Hand.MAIN_HAND);
 		}
-		final double d = this.getEyeY() - 0.3f;
+		final double d = this.getEyeY() - .3f;
 		final ItemEntity itemEntity = new ItemEntity(this.world, this.getX(), d, this.getZ(), stack);
 		itemEntity.setPickupDelay(40);
 		if (retainOwnership) {
 			itemEntity.setThrower(this.getUuid());
 		}
 		if (throwRandomly) {
-			final float f = this.random.nextFloat() * 0.5f;
+			final float f = this.random.nextFloat() * 0.3f + 0.1f;
 			final float g = this.random.nextFloat() * ((float) Math.PI * 2);
-			itemEntity.setVelocity(-MathHelper.sin(g) * f, 0.2f, MathHelper.cos(g) * f);
+			itemEntity.setVelocity(MathHelper.sin(g) * f, 0.2f, MathHelper.cos(g) * f);
 		} else {
 			final float g = MathHelper.sin(this.getPitch() * ((float) Math.PI / 180));
 			final float h = MathHelper.cos(this.getPitch() * ((float) Math.PI / 180));
@@ -239,7 +249,8 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			final float j = MathHelper.cos(this.getYaw() * ((float) Math.PI / 180));
 			final float k = this.random.nextFloat() * ((float) Math.PI * 2);
 			final float l = 0.02f * this.random.nextFloat();
-			itemEntity.setVelocity(-i * h * 0.3f + Math.cos(k) * l,
+			itemEntity.setVelocity(
+					-i * h * 0.3f + Math.cos(k) * l,
 					-g * 0.3f + 0.1f + (this.random.nextFloat() - this.random.nextFloat()) * 0.1f,
 					j * h * 0.3f + Math.sin(k) * l);
 		}
@@ -752,5 +763,27 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			HappynessMap.looseTakeDamageHappyness(this);
 		}
 		return super.damage(source, amount);
+	}
+
+	@Override
+	public void receiveEvent(final VillageEvents event, final EventData data) {
+		super.receiveEvent(event, data);
+		switch (event) {
+		case VILLAGER_DIE -> this.onSeeVillagerDie(data);
+		}
+	}
+
+	@Override
+	public void kill() {
+		super.kill();
+		if (!this.world.isClient && this.hasVillage()) {
+			this.village.emmitEvent(VillageEvents.VILLAGER_DIE, new VillageDieEventData(this, this.isBaby()));
+		}
+	}
+
+	private void onSeeVillagerDie(final EventData data) {
+		if (this.squaredDistanceTo(data.getEmmiter()) < 10000 && this.canSee(data.getEmmiter())) {
+			HappynessMap.loseHappynessSeeVillagerDie(this, ((VillageDieEventData)data).getIsBaby());
+		}
 	}
 }

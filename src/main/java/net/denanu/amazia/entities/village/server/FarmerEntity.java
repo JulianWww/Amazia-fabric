@@ -12,6 +12,7 @@ import net.denanu.amazia.entities.village.server.goal.farming.AmaziaGoToFarmGoal
 import net.denanu.amazia.entities.village.server.goal.farming.HarvestCropsGoal;
 import net.denanu.amazia.entities.village.server.goal.farming.HoeFarmLandGoal;
 import net.denanu.amazia.entities.village.server.goal.farming.PlantCropsGoal;
+import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
@@ -202,15 +203,11 @@ public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	private void harvest(final ServerWorld world, final BlockPos pos) {
 		final BlockState state = world.getBlockState(pos);
-		if (state.getBlock() instanceof final CropBlock crop && crop.isMature(state)) {
+		if ((state.getBlock() instanceof final CropBlock crop && crop.isMature(state)) || (state.getBlock() instanceof final SugarCaneBlock crop)) {
 			world.breakBlock(pos, true);
 			AmaziaXpGainMap.gainHarvestCropXp(this);
 			ActivityFoodConsumerMap.harvestCropUseFood(this);
-		}
-		if (state.getBlock() instanceof final SugarCaneBlock crop) {
-			world.breakBlock(pos, true);
-			AmaziaXpGainMap.gainHarvestCropXp(this);
-			ActivityFoodConsumerMap.harvestCropUseFood(this);
+			HappynessMap.looseHarvestCropHappyness(this);
 		}
 	}
 

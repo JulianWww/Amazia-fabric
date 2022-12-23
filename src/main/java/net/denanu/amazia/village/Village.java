@@ -1,5 +1,8 @@
 package net.denanu.amazia.village;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.denanu.amazia.Amazia;
@@ -7,6 +10,9 @@ import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.pathing.PathingGraph;
+import net.denanu.amazia.village.events.EventData;
+import net.denanu.amazia.village.events.IVillageEventListener;
+import net.denanu.amazia.village.events.VillageEvents;
 import net.denanu.amazia.village.sceduling.AbstractFurnaceSceduler;
 import net.denanu.amazia.village.sceduling.FarmingSceduler;
 import net.denanu.amazia.village.sceduling.GuardSceduler;
@@ -45,6 +51,7 @@ public class Village {
 	private final PathingNoHeightSceduler library;
 
 	private PathingGraph pathingGraph;
+	private final HashSet<IVillageEventListener> listeners = new HashSet<>();
 
 	@Nullable
 	private final VillageCoreBlockEntity coreBlock;
@@ -270,5 +277,31 @@ public class Village {
 
 	public void addThreat(final MobEntity enemy) {
 		this.guarding.addOpponent(enemy, 1);
+	}
+
+
+
+	// Event Handeling
+
+	public void emmitEvent(final VillageEvents event, final Entity emmiter) {
+		this.emmitEvent(event, new EventData(emmiter));
+	}
+
+	public void emmitEvent(final VillageEvents event, final EventData eventData) {
+		for (final IVillageEventListener listener : this.listeners) {
+			listener.receiveEvent(event, eventData);
+		}
+	}
+
+	public void removeListener(final IVillageEventListener listener) {
+		this.listeners.remove(listener);
+	}
+
+	public void registerListener(final IVillageEventListener listener) {
+		this.listeners.add(listener);
+	}
+
+	public Collection<IVillageEventListener> getListeners() {
+		return this.listeners;
 	}
 }

@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal.lumber;
 
 import net.denanu.amazia.entities.village.server.LumberjackEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.denanu.amazia.village.sceduling.LumberSceduler;
@@ -31,10 +32,10 @@ public class HarvestTreeGoal extends TimedVillageGoal<LumberjackEntity> {
 		}
 		return this.entity.hasLumberLoc() && this.entity.isInLumberLoc()
 				&& this.resetIfNecesary(this.entity.getLumberingLoc().getPos().isFull(this.entity.getWorld())); // check
-																												// if a
-																												// tree
-																												// is
-																												// present
+		// if a
+		// tree
+		// is
+		// present
 	}
 
 	private boolean resetIfNecesary(final boolean empty) {
@@ -68,6 +69,7 @@ public class HarvestTreeGoal extends TimedVillageGoal<LumberjackEntity> {
 			ActivityFoodConsumerMap.harvestTreeUseFood(this.entity,
 					this.breakBlock(this.entity.getLumberingLoc().getPos().getPlantLoc()));
 			AmaziaXpGainMap.gainChopTreeXp(this.entity);
+			HappynessMap.looseChopTreeHappyness(this.entity);
 			this.entity.setCollectTimer();
 		}
 	}
@@ -77,7 +79,7 @@ public class HarvestTreeGoal extends TimedVillageGoal<LumberjackEntity> {
 			this.entity.getWorld().breakBlock(pos, true);
 
 			return 1 + this.breakBlock(pos.up()) + this.breakBlock(pos.down()) + this.breakSide(pos.east())
-					+ this.breakSide(pos.west()) + this.breakSide(pos.south()) + this.breakSide(pos.north());
+			+ this.breakSide(pos.west()) + this.breakSide(pos.south()) + this.breakSide(pos.north());
 		}
 		return 0;
 	}

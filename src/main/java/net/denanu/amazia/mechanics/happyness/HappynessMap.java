@@ -34,4 +34,52 @@ public class HappynessMap {
 			entity.looseHappyness(HappynessMap.ADULT_DIE_FACTORY.next());
 		}
 	}
+
+	public static void looseHappynessFromFleeing(final IAmaziaHappynessEntity entity) {
+		entity.looseHappyness(2);
+	}
+
+	public static void looseDropOfItemsHappyness(final IAmaziaHappynessEntity entity) {
+		entity.looseHappyness(0.5f);
+	}
+
+	// MINER
+
+	public static void gainMinerFindOreHappyness(final IAmaziaHappynessEntity entity) {
+		entity.gainHappyness(3);
+	}
+
+	public static void looseMineBlockHappyness(final IAmaziaHappynessEntity entity) {
+		entity.looseHappyness(0.3f);
+	}
+
+	// CLERIC
+
+	public static void gainHealOtherVillagerHappyness(final IAmaziaHappynessEntity entity) {
+		entity.gainHappyness(2);
+	}
+
+	// LUMBERJACK
+
+	public static void looseChopTreeHappyness(final IAmaziaHappynessEntity entity) {
+		entity.looseHappyness(2);
+	}
+
+	// CRAFTERS
+
+	public static void looseCraftHappyness(final IAmaziaHappynessEntity entity) {
+		entity.looseHappyness(2);
+	}
+
+	// RANCHER
+
+	public static void looseFeedAnimalHappyness(final IAmaziaHappynessEntity entity) {
+		entity.looseHappyness(3);
+	}
+
+	// FARMER
+
+	public static void looseHarvestCropHappyness(final IAmaziaHappynessEntity entity) {
+		entity.looseHappyness(2);
+	}
 }
