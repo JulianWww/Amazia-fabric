@@ -172,6 +172,7 @@ public class Village {
 		this.blasting.		discover(world, blockPos);
 		this.smoking.		discover(world, blockPos);
 		this.blacksmithing.	discover(world, blockPos);
+		this.library.		discover(world, blockPos);
 	}
 
 
