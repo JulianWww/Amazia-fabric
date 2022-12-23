@@ -1,8 +1,8 @@
 package net.denanu.amazia.highlighting;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.clientblockhighlighting.config.HighlightType;
-import net.denanu.clientblockhighlighting.config.HighlightTypes;
+import net.denanu.blockhighlighting.config.HighlightType;
+import net.denanu.blockhighlighting.config.HighlightTypes;
 
 public class BlockHighlightingAmaziaConfig {
 	public static HighlightType FARMING_EMPTY_FARMS 		= BlockHighlightingAmaziaConfig.register("empty-farms", 		"#FFFFFFFF", "#20FFFFFF");

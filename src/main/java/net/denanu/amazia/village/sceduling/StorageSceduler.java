@@ -11,7 +11,7 @@ import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
-import net.denanu.clientblockhighlighting.Highlighter;
+import net.denanu.blockhighlighting.Highlighter;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
@@ -47,8 +47,7 @@ public class StorageSceduler extends FacingPathingVillageSceduler {
 	}
 
 	private List<BlockPos> toBlockPosList() {
-		final List<BlockPos> out = new LinkedList<>(this.chests.keySet());
-		return out;
+		return new LinkedList<>(this.chests.keySet());
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
-import net.denanu.clientblockhighlighting.Highlighter;
+import net.denanu.blockhighlighting.Highlighter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

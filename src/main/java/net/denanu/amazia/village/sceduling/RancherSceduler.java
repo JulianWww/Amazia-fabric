@@ -14,7 +14,7 @@ import net.denanu.amazia.components.AmaziaEntityComponents;
 import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
-import net.denanu.clientblockhighlighting.Highlighter;
+import net.denanu.blockhighlighting.Highlighter;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.nbt.NbtCompound;
