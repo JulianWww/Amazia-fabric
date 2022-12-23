@@ -3,6 +3,7 @@ package net.denanu.amazia.entities.village.server.goal.storage;
 import javax.annotation.Nullable;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
@@ -13,13 +14,13 @@ import net.minecraft.server.world.ServerWorld;
 public class GetItemFromStorage extends InteractWithContainerGoal {
 	protected StorageGetInteractionGoalInterface master;
 	@Nullable
-	private VoidToVoidCallback callback;
-	
-	public GetItemFromStorage(AmaziaVillagerEntity e, StorageGetInteractionGoalInterface _master) {
+	private final VoidToVoidCallback callback;
+
+	public GetItemFromStorage(final AmaziaVillagerEntity e, final StorageGetInteractionGoalInterface _master) {
 		this(e, _master, null);
 	}
-	
-	public GetItemFromStorage(AmaziaVillagerEntity e, StorageGetInteractionGoalInterface _master, VoidToVoidCallback callback) {
+
+	public GetItemFromStorage(final AmaziaVillagerEntity e, final StorageGetInteractionGoalInterface _master, final VoidToVoidCallback callback) {
 		super(e);
 		this.master = _master;
 		this.callback = callback;
@@ -32,12 +33,12 @@ public class GetItemFromStorage extends InteractWithContainerGoal {
 
 	@Override
 	protected void takeAction() {
-		LootableContainerBlockEntity inventory = this.master.getTarget().getStorageInventory((ServerWorld)this.entity.getWorld());
+		final LootableContainerBlockEntity inventory = this.master.getTarget().getStorageInventory((ServerWorld)this.entity.getWorld());
 		if (inventory != null) {
 			for (int idx=0; idx < inventory.size(); idx++) {
-				ItemStack stack = inventory.getStack(idx);
+				final ItemStack stack = inventory.getStack(idx);
 				if (stack.isOf(this.getItem())) {
-					ItemStack leftOver = this.entity.getInventory().addStack(stack);
+					final ItemStack leftOver = this.entity.getInventory().addStack(stack);
 					if (leftOver.isEmpty()) {
 						inventory.setStack(idx, ItemStack.EMPTY);
 					}
@@ -47,15 +48,17 @@ public class GetItemFromStorage extends InteractWithContainerGoal {
 					return;
 				}
 			}
+			HappynessMap.loosePickUpItemsHappyness(this.entity);
 		}
 	}
-	
+
 	@Override
 	public void stop() {
 		super.stop();
-		master.StorageInteractionDone();
-		if (this.callback != null)
+		this.master.StorageInteractionDone();
+		if (this.callback != null) {
 			this.callback.call();
+		}
 	}
 
 	@Override

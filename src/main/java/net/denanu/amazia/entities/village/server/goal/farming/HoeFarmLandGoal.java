@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal.farming;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.denanu.amazia.utils.BlockChecks;
@@ -36,6 +37,7 @@ public class HoeFarmLandGoal extends TimedVillageGoal<AmaziaVillagerEntity> {
 			this.entity.getWorld().setBlockState(pos.down(), Blocks.FARMLAND.getDefaultState());
 			ActivityFoodConsumerMap.tillLandUseFood(this.entity);
 			AmaziaXpGainMap.gainTillFarmLandXp(this.entity);
+			HappynessMap.looseTillDirtHappyness(this.entity);
 		}
 	}
 }

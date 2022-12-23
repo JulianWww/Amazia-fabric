@@ -43,6 +43,10 @@ public class HappynessMap {
 		entity.looseHappyness(0.5f);
 	}
 
+	public static void loosePickUpItemsHappyness(final IAmaziaHappynessEntity entity) {
+		entity.looseHappyness(0.5f);
+	}
+
 	// MINER
 
 	public static void gainMinerFindOreHappyness(final IAmaziaHappynessEntity entity) {
@@ -81,5 +85,9 @@ public class HappynessMap {
 
 	public static void looseHarvestCropHappyness(final IAmaziaHappynessEntity entity) {
 		entity.looseHappyness(2);
+	}
+
+	public static void looseTillDirtHappyness(final IAmaziaHappynessEntity entity) {
+		entity.looseHappyness(3);
 	}
 }
