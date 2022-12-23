@@ -2,7 +2,6 @@ package net.denanu.amazia.entities.village.server.goal.rancher;
 
 import net.denanu.amazia.components.AmaziaEntityComponents;
 import net.denanu.amazia.entities.village.server.RancherEntity;
-import net.denanu.amazia.entities.village.server.goal.AmaziaVillageGoal;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 
 public class LeashAnimal extends TimedVillageGoal<RancherEntity> {

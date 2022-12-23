@@ -3,11 +3,9 @@ package net.denanu.amazia.economy.offerModifiers.item;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.economy.AmaziaTradeOffer;
 import net.denanu.amazia.economy.offerModifiers.OfferModifier;
-import net.denanu.amazia.economy.offerModifiers.price.AmaziaValueModifiers;
 import net.denanu.amazia.utils.random.WeightedRandomCollection;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.nbt.NbtElement;
 
 public class EnchantmentModifier implements OfferModifier {
 	private WeightedRandomCollection<Enchantment> possibleEnchants;

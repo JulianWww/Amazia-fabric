@@ -9,8 +9,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 
-import net.denanu.amazia.economy.Economy;
-import net.minecraft.command.argument.ItemStackArgument;
 import net.minecraft.text.Text;
 
 public class EconomyModifierArgumentType implements ArgumentType<String> {

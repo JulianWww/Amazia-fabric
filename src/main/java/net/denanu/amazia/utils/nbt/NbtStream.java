@@ -1,6 +1,5 @@
 package net.denanu.amazia.utils.nbt;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Stream;
 

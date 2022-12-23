@@ -3,18 +3,15 @@ package net.denanu.amazia.economy.offerModifiers.finalizers;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.economy.AmaziaTradeOffer;
 import net.denanu.amazia.utils.random.WeightedRandomCollection;
-import net.denanu.amazia.utils.scanners.ChunkScanner;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.map.MapIcon;
 import net.minecraft.item.map.MapState;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.structure.Structure;
 

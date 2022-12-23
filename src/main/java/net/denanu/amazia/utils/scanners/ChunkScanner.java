@@ -2,20 +2,16 @@ package net.denanu.amazia.utils.scanners;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.denanu.amazia.Amazia;
-import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.utils.CuboidChunkSampler;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructureStart;
 import net.minecraft.util.Identifier;

@@ -1,9 +1,9 @@
 package net.denanu.amazia.block.custom;
 
 import net.denanu.amazia.block.custom.api.AmaziaTrough;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
 
 public class AmaziaTroughBlock extends Block implements AmaziaTrough {

@@ -12,10 +12,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.TradeOutputSlot;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOfferList;
 
 public class TradingScreenHandler extends ScreenHandler {
 	private IAmaziaMerchant merchant;

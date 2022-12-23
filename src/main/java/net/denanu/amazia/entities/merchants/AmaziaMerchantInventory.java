@@ -3,6 +3,8 @@
  */
 package net.denanu.amazia.entities.merchants;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.denanu.amazia.economy.AmaziaTradeOffer;
 import net.denanu.amazia.economy.AmaziaTradeOfferList;
 import net.denanu.amazia.economy.IAmaziaMerchant;
@@ -11,7 +13,6 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
-import org.jetbrains.annotations.Nullable;
 
 public class AmaziaMerchantInventory
 implements Inventory {

@@ -10,7 +10,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.util.Identifier;
 
 public class AmaziaSetTradeOffersS2CPacket {
 	public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,

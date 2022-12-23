@@ -1,11 +1,8 @@
 package net.denanu.amazia.pathing;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.pathing.edge.PathingEdge;
 import net.denanu.amazia.pathing.node.PathingNode;
 import net.denanu.amazia.utils.queue.PriorityElement;

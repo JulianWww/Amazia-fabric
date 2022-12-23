@@ -11,7 +11,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.village.TradeOffer;
 
 public class AmaziaTradeOfferList extends ArrayList<AmaziaTradeOffer> {
 	@java.io.Serial

@@ -1,8 +1,8 @@
 package net.denanu.amazia.economy.offerModifiers.finalizers;
 
 import net.denanu.amazia.economy.AmaziaTradeOffer;
-import net.denanu.amazia.utils.random.WeightedRandomCollection;
 import net.denanu.amazia.utils.random.RandomnessFactory;
+import net.denanu.amazia.utils.random.WeightedRandomCollection;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.SuspiciousStewItem;

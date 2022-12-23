@@ -5,8 +5,10 @@ import java.util.List;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
+import net.denanu.blockhighlighting.Highlighter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -27,10 +29,10 @@ public class FarmingSceduler extends VillageSceduler {
 
 	public FarmingSceduler(final Village _village) {
 		super(_village);
-		this.possibleFarms 	= new ArrayList<BlockPos>();
-		this.crops 			= new ArrayList<BlockPos>();
-		this.emptyFarm 		= new ArrayList<BlockPos>();
-		this.growing 		= new ArrayList<BlockPos>();
+		this.possibleFarms 	= new ArrayList<>();
+		this.crops 			= new ArrayList<>();
+		this.emptyFarm 		= new ArrayList<>();
+		this.growing 		= new ArrayList<>();
 	}
 
 	@Override
@@ -79,16 +81,12 @@ public class FarmingSceduler extends VillageSceduler {
 
 	private void discoverCrops(final ServerWorld world, final BlockPos pos) {
 		final BlockState state = world.getBlockState(pos);
-		if (state.getBlock() instanceof final CropBlock crop) {
-			if (crop.isMature(state)) {
-				this.addCrop(world, pos);
-				return;
-			}
+		if (state.getBlock() instanceof final CropBlock crop && crop.isMature(state)) {
+			this.addCrop(world, pos);
+			return;
 		}
-		if (state.getBlock() instanceof final SugarCaneBlock cane) {
-			if (world.getBlockState(pos.down()).isOf(cane) && world.getBlockState(pos.down(2)).isOf(cane)) {
-				this.addCrop(world, pos.down(2));
-			}
+		if (state.getBlock() instanceof final SugarCaneBlock cane && world.getBlockState(pos.down()).isOf(cane) && world.getBlockState(pos.down(2)).isOf(cane)) {
+			this.addCrop(world, pos.down(2));
 		}
 		this.removeCrop(world, pos);
 		this.removeCrop(world, pos.down());
@@ -134,6 +132,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.possibleFarms.add(pos);
 			this.setChanged();
+
+			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_POSSIBLE_FARMS, pos);
 		}
 	}
 	private void removePossibleFarmLand(final ServerWorld world, final BlockPos pos) {
@@ -141,6 +141,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.possibleFarms.remove(pos);
 			this.setChanged();
+
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_POSSIBLE_FARMS, pos);
 		}
 	}
 	private void addCrop(final ServerWorld world, final BlockPos pos) {
@@ -148,6 +150,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.crops.add(pos);
 			this.setChanged();
+
+			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_HARVISTABLE_FARMS, pos);
 		}
 	}
 	private void removeCrop(final ServerWorld world, final BlockPos pos) {
@@ -155,6 +159,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.crops.remove(pos);
 			this.setChanged();
+
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_HARVISTABLE_FARMS, pos);
 		}
 	}
 	private void addEmptyFarmland(final ServerWorld world, final BlockPos pos) {
@@ -162,6 +168,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.emptyFarm.add(pos);
 			this.setChanged();
+
+			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_EMPTY_FARMS, pos);
 		}
 	}
 	private void removeEmptyFarmland(final ServerWorld world, final BlockPos pos) {
@@ -169,6 +177,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.emptyFarm.remove(pos);
 			this.setChanged();
+
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_EMPTY_FARMS, pos);
 		}
 	}
 	private void addGrowing(final ServerWorld world, final BlockPos pos) {
@@ -176,6 +186,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.growing.add(pos);
 			this.setChanged();
+
+			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_GOWING_FARMS, pos);
 		}
 	}
 	private void removeGrowing(final ServerWorld world, final BlockPos pos) {
@@ -183,6 +195,8 @@ public class FarmingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.growing.remove(pos);
 			this.setChanged();
+
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_GOWING_FARMS, pos);
 		}
 	}
 

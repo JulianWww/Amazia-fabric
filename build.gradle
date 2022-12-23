@@ -37,7 +37,7 @@ dependencies {
 	
 	implementation group: 'org.javatuples', name: 'javatuples', version: '1.2'
 
-	modImplementation "net.denanu.ClientBlockHighlighting:ClientBlockHighlighting-${project.minecraft_version}:${clientBlockHighlighter_version}"
+	modImplementation "net.denanu.BlockHighlighting:BlockHighlighting-${project.minecraft_version}:${BlockHighlighting_version}"
 
 
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.2"
