@@ -175,4 +175,8 @@ public class ProfessionLevelManager {
 	public int getAnimalInteractionTime() {
 		return this.getTime(20);
 	}
+
+	public int getAttackTime() {
+		return this.getTime(20);
+	}
 }

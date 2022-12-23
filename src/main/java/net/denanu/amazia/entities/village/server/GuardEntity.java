@@ -54,7 +54,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class GuardEntity extends AmaziaVillagerEntity
-		implements IAnimatable, InventoryChangedListener, AmaziaBowUser, AttackSensor {
+implements IAnimatable, InventoryChangedListener, AmaziaBowUser, AttackSensor {
 	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_SWORD, Items.STICK);
 
 	private final AnimationFactory factory = new AnimationFactory(this);
@@ -260,7 +260,7 @@ public class GuardEntity extends AmaziaVillagerEntity
 	}
 
 	public int getAttackTime() {
-		return 5;
+		return this.professionLevelManager.getAttackTime();
 	}
 
 	public boolean hasBow() {
