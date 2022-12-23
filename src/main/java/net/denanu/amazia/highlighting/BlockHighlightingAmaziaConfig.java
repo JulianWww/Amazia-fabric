@@ -23,7 +23,11 @@ public class BlockHighlightingAmaziaConfig {
 
 	public static HighlightType LIBRARY				 		= BlockHighlightingAmaziaConfig.register("library",				"#FFFFFFFF", "#20FFFFFF");
 
-	public static HighlightType FORGE				 		= BlockHighlightingAmaziaConfig.register("forge",			"#FFFFFFFF", "#20FFFFFF");
+	public static HighlightType FORGE				 		= BlockHighlightingAmaziaConfig.register("forge",				"#FFFFFFFF", "#20FFFFFF");
+
+	public static HighlightType NORMAL_FURNACES		 		= BlockHighlightingAmaziaConfig.register("furnace",				"#FFFFFFFF", "#20FFFFFF");
+	public static HighlightType BLAST_FURNACES		 		= BlockHighlightingAmaziaConfig.register("blast-furnace",		"#FFFFFFFF", "#20FFFFFF");
+	public static HighlightType SMOKER_FURNACES		 		= BlockHighlightingAmaziaConfig.register("smoker",				"#FFFFFFFF", "#20FFFFFF");
 
 
 

@@ -58,13 +58,13 @@ public class Village {
 		this.mineing 		= new MineingSceduler   		(this);
 		this.lumber 		= new LumberSceduler    		(this);
 		this.ranching		= new RancherSceduler   		(this);
-		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable, BlockHighlightingAmaziaConfig.ENCHANTING);
-		this.smelting	 	= new AbstractFurnaceSceduler	(this, Blocks.FURNACE.getClass());
-		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass());
-		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass());
-		this.blacksmithing	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isAnvil, BlockHighlightingAmaziaConfig.FORGE);
+		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable, 	BlockHighlightingAmaziaConfig.ENCHANTING);
+		this.smelting	 	= new AbstractFurnaceSceduler	(this, Blocks.FURNACE.getClass(),				BlockHighlightingAmaziaConfig.NORMAL_FURNACES);
+		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass(), 		BlockHighlightingAmaziaConfig.BLAST_FURNACES);
+		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass(), 				BlockHighlightingAmaziaConfig.SMOKER_FURNACES);
+		this.blacksmithing	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isAnvil, 			BlockHighlightingAmaziaConfig.FORGE);
 		this.guarding		= new GuardSceduler				(this);
-		this.library	 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isBookShelf, BlockHighlightingAmaziaConfig.LIBRARY);
+		this.library	 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isBookShelf, 		BlockHighlightingAmaziaConfig.LIBRARY);
 
 		this.valid = true;
 

@@ -12,6 +12,8 @@ import net.denanu.amazia.components.AmaziaBlockComponents;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
+import net.denanu.blockhighlighting.Highlighter;
+import net.denanu.blockhighlighting.config.HighlightType;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -26,13 +28,15 @@ public class AbstractFurnaceSceduler extends FacingPathingVillageSceduler {
 	public List<BlockPos> available;
 	public Map<BlockPos, DoubleDownPathingData> pathing;
 	private final Class<? extends Block> toFind;
+	private final HighlightType highlighter;
 
-	public AbstractFurnaceSceduler(final Village _village, final Class<? extends Block> toFind) {
+	public AbstractFurnaceSceduler(final Village _village, final Class<? extends Block> toFind, final HighlightType highlighter) {
 		super(_village);
-		this.location = new ArrayList<BlockPos>();
-		this.available = new ArrayList<BlockPos>();
-		this.pathing = new HashMap<BlockPos, DoubleDownPathingData>();
+		this.location = new ArrayList<>();
+		this.available = new ArrayList<>();
+		this.pathing = new HashMap<>();
 		this.toFind = toFind;
+		this.highlighter = highlighter;
 	}
 
 	@Override
@@ -46,7 +50,6 @@ public class AbstractFurnaceSceduler extends FacingPathingVillageSceduler {
 	public void readNbt(final NbtCompound nbt) {
 		this.location  = NbtUtils.toBlockPosList(nbt.getList("location",  NbtElement.LIST_TYPE));
 		this.available = NbtUtils.toBlockPosList(nbt.getList("available", NbtElement.LIST_TYPE));
-		return;
 	}
 
 	@Override
@@ -56,6 +59,8 @@ public class AbstractFurnaceSceduler extends FacingPathingVillageSceduler {
 				this.location.add(pos);
 				this.setChanged();
 				VillageSceduler.markBlockAsFound(pos, world);
+
+				Highlighter.highlight(world, this.highlighter, pos);
 
 				final BlockEntity entity = world.getBlockEntity(pos);
 				AmaziaBlockComponents.addVillage(entity, this.getVillage());
@@ -70,6 +75,8 @@ public class AbstractFurnaceSceduler extends FacingPathingVillageSceduler {
 			this.available.remove(pos);
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.setChanged();
+
+			Highlighter.unhighlight(world, this.highlighter, pos);
 		}
 	}
 
