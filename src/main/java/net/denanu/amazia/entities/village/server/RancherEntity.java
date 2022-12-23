@@ -144,15 +144,15 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public int getLeashTime() {
-		return this.professionLevelManager.getLeashTime();
+		return this.professionLevelManager.getLeashTime(this.isDepressed());
 	}
 
 	public int getFeedTime() {
-		return this.professionLevelManager.getFeedTime();
+		return this.professionLevelManager.getFeedTime(this.isDepressed());
 	}
 
 	public int getEntityInteractTime() {
-		return this.professionLevelManager.getAnimalInteractionTime();
+		return this.professionLevelManager.getAnimalInteractionTime(this.isDepressed());
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	public void readCustomDataFromNbt(final NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		this.animalInteractionAge = nbt.getInt("animalInteractionAge");
-		if ((!this.world.isClient && nbt.contains("targetAnimal")) && (JJUtils.getEntityByUniqueId(nbt.getUuid("targetAnimal"), (ServerWorld)this.world) instanceof final AnimalEntity animal)) {
+		if (!this.world.isClient && nbt.contains("targetAnimal") && JJUtils.getEntityByUniqueId(nbt.getUuid("targetAnimal"), (ServerWorld)this.world) instanceof final AnimalEntity animal) {
 			this.targetAnimal = animal;
 		}
 

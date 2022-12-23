@@ -17,4 +17,8 @@ public interface IAmaziaHappynessEntity {
 	static float getDefaultHappyness() {
 		return 100f;
 	}
+
+	default boolean isDepressed() {
+		return this.getHappyness() < 30f;
+	}
 }

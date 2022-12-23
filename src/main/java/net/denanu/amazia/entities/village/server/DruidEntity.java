@@ -111,15 +111,15 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public float getMineRagenerationAbility() {
-		return this.professionLevelManager.getMineRegeneration();
+		return this.professionLevelManager.getMineRegeneration(this.isDepressed());
 	}
 
 	public int getPlantAdvanceAgeTime() {
-		return this.professionLevelManager.getPlantGrowTime();
+		return this.professionLevelManager.getPlantGrowTime(this.isDepressed());
 	}
 
 	public int getGrowRadius() {
-		return this.professionLevelManager.getGrowRadius();
+		return this.professionLevelManager.getGrowRadius(this.isDepressed());
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public int getMaxRegrowMine() {
-		return this.professionLevelManager.getMaxMineRegrowAbility();
+		return this.professionLevelManager.getMaxMineRegrowAbility(this.isDepressed());
 	}
 
 	@Override

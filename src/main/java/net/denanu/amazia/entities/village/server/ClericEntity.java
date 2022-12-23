@@ -99,19 +99,19 @@ public class ClericEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public int getHealTime() {
-		return this.professionLevelManager.getHealTime();
+		return this.professionLevelManager.getHealTime(this.isDepressed());
 	}
 
 	public int getBlessTime() {
-		return this.professionLevelManager.getBlessTime();
+		return this.professionLevelManager.getBlessTime(this.isDepressed());
 	}
 
 	public int getBlessLastingTime() {
-		return this.professionLevelManager.getBlessLastTime();
+		return this.professionLevelManager.getBlessLastTime(this.isDepressed());
 	}
 
 	public float getHealAmount() {
-		return this.professionLevelManager.getHealAmount();
+		return this.professionLevelManager.getHealAmount(this.isDepressed());
 	}
 
 	@Override
