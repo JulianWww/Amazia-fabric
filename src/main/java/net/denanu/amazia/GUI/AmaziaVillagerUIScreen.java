@@ -60,6 +60,10 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 				Text.literal("Education: ").append(Integer.toString(this.getScreenHandler().getEducation())),
 				this.playerInventoryTitleX, this.titleY + 30, 0x404040);
 
+		this.textRenderer.draw(matrices,
+				Text.literal("Happyness: ").append(Integer.toString(this.getScreenHandler().geHappyness())),
+				this.playerInventoryTitleX, this.titleY + 40, 0x404040);
+
 		this.renderProfessions(matrices);
 	}
 
@@ -70,8 +74,8 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 			if (lvl > 0) {
 				this.textRenderer.draw(matrices,
 						Text.translatable(AmaziaProfessions.PROFESSIONS.get(idx).toTranslationKey()).append(": ")
-								.append(Integer.toString(lvl)),
-						this.playerInventoryTitleX, this.titleY + 40 + 10 * offset, 0x404040);
+						.append(Integer.toString(lvl)),
+						this.playerInventoryTitleX, this.titleY + 50 + 10 * offset, 0x404040);
 				offset++;
 			}
 		}

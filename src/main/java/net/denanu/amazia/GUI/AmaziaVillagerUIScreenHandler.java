@@ -60,6 +60,10 @@ public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 		return this.deleget.get(1);
 	}
 
+	public int geHappyness() {
+		return this.deleget.get(3);
+	}
+
 	public int getIntelligence() {
 		return (int) this.entity.getIntelligence();
 	}

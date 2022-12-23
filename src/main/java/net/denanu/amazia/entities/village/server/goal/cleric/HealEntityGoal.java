@@ -2,6 +2,8 @@ package net.denanu.amazia.entities.village.server.goal.cleric;
 
 import net.denanu.amazia.entities.village.server.ClericEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
+import net.denanu.amazia.mechanics.happyness.HappynessMap;
+import net.denanu.amazia.mechanics.happyness.IAmaziaHappynessEntity;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
 import net.minecraft.entity.damage.DamageSource;
@@ -31,6 +33,9 @@ public class HealEntityGoal extends TimedVillageGoal<ClericEntity> {
 			}
 			else {
 				this.entity.getTarget().heal(this.entity.getHealAmount());
+				if (this.entity.getTarget() instanceof final IAmaziaHappynessEntity happy) {
+					HappynessMap.getHealedGainHappyness(happy);
+				}
 			}
 			ActivityFoodConsumerMap.healUseFood(this.entity);
 			AmaziaXpGainMap.gainHealXp(this.entity);

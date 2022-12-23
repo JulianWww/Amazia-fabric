@@ -28,6 +28,8 @@ import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
 import net.denanu.amazia.mechanics.education.IAmaziaEducatedEntity;
+import net.denanu.amazia.mechanics.happyness.HappynessMap;
+import net.denanu.amazia.mechanics.happyness.IAmaziaHappynessEntity;
 import net.denanu.amazia.mechanics.hunger.AmaziaFood;
 import net.denanu.amazia.mechanics.hunger.AmaziaFoodData;
 import net.denanu.amazia.mechanics.intelligence.IAmaziaIntelligenceEntity;
@@ -91,6 +93,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	private float education;
 	private final ProfessionLevelManager professionLevelManager;
 	private float levelBoost;
+	private float happyness;
 
 	private Optional<Integer> bestFoodItem;
 
@@ -101,6 +104,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			case 0 -> (int) AmaziaVillagerEntity.this.getHealth();
 			case 1 -> (int) AmaziaVillagerEntity.this.hunger;
 			case 2 -> (int) AmaziaVillagerEntity.this.education;
+			case 3 -> (int) AmaziaVillagerEntity.this.happyness;
 			default -> AmaziaVillagerEntity.this.professionLevelManager.getLevelById(index - AmaziaVillagerEntity.nonProfessionPropertyCounts());
 			};
 		}
@@ -119,7 +123,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	};
 
 	public static int nonProfessionPropertyCounts() {
-		return 3;
+		return 4;
 	}
 
 	public static int propertiCount() {
@@ -270,6 +274,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		nbt.putFloat("Hunger", this.hunger);
 		nbt.putFloat("Intelligence", this.dataTracker.get(AmaziaVillagerEntity.INTELLIGENCE));
 		nbt.putFloat("Education", this.education);
+		nbt.putFloat("Happyness", this.happyness);
 		nbt.put("professions", this.professionLevelManager.save());
 		nbt.put("Scedule", this.activityScedule.writeCustomNbt(new NbtCompound()));
 	}
@@ -282,6 +287,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		this.hunger = nbt.contains("Hunger") ? nbt.getFloat("Hunger") : (float) this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER);
 		this.dataTracker.set(AmaziaVillagerEntity.INTELLIGENCE, nbt.contains("Intelligence") ? nbt.getFloat("Intelligence") : IAmaziaIntelligenceEntity.getInitalIntelligence());
 		this.education = nbt.contains("Education") ? nbt.getFloat("Education") : IAmaziaEducatedEntity.baseEducation(this);
+		this.happyness = nbt.contains("Happyness") ? nbt.getFloat("Happyness") : IAmaziaHappynessEntity.getDefaultHappyness();
 		this.professionLevelManager.load(nbt.getCompound("professions"));
 		this.activityScedule.readCustomNbt(nbt.getCompound("Scedule"));
 	}
@@ -604,6 +610,26 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		return this.education;
 	}
 
+	@Override
+	public void gainHappyness(final float amount) {
+		this.happyness = this.happyness + amount;
+		if (this.happyness > 100f) {
+			this.happyness = 100f;
+		}
+	}
+	@Override
+	public void looseHappyness(final float amount) {
+		this.happyness = this.happyness - amount;
+		if (this.happyness < 0f) {
+			this.happyness = 0f;
+		}
+	}
+
+	@Override
+	public float getHappyness() {
+		return this.happyness;
+	}
+
 	public abstract Identifier getProfession();
 
 	@Override
@@ -718,5 +744,13 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 	public VillagerScedule getActivityScedule() {
 		return this.activityScedule;
+	}
+
+	@Override
+	public boolean damage(final DamageSource source, final float amount) {
+		if (!this.world.isClient) {
+			HappynessMap.looseTakeDamageHappyness(this);
+		}
+		return super.damage(source, amount);
 	}
 }
