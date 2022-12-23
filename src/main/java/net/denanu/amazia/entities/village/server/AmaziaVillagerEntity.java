@@ -10,15 +10,20 @@ import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableList;
+
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.GUI.AmaziaVillagerUIScreenHandler;
 import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.village.server.goal.AmaziaLookAroundGoal;
+import net.denanu.amazia.entities.village.server.goal.mechanics.education.GoToLibraryGoal;
+import net.denanu.amazia.entities.village.server.goal.mechanics.education.LearnFromReadingBooksGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.hunger.EatGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.CraftGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.DepositItemGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.GetItemGoal;
+import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
@@ -72,7 +77,7 @@ import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
 public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner, AmaziaMechanicsGuiEntity,
-		InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactory {
+InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactory {
 	private final SimpleInventory inventory = new SimpleInventory(16);
 	private List<Item> requestedItems;
 	private CraftingRecipe wantsToCraft;
@@ -140,10 +145,10 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	}
 
 	@Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(AmaziaVillagerEntity.INTELLIGENCE, 0f);
-    }
+	protected void initDataTracker() {
+		super.initDataTracker();
+		this.dataTracker.startTracking(AmaziaVillagerEntity.INTELLIGENCE, 0f);
+	}
 
 	public void registerBaseGoals() {
 		this.registerBaseGoals(null, null, true);
@@ -175,6 +180,12 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 		}
 		this.goalSelector.add(10, new EatGoal(this));
 		this.goalSelector.add(25, new GetItemGoal(this, 25, getItemCallback));
+
+		this.goalSelector.add(80, new SequenceGoal<>(this, ImmutableList.of(
+				new GoToLibraryGoal(this, 80),
+				new LearnFromReadingBooksGoal(this, 80)
+				)));
+
 		this.goalSelector.add(99, new DepositItemGoal(this, 99, depositItemCallback));
 		this.goalSelector.add(100, new AmaziaLookAroundGoal(this));
 	}
@@ -244,6 +255,12 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 	@Override
 	public boolean cannotDespawn() {
 		return true;
+	}
+
+	@Override
+	protected void update() {
+		super.update();
+		this.activityScedule.update(this.world);
 	}
 
 	@Override
@@ -440,11 +457,6 @@ public abstract class AmaziaVillagerEntity extends AmaziaEntity implements Inven
 
 	public boolean hasItem(final Item itm, final int count) {
 		return this.inventory.count(itm) >= count;
-	}
-
-	@Override
-	public void tickMovement() {
-		super.tickMovement();
 	}
 
 	protected boolean shouldPickUp(final ItemStack stack) {

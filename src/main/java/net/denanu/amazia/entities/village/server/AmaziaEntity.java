@@ -87,7 +87,7 @@ public class AmaziaEntity extends PassiveEntity {
 		ServerMoodEmiter.sendMood(this, mood);
 	}
 
-	protected void setVillage() {};
+	protected void setVillage() {}
 
 	private void scanForVillage(final BlockPos pos) {
 		final BlockState state =  this.world.getBlockState(pos);
@@ -141,7 +141,7 @@ public class AmaziaEntity extends PassiveEntity {
 						this.getVillage().getOrigin().getX(),
 						this.getVillage().getOrigin().getY() + 1,
 						this.getVillage().getOrigin().getZ());
-			};
+			}
 		}
 		super.tickMovement();
 	}
@@ -155,7 +155,7 @@ public class AmaziaEntity extends PassiveEntity {
 	}
 
 	protected void update() {
-		if (this.village == null) { this.discoverVillage(); return; }
+		if (this.village == null) { this.discoverVillage(); }
 	}
 
 	@Override

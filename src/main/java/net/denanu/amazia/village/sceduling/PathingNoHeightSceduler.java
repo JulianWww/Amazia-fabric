@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Predicate;
 
+import javax.annotation.Nullable;
+
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
@@ -75,6 +77,7 @@ public class PathingNoHeightSceduler extends VillageSceduler {
 		this.tables.put(pos, new NoHeightPathingData(pos, this.getVillage()));
 	}
 
+	@Nullable
 	public NoHeightPathingData getLocation() {
 		if (this.tables.size() > 0) {
 			return this.tables.get(JJUtils.getRandomListElement(this.enchantingTables));
