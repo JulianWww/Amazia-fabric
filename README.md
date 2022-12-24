@@ -15,5 +15,11 @@ This template is available under the CC0 license. Feel free to learn from it and
 
 ## Credits:
 * [Blessing Status effect icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/bless)
+* Bard Music:
+  * Gates Of Glory by Alexander Nakarada | https://www.serpentsoundstudios.com\
+    Music promoted by https://www.free-stock-music.com\
+    Attribution 4.0 International (CC BY 4.0)\
+    https://creativecommons.org/licenses/by/4.0/
+
 ## Contact
 amazia.fabric@gmail.com

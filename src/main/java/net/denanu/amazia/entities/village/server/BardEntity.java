@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.entities.village.server.goal.bard.PlayMusicToVillagersGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -70,5 +71,13 @@ public class BardEntity extends AmaziaVillagerEntity implements IAnimatable {
 	@Override
 	public AnimationFactory getFactory() {
 		return this.factory;
+	}
+
+
+	@Override
+	protected void initGoals() {
+		this.goalSelector.add(50, new PlayMusicToVillagersGoal(this, 50));
+
+		super.registerBaseGoals();
 	}
 }
