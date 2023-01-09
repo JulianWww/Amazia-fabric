@@ -1,5 +1,6 @@
 package net.denanu.amazia.mechanics.happyness;
 
+import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.utils.random.ConstrainedGaussianFloatRandom;
 
 public class HappynessMap {
@@ -89,5 +90,22 @@ public class HappynessMap {
 
 	public static void looseTillDirtHappyness(final IAmaziaHappynessEntity entity) {
 		entity.looseHappyness(3);
+	}
+
+	public static int gainBardPlayInVillageConinuousHappyness(final AmaziaVillagerEntity entity) {
+		if (entity.getRandom().nextInt(8) == 0) {
+			entity.gainHappyness(1);
+			return 1;
+		}
+		return 0;
+	}
+
+	public static int gainBardPlayInVillageEndHappyness(final AmaziaVillagerEntity entity) {
+		if (entity.getRandom().nextBoolean()) {
+			final int happiness = entity.getRandom().nextInt(1) + 2;
+			entity.gainHappyness(happiness);
+			return happiness;
+		}
+		return 0;
 	}
 }

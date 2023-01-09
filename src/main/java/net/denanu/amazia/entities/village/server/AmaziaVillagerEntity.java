@@ -16,6 +16,7 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.GUI.AmaziaVillagerUIScreenHandler;
 import net.denanu.amazia.entities.AmaziaEntityAttributes;
+import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.server.goal.AmaziaLookAroundGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.education.GoToLibraryGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.education.LearnFromReadingBooksGoal;
@@ -627,6 +628,8 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		if (this.happyness > 100f) {
 			this.happyness = 100f;
 		}
+
+		this.emmitMood(VillagerMoods.HAPPY);
 	}
 	@Override
 	public void looseHappyness(final float amount) {

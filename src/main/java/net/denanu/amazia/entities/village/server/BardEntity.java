@@ -2,13 +2,19 @@ package net.denanu.amazia.entities.village.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Predicate;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.entities.village.server.goal.bard.PlayMusicToVillagersGoal;
+import net.denanu.amazia.entities.village.server.goal.utils.AmaziaGoToTargetGoal;
+import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,6 +33,13 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class BardEntity extends AmaziaVillagerEntity implements IAnimatable {
 	private static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of();
 	private static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
+
+	private static Predicate<LivingEntity> IS_UNHAPPY = e -> {
+		if (e instanceof final AmaziaVillagerEntity villager) {
+			return villager.getHappyness() < 50f;
+		}
+		return false;
+	};
 
 	AnimationFactory factory = new AnimationFactory(this);
 
@@ -76,7 +89,13 @@ public class BardEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	@Override
 	protected void initGoals() {
-		this.goalSelector.add(50, new PlayMusicToVillagersGoal(this, 50));
+		this.targetSelector.add(0, new ActiveTargetGoal<>(this, AmaziaVillagerEntity.class, true, BardEntity.IS_UNHAPPY));
+
+
+		this.goalSelector.add(40, new SequenceGoal<>(this, ImmutableList.of(
+				new AmaziaGoToTargetGoal(this, 40),
+				new PlayMusicToVillagersGoal(this, 40)
+				)));
 
 		super.registerBaseGoals();
 	}
