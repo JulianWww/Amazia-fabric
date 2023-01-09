@@ -6,8 +6,9 @@ import net.denanu.amazia.Amazia;
 import net.minecraft.util.Identifier;
 
 public class AmaziaProfessions {
-	public static ArrayList<Identifier> PROFESSIONS = new ArrayList<Identifier>();
+	public static ArrayList<Identifier> PROFESSIONS = new ArrayList<>();
 
+	public static Identifier BARD 			= AmaziaProfessions.register("bard");
 	public static Identifier BLACKSMITH 	= AmaziaProfessions.register("blacksmith");
 	public static Identifier CHEF 			= AmaziaProfessions.register("chef");
 	public static Identifier CLERIC 		= AmaziaProfessions.register("cleric");

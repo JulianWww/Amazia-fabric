@@ -1,55 +1,52 @@
 {
-  "schemaVersion": 1,
-  "id": "amazia",
-  "version": "${version}",
-
-  "name": "Amazia",
-  "description": "Better Villagers in Minecraft. Allows For Vilage Creation",
-  "authors": [
-	"Denanu", "Nico Steiner", "Baba_Yagaa_"
-  ],
-  "contact": {
-    "issues": "https://github.com/JulianWww/Amazia-fabric/issues",
-    "sources": "https://github.com/JulianWww/amazia-fabric"
-  },
-
-  "license": "MIT",
-  "icon": "assets/amazia/icon.png",
-
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "net.denanu.amazia.Amazia"
-    ],
-    "client": [
-      "net.denanu.amazia.AmaziaClient"
-    ],
-    "cardinal-components-entity": [
-      "net.denanu.amazia.components.AmaziaEntityComponents"
-    ],
-    "cardinal-components-block": [
-      "net.denanu.amazia.components.AmaziaBlockComponents"
-    ]
-  },
-  "mixins": [
-    "amazia.mixins.json"
-  ],
-
-  "depends": {
-    "fabricloader": ">=0.14.9",
-    "fabric-api": "*",
-    "minecraft": "~1.19",
-    "java": ">=17"
-  },
-  "suggests": {
-    "another-mod": "*"
-  },
-  
-  "custom": {
-        "cardinal-components": [
-            "amazia:is-part-of-village",
-            "amazia:can-collide",
-            "amazia:villages"
-        ]
-    }
+      "schemaVersion": 1,
+      "id": "amazia",
+      "version": "${version}",
+      "name": "Amazia",
+      "description": "Better Villagers in Minecraft. Allows For Vilage Creation.\nCredits:\n  - Enchanters - Dragon Age: Inquisition [Written by Raney Shockne, sung by Elizaveta Khripounova]\n  - Thunderbrew - Taverns of Azeroth, World of Warcraft [Composed by David Arkenstone]\n  - Around the Fire - The Elder Scrolls V: Skyrim [Composed by Jeremy Soule]\n  - The Dragonborn Comes - The Elder Scrolls V: Skyrim [Written by Jeremy Soule, cover by Malukah]\n  - Fall of the Magister - Trespasser DLC, Dragon Age: Inquisition [Written by Raney Shockne, sung by Elizaveta Khripounova]\n  - The Nightingale - The Witcher 3: Wild Hunt [Composed by Percival]\n  - Back on the Path - The Witcher 3: Wild Hunt [Composed by Marcin Przyby\u0142owicz & Percival]\n  - Drink Up, There's More! - The Witcher 3: Wild Hunt [Composed by Percival]\n  - Hands of Gold - A Song of Ice and Fire [Written by George R.R. Martin, cover by Ryan Yunck]\n  - Sera Was Never - Dragon Age: Inquisition [Written by Raney Shockne, sung by Elizaveta Khripounova]\n  -  For the Dancing and the Dreaming Instrumental - How to Train Your Dragon 2 [Composed by John Powell]\n  - Tavern Theme 3 - Kingdom Come: Deliverance [Composed by Jan Valta & Adam Sporka]\n  - Out of the Cold - The Elder Scrolls V: Skyrim [Composed by Jeremy Soule]\n  - The Bannered Mare - The Elder Scrolls V: Skyrim [Composed by Jeremy Soule]\n  - The Wolven Storm (Priscilla's Song) - The Witcher 3: Wildhunt [Composed by Marcin Przyby\u0142owicz, sung by Emma Hiddleston]\n  - The Bard's Song (In the Forest) - Somewhere Far Beyond [Composed by Blind Guardian, cover by Dan Vasc]\n  - Memories of Mother - God of War (2018) [Composed by Bear McCreary, sung by Eiv\u00f8r P\u00e1lsd\u00f3ttir]\n  - In Uthenera (Leliana's Song) - Dragon Age: Origins [Composed by Inon Zur, sung by Aubrey Ashburn]\n  - Shady Rest - Taverns of Azeroth, World of Warcraft [Composed by David Arkenstone]\n  - Stone Fire - Taverns of Azeroth, World of Warcraft [Composed by David Arkenstone]\n  - The Dornishman's Wife - A Song of Ice and Fire [Written by George R.R. Martin, cover by Ryan Yunck]\n  - The Bear and the Maiden Fair - A Song of Ice and Fire [Written by George R.R. Martin, cover by christocakes]\n  - Dragon's Dogma Character Creation [Takayoshi Makino and Rei Kondoh]\n  - Merchants of Novigrad - The Witcher 3: Wild Hunt [Composed by Marcin Przyby\u0142owicz & Percival]\n  - Kydonia - Assassin's Creed Odyssey [Composed by The Flight]\n  - Nightingale's Eyes (Elvish) - Leliana's Song DLC, Dragon Age: Origins [Composed by Inon Zur, sung by Aubrey Ashburn]\n  - Rogue Heart - Dragon Age 2 [Composed by Inon Zur, sung by Aubrey Ashburn]\n  - Saltarello - medieval dance song [Cover by Arany Zolt\u00e1n]\n  - A Tavern on the Riverbank - The Witcher 2: Assassins of Kings [Composed by Adam Skorupa & Krzysztof Wierzynkiewicz]\n  - Love Song - Dragon Age: Origins [Composed by Inon Zur, sung by Aubrey Ashburn]\n  - Dacw 'Nghariad - Welsh folk song [Cover by Eve Goodman]\n  - Toss a Coin to Your Witcher - The Witcher (Netflix) [Composed by Sonya Belousova & Giona Ostinelli, cover by Caleb Hyles]\n  - A Bard's Tale - Gwent: The Witcher Card Game [Composed by Marcin Przyby\u0142owicz & Mikolai Stroinski]\n  - Shelaya - Into the Storm [Composed by Inon Zur, sung by Aubrey Ashburn] \n  - Unreleased Gwent track - The Witcher 3: Wild Hunt [Composed by Percival]\n  - I Am The One - Dragon Age: Inquisition [Written by Raney Shockne, sung by Elizaveta Khripounova]\n",
+      "authors": [
+            "Denanu",
+            "Nico Steiner",
+            "Baba_Yagaa_"
+      ],
+      "contact": {
+            "issues": "https://github.com/JulianWww/Amazia-fabric/issues",
+            "sources": "https://github.com/JulianWww/amazia-fabric"
+      },
+      "license": "MIT",
+      "icon": "assets/amazia/icon.png",
+      "environment": "*",
+      "entrypoints": {
+            "main": [
+                  "net.denanu.amazia.Amazia"
+            ],
+            "client": [
+                  "net.denanu.amazia.AmaziaClient"
+            ],
+            "cardinal-components-entity": [
+                  "net.denanu.amazia.components.AmaziaEntityComponents"
+            ],
+            "cardinal-components-block": [
+                  "net.denanu.amazia.components.AmaziaBlockComponents"
+            ]
+      },
+      "mixins": [
+            "amazia.mixins.json"
+      ],
+      "depends": {
+            "fabricloader": ">=0.14.9",
+            "fabric-api": "*",
+            "minecraft": "~1.19",
+            "java": ">=17"
+      },
+      "suggests": {
+            "another-mod": "*"
+      },
+      "custom": {
+            "cardinal-components": [
+                  "amazia:is-part-of-village",
+                  "amazia:can-collide",
+                  "amazia:villages"
+            ]
+      }
 }

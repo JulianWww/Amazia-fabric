@@ -3,6 +3,7 @@ package net.denanu.amazia.entities;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.merchants.AmaziaMerchant;
 import net.denanu.amazia.entities.merchants.client.MerchantRenderer;
+import net.denanu.amazia.entities.village.client.BardRenderer;
 import net.denanu.amazia.entities.village.client.BlacksmithRenderer;
 import net.denanu.amazia.entities.village.client.ChefRenderer;
 import net.denanu.amazia.entities.village.client.ClericRenderer;
@@ -15,6 +16,7 @@ import net.denanu.amazia.entities.village.client.MinerRenderer;
 import net.denanu.amazia.entities.village.client.NitwitRenderer;
 import net.denanu.amazia.entities.village.client.RancherRenderer;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.entities.village.server.BardEntity;
 import net.denanu.amazia.entities.village.server.BlacksmithEntity;
 import net.denanu.amazia.entities.village.server.ChefEntity;
 import net.denanu.amazia.entities.village.server.ClericEntity;
@@ -92,6 +94,11 @@ public class AmaziaEntities {
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ChefEntity::new)
 			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
 
+	public static final EntityType<BardEntity> BARD = Registry.register(
+			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "bard"),
+			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, BardEntity::new)
+			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+
 
 
 	public static final EntityType<AmaziaMerchant> MERCHANT = Registry.register(
@@ -111,6 +118,7 @@ public class AmaziaEntities {
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.DRUID,		AmaziaVillagerEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.CLERIC,		AmaziaVillagerEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.CHEF, 		AmaziaVillagerEntity.setAttributes());
+		FabricDefaultAttributeRegistry.register(AmaziaEntities.BARD, 		AmaziaVillagerEntity.setAttributes());
 
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.MERCHANT,	AmaziaMerchant.setAttributes());
 
@@ -131,6 +139,7 @@ public class AmaziaEntities {
 		EntityRendererRegistry.register(AmaziaEntities.DRUID, 		DruidRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.CLERIC,		ClericRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.CHEF,		ChefRenderer::new);
+		EntityRendererRegistry.register(AmaziaEntities.BARD,		BardRenderer::new);
 
 		EntityRendererRegistry.register(AmaziaEntities.MERCHANT,	MerchantRenderer::new);
 	}

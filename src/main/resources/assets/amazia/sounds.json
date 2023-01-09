@@ -1,0 +1,8 @@
+{
+      "music_disc.pigstep": {
+            "subtitle": "subtitles.amazia.pigstep",
+            "sounds": [
+                  "minecraft:records/pigstep"
+            ]
+      }
+}
