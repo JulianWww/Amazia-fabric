@@ -2,6 +2,7 @@ package net.denanu.amazia.sounds;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.utils.random.WeightedRandomCollection;
+import net.denanu.stoppablesound.sounds.LongSoundEvent;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -45,42 +46,42 @@ public class AmaziaBardSounds {
 	public static Identifier UNRELEASED_GWENT_TRACK								= Identifier.of(Amazia.MOD_ID, "unreleased_gwent_track");
 
 
-	public static SoundEvent A_BARDS_TALE_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.A_BARDS_TALE);
-	public static SoundEvent AROUND_THE_FIRE_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.AROUND_THE_FIRE);
-	public static SoundEvent A_TAVERN_ON_THE_RIVERBANK_							= AmaziaBardSounds.register(AmaziaBardSounds.A_TAVERN_ON_THE_RIVERBANK);
-	public static SoundEvent BACK_ON_THE_PATH_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.BACK_ON_THE_PATH);
-	public static SoundEvent DACW_NGHARIAD_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.DACW_NGHARIAD);
-	public static SoundEvent DRAGONS_DOGMA_CHARACTER_CREATION_EVENT				= AmaziaBardSounds.register(AmaziaBardSounds.DRAGONS_DOGMA_CHARACTER_CREATION);
-	public static SoundEvent DRINK_UP_THERES_MORE_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.DRINK_UP_THERES_MORE);
-	public static SoundEvent ENCHANTERS_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.ENCHANTERS);
-	public static SoundEvent FALL_OF_THE_MAGISTER_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.FALL_OF_THE_MAGISTER);
-	public static SoundEvent FOR_THE_DANCING_AND_THE_DREAMING_INSTRUMENTAL_EVENT= AmaziaBardSounds.register(AmaziaBardSounds.FOR_THE_DANCING_AND_THE_DREAMING_INSTRUMENTAL);
-	public static SoundEvent GATES_OF_GLORY_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.GATES_OF_GLORY);
-	public static SoundEvent HANDS_OF_GOLD_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.HANDS_OF_GOLD);
-	public static SoundEvent I_AM_THE_ONE_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.I_AM_THE_ONE);
-	public static SoundEvent IN_UTHENERA_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.IN_UTHENERA);
-	public static SoundEvent KYDONIA_EVENT										= AmaziaBardSounds.register(AmaziaBardSounds.KYDONIA);
-	public static SoundEvent LOVE_SONG_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.LOVE_SONG);
-	public static SoundEvent MEMORIES_OF_MOTHER_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.MEMORIES_OF_MOTHER);
-	public static SoundEvent MERCHANTS_OF_NOVIGRAD_EVENT						= AmaziaBardSounds.register(AmaziaBardSounds.MERCHANTS_OF_NOVIGRAD);
-	public static SoundEvent NIGHTINGALES_EYES_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.NIGHTINGALES_EYES);
-	public static SoundEvent OUT_OF_THE_COLD_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.OUT_OF_THE_COLD);
-	public static SoundEvent ROGUE_HEART_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.ROGUE_HEART);
-	public static SoundEvent SALTARELLO_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.SALTARELLO);
-	public static SoundEvent SERA_WAS_NEVER_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.SERA_WAS_NEVER);
-	public static SoundEvent SHADY_REST_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.SHADY_REST);
-	public static SoundEvent SHELAYA_EVENT										= AmaziaBardSounds.register(AmaziaBardSounds.SHELAYA);
-	public static SoundEvent STONE_FIRE_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.STONE_FIRE);
-	public static SoundEvent TAVERN_THEME_3_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.TAVERN_THEME_3);
-	public static SoundEvent THE_BANNERED_MARE_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.THE_BANNERED_MARE);
-	public static SoundEvent THE_BARDS_SONG_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.THE_BARDS_SONG);
-	public static SoundEvent THE_BEAR_AND_THE_MAIDEN_FAIR_EVENT					= AmaziaBardSounds.register(AmaziaBardSounds.THE_BEAR_AND_THE_MAIDEN_FAIR);
-	public static SoundEvent THE_DORNISHMANS_WIFE_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.THE_DORNISHMANS_WIFE);
-	public static SoundEvent THE_NIGHTINGALE_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.THE_NIGHTINGALE);
-	public static SoundEvent THE_WOLVEN_STORM_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.THE_WOLVEN_STORM);
-	public static SoundEvent THUNDERBREW_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.THUNDERBREW);
-	public static SoundEvent TOSS_A_COIN_TO_YOUR_WITCHER_EVENT					= AmaziaBardSounds.register(AmaziaBardSounds.TOSS_A_COIN_TO_YOUR_WITCHER);
-	public static SoundEvent UNRELEASED_GWENT_TRACK_EVENT						= AmaziaBardSounds.register(AmaziaBardSounds.UNRELEASED_GWENT_TRACK);
+	public static LongSoundEvent A_BARDS_TALE_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.A_BARDS_TALE);
+	public static LongSoundEvent AROUND_THE_FIRE_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.AROUND_THE_FIRE);
+	public static LongSoundEvent A_TAVERN_ON_THE_RIVERBANK_							= AmaziaBardSounds.register(AmaziaBardSounds.A_TAVERN_ON_THE_RIVERBANK);
+	public static LongSoundEvent BACK_ON_THE_PATH_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.BACK_ON_THE_PATH);
+	public static LongSoundEvent DACW_NGHARIAD_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.DACW_NGHARIAD);
+	public static LongSoundEvent DRAGONS_DOGMA_CHARACTER_CREATION_EVENT				= AmaziaBardSounds.register(AmaziaBardSounds.DRAGONS_DOGMA_CHARACTER_CREATION);
+	public static LongSoundEvent DRINK_UP_THERES_MORE_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.DRINK_UP_THERES_MORE);
+	public static LongSoundEvent ENCHANTERS_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.ENCHANTERS);
+	public static LongSoundEvent FALL_OF_THE_MAGISTER_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.FALL_OF_THE_MAGISTER);
+	public static LongSoundEvent FOR_THE_DANCING_AND_THE_DREAMING_INSTRUMENTAL_EVENT= AmaziaBardSounds.register(AmaziaBardSounds.FOR_THE_DANCING_AND_THE_DREAMING_INSTRUMENTAL);
+	public static LongSoundEvent GATES_OF_GLORY_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.GATES_OF_GLORY);
+	public static LongSoundEvent HANDS_OF_GOLD_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.HANDS_OF_GOLD);
+	public static LongSoundEvent I_AM_THE_ONE_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.I_AM_THE_ONE);
+	public static LongSoundEvent IN_UTHENERA_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.IN_UTHENERA);
+	public static LongSoundEvent KYDONIA_EVENT										= AmaziaBardSounds.register(AmaziaBardSounds.KYDONIA);
+	public static LongSoundEvent LOVE_SONG_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.LOVE_SONG);
+	public static LongSoundEvent MEMORIES_OF_MOTHER_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.MEMORIES_OF_MOTHER);
+	public static LongSoundEvent MERCHANTS_OF_NOVIGRAD_EVENT						= AmaziaBardSounds.register(AmaziaBardSounds.MERCHANTS_OF_NOVIGRAD);
+	public static LongSoundEvent NIGHTINGALES_EYES_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.NIGHTINGALES_EYES);
+	public static LongSoundEvent OUT_OF_THE_COLD_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.OUT_OF_THE_COLD);
+	public static LongSoundEvent ROGUE_HEART_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.ROGUE_HEART);
+	public static LongSoundEvent SALTARELLO_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.SALTARELLO);
+	public static LongSoundEvent SERA_WAS_NEVER_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.SERA_WAS_NEVER);
+	public static LongSoundEvent SHADY_REST_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.SHADY_REST);
+	public static LongSoundEvent SHELAYA_EVENT										= AmaziaBardSounds.register(AmaziaBardSounds.SHELAYA);
+	public static LongSoundEvent STONE_FIRE_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.STONE_FIRE);
+	public static LongSoundEvent TAVERN_THEME_3_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.TAVERN_THEME_3);
+	public static LongSoundEvent THE_BANNERED_MARE_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.THE_BANNERED_MARE);
+	public static LongSoundEvent THE_BARDS_SONG_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.THE_BARDS_SONG);
+	public static LongSoundEvent THE_BEAR_AND_THE_MAIDEN_FAIR_EVENT					= AmaziaBardSounds.register(AmaziaBardSounds.THE_BEAR_AND_THE_MAIDEN_FAIR);
+	public static LongSoundEvent THE_DORNISHMANS_WIFE_EVENT							= AmaziaBardSounds.register(AmaziaBardSounds.THE_DORNISHMANS_WIFE);
+	public static LongSoundEvent THE_NIGHTINGALE_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.THE_NIGHTINGALE);
+	public static LongSoundEvent THE_WOLVEN_STORM_EVENT								= AmaziaBardSounds.register(AmaziaBardSounds.THE_WOLVEN_STORM);
+	public static LongSoundEvent THUNDERBREW_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.THUNDERBREW);
+	public static LongSoundEvent TOSS_A_COIN_TO_YOUR_WITCHER_EVENT					= AmaziaBardSounds.register(AmaziaBardSounds.TOSS_A_COIN_TO_YOUR_WITCHER);
+	public static LongSoundEvent UNRELEASED_GWENT_TRACK_EVENT						= AmaziaBardSounds.register(AmaziaBardSounds.UNRELEASED_GWENT_TRACK);
 
 
 	public static WeightedRandomCollection<SoundEvent> BARD_DAYTIME_MUSIC = new WeightedRandomCollection<SoundEvent>()
@@ -123,12 +124,15 @@ public class AmaziaBardSounds {
 			.add(1f, AmaziaBardSounds.TOSS_A_COIN_TO_YOUR_WITCHER_EVENT)
 			.add(1f, AmaziaBardSounds.UNRELEASED_GWENT_TRACK_EVENT);
 
-
-	private static SoundEvent register(final Identifier id) {
-		return AmaziaBardSounds.register(new SoundEvent(id), id);
+	private static LongSoundEvent register(final Identifier id) {
+		return AmaziaBardSounds.register(id, -1);
 	}
 
-	private static SoundEvent register(final SoundEvent event, final Identifier id) {
+	private static LongSoundEvent register(final Identifier id, final int lenght) {
+		return AmaziaBardSounds.register(new LongSoundEvent(id, lenght), id);
+	}
+
+	private static LongSoundEvent register(final LongSoundEvent event, final Identifier id) {
 		Registry.register(Registry.SOUND_EVENT, id, event);
 		return event;
 	}
