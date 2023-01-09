@@ -3,6 +3,7 @@ package net.denanu.amazia.sounds;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.utils.random.WeightedRandomCollection;
 import net.denanu.stoppablesound.sounds.LongSoundEvent;
+import net.denanu.stoppablesound.utils.TimeBuilder;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -126,6 +127,10 @@ public class AmaziaBardSounds {
 
 	private static LongSoundEvent register(final Identifier id) {
 		return AmaziaBardSounds.register(id, -1);
+	}
+
+	private static LonsSoundEvent register(final Identifier id, final int min, final int sec) {
+		return AmaziaBardSounds.register(AmaziaBardSounds.register(id, TimeBuilder.of().min(min).sec(sec).build()));
 	}
 
 	private static LongSoundEvent register(final Identifier id, final int lenght) {
