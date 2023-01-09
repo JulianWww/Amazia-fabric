@@ -1,8 +1,218 @@
 {
-	"gates_of_glory": {
-		"subtitle": "subtitles.amazia.gates_of_glory",
-		"sounds": [ 
-			"amazia:gates_of_glory"
-		]
-	}
+      "around_the_fire": {
+            "subtitle": "subtitles.amazia.around_the_fire",
+            "sounds": [
+                  "amazia:around_the_fire"
+            ]
+      },
+      "shady_rest": {
+            "subtitle": "subtitles.amazia.shady_rest",
+            "sounds": [
+                  "amazia:shady_rest"
+            ]
+      },
+      "toss_a_coin_to_your_witcher": {
+            "subtitle": "subtitles.amazia.toss_a_coin_to_your_witcher",
+            "sounds": [
+                  "amazia:toss_a_coin_to_your_witcher"
+            ]
+      },
+      "rogue_heart": {
+            "subtitle": "subtitles.amazia.rogue_heart",
+            "sounds": [
+                  "amazia:rogue_heart"
+            ]
+      },
+      "memories_of_mother": {
+            "subtitle": "subtitles.amazia.memories_of_mother",
+            "sounds": [
+                  "amazia:memories_of_mother"
+            ]
+      },
+      "the_wolven_storm": {
+            "subtitle": "subtitles.amazia.the_wolven_storm",
+            "sounds": [
+                  "amazia:the_wolven_storm"
+            ]
+      },
+      "merchants_of_novigrad": {
+            "subtitle": "subtitles.amazia.merchants_of_novigrad",
+            "sounds": [
+                  "amazia:merchants_of_novigrad"
+            ]
+      },
+      "i_am_the_one": {
+            "subtitle": "subtitles.amazia.i_am_the_one",
+            "sounds": [
+                  "amazia:i_am_the_one"
+            ]
+      },
+      "fall_of_the_magister": {
+            "subtitle": "subtitles.amazia.fall_of_the_magister",
+            "sounds": [
+                  "amazia:fall_of_the_magister"
+            ]
+      },
+      "dacw_nghariad": {
+            "subtitle": "subtitles.amazia.dacw_nghariad",
+            "sounds": [
+                  "amazia:dacw_nghariad"
+            ]
+      },
+      "shelaya": {
+            "subtitle": "subtitles.amazia.shelaya",
+            "sounds": [
+                  "amazia:shelaya"
+            ]
+      },
+      "enchanters": {
+            "subtitle": "subtitles.amazia.enchanters",
+            "sounds": [
+                  "amazia:enchanters"
+            ]
+      },
+      "unreleased_gwent_track": {
+            "subtitle": "subtitles.amazia.unreleased_gwent_track",
+            "sounds": [
+                  "amazia:unreleased_gwent_track"
+            ]
+      },
+      "gates_of_glory": {
+            "subtitle": "subtitles.amazia.gates_of_glory",
+            "sounds": [
+                  "amazia:gates_of_glory"
+            ]
+      },
+      "thunderbrew": {
+            "subtitle": "subtitles.amazia.thunderbrew",
+            "sounds": [
+                  "amazia:thunderbrew"
+            ]
+      },
+      "hands_of_gold": {
+            "subtitle": "subtitles.amazia.hands_of_gold",
+            "sounds": [
+                  "amazia:hands_of_gold"
+            ]
+      },
+      "the_dornishmans_wife": {
+            "subtitle": "subtitles.amazia.the_dornishmans_wife",
+            "sounds": [
+                  "amazia:the_dornishmans_wife"
+            ]
+      },
+      "back_on_the_path": {
+            "subtitle": "subtitles.amazia.back_on_the_path",
+            "sounds": [
+                  "amazia:back_on_the_path"
+            ]
+      },
+      "nightingales_eyes": {
+            "subtitle": "subtitles.amazia.nightingales_eyes",
+            "sounds": [
+                  "amazia:nightingales_eyes"
+            ]
+      },
+      "out_of_the_cold": {
+            "subtitle": "subtitles.amazia.out_of_the_cold",
+            "sounds": [
+                  "amazia:out_of_the_cold"
+            ]
+      },
+      "the_nightingale": {
+            "subtitle": "subtitles.amazia.the_nightingale",
+            "sounds": [
+                  "amazia:the_nightingale"
+            ]
+      },
+      "stone_fire": {
+            "subtitle": "subtitles.amazia.stone_fire",
+            "sounds": [
+                  "amazia:stone_fire"
+            ]
+      },
+      "drink_up_theres_more": {
+            "subtitle": "subtitles.amazia.drink_up_theres_more",
+            "sounds": [
+                  "amazia:drink_up_theres_more"
+            ]
+      },
+      "in_uthenera": {
+            "subtitle": "subtitles.amazia.in_uthenera",
+            "sounds": [
+                  "amazia:in_uthenera"
+            ]
+      },
+      "tavern_theme_3": {
+            "subtitle": "subtitles.amazia.tavern_theme_3",
+            "sounds": [
+                  "amazia:tavern_theme_3"
+            ]
+      },
+      "kydonia": {
+            "subtitle": "subtitles.amazia.kydonia",
+            "sounds": [
+                  "amazia:kydonia"
+            ]
+      },
+      "the_bear_and_the_maiden_fair": {
+            "subtitle": "subtitles.amazia.the_bear_and_the_maiden_fair",
+            "sounds": [
+                  "amazia:the_bear_and_the_maiden_fair"
+            ]
+      },
+      "the_bards_song": {
+            "subtitle": "subtitles.amazia.the_bards_song",
+            "sounds": [
+                  "amazia:the_bards_song"
+            ]
+      },
+      "saltarello": {
+            "subtitle": "subtitles.amazia.saltarello",
+            "sounds": [
+                  "amazia:saltarello"
+            ]
+      },
+      "love_song": {
+            "subtitle": "subtitles.amazia.love_song",
+            "sounds": [
+                  "amazia:love_song"
+            ]
+      },
+      "dragons_dogma_character_creation": {
+            "subtitle": "subtitles.amazia.dragons_dogma_character_creation",
+            "sounds": [
+                  "amazia:dragons_dogma_character_creation"
+            ]
+      },
+      "a_bards_tale": {
+            "subtitle": "subtitles.amazia.a_bards_tale",
+            "sounds": [
+                  "amazia:a_bards_tale"
+            ]
+      },
+      "a_tavern_on_the_riverbank": {
+            "subtitle": "subtitles.amazia.a_tavern_on_the_riverbank",
+            "sounds": [
+                  "amazia:a_tavern_on_the_riverbank"
+            ]
+      },
+      "for_the_dancing_and_the_dreaming_instrumental": {
+            "subtitle": "subtitles.amazia.for_the_dancing_and_the_dreaming_instrumental",
+            "sounds": [
+                  "amazia:for_the_dancing_and_the_dreaming_instrumental"
+            ]
+      },
+      "sera_was_never": {
+            "subtitle": "subtitles.amazia.sera_was_never",
+            "sounds": [
+                  "amazia:sera_was_never"
+            ]
+      },
+      "the_bannered_mare": {
+            "subtitle": "subtitles.amazia.the_bannered_mare",
+            "sounds": [
+                  "amazia:the_bannered_mare"
+            ]
+      }
 }
