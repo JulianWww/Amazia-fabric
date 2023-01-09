@@ -20,7 +20,7 @@ public class PlayMusicToVillagersGoal extends TimedVillageGoal<BardEntity> {
 
 	@Override
 	public boolean canStart() {
-		return this.entity.getTarget() != null;
+		return this.entity.getTarget() != null && this.entity.getTarget().squaredDistanceTo(this.entity) < 64;
 	}
 
 	@Override
