@@ -1,24 +1,25 @@
 package net.denanu.amazia.sounds;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.utils.random.WeightedRandomCollection;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class AmaziaBardSounds {
-	public static Identifier A_BARDS_TALE										= Identifier.of(Amazia.MOD_ID, "a_bards_tale");
-	public static Identifier AROUND_THE_FIRE									= Identifier.of(Amazia.MOD_ID, "around_the_fire");
-	public static Identifier A_TAVERN_ON_THE_RIVERBANK							= Identifier.of(Amazia.MOD_ID, "a_tavern_on_the_riverbank");
-	public static Identifier BACK_ON_THE_PATH									= Identifier.of(Amazia.MOD_ID, "back_on_the_path");
-	public static Identifier DACW_NGHARIAD										= Identifier.of(Amazia.MOD_ID, "dacw_nghariad");
-	public static Identifier DRAGONS_DOGMA_CHARACTER_CREATION					= Identifier.of(Amazia.MOD_ID, "dragons_dogma_character_creation");
-	public static Identifier DRINK_UP_THERES_MORE								= Identifier.of(Amazia.MOD_ID, "drink_up_theres_more");
-	public static Identifier ENCHANTERS											= Identifier.of(Amazia.MOD_ID, "enchanters");
-	public static Identifier FALL_OF_THE_MAGISTER								= Identifier.of(Amazia.MOD_ID, "fall_of_the_magister");
+	public static Identifier A_BARDS_TALE										= Identifier.of(Amazia.MOD_ID, "a_bards_tale");											// 200
+	public static Identifier AROUND_THE_FIRE									= Identifier.of(Amazia.MOD_ID, "around_the_fire");										// 300
+	public static Identifier A_TAVERN_ON_THE_RIVERBANK							= Identifier.of(Amazia.MOD_ID, "a_tavern_on_the_riverbank");							// 142
+	public static Identifier BACK_ON_THE_PATH									= Identifier.of(Amazia.MOD_ID, "back_on_the_path");										// 240
+	public static Identifier DACW_NGHARIAD										= Identifier.of(Amazia.MOD_ID, "dacw_nghariad");										// 240
+	public static Identifier DRAGONS_DOGMA_CHARACTER_CREATION					= Identifier.of(Amazia.MOD_ID, "dragons_dogma_character_creation");						// 222
+	public static Identifier DRINK_UP_THERES_MORE								= Identifier.of(Amazia.MOD_ID, "drink_up_theres_more");									// 137
+	public static Identifier ENCHANTERS											= Identifier.of(Amazia.MOD_ID, "enchanters");											// 320
+	public static Identifier FALL_OF_THE_MAGISTER								= Identifier.of(Amazia.MOD_ID, "fall_of_the_magister");									// 255
 	public static Identifier FOR_THE_DANCING_AND_THE_DREAMING_INSTRUMENTAL		= Identifier.of(Amazia.MOD_ID, "for_the_dancing_and_the_dreaming_instrumental");
 	public static Identifier GATES_OF_GLORY										= Identifier.of(Amazia.MOD_ID, "gates_of_glory");
 	public static Identifier HANDS_OF_GOLD										= Identifier.of(Amazia.MOD_ID, "hands_of_gold");
-	public static Identifier I_AM_THE_ONE										= Identifier.of(Amazia.MOD_ID, "i_am_the_one");
+	public static Identifier I_AM_THE_ONE										= Identifier.of(Amazia.MOD_ID, "i_am_the_one");											// 200
 	public static Identifier IN_UTHENERA										= Identifier.of(Amazia.MOD_ID, "in_uthenera");
 	public static Identifier KYDONIA											= Identifier.of(Amazia.MOD_ID, "kydonia");
 	public static Identifier LOVE_SONG											= Identifier.of(Amazia.MOD_ID, "love_song");
@@ -80,6 +81,47 @@ public class AmaziaBardSounds {
 	public static SoundEvent THUNDERBREW_EVENT									= AmaziaBardSounds.register(AmaziaBardSounds.THUNDERBREW);
 	public static SoundEvent TOSS_A_COIN_TO_YOUR_WITCHER_EVENT					= AmaziaBardSounds.register(AmaziaBardSounds.TOSS_A_COIN_TO_YOUR_WITCHER);
 	public static SoundEvent UNRELEASED_GWENT_TRACK_EVENT						= AmaziaBardSounds.register(AmaziaBardSounds.UNRELEASED_GWENT_TRACK);
+
+
+	public static WeightedRandomCollection<SoundEvent> BARD_DAYTIME_MUSIC = new WeightedRandomCollection<SoundEvent>()
+			.add(1f, AmaziaBardSounds.A_BARDS_TALE_EVENT)
+			.add(1f, AmaziaBardSounds.AROUND_THE_FIRE_EVENT)
+			.add(1f, AmaziaBardSounds.A_TAVERN_ON_THE_RIVERBANK_)
+			.add(1f, AmaziaBardSounds.BACK_ON_THE_PATH_EVENT)
+			.add(1f, AmaziaBardSounds.DACW_NGHARIAD_EVENT)
+			.add(1f, AmaziaBardSounds.DRAGONS_DOGMA_CHARACTER_CREATION_EVENT)
+			.add(1f, AmaziaBardSounds.DRINK_UP_THERES_MORE_EVENT)
+			.add(1f, AmaziaBardSounds.ENCHANTERS_EVENT)
+			.add(1f, AmaziaBardSounds.FALL_OF_THE_MAGISTER_EVENT)
+			.add(1f, AmaziaBardSounds.FOR_THE_DANCING_AND_THE_DREAMING_INSTRUMENTAL_EVENT)
+			.add(1f, AmaziaBardSounds.GATES_OF_GLORY_EVENT)
+			.add(1f, AmaziaBardSounds.HANDS_OF_GOLD_EVENT)
+			.add(1f, AmaziaBardSounds.I_AM_THE_ONE_EVENT)
+			.add(1f, AmaziaBardSounds.IN_UTHENERA_EVENT)
+			.add(1f, AmaziaBardSounds.KYDONIA_EVENT)
+			.add(1f, AmaziaBardSounds.LOVE_SONG_EVENT)
+			.add(1f, AmaziaBardSounds.MEMORIES_OF_MOTHER_EVENT)
+			.add(1f, AmaziaBardSounds.MERCHANTS_OF_NOVIGRAD_EVENT)
+			.add(1f, AmaziaBardSounds.NIGHTINGALES_EYES_EVENT)
+			.add(1f, AmaziaBardSounds.OUT_OF_THE_COLD_EVENT)
+			.add(1f, AmaziaBardSounds.ROGUE_HEART_EVENT)
+			.add(1f, AmaziaBardSounds.SALTARELLO_EVENT)
+			.add(1f, AmaziaBardSounds.SERA_WAS_NEVER_EVENT)
+			.add(1f, AmaziaBardSounds.SHADY_REST_EVENT)
+			.add(1f, AmaziaBardSounds.SHELAYA_EVENT)
+			.add(1f, AmaziaBardSounds.STONE_FIRE_EVENT)
+			.add(1f, AmaziaBardSounds.TAVERN_THEME_3_EVENT)
+			.add(1f, AmaziaBardSounds.THE_BANNERED_MARE_EVENT)
+			.add(1f, AmaziaBardSounds.THE_BARDS_SONG_EVENT)
+			.add(1f, AmaziaBardSounds.THE_BEAR_AND_THE_MAIDEN_FAIR_EVENT)
+			.add(1f, AmaziaBardSounds.THE_DORNISHMANS_WIFE_EVENT)
+			.add(1f, AmaziaBardSounds.THE_BEAR_AND_THE_MAIDEN_FAIR_EVENT)
+			.add(1f, AmaziaBardSounds.THE_DORNISHMANS_WIFE_EVENT)
+			.add(1f, AmaziaBardSounds.THE_NIGHTINGALE_EVENT)
+			.add(1f, AmaziaBardSounds.THE_WOLVEN_STORM_EVENT)
+			.add(1f, AmaziaBardSounds.THUNDERBREW_EVENT)
+			.add(1f, AmaziaBardSounds.TOSS_A_COIN_TO_YOUR_WITCHER_EVENT)
+			.add(1f, AmaziaBardSounds.UNRELEASED_GWENT_TRACK_EVENT);
 
 
 	private static SoundEvent register(final Identifier id) {
