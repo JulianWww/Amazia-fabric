@@ -4,9 +4,7 @@ import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.BardEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.mechanics.happyness.HappynessMap;
-import net.denanu.amazia.sounds.AmaziaBardSounds;
 import net.denanu.stoppablesound.events.ServerStoppableEntitySound;
-import net.denanu.stoppablesound.events.StoppableSound;
 import net.denanu.stoppablesound.sounds.LongSoundEvent;
 
 public class PlayMusicToVillagersGoal extends TimedVillageGoal<BardEntity> {
@@ -60,8 +58,8 @@ public class PlayMusicToVillagersGoal extends TimedVillageGoal<BardEntity> {
 
 	@Override
 	public void start() {
-		this.soundEvent = AmaziaBardSounds.BARD_DAYTIME_MUSIC.next();
-		this.sound = StoppableSound.of(this.entity, this.soundEvent, this.entity.getSoundCategory(), 1f, 1f).play();
+		//this.soundEvent = AmaziaSounds.BARD_DAY_MUSIC;
+		//this.sound = StoppableSound.of(this.entity, this.soundEvent, this.entity.getSoundCategory(), 1f, 1f).play();
 
 		this.happyness_gained = 0;
 
