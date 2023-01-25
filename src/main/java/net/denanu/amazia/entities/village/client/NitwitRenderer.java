@@ -13,7 +13,7 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 public class NitwitRenderer extends GeoEntityRenderer<NitwitEntity> {
 	public NitwitRenderer(final EntityRendererFactory.Context ctx) {
 		super(ctx, new NitwitModel());
-		this.shadowRadius = 0.4f;
+		this.shadowRadius = 0.3f;
 	}
 
 	@Override
@@ -25,8 +25,12 @@ public class NitwitRenderer extends GeoEntityRenderer<NitwitEntity> {
 	public RenderLayer getRenderType(final NitwitEntity animatable, final float partialTicks, final MatrixStack stack,
 			final VertexConsumerProvider renderTypeBuffer, final VertexConsumer vertexBuilder,
 			final int packedLightIn, final Identifier textureLocation) {
-		stack.scale(0.8f, 0.8f, 0.8f);
-
+		if (animatable.isBaby()) {
+			stack.scale(0.5f, 0.5f, 0.5f);
+		}
+		else {
+			stack.scale(0.8f, 0.8f, 0.8f);
+		}
 		return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
 	}
 }
