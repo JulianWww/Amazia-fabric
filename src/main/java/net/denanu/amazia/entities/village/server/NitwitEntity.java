@@ -25,6 +25,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+// Also doubles as the child
+
 public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
 	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.AIR);
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of();
@@ -47,7 +49,7 @@ public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<NitwitEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
 	@Override
 	protected void initGoals() {
 
-		this.goalSelector.add(50, new NitwitRandomWanderAroundGoal(this, 50));
+		this.goalSelector.add(50, new NitwitRandomWanderAroundGoal<>(this, 50));
 
 		super.registerBaseGoals();
 	}
