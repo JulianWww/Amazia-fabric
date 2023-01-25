@@ -1,16 +1,16 @@
 package net.denanu.amazia.entities.village.server.goal.nitwit;
 
 import net.denanu.amazia.JJUtils;
-import net.denanu.amazia.entities.village.server.NitwitEntity;
+import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal;
 import net.minecraft.util.math.BlockPos;
 
-public class NitwitRandomWanderAroundGoal extends AmaziaGoToBlockGoal<NitwitEntity> {
+public class NitwitRandomWanderAroundGoal<T extends AmaziaVillagerEntity> extends AmaziaGoToBlockGoal<T> {
 	private float updateTime = 0;
 	private int age = 0;
 
 
-	public NitwitRandomWanderAroundGoal(final NitwitEntity e, final int priority) {
+	public NitwitRandomWanderAroundGoal(final T e, final int priority) {
 		super(e, priority);
 	}
 

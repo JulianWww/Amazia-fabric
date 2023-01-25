@@ -1,17 +1,20 @@
 package net.denanu.amazia.entities.village.server.goal.bard;
 
+import java.util.Optional;
+
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.BardEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.mechanics.happyness.HappynessMap;
-import net.denanu.amazia.sounds.AmaziaBardSounds;
+import net.denanu.amazia.sounds.AmaziaSounds;
+import net.denanu.dynamicsoundmanager.groups.ServerSoundGroups;
+import net.denanu.dynamicsoundmanager.player_api.DynamicSoundConfigs;
 import net.denanu.stoppablesound.events.ServerStoppableEntitySound;
 import net.denanu.stoppablesound.events.StoppableSound;
-import net.denanu.stoppablesound.sounds.LongSoundEvent;
 
 public class PlayMusicToVillagersGoal extends TimedVillageGoal<BardEntity> {
 	private ServerStoppableEntitySound sound;
-	private LongSoundEvent soundEvent;
+	private DynamicSoundConfigs soundEvent;
 	private int happyness_gained;
 
 	public PlayMusicToVillagersGoal(final BardEntity e, final int priority) {
@@ -25,7 +28,8 @@ public class PlayMusicToVillagersGoal extends TimedVillageGoal<BardEntity> {
 
 	@Override
 	protected int getRequiredTime() {
-		return this.soundEvent.getLength();
+		final Optional<Integer> time = this.soundEvent.getTickPlayTime();
+		return time.isPresent() ? time.get() : 20;
 	}
 
 	@Override
@@ -60,8 +64,9 @@ public class PlayMusicToVillagersGoal extends TimedVillageGoal<BardEntity> {
 
 	@Override
 	public void start() {
-		this.soundEvent = AmaziaBardSounds.BARD_DAYTIME_MUSIC.next();
-		this.sound = StoppableSound.of(this.entity, this.soundEvent, this.entity.getSoundCategory(), 1f, 1f).play();
+		final long seed = this.entity.getRandom().nextLong();
+		this.sound = StoppableSound.of(this.entity, AmaziaSounds.BARD_DAY_MUSIC, this.entity.getSoundCategory(), 1f, 1f, seed).play();
+		this.soundEvent = ServerSoundGroups.getConfig(seed, AmaziaSounds.BARD_DAY_MUSIC_ID);
 
 		this.happyness_gained = 0;
 

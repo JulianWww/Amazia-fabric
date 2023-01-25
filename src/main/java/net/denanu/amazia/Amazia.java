@@ -31,7 +31,7 @@ import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.mechanics.hunger.CraftingHungerManager;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
-import net.denanu.amazia.sounds.AmaziaBardSounds;
+import net.denanu.amazia.sounds.AmaziaSounds;
 import net.denanu.amazia.status_effects.AmaziaStatusEffects;
 import net.denanu.amazia.utils.Predicates;
 import net.denanu.amazia.utils.crafting.VillageRecipeManager;
@@ -106,7 +106,7 @@ public class Amazia implements ModInitializer {
 		BlockHighlightingAmaziaConfig.setup();
 
 		//SOUND
-		AmaziaBardSounds.setup();
+		AmaziaSounds.setup();
 
 		// Registry
 		AmaziaRegistrys.setup();
