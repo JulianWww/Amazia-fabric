@@ -1,5 +1,5 @@
 {
-    "parent": "cfm:block/desk_cabinet_middle_closed",
+    "parent": "amazia:block/desk_cabinet_middle_closed",
     "textures": {
         "top": "block/crimson_stem",
         "base": "block/crimson_planks",

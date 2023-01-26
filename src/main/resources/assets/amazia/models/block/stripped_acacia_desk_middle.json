@@ -1,5 +1,5 @@
 {
-    "parent": "cfm:block/desk_middle",
+    "parent": "amazia:block/desk_middle",
     "textures": {
         "base": "minecraft:block/stripped_acacia_log",
         "top": "minecraft:block/stripped_acacia_log"

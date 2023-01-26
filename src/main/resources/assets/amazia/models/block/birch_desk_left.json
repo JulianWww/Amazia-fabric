@@ -1,5 +1,5 @@
 {
-    "parent": "cfm:block/desk_left",
+    "parent": "amazia:block/desk_left",
     "textures": {
         "base": "minecraft:block/birch_planks",
         "top": "minecraft:block/birch_log",
