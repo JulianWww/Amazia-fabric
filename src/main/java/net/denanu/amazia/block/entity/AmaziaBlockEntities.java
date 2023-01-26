@@ -8,13 +8,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class AmaziaBlockEntities {
-	public static BlockEntityType<VillageCoreBlockEntity> VILLAGE_CORE;
-	
-	public static void registerBlockEntities() {
-		VILLAGE_CORE = Registry.register(Registry.BLOCK_ENTITY_TYPE, 
-				new Identifier(Amazia.MOD_ID, "village_core"), 
-				FabricBlockEntityTypeBuilder.create(VillageCoreBlockEntity::new, 
-						AmaziaBlocks.VILLAGE_CORE).build(null)
+	public static BlockEntityType<VillageCoreBlockEntity> VILLAGE_CORE = Registry.register(Registry.BLOCK_ENTITY_TYPE,
+			new Identifier(Amazia.MOD_ID, "village_core"),
+			FabricBlockEntityTypeBuilder.create(VillageCoreBlockEntity::new,
+					AmaziaBlocks.VILLAGE_CORE).build(null)
 			);
-	}
+	public static void registerBlockEntities() {}
 }
