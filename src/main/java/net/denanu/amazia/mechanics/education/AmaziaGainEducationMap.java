@@ -10,4 +10,8 @@ public class AmaziaGainEducationMap {
 	public static void gainLibraryEducation(final IAmaziaEducatedEntity entity) {
 		AmaziaGainEducationMap.gainEducation(entity, AmaziaGainEducationMap.DEFAULT_EDU);
 	}
+
+	public static void learnFromTeacher(final IAmaziaEducatedEntity entity, final float f) {
+		AmaziaGainEducationMap.gainEducation(entity, 0.001f * f);
+	}
 }

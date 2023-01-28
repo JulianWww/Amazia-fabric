@@ -237,6 +237,9 @@ public class Village {
 	public PathingNoHeightSceduler getLibrary() {
 		return this.library;
 	}
+	public PathingNoHeightSceduler getDesk() {
+		return this.desks;
+	}
 
 	public static int getSize() {
 		return Village.SIZE;

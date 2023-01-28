@@ -76,7 +76,7 @@ public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatab
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<ChefEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 	@Override
 	public AnimationFactory getFactory() {
@@ -95,12 +95,12 @@ public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatab
 
 	@Override
 	protected void initGoals() {
-		this.goalSelector.add(50, new SequenceGoal<ChefEntity>(this, ImmutableList.of(
+		this.goalSelector.add(50, new SequenceGoal<>(this, ImmutableList.of(
 				new GoToSmokerGoal(this, 50),
-				new PutItemsInFurnaceGoal<ChefEntity>(this, 50)
+				new PutItemsInFurnaceGoal<>(this, 50)
 				)));
 
-		this.goalSelector.add(51, new SequenceGoal<ChefEntity>(this, ImmutableList.of(
+		this.goalSelector.add(51, new SequenceGoal<>(this, ImmutableList.of(
 				new GoToKitchenGoal(this, 51),
 				new CraftAtCraftingLocationGoal(this, 51, true)
 				)));

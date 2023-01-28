@@ -8,18 +8,20 @@ import net.minecraft.util.Identifier;
 public class AmaziaProfessions {
 	public static ArrayList<Identifier> PROFESSIONS = new ArrayList<>();
 
-	public static Identifier BARD 			= AmaziaProfessions.register("bard");
-	public static Identifier BLACKSMITH 	= AmaziaProfessions.register("blacksmith");
-	public static Identifier CHEF 			= AmaziaProfessions.register("chef");
-	public static Identifier CLERIC 		= AmaziaProfessions.register("cleric");
-	public static Identifier DRUID 			= AmaziaProfessions.register("druid");
-	public static Identifier ENCHANTER		= AmaziaProfessions.register("enchanter");
-	public static Identifier FARMER 		= AmaziaProfessions.register("farmer");
-	public static Identifier GUARD 			= AmaziaProfessions.register("guard");
-	public static Identifier LUMBERJACK		= AmaziaProfessions.register("lumberjack");
-	public static Identifier MINER 			= AmaziaProfessions.register("miner");
-	public static Identifier NITWIT			= AmaziaProfessions.register("nitwit");
-	public static Identifier RANCHER 		= AmaziaProfessions.register("rancher");
+	public static final Identifier BARD 		= AmaziaProfessions.register("bard");
+	public static final Identifier BLACKSMITH 	= AmaziaProfessions.register("blacksmith");
+	public static final Identifier CHEF 		= AmaziaProfessions.register("chef");
+	public static final Identifier CLERIC 		= AmaziaProfessions.register("cleric");
+	public static final Identifier DRUID 		= AmaziaProfessions.register("druid");
+	public static final Identifier ENCHANTER	= AmaziaProfessions.register("enchanter");
+	public static final Identifier FARMER 		= AmaziaProfessions.register("farmer");
+	public static final Identifier GUARD 		= AmaziaProfessions.register("guard");
+	public static final Identifier LUMBERJACK	= AmaziaProfessions.register("lumberjack");
+	public static final Identifier MINER 		= AmaziaProfessions.register("miner");
+	public static final Identifier NITWIT		= AmaziaProfessions.register("nitwit");
+	public static final Identifier RANCHER 		= AmaziaProfessions.register("rancher");
+	public static final Identifier TEACHER  	= AmaziaProfessions.register("teacher");
+	public static final Identifier CHILD		= AmaziaProfessions.register("child");
 
 	public static Identifier register(final Identifier profession) {
 		AmaziaProfessions.PROFESSIONS.add(profession);
