@@ -1,6 +1,8 @@
 package net.denanu.amazia.entities;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.entities.furnature.SeatEntity;
+import net.denanu.amazia.entities.furnature.SeatRenderer;
 import net.denanu.amazia.entities.merchants.AmaziaMerchant;
 import net.denanu.amazia.entities.merchants.client.MerchantRenderer;
 import net.denanu.amazia.entities.village.client.BardRenderer;
@@ -120,6 +122,11 @@ public class AmaziaEntities {
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, AmaziaMerchant::new)
 			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
 
+	public static final EntityType<SeatEntity> SEAT = Registry.register(
+			Registry.ENTITY_TYPE, Identifier.of(Amazia.MOD_ID, "seat"),
+			FabricEntityTypeBuilder.create(SpawnGroup.MISC, SeatEntity::new).build()
+			);
+
 	public static void registerAttributes() {
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.FARMER,		AmaziaVillagerEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.MINER,		AmaziaVillagerEntity.setAttributes());
@@ -160,5 +167,6 @@ public class AmaziaEntities {
 		EntityRendererRegistry.register(AmaziaEntities.CHILD, 		ChildRenderer::new);
 
 		EntityRendererRegistry.register(AmaziaEntities.MERCHANT,	MerchantRenderer::new);
+		EntityRendererRegistry.register(AmaziaEntities.SEAT,		SeatRenderer::new);
 	}
 }

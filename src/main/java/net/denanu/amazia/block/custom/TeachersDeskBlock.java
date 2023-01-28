@@ -6,11 +6,7 @@ import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -21,7 +17,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 
 public class TeachersDeskBlock extends HorizontalFacingBlock {
-	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 	public static final EnumProperty<Type> TYPE = EnumProperty.of("type", Type.class);
 
 	public TeachersDeskBlock(final Settings settings) {
@@ -135,7 +130,7 @@ public class TeachersDeskBlock extends HorizontalFacingBlock {
 	}
 
 	public static Direction getFacing(final BlockState state) {
-		return state.get(TeachersDeskBlock.FACING);
+		return state.get(HorizontalFacingBlock.FACING);
 	}
 
 	public static Type getType(final BlockState state) {
@@ -143,18 +138,8 @@ public class TeachersDeskBlock extends HorizontalFacingBlock {
 	}
 
 	@Override
-	public BlockState rotate(final BlockState state, final BlockRotation rotation) {
-		return state.with(TeachersDeskBlock.FACING, rotation.rotate(state.get(TeachersDeskBlock.FACING)));
-	}
-
-	@Override
-	public BlockState mirror(final BlockState state, final BlockMirror mirror) {
-		return state.rotate(mirror.getRotation(state.get(TeachersDeskBlock.FACING)));
-	}
-
-	@Override
 	protected void appendProperties(final StateManager.Builder<Block, BlockState> builder) {
-		builder.add(TeachersDeskBlock.FACING);
+		builder.add(HorizontalFacingBlock.FACING);
 		builder.add(TeachersDeskBlock.TYPE);
 	}
 
@@ -179,12 +164,12 @@ public class TeachersDeskBlock extends HorizontalFacingBlock {
 			type = Type.LEFT;
 		}
 
-		return this.getDefaultState().with(TeachersDeskBlock.FACING, direction).with(TeachersDeskBlock.TYPE, type);
+		return this.getDefaultState().with(HorizontalFacingBlock.FACING, direction).with(TeachersDeskBlock.TYPE, type);
 	}
 
 	@Override
 	public void onBroken(final WorldAccess world, final BlockPos pos, final BlockState state) {
-		final Direction dir = state.get(TeachersDeskBlock.FACING);
+		final Direction dir = state.get(HorizontalFacingBlock.FACING);
 		this.updateDestroy(world, pos, dir.rotateCounterclockwise(Axis.Y), 	dir, 	TeachersDeskBlock::updateRemoveRight);
 		this.updateDestroy(world, pos, dir.rotateClockwise(Axis.Y),			dir, 	TeachersDeskBlock::updateRemoveLeft);
 	}
@@ -200,7 +185,7 @@ public class TeachersDeskBlock extends HorizontalFacingBlock {
 	}
 
 	private static boolean updatePlaceRight(final BlockState state, final BlockPos pos, final WorldAccess world, final Direction axis) {
-		if (state != null && state.get(TeachersDeskBlock.FACING) == axis) {
+		if (state != null && state.get(HorizontalFacingBlock.FACING) == axis) {
 			final Type type = state.get(TeachersDeskBlock.TYPE);
 			if (type == Type.RIGHT) {
 				world.setBlockState(pos, state.with(TeachersDeskBlock.TYPE, Type.MIDDLE), Block.NOTIFY_ALL);
@@ -214,7 +199,7 @@ public class TeachersDeskBlock extends HorizontalFacingBlock {
 	}
 
 	private static boolean updatePlaceLeft(final BlockState state, final BlockPos pos, final WorldAccess world, final Direction axis) {
-		if (state != null && state.get(TeachersDeskBlock.FACING) == axis) {
+		if (state != null && state.get(HorizontalFacingBlock.FACING) == axis) {
 			final Type type = state.get(TeachersDeskBlock.TYPE);
 			if (type == Type.LEFT) {
 				world.setBlockState(pos, state.with(TeachersDeskBlock.TYPE, Type.MIDDLE), Block.NOTIFY_ALL);
@@ -228,7 +213,7 @@ public class TeachersDeskBlock extends HorizontalFacingBlock {
 	}
 
 	private static boolean updateRemoveRight(final BlockState state, final BlockPos pos, final WorldAccess world, final Direction axis) {
-		if (state != null && state.get(TeachersDeskBlock.FACING) == axis) {
+		if (state != null && state.get(HorizontalFacingBlock.FACING) == axis) {
 			final Type type = state.get(TeachersDeskBlock.TYPE);
 			if (type == Type.MIDDLE) {
 				world.setBlockState(pos, state.with(TeachersDeskBlock.TYPE, Type.RIGHT), Block.NOTIFY_ALL);
@@ -242,7 +227,7 @@ public class TeachersDeskBlock extends HorizontalFacingBlock {
 	}
 
 	private static boolean updateRemoveLeft(final BlockState state, final BlockPos pos, final WorldAccess world, final Direction axis) {
-		if (state != null && state.get(TeachersDeskBlock.FACING) == axis) {
+		if (state != null && state.get(HorizontalFacingBlock.FACING) == axis) {
 			final Type type = state.get(TeachersDeskBlock.TYPE);
 			if (type == Type.MIDDLE) {
 				world.setBlockState(pos, state.with(TeachersDeskBlock.TYPE, Type.LEFT), Block.NOTIFY_ALL);

@@ -23,7 +23,7 @@ ComponentAccess {
 	public void adjustMovementForCollisions(final Vec3d movement, final CallbackInfoReturnable<Vec3d> cir) {
 		if (!AmaziaEntityComponents.getCanCollide((Entity)(Object)this)) {
 			cir.setReturnValue(movement);
-		};
+		}
 	}
 
 	@Invoker("movementInputToVelocity")
