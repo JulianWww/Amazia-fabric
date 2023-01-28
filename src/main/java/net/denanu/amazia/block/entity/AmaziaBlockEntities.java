@@ -13,5 +13,11 @@ public class AmaziaBlockEntities {
 			FabricBlockEntityTypeBuilder.create(VillageCoreBlockEntity::new,
 					AmaziaBlocks.VILLAGE_CORE).build(null)
 			);
+
+	public static BlockEntityType<DeskCabinetBlockEntity> CABINET_BLOCK = Registry.register(Registry.BLOCK_ENTITY_TYPE,
+			Identifier.of(Amazia.MOD_ID, "cabinet"),
+			FabricBlockEntityTypeBuilder.create(DeskCabinetBlockEntity::new,
+					AmaziaBlocks.DESK_ACACIA_CABINET).build(null)
+			);
 	public static void registerBlockEntities() {}
 }

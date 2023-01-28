@@ -3,6 +3,7 @@ package net.denanu.amazia.block;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.block.custom.AmaziaTroughBlock;
 import net.denanu.amazia.block.custom.TeachersDeskBlock;
+import net.denanu.amazia.block.custom.TeachersDeskBlockCabinet;
 import net.denanu.amazia.block.custom.VillageCoreBlock;
 import net.denanu.amazia.block.custom.VillageMarkerBlock;
 import net.denanu.amazia.item.AmaziaItemGroup;
@@ -10,6 +11,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.OreBlock;
@@ -38,8 +40,43 @@ public class AmaziaBlocks {
 			new VillageCoreBlock(FabricBlockSettings.of(Material.METAL).strength(5f).nonOpaque()
 					), AmaziaItemGroup.VILLAGE);
 
-	public static final Block TEACHER_LECTERN = AmaziaBlocks.registerBlock("teacher_lectern",
-			new TeachersDeskBlock(FabricBlockSettings.of(Material.METAL).strength(5f).nonOpaque()), AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_OAK 					= AmaziaBlocks.registerBlock("oak_desk", 				new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.OAK_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_SPRUCE				= AmaziaBlocks.registerBlock("spruce_desk", 			new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.SPRUCE_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_BIRCH 				= AmaziaBlocks.registerBlock("birch_desk", 				new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.BIRCH_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_JUNGLE 				= AmaziaBlocks.registerBlock("jungle_desk", 			new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.JUNGLE_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_ACACIA 				= AmaziaBlocks.registerBlock("acacia_desk", 			new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.ACACIA_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_DARK_OAK 			= AmaziaBlocks.registerBlock("dark_oak_desk", 			new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.DARK_OAK_PLANKS)), 	AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_CRIMSON 				= AmaziaBlocks.registerBlock("crimson_desk", 			new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.CRIMSON_PLANKS)), 	AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_WARPED 				= AmaziaBlocks.registerBlock("warped_desk", 			new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.WARPED_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_MANGROVE 			= AmaziaBlocks.registerBlock("mangrove_desk", 			new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.MANGROVE_PLANKS)), 	AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_OAK 		= AmaziaBlocks.registerBlock("stripped_oak_desk", 		new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.OAK_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_SPRUCE 		= AmaziaBlocks.registerBlock("stripped_spruce_desk", 	new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.SPRUCE_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_BIRCH 		= AmaziaBlocks.registerBlock("stripped_birch_desk", 	new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.BIRCH_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_JUNGLE 		= AmaziaBlocks.registerBlock("stripped_jungle_desk", 	new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.JUNGLE_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_ACACIA 		= AmaziaBlocks.registerBlock("stripped_acacia_desk", 	new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.ACACIA_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_DARK_OAK 	= AmaziaBlocks.registerBlock("stripped_dark_oak_desk", 	new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.DARK_OAK_PLANKS)), 	AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_CRIMSON 	= AmaziaBlocks.registerBlock("stripped_crimson_desk", 	new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.CRIMSON_PLANKS)), 	AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_WARPED 		= AmaziaBlocks.registerBlock("stripped_warped_desk", 	new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.WARPED_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_MANGROVE 	= AmaziaBlocks.registerBlock("stripped_mangrove_desk", 	new TeachersDeskBlock(FabricBlockSettings.copy(Blocks.MANGROVE_PLANKS)), 	AmaziaItemGroup.VILLAGE);
+
+	public static final Block DESK_OAK_CABINET 					= AmaziaBlocks.registerBlock("oak_desk_cabinet", 				new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.OAK_PLANKS)), 			AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_SPRUCE_CABINET				= AmaziaBlocks.registerBlock("spruce_desk_cabinet", 			new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.SPRUCE_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_BIRCH_CABINET 				= AmaziaBlocks.registerBlock("birch_desk_cabinet", 				new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.BIRCH_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_JUNGLE_CABINET 				= AmaziaBlocks.registerBlock("jungle_desk_cabinet", 			new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.JUNGLE_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_ACACIA_CABINET 				= AmaziaBlocks.registerBlock("acacia_desk_cabinet", 			new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.ACACIA_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_DARK_OAK_CABINET 			= AmaziaBlocks.registerBlock("dark_oak_desk_cabinet", 			new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.DARK_OAK_PLANKS)), 	AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_CRIMSON_CABINET 				= AmaziaBlocks.registerBlock("crimson_desk_cabinet", 			new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.CRIMSON_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_WARPED_CABINET 				= AmaziaBlocks.registerBlock("warped_desk_cabinet", 			new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.WARPED_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_MANGROVE_CABINET 			= AmaziaBlocks.registerBlock("mangrove_desk_cabinet", 			new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.MANGROVE_PLANKS)), 	AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_OAK_CABINET 		= AmaziaBlocks.registerBlock("stripped_oak_desk_cabinet", 		new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.OAK_PLANKS)), 			AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_SPRUCE_CABINET 		= AmaziaBlocks.registerBlock("stripped_spruce_desk_cabinet", 	new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.SPRUCE_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_BIRCH_CABINET 		= AmaziaBlocks.registerBlock("stripped_birch_desk_cabinet", 	new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.BIRCH_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_JUNGLE_CABINET 		= AmaziaBlocks.registerBlock("stripped_jungle_desk_cabinet", 	new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.JUNGLE_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_ACACIA_CABINET 		= AmaziaBlocks.registerBlock("stripped_acacia_desk_cabinet", 	new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.ACACIA_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_DARK_OAK_CABINET 	= AmaziaBlocks.registerBlock("stripped_dark_oak_desk_cabinet", 	new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.DARK_OAK_PLANKS)), 	AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_CRIMSON_CABINET 	= AmaziaBlocks.registerBlock("stripped_crimson_desk_cabinet", 	new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.CRIMSON_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_WARPED_CABINET 		= AmaziaBlocks.registerBlock("stripped_warped_desk_cabinet", 	new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.WARPED_PLANKS)), 		AmaziaItemGroup.VILLAGE);
+	public static final Block DESK_STRIPPED_MANGROVE_CABINET	= AmaziaBlocks.registerBlock("stripped_mangrove_desk_cabinet", 	new TeachersDeskBlockCabinet(FabricBlockSettings.copy(Blocks.MANGROVE_PLANKS)), 	AmaziaItemGroup.VILLAGE);
 
 	public static final Block MINE_MARKER = AmaziaBlocks.registerBlock("mine_marker",
 			new VillageMarkerBlock(FabricBlockSettings.of(Material.STONE).strength(1f).nonOpaque()

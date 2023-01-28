@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.block.AmaziaBlocks;
-import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.sceduling.utils.LumberPathingData;
@@ -129,8 +129,8 @@ public class LumberSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.setChanged();
 
-			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.LUMBERJACK_FULL,	pos);
-			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.LUMBERJACK_EMPTY,	pos);
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaIds.LUMBERJACK_FULL,	pos);
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaIds.LUMBERJACK_EMPTY,	pos);
 		}
 	}
 
@@ -140,7 +140,7 @@ public class LumberSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.setChanged();
 
-			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.LUMBERJACK_EMPTY, pos);
+			Highlighter.highlight(world, BlockHighlightingAmaziaIds.LUMBERJACK_EMPTY, pos);
 		}
 	}
 
@@ -150,7 +150,7 @@ public class LumberSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.setChanged();
 
-			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.LUMBERJACK_EMPTY, pos);
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaIds.LUMBERJACK_EMPTY, pos);
 		}
 	}
 
@@ -160,7 +160,7 @@ public class LumberSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.setChanged();
 
-			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.LUMBERJACK_FULL, pos);
+			Highlighter.highlight(world, BlockHighlightingAmaziaIds.LUMBERJACK_FULL, pos);
 		}
 	}
 
@@ -170,7 +170,7 @@ public class LumberSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.setChanged();
 
-			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.LUMBERJACK_FULL, pos);
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaIds.LUMBERJACK_FULL, pos);
 		}
 	}
 

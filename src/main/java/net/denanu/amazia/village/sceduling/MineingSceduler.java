@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.custom.VillageMarkerBlock;
-import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.structures.MineStructure;
@@ -92,7 +92,7 @@ public class MineingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			this.setChanged();
 
-			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.MINEING, pos);
+			Highlighter.highlight(world, BlockHighlightingAmaziaIds.MINEING, pos);
 		}
 	}
 	private void removeMiningCore(final ServerWorld world, final BlockPos pos) {
@@ -103,7 +103,7 @@ public class MineingSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.setChanged();
 
-			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.MINEING, pos);
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaIds.MINEING, pos);
 		}
 	}
 

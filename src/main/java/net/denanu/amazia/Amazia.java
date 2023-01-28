@@ -26,7 +26,7 @@ import net.denanu.amazia.entities.village.server.FarmerEntity;
 import net.denanu.amazia.entities.village.server.GuardEntity;
 import net.denanu.amazia.entities.village.server.LumberjackEntity;
 import net.denanu.amazia.entities.village.server.MinerEntity;
-import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.mechanics.hunger.CraftingHungerManager;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
@@ -103,7 +103,7 @@ public class Amazia implements ModInitializer {
 		AmaziaGameRules.setup();
 
 		//Configs
-		BlockHighlightingAmaziaConfig.setup();
+		BlockHighlightingAmaziaIds.setup();
 
 		//SOUND
 		AmaziaSounds.setup();

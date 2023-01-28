@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
-import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
 import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.village.events.EventData;
 import net.denanu.amazia.village.events.IVillageEventListener;
@@ -43,6 +43,7 @@ public class Village {
 	private final LumberSceduler  lumber;
 	private final RancherSceduler ranching;
 	private final PathingNoHeightSceduler enchanting;
+	private final PathingNoHeightSceduler desks;
 	private final AbstractFurnaceSceduler smelting;
 	private final AbstractFurnaceSceduler blasting;
 	private final AbstractFurnaceSceduler smoking;
@@ -65,13 +66,14 @@ public class Village {
 		this.mineing 		= new MineingSceduler   		(this);
 		this.lumber 		= new LumberSceduler    		(this);
 		this.ranching		= new RancherSceduler   		(this);
-		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable, 	BlockHighlightingAmaziaConfig.ENCHANTING);
-		this.smelting	 	= new AbstractFurnaceSceduler	(this, Blocks.FURNACE.getClass(),				BlockHighlightingAmaziaConfig.NORMAL_FURNACES);
-		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass(), 		BlockHighlightingAmaziaConfig.BLAST_FURNACES);
-		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass(), 				BlockHighlightingAmaziaConfig.SMOKER_FURNACES);
-		this.blacksmithing	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isAnvil, 			BlockHighlightingAmaziaConfig.FORGE);
+		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable, 	BlockHighlightingAmaziaIds.ENCHANTING);
+		this.desks		 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isDesk, 			BlockHighlightingAmaziaIds.DESK);
+		this.smelting	 	= new AbstractFurnaceSceduler	(this, Blocks.FURNACE.getClass(),				BlockHighlightingAmaziaIds.NORMAL_FURNACES);
+		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass(), 		BlockHighlightingAmaziaIds.BLAST_FURNACES);
+		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass(), 				BlockHighlightingAmaziaIds.SMOKER_FURNACES);
+		this.blacksmithing	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isAnvil, 			BlockHighlightingAmaziaIds.FORGE);
 		this.guarding		= new GuardSceduler				(this);
-		this.library	 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isBookShelf, 		BlockHighlightingAmaziaConfig.LIBRARY);
+		this.library	 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isBookShelf, 		BlockHighlightingAmaziaIds.LIBRARY);
 
 		this.valid = true;
 
@@ -101,6 +103,7 @@ public class Village {
 		this.smoking.initialize();
 		this.blacksmithing.initialize();
 		this.library.initialize();
+		this.desks.initialize();
 
 		this.register(this.coreBlock.getWorld());
 	}
@@ -137,10 +140,11 @@ public class Village {
 		nbt.put("blacksmithing",	this.blacksmithing.	writeNbt());
 		nbt.put("guarding",			this.guarding.		writeNbt());
 		nbt.put("library",			this.library.		writeNbt());
+		nbt.put("desk", 			this.desks.			writeNbt());
 		return nbt;
 	}
 	public void readNbt(final NbtCompound nbt) {
-		this.valid = nbt.getBoolean("isValid");
+		this.valid = 		nbt.getBoolean("isValid");
 		this.farming.   	readNbt(nbt.getCompound("farming"));
 		this.storage.   	readNbt(nbt.getCompound("storage"));
 		this.mineing.   	readNbt(nbt.getCompound("mineing"));
@@ -153,6 +157,7 @@ public class Village {
 		this.blacksmithing.	readNbt(nbt.getCompound("blacksmithing"));
 		this.guarding.		readNbt(nbt.getCompound("guarding"));
 		this.library.		readNbt(nbt.getCompound("library"));
+		this.desks.			readNbt(nbt.getCompound("desk"));
 	}
 
 	public boolean isValid() {
@@ -180,6 +185,7 @@ public class Village {
 		this.smoking.		discover(world, blockPos);
 		this.blacksmithing.	discover(world, blockPos);
 		this.library.		discover(world, blockPos);
+		this.desks.			discover(world, blockPos);
 	}
 
 

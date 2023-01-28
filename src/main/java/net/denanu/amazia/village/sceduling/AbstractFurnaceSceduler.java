@@ -13,13 +13,13 @@ import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
 import net.denanu.blockhighlighting.Highlighter;
-import net.denanu.blockhighlighting.config.HighlightType;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -28,9 +28,9 @@ public class AbstractFurnaceSceduler extends FacingPathingVillageSceduler {
 	public List<BlockPos> available;
 	public Map<BlockPos, DoubleDownPathingData> pathing;
 	private final Class<? extends Block> toFind;
-	private final HighlightType highlighter;
+	private final Identifier highlighter;
 
-	public AbstractFurnaceSceduler(final Village _village, final Class<? extends Block> toFind, final HighlightType highlighter) {
+	public AbstractFurnaceSceduler(final Village _village, final Class<? extends Block> toFind, final Identifier highlighter) {
 		super(_village);
 		this.location = new ArrayList<>();
 		this.available = new ArrayList<>();
