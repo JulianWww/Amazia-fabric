@@ -2,11 +2,10 @@ package net.denanu.amazia.entities.village.server.goal.teacher;
 
 import java.util.List;
 
-import net.denanu.amazia.entities.village.server.NitwitEntity;
+import net.denanu.amazia.entities.village.server.ChildEntity;
 import net.denanu.amazia.entities.village.server.TeacherEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
 import net.denanu.amazia.mechanics.education.AmaziaGainEducationMap;
-import net.minecraft.entity.passive.PassiveEntity;
 
 public class TeachAtDesk extends TimedVillageGoal<TeacherEntity> {
 
@@ -39,12 +38,12 @@ public class TeachAtDesk extends TimedVillageGoal<TeacherEntity> {
 
 	@Override
 	protected void takeAction() {
-		final List<NitwitEntity> entities = this.entity.world.getEntitiesByClass(
-				NitwitEntity.class,
+		final List<ChildEntity> entities = this.entity.world.getEntitiesByClass(
+				ChildEntity.class,
 				this.entity.getBoundingBox().expand(20, 20, 20),
-				e -> (e instanceof final PassiveEntity passive && passive.isBaby())
+				e -> true
 				);
-		for (final NitwitEntity entity : entities) {
+		for (final ChildEntity entity : entities) {
 			AmaziaGainEducationMap.learnFromTeacher(entity, this.requiredTime);
 		}
 		this.entity.setDeskLocation(null);
