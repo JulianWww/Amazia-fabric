@@ -10,6 +10,8 @@ import net.fabricmc.api.Environment;
 public class BlockHighlightingAmaziaConfig {
 	public static HighlightType DESK				 		= BlockHighlightingAmaziaConfig.register("desk",				"#FFFFFFFF", "#20FFFFFF");
 
+	public static HighlightType CHAIR						= BlockHighlightingAmaziaConfig.register("chair", 				"#FFFFFFFF", "#20FFFFFF");
+
 	public static HighlightType FARMING_EMPTY_FARMS 		= BlockHighlightingAmaziaConfig.register("empty-farms", 		"#FFFFFFFF", "#20FFFFFF");
 	public static HighlightType FARMING_GOWING_FARMS 		= BlockHighlightingAmaziaConfig.register("growing-farms", 		"#FFFFFFFF", "#20FFFFFF");
 	public static HighlightType FARMING_HARVISTABLE_FARMS 	= BlockHighlightingAmaziaConfig.register("harvistable-farms", 	"#FF00FF00", "#2000FF00");

@@ -8,7 +8,9 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.entities.village.server.goal.child.ChildGoToSchoolGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
+import net.denanu.amazia.village.scedule.VillageActivityGroups;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -32,14 +34,13 @@ public class ChildEntity extends AmaziaVillagerEntity implements IAnimatable {
 	private static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
 
 	private final AnimationFactory factory = new AnimationFactory(this);
-
 	public ChildEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
 	}
 
 	public static DefaultAttributeContainer.Builder setAttributes() {
 		return AmaziaEntity.setAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 10.0D)
-				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5f);
+				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3f);
 	}
 
 	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
@@ -74,5 +75,26 @@ public class ChildEntity extends AmaziaVillagerEntity implements IAnimatable {
 	@Override
 	public Identifier getProfession() {
 		return AmaziaProfessions.CHILD;
+	}
+
+	@Override
+	public void mobTick() {
+		super.mobTick();
+
+		if (this.getActivityScedule().getPerformActionGroup() != VillageActivityGroups.WORK && this.hasVehicle()) {
+			this.leaveSchool();
+		}
+	}
+
+	@Override
+	protected void initGoals() {
+		this.goalSelector.add(50, new ChildGoToSchoolGoal(this, 50));
+
+		super.registerBaseGoals();
+	}
+
+	public void leaveSchool() {
+		this.stopRiding();
+		this.dismountVehicle();
 	}
 }

@@ -7,6 +7,8 @@ import net.minecraft.util.Identifier;
 public class BlockHighlightingAmaziaIds {
 	public static final Identifier DESK 						= BlockHighlightingAmaziaIds.register("desk");
 
+	public static final Identifier CHAIR						= BlockHighlightingAmaziaIds.register("chair");
+
 	public static final Identifier FARMING_EMPTY_FARMS 			= BlockHighlightingAmaziaIds.register("empty-farms");
 	public static final Identifier FARMING_GOWING_FARMS 		= BlockHighlightingAmaziaIds.register("growing-farms");
 	public static final Identifier FARMING_HARVISTABLE_FARMS 	= BlockHighlightingAmaziaIds.register("harvistable-farms");

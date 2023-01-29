@@ -2,11 +2,11 @@ package net.denanu.amazia.entities.furnature;
 
 import java.util.List;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.AmaziaEntities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
@@ -31,17 +31,21 @@ public class SeatEntity extends Entity {
 		this.setRotation(direction.getOpposite().asRotation(), 0F);
 	}
 
-	public static ActionResult create(final World world, final BlockPos pos, final double yOffset, final PlayerEntity player, final Direction direction)
+	public static ActionResult create(final World world, final BlockPos pos, final double yOffset, final LivingEntity entity, final Direction direction)
 	{
 		if(!world.isClient)
 		{
-			final List<SeatEntity> seats = world.getEntitiesByClass(SeatEntity.class, new Box(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 1.0, pos.getZ() + 1.0), a -> true);
+			final List<SeatEntity> seats = world.getEntitiesByClass(SeatEntity.class, new Box(pos.getX() - 5, pos.getY() - 5, pos.getZ() - 5, pos.getX() + 5, pos.getY() + 5, pos.getZ() + 5), a -> {
+				final BlockPos p = pos.up();
+				Amazia.LOGGER.info(a.getBlockPos().toString() + " : " + p.toString() + " : " + Boolean.toString(a.getBlockPos().equals(p)));
+				return a.getBlockPos().equals(p);
+			});
 			if(seats.isEmpty())
 			{
-				player.dismountVehicle();
+				entity.dismountVehicle();
 				final SeatEntity seat = new SeatEntity(world, pos, yOffset, direction);
 				world.spawnEntity(seat);
-				player.startRiding(seat);
+				entity.startRiding(seat);
 			}
 		}
 		return ActionResult.SUCCESS;
@@ -76,11 +80,7 @@ public class SeatEntity extends Entity {
 	public void tick() {
 		super.tick();
 
-		final Entity passanger = this.getFirstPassenger();
-		if (passanger != null) {
-			//this.clampYaw(passanger);
-		}
-		else {
+		if (!this.world.isClient && this.getPassengerList().isEmpty()) {
 			this.discard();
 		}
 	}

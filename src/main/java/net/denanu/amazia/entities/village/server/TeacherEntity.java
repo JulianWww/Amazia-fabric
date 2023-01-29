@@ -85,6 +85,8 @@ public class TeacherEntity extends AmaziaVillagerEntity implements IAnimatable {
 				new GoToDesk(this, 50),
 				new TeachAtDesk(this, 50)
 				)));
+
+		super.registerBaseGoals();
 	}
 
 	public BlockPos getDeskLocation() {
@@ -97,6 +99,6 @@ public class TeacherEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	public int getTeachTime() {
-		return 200;
+		return 500;
 	}
 }

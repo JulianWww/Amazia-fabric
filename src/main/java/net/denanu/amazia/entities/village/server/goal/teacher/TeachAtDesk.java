@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal.teacher;
 
 import java.util.List;
 
+import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.server.ChildEntity;
 import net.denanu.amazia.entities.village.server.TeacherEntity;
 import net.denanu.amazia.entities.village.server.goal.TimedVillageGoal;
@@ -45,6 +46,7 @@ public class TeachAtDesk extends TimedVillageGoal<TeacherEntity> {
 				);
 		for (final ChildEntity entity : entities) {
 			AmaziaGainEducationMap.learnFromTeacher(entity, this.requiredTime);
+			entity.emmitMood(VillagerMoods.HAPPY);
 		}
 		this.entity.setDeskLocation(null);
 	}

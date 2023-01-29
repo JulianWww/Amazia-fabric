@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
@@ -19,25 +20,17 @@ import net.minecraft.world.World;
 
 public class ChairBlock extends HorizontalFacingBlock {
 	private static VoxelShape SOUTH_BOX = VoxelShapes.union(
-			Block.createCuboidShape(1,  0, 0,  16, 14, 2),
-			Block.createCuboidShape(1, 	0, 14, 16, 14, 16),
-			Block.createCuboidShape(13, 2, 2, 15, 14, 14),
-			Block.createCuboidShape(0, 14, 0, 16, 16, 16));
+			Block.createCuboidShape(1.5,10,12.5, 14.5,20,14.5),
+			ChairBlock.getBaseBox());
 	private static final VoxelShape NORTH_BOX = VoxelShapes.union(
-			Block.createCuboidShape(0,  0, 0,  15, 14, 2),
-			Block.createCuboidShape(0, 	0, 14, 15, 14, 16),
-			Block.createCuboidShape(1, 2,  2,  3, 14, 14),
-			Block.createCuboidShape(0, 14, 0, 16, 16, 16));
+			Block.createCuboidShape(1.5,10,1.5, 14.5,20,3.5),
+			ChairBlock.getBaseBox());
 	private static final VoxelShape EAST_BOX = VoxelShapes.union(
-			Block.createCuboidShape(0, 0, 1,  2, 14, 16),
-			Block.createCuboidShape(14, 0, 1,  16, 14, 16),
-			Block.createCuboidShape(2, 2, 13, 14, 14, 15),
-			Block.createCuboidShape(0, 14, 0, 16, 16, 16));
+			Block.createCuboidShape(12.5,10,1.5, 14.5,20,14.5),
+			ChairBlock.getBaseBox());
 	private static final VoxelShape WEST_BOX = VoxelShapes.union(
-			Block.createCuboidShape(0,  0, 0, 2, 14, 15),
-			Block.createCuboidShape(14, 0, 0, 16, 14, 15),
-			Block.createCuboidShape(2, 2, 1, 14, 16, 3),
-			Block.createCuboidShape(0, 14, 0, 16, 16, 16));
+			Block.createCuboidShape(1.5,10,1.5, 3.5,20,14.5),
+			ChairBlock.getBaseBox());
 
 	private static VoxelShape getBaseBox() {
 		return VoxelShapes.union(
@@ -56,22 +49,10 @@ public class ChairBlock extends HorizontalFacingBlock {
 	@Override
 	public VoxelShape getOutlineShape(final BlockState state, final BlockView view, final BlockPos pos, final ShapeContext context) {
 		return switch (TeachersDeskBlock.getFacing(state)) {
-		default -> VoxelShapes.union(
-				Block.createCuboidShape(1.5,10,12.5, 14.5,20,14.5),
-				ChairBlock.getBaseBox()
-				);
-		case NORTH -> VoxelShapes.union(
-				Block.createCuboidShape(1.5,10,1.5, 14.5,20,3.5),
-				ChairBlock.getBaseBox()
-				);
-		case EAST -> VoxelShapes.union(
-				Block.createCuboidShape(12.5,10,1.5, 14.5,20,14.5),
-				ChairBlock.getBaseBox()
-				);
-		case WEST -> VoxelShapes.union(
-				Block.createCuboidShape(1.5,10,1.5, 3.5,20,14.5),
-				ChairBlock.getBaseBox()
-				);
+		default    -> ChairBlock.SOUTH_BOX;
+		case NORTH -> ChairBlock.NORTH_BOX;
+		case EAST  -> ChairBlock.EAST_BOX;
+		case WEST  -> ChairBlock.WEST_BOX;
 		};
 	}
 
@@ -87,6 +68,14 @@ public class ChairBlock extends HorizontalFacingBlock {
 
 	@Override
 	public ActionResult onUse(final BlockState state, final World world, final BlockPos pos, final PlayerEntity player, final Hand hand, final BlockHitResult hit) {
-		return SeatEntity.create(world, pos, this.jumpVelocityMultiplier, player, state.get(HorizontalFacingBlock.FACING));
+		return SeatEntity.create(world, pos, 1, player, state.get(HorizontalFacingBlock.FACING));
+	}
+
+	public static ActionResult sit(final World world, final BlockPos pos, final LivingEntity entity) {
+		final BlockState state = world.getBlockState(pos);
+		if (state.getBlock() instanceof ChairBlock) {
+			return SeatEntity.create(world, pos, 1, entity, state.get(HorizontalFacingBlock.FACING));
+		}
+		return ActionResult.PASS;
 	}
 }
