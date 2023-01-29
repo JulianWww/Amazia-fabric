@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
-import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.blockhighlighting.Highlighter;
@@ -133,7 +133,7 @@ public class FarmingSceduler extends VillageSceduler {
 			this.possibleFarms.add(pos);
 			this.setChanged();
 
-			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_POSSIBLE_FARMS, pos);
+			Highlighter.highlight(world, BlockHighlightingAmaziaIds.FARMING_POSSIBLE_FARMS, pos);
 		}
 	}
 	private void removePossibleFarmLand(final ServerWorld world, final BlockPos pos) {
@@ -142,7 +142,7 @@ public class FarmingSceduler extends VillageSceduler {
 			this.possibleFarms.remove(pos);
 			this.setChanged();
 
-			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_POSSIBLE_FARMS, pos);
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaIds.FARMING_POSSIBLE_FARMS, pos);
 		}
 	}
 	private void addCrop(final ServerWorld world, final BlockPos pos) {
@@ -151,7 +151,7 @@ public class FarmingSceduler extends VillageSceduler {
 			this.crops.add(pos);
 			this.setChanged();
 
-			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_HARVISTABLE_FARMS, pos);
+			Highlighter.highlight(world, BlockHighlightingAmaziaIds.FARMING_HARVISTABLE_FARMS, pos);
 		}
 	}
 	private void removeCrop(final ServerWorld world, final BlockPos pos) {
@@ -160,7 +160,7 @@ public class FarmingSceduler extends VillageSceduler {
 			this.crops.remove(pos);
 			this.setChanged();
 
-			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_HARVISTABLE_FARMS, pos);
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaIds.FARMING_HARVISTABLE_FARMS, pos);
 		}
 	}
 	private void addEmptyFarmland(final ServerWorld world, final BlockPos pos) {
@@ -169,7 +169,7 @@ public class FarmingSceduler extends VillageSceduler {
 			this.emptyFarm.add(pos);
 			this.setChanged();
 
-			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_EMPTY_FARMS, pos);
+			Highlighter.highlight(world, BlockHighlightingAmaziaIds.FARMING_EMPTY_FARMS, pos);
 		}
 	}
 	private void removeEmptyFarmland(final ServerWorld world, final BlockPos pos) {
@@ -178,7 +178,7 @@ public class FarmingSceduler extends VillageSceduler {
 			this.emptyFarm.remove(pos);
 			this.setChanged();
 
-			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_EMPTY_FARMS, pos);
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaIds.FARMING_EMPTY_FARMS, pos);
 		}
 	}
 	private void addGrowing(final ServerWorld world, final BlockPos pos) {
@@ -187,7 +187,7 @@ public class FarmingSceduler extends VillageSceduler {
 			this.growing.add(pos);
 			this.setChanged();
 
-			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.FARMING_GOWING_FARMS, pos);
+			Highlighter.highlight(world, BlockHighlightingAmaziaIds.FARMING_GOWING_FARMS, pos);
 		}
 	}
 	private void removeGrowing(final ServerWorld world, final BlockPos pos) {
@@ -196,7 +196,7 @@ public class FarmingSceduler extends VillageSceduler {
 			this.growing.remove(pos);
 			this.setChanged();
 
-			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.FARMING_GOWING_FARMS, pos);
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaIds.FARMING_GOWING_FARMS, pos);
 		}
 	}
 

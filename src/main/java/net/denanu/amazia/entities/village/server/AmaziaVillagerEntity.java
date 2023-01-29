@@ -712,7 +712,9 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		return false;
 	}
 
-	public abstract boolean canDepositItems();
+	public boolean canDepositItems() {
+		return !this.hasFreeSlot();
+	}
 
 	public int getHoeingTime() {
 		return this.professionLevelManager.getHoingTime(this.isDepressed());

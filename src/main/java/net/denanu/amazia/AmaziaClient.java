@@ -6,6 +6,7 @@ import net.denanu.amazia.GUI.TradingScreen;
 import net.denanu.amazia.GUI.debug.VillagePathingOverlay;
 import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.entities.AmaziaEntities;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.utils.Predicates;
@@ -37,6 +38,7 @@ public class AmaziaClient implements ClientModInitializer {
 
 		ClientLifecycleEvents.CLIENT_STOPPING.register(VillageBorderRenderer::clear);
 		AmaziaProfessions.setup();
+		BlockHighlightingAmaziaConfig.setup();
 	}
 
 }

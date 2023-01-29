@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.block.custom.api.AmaziaTrough;
 import net.denanu.amazia.components.AmaziaEntityComponents;
-import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.blockhighlighting.Highlighter;
@@ -86,7 +86,7 @@ public class RancherSceduler extends VillageSceduler {
 			this.troughLocations.get(id).add(pos);
 
 			this.setChanged();
-			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.RANCHING_PENS, pos);
+			Highlighter.highlight(world, BlockHighlightingAmaziaIds.RANCHING_PENS, pos);
 		}
 		else {
 			for (final Entry<Identifier, List<BlockPos>> element : this.troughLocations.entrySet()) {
@@ -94,7 +94,7 @@ public class RancherSceduler extends VillageSceduler {
 					this.troughLocations.remove(element.getKey());
 
 					this.setChanged();
-					Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.RANCHING_PENS, pos);
+					Highlighter.unhighlight(world, BlockHighlightingAmaziaIds.RANCHING_PENS, pos);
 				}
 			}
 		}

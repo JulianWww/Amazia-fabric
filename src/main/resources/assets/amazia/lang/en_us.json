@@ -3,7 +3,7 @@
 	"item.amazia.ruby_ore": "Ruby Ore",
 	"item.amazia.deepslate_ruby_ore": "Deepslate Ruby Ore",
 	"item.amazia.ruby_block": "Ruby Block",
-	"item.amazia.mine_marker": "Mine Marker", //Placeholder name
+	"item.amazia.mine_marker": "Mine Marker",
 	
 	"message.amazia.command.hello": "hello this is Amazia",
 	"messages.amazia.commands.item_value": "The current item value is: ",
@@ -52,5 +52,42 @@
 	
 	"effect.amazia.blessing": "Blessing",
 	
-	"item.amazia.book_of_intelligence": "Book of Intelligence"
+	"item.amazia.book_of_intelligence": "Book of Intelligence",
+	
+	"block.amazia.oak_desk": "Oak Desk",
+	"block.amazia.spruce_desk": "Spruce Desk",
+	"block.amazia.birch_desk": "Birch Desk",
+	"block.amazia.jungle_desk": "Jungle Desk",
+	"block.amazia.acacia_desk": "Acacia Desk",
+	"block.amazia.dark_oak_desk": "Dark Oak Desk",
+	"block.amazia.crimson_desk": "Crimson Desk",
+	"block.amazia.warped_desk": "Warped Desk",
+	"block.amazia.mangrove_desk": "Mangrove Desk",
+	"block.amazia.stripped_oak_desk": "Stripped Oak Desk",
+	"block.amazia.stripped_spruce_desk": "Stripped Spruce Desk",
+	"block.amazia.stripped_birch_desk": "Stripped Birch Desk",
+	"block.amazia.stripped_jungle_desk": "Stripped Jungle Desk",
+	"block.amazia.stripped_acacia_desk": "Stripped Acacia Desk",
+	"block.amazia.stripped_dark_oak_desk": "Stripped Dark Oak Desk",
+	"block.amazia.stripped_crimson_desk": "Stripped Crimson Desk",
+	"block.amazia.stripped_warped_desk": "Stripped Warped Desk",
+	"block.amazia.stripped_mangrove_desk": "Stripped Mangrove Desk",
+	"block.amazia.oak_desk_cabinet": "Oak Desk Cabinet",
+	"block.amazia.spruce_desk_cabinet": "Spruce Desk Cabinet",
+	"block.amazia.birch_desk_cabinet": "Birch Desk Cabinet",
+	"block.amazia.jungle_desk_cabinet": "Jungle Desk Cabinet",
+	"block.amazia.acacia_desk_cabinet": "Acacia Desk Cabinet",
+	"block.amazia.dark_oak_desk_cabinet": "Dark Oak Desk Cabinet",
+	"block.amazia.crimson_desk_cabinet": "Crimson Desk Cabinet",
+	"block.amazia.warped_desk_cabinet": "Warped Desk Cabinet",
+	"block.amazia.mangrove_desk_cabinet": "Mangrove Desk Cabinet",
+	"block.amazia.stripped_oak_desk_cabinet": "Stripped Oak Desk Cabinet",
+	"block.amazia.stripped_spruce_desk_cabinet": "Stripped Spruce Desk Cabinet",
+	"block.amazia.stripped_birch_desk_cabinet": "Stripped Birch Desk Cabinet",
+	"block.amazia.stripped_jungle_desk_cabinet": "Stripped Jungle Desk Cabinet",
+	"block.amazia.stripped_acacia_desk_cabinet": "Stripped Acacia Desk Cabinet",
+	"block.amazia.stripped_dark_oak_desk_cabinet": "Stripped Dark Oak Desk Cabinet",
+	"block.amazia.stripped_crimson_desk_cabinet": "Stripped Crimson Desk Cabinet",
+	"block.amazia.stripped_warped_desk_cabinet": "Stripped Warped Desk Cabinet",
+	"block.amazia.stripped_mangrove_desk_cabinet": "Stripped Mangrove Desk Cabinet"
 }

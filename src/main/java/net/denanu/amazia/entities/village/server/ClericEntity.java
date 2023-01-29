@@ -73,11 +73,6 @@ public class ClericEntity extends AmaziaVillagerEntity implements IAnimatable {
 	}
 
 	@Override
-	public boolean canDepositItems() {
-		return !this.hasFreeSlot();
-	}
-
-	@Override
 	protected void initGoals() {
 
 		this.targetSelector.add(0, new SelectHealingGuardTargetGoal(this, GuardEntity.class, true));

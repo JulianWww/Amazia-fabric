@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.goal.storage.InteractWithContainerGoal;
-import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
+import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.sceduling.utils.DoubleDownPathingData;
@@ -94,7 +94,7 @@ public class StorageSceduler extends FacingPathingVillageSceduler {
 				VillageSceduler.markBlockAsFound(pos, world);
 			}
 
-			Highlighter.highlight(world, BlockHighlightingAmaziaConfig.STORAGE, pos);
+			Highlighter.highlight(world, BlockHighlightingAmaziaIds.STORAGE, pos);
 		}
 	}
 	private void removeChest(final ServerWorld world, final BlockPos pos) {
@@ -103,7 +103,7 @@ public class StorageSceduler extends FacingPathingVillageSceduler {
 			this.chests.remove(pos);
 			VillageSceduler.markBlockAsLost(pos, world);
 
-			Highlighter.unhighlight(world, BlockHighlightingAmaziaConfig.STORAGE, pos);
+			Highlighter.unhighlight(world, BlockHighlightingAmaziaIds.STORAGE, pos);
 		}
 	}
 

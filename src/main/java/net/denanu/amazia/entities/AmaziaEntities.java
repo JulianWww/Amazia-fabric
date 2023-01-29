@@ -1,11 +1,14 @@
 package net.denanu.amazia.entities;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.entities.furnature.SeatEntity;
+import net.denanu.amazia.entities.furnature.SeatRenderer;
 import net.denanu.amazia.entities.merchants.AmaziaMerchant;
 import net.denanu.amazia.entities.merchants.client.MerchantRenderer;
 import net.denanu.amazia.entities.village.client.BardRenderer;
 import net.denanu.amazia.entities.village.client.BlacksmithRenderer;
 import net.denanu.amazia.entities.village.client.ChefRenderer;
+import net.denanu.amazia.entities.village.client.ChildRenderer;
 import net.denanu.amazia.entities.village.client.ClericRenderer;
 import net.denanu.amazia.entities.village.client.DruidRenderer;
 import net.denanu.amazia.entities.village.client.EnchanterRenderer;
@@ -15,10 +18,12 @@ import net.denanu.amazia.entities.village.client.LumberjackRenderer;
 import net.denanu.amazia.entities.village.client.MinerRenderer;
 import net.denanu.amazia.entities.village.client.NitwitRenderer;
 import net.denanu.amazia.entities.village.client.RancherRenderer;
+import net.denanu.amazia.entities.village.client.TeacherRenderer;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.BardEntity;
 import net.denanu.amazia.entities.village.server.BlacksmithEntity;
 import net.denanu.amazia.entities.village.server.ChefEntity;
+import net.denanu.amazia.entities.village.server.ChildEntity;
 import net.denanu.amazia.entities.village.server.ClericEntity;
 import net.denanu.amazia.entities.village.server.DruidEntity;
 import net.denanu.amazia.entities.village.server.EnchanterEntity;
@@ -28,6 +33,7 @@ import net.denanu.amazia.entities.village.server.LumberjackEntity;
 import net.denanu.amazia.entities.village.server.MinerEntity;
 import net.denanu.amazia.entities.village.server.NitwitEntity;
 import net.denanu.amazia.entities.village.server.RancherEntity;
+import net.denanu.amazia.entities.village.server.TeacherEntity;
 import net.denanu.amazia.entities.village.server.goal.rancher.FeedAnimalGoal;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -99,12 +105,27 @@ public class AmaziaEntities {
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, BardEntity::new)
 			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
 
+	public static final EntityType<TeacherEntity> TEACHER = Registry.register(
+			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "teacher"),
+			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, TeacherEntity::new)
+			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+
+	public static final EntityType<ChildEntity> CHILD = Registry.register(
+			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "child"),
+			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ChildEntity::new)
+			.dimensions(EntityDimensions.fixed(0.2f, 0.75f)).build());
+
 
 
 	public static final EntityType<AmaziaMerchant> MERCHANT = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "merchant"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, AmaziaMerchant::new)
 			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+
+	public static final EntityType<SeatEntity> SEAT = Registry.register(
+			Registry.ENTITY_TYPE, Identifier.of(Amazia.MOD_ID, "seat"),
+			FabricEntityTypeBuilder.create(SpawnGroup.MISC, SeatEntity::new).build()
+			);
 
 	public static void registerAttributes() {
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.FARMER,		AmaziaVillagerEntity.setAttributes());
@@ -119,6 +140,8 @@ public class AmaziaEntities {
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.CLERIC,		AmaziaVillagerEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.CHEF, 		AmaziaVillagerEntity.setAttributes());
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.BARD, 		AmaziaVillagerEntity.setAttributes());
+		FabricDefaultAttributeRegistry.register(AmaziaEntities.TEACHER,		AmaziaVillagerEntity.setAttributes());
+		FabricDefaultAttributeRegistry.register(AmaziaEntities.CHILD,		ChildEntity.setAttributes());
 
 		FabricDefaultAttributeRegistry.register(AmaziaEntities.MERCHANT,	AmaziaMerchant.setAttributes());
 
@@ -140,7 +163,10 @@ public class AmaziaEntities {
 		EntityRendererRegistry.register(AmaziaEntities.CLERIC,		ClericRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.CHEF,		ChefRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.BARD,		BardRenderer::new);
+		EntityRendererRegistry.register(AmaziaEntities.TEACHER, 	TeacherRenderer::new);
+		EntityRendererRegistry.register(AmaziaEntities.CHILD, 		ChildRenderer::new);
 
 		EntityRendererRegistry.register(AmaziaEntities.MERCHANT,	MerchantRenderer::new);
+		EntityRendererRegistry.register(AmaziaEntities.SEAT,		SeatRenderer::new);
 	}
 }
