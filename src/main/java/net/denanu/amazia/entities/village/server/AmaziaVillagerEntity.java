@@ -17,6 +17,7 @@ import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.GUI.AmaziaVillagerUIScreenHandler;
 import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.moods.VillagerMoods;
+import net.denanu.amazia.entities.village.both.VillagerData;
 import net.denanu.amazia.entities.village.server.goal.AmaziaLookAroundGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.education.GoToLibraryGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.education.LearnFromReadingBooksGoal;
@@ -29,6 +30,7 @@ import net.denanu.amazia.entities.village.server.goal.utils.combat.AmaziaEscapeD
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
+import net.denanu.amazia.mechanics.VillagerTypes;
 import net.denanu.amazia.mechanics.education.IAmaziaEducatedEntity;
 import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.happyness.IAmaziaHappynessEntity;
@@ -57,6 +59,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -83,6 +86,9 @@ import oshi.util.tuples.Triplet;
 
 public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner, AmaziaMechanicsGuiEntity,
 InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactory {
+	private static final TrackedData<Float> INTELLIGENCE = DataTracker.registerData(AmaziaVillagerEntity.class, TrackedDataHandlerRegistry.FLOAT);
+	private static final TrackedData<VillagerData> VILLAGER_DATA = DataTracker.registerData(VillagerEntity.class, VillagerData.VILLAGER_DATA);
+
 	private final SimpleInventory inventory = new SimpleInventory(16);
 	private List<Item> requestedItems;
 	private CraftingRecipe wantsToCraft;
@@ -92,7 +98,6 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	private final VillagerScedule activityScedule = new VillagerScedule();
 
 	private float hunger;
-	private static final TrackedData<Float> INTELLIGENCE = DataTracker.registerData(AmaziaVillagerEntity.class, TrackedDataHandlerRegistry.FLOAT);
 	private float education;
 	protected final ProfessionLevelManager professionLevelManager;
 	private float happyness;
@@ -154,6 +159,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	protected void initDataTracker() {
 		super.initDataTracker();
 		this.dataTracker.startTracking(AmaziaVillagerEntity.INTELLIGENCE, 0f);
+		this.dataTracker.startTracking(AmaziaVillagerEntity.VILLAGER_DATA, new VillagerData(VillagerTypes.SNOW));
 	}
 
 	public void registerBaseGoals() {
@@ -288,6 +294,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		nbt.putFloat("Happyness", this.happyness);
 		nbt.put("professions", this.professionLevelManager.save());
 		nbt.put("Scedule", this.activityScedule.writeCustomNbt(new NbtCompound()));
+		nbt.put("type", this.dataTracker.get(AmaziaVillagerEntity.VILLAGER_DATA).toNbt());
 	}
 
 	@Override
@@ -301,6 +308,10 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		this.happyness = nbt.contains("Happyness") ? nbt.getFloat("Happyness") : IAmaziaHappynessEntity.getDefaultHappyness();
 		this.professionLevelManager.load(nbt.getCompound("professions"), this.getProfession());
 		this.activityScedule.readCustomNbt(nbt.getCompound("Scedule"));
+
+		if (nbt.contains("type")) {
+			this.dataTracker.set(AmaziaVillagerEntity.VILLAGER_DATA, new VillagerData(nbt.getCompound("type")));
+		}
 	}
 
 	@Override
@@ -601,6 +612,10 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	@Override
 	public float getIntelligence() {
 		return this.dataTracker.get(AmaziaVillagerEntity.INTELLIGENCE);
+	}
+
+	public VillagerData getData() {
+		return this.dataTracker.get(AmaziaVillagerEntity.VILLAGER_DATA);
 	}
 
 	@Override

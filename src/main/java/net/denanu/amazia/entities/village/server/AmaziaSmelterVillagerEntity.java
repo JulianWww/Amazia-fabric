@@ -22,7 +22,6 @@ public abstract class AmaziaSmelterVillagerEntity extends AmaziaVillagerEntity {
 	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
 	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COAL, 64);
 
-
 	private Optional<Integer> blastingItem;
 	private int amountOfCoal;
 	@Nullable
