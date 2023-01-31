@@ -18,6 +18,13 @@ public class AmaziaItems {
 					)
 			);
 
+	public static final Item FLUTE = AmaziaItems.registerItem("flute",
+			new Item(new FabricItemSettings()
+					.rarity(Rarity.UNCOMMON)
+					.group(AmaziaItemGroup.VILLAGE)
+					)
+			);
+
 	private static Item registerItem(final String name, final Item item) {
 		return Registry.register(Registry.ITEM, new Identifier(Amazia.MOD_ID, name), item);
 	}

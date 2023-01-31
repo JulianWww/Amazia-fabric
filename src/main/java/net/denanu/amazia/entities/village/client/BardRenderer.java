@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.client;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.client.features.AmaziaVillagerClothingFeatureRenderer;
+import net.denanu.amazia.entities.village.client.features.AmaziaVillerHeldItemFeatureRenderer;
 import net.denanu.amazia.entities.village.server.BardEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -16,6 +17,7 @@ public class BardRenderer extends GeoEntityRenderer<BardEntity> {
 		super(ctx, new BardModel());
 		this.shadowRadius = 0.4f;
 		this.addLayer(new AmaziaVillagerClothingFeatureRenderer<>(this));
+		this.addLayer(new AmaziaVillerHeldItemFeatureRenderer<>(this, ctx.getHeldItemRenderer()));
 	}
 
 	@Override
