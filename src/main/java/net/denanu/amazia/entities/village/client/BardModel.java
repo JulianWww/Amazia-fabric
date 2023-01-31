@@ -8,7 +8,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class BardModel extends AnimatedGeoModel<BardEntity> {
 	@Override
 	public Identifier getModelResource(final BardEntity object) {
-		return new Identifier(Amazia.MOD_ID, "geo/villager.geo.json");
+		return new Identifier(Amazia.MOD_ID, "geo/bard.geo.json");
 	}
 
 	@Override
@@ -18,6 +18,6 @@ public class BardModel extends AnimatedGeoModel<BardEntity> {
 
 	@Override
 	public Identifier getAnimationResource(final BardEntity animatable) {
-		return new Identifier(Amazia.MOD_ID, "animations/villager.animation.json");
+		return new Identifier(Amazia.MOD_ID, "animations/bard.animation.json");
 	}
 }
