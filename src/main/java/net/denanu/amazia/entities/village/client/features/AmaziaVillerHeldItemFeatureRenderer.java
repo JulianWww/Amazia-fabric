@@ -29,7 +29,7 @@ public class AmaziaVillerHeldItemFeatureRenderer<T extends AmaziaVillagerEntity 
 		matrixStack.translate(0.0, 0.4f, -0.4f);
 		matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180.0f));
 		final ItemStack itemStack = ((LivingEntity)entitylivingbaseIn).getEquippedStack(EquipmentSlot.MAINHAND);
-		this.heldItemRenderer.renderItem(entitylivingbaseIn, itemStack, ModelTransformation.Mode.GROUND, false, matrixStack, bufferIn, packedLightIn);
+		this.heldItemRenderer.renderItem(entitylivingbaseIn, itemStack, ModelTransformation.Mode.THIRD_PERSON_RIGHT_HAND, false, matrixStack, bufferIn, packedLightIn);
 		matrixStack.pop();
 	}
 

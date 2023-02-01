@@ -199,6 +199,11 @@
 					]
 				},
 				{
+					"name": "bipedHandLeft",
+					"parent": "arms_flipped",
+					"pivot": [6, 9.5, 0.35]
+				},
+				{
 					"name": "other_arm",
 					"parent": "arms_rotation",
 					"pivot": [0, 22.5, 0.35],
@@ -230,28 +235,9 @@
 					]
 				},
 				{
-					"name": "bard2",
+					"name": "bipedHandRight",
 					"parent": "other_arm",
-					"pivot": [-6, 11, 0],
-					"cubes": [
-						{
-							"origin": [-6.5, 9, -3],
-							"size": [1, 1, 7],
-							"uv": {
-								"north": {"uv": [0, 77], "uv_size": [1, 1]},
-								"east": {"uv": [0, 76], "uv_size": [7, 1]},
-								"south": {"uv": [1, 77], "uv_size": [1, 1]},
-								"west": {"uv": [0, 76], "uv_size": [7, -1]},
-								"up": {"uv": [8, 82], "uv_size": [-1, -7]},
-								"down": {"uv": [9, 82], "uv_size": [-1, -7]}
-							}
-						}
-					]
-				},
-				{
-					"name": "bone",
-					"parent": "bard2",
-					"pivot": [-6, 11, 0]
+					"pivot": [-6, 9.5, 0.35]
 				},
 				{
 					"name": "right_leg",

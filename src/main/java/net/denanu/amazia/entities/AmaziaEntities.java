@@ -5,7 +5,8 @@ import net.denanu.amazia.entities.furnature.SeatEntity;
 import net.denanu.amazia.entities.furnature.SeatRenderer;
 import net.denanu.amazia.entities.merchants.AmaziaMerchant;
 import net.denanu.amazia.entities.merchants.client.MerchantRenderer;
-import net.denanu.amazia.entities.village.client.BardRenderer;
+import net.denanu.amazia.entities.village.client.AmaziaModel;
+import net.denanu.amazia.entities.village.client.AmaziaRenderer;
 import net.denanu.amazia.entities.village.client.BlacksmithRenderer;
 import net.denanu.amazia.entities.village.client.ChefRenderer;
 import net.denanu.amazia.entities.village.client.ChildRenderer;
@@ -162,7 +163,7 @@ public class AmaziaEntities {
 		EntityRendererRegistry.register(AmaziaEntities.DRUID, 		DruidRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.CLERIC,		ClericRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.CHEF,		ChefRenderer::new);
-		EntityRendererRegistry.register(AmaziaEntities.BARD,		BardRenderer::new);
+		EntityRendererRegistry.register(AmaziaEntities.BARD,		ctx -> new AmaziaRenderer<>(ctx, new AmaziaModel<>("bard")));
 		EntityRendererRegistry.register(AmaziaEntities.TEACHER, 	TeacherRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.CHILD, 		ChildRenderer::new);
 
