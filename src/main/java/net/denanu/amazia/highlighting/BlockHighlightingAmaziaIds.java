@@ -33,6 +33,8 @@ public class BlockHighlightingAmaziaIds {
 	public static final Identifier BLAST_FURNACES		 		= BlockHighlightingAmaziaIds.register("blast-furnace");
 	public static final Identifier SMOKER_FURNACES		 		= BlockHighlightingAmaziaIds.register("smoker");
 
+	public static final Identifier BEDS							= BlockHighlightingAmaziaIds.register("beds");
+
 	private static Identifier register(final String name) {
 		return HighlightIds.register(Identifier.of(Amazia.MOD_ID, name));
 	}

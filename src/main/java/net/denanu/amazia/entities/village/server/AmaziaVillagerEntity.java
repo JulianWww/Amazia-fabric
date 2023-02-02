@@ -27,6 +27,7 @@ import net.denanu.amazia.entities.village.server.goal.storage.DepositItemGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.GetItemGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.combat.AmaziaEscapeDangerGoal;
+import net.denanu.amazia.entities.village.server.goal.utils.sleep.GoToBedGoal;
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
@@ -44,9 +45,15 @@ import net.denanu.amazia.utils.crafting.CraftingUtils;
 import net.denanu.amazia.village.events.EventData;
 import net.denanu.amazia.village.events.VillageDieEventData;
 import net.denanu.amazia.village.events.VillageEvents;
+import net.denanu.amazia.village.scedule.VillageActivityGroups;
 import net.denanu.amazia.village.scedule.VillagerScedule;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.block.BedBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.InventoryOwner;
@@ -80,7 +87,10 @@ import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
@@ -103,6 +113,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	private float happyness;
 
 	private Optional<Integer> bestFoodItem;
+
 
 	public final PropertyDelegate propertyDelegate = new PropertyDelegate() {
 		@Override
@@ -152,7 +163,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 	public static DefaultAttributeContainer.Builder setAttributes() {
 		return AmaziaEntity.setAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
-				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.17f);
+				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.22f);
 	}
 
 	@Override
@@ -191,6 +202,9 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			this.goalSelector.add(24, new CraftGoal<>(this, 24));
 		}
 		this.goalSelector.add(10, new EatGoal(this));
+
+		this.goalSelector.add(11, new GoToBedGoal(this, 11));
+
 		this.goalSelector.add(25, new GetItemGoal(this, 25, getItemCallback));
 
 		this.goalSelector.add(80, new SequenceGoal<>(this, ImmutableList.of(
@@ -200,6 +214,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 		this.goalSelector.add(99, new DepositItemGoal(this, 99, depositItemCallback));
 		this.goalSelector.add(100, new AmaziaLookAroundGoal(this));
+
 	}
 
 	@Override
@@ -282,6 +297,19 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	protected void update() {
 		super.update();
 		this.activityScedule.update(this.world);
+	}
+
+	@Override
+	public void mobTick() {
+		super.mobTick();
+		if (this.isSleeping()) {
+			if (this.getActivityScedule().getPerformActionGroup() != VillageActivityGroups.SLEEP) {
+				this.wakeUp();
+			}
+			if (!(this.world.getBlockState(this.getBlockPos()).getBlock() instanceof BedBlock)) {
+				this.wakeUp();
+			}
+		}
 	}
 
 	@Override
@@ -805,5 +833,28 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		if (this.squaredDistanceTo(data.getEmmiter()) < 10000 && this.canSee(data.getEmmiter())) {
 			HappynessMap.loseHappynessSeeVillagerDie(this, ((VillageDieEventData)data).getIsBaby());
 		}
+	}
+
+	@Override
+	public void sleep(final BlockPos pos) {
+		BlockState blockState;
+		if (this.hasVehicle()) {
+			this.stopRiding();
+		}
+		if ((blockState = this.world.getBlockState(pos)).getBlock() instanceof BedBlock) {
+			this.world.setBlockState(pos, blockState.with(BedBlock.OCCUPIED, true), Block.NOTIFY_ALL);
+			this.setPositionInBed(pos, blockState.get(HorizontalFacingBlock.FACING));
+		}
+		this.setPose(EntityPose.SLEEPING);
+		this.setSleepingPosition(pos);
+		this.setVelocity(Vec3d.ZERO);
+		this.velocityDirty = true;
+	}
+
+	protected void setPositionInBed(final BlockPos pos, final Direction direction) {
+		this.setPosition(
+				pos.getX() + 0.5 + 0.5 * direction.getOffsetX(),
+				pos.getY() + 0.6875,
+				pos.getZ() + 0.5 + 0.5 * direction.getOffsetZ());
 	}
 }
