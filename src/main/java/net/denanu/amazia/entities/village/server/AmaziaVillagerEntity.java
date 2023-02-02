@@ -842,6 +842,9 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			this.stopRiding();
 		}
 		if ((blockState = this.world.getBlockState(pos)).getBlock() instanceof BedBlock) {
+			if (blockState.get(BedBlock.OCCUPIED)) {
+				return;
+			}
 			this.world.setBlockState(pos, blockState.with(BedBlock.OCCUPIED, true), Block.NOTIFY_ALL);
 			this.setPositionInBed(pos, blockState.get(HorizontalFacingBlock.FACING));
 		}
