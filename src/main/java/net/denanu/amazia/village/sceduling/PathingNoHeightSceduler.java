@@ -84,4 +84,12 @@ public class PathingNoHeightSceduler extends VillageSceduler {
 		}
 		return null;
 	}
+
+	@Nullable
+	public NoHeightPathingData getLocation(final Predicate<BlockState> pred) {
+		if (this.tables.size() > 0) {
+			return this.tables.get(JJUtils.getRandomListElement(this.enchantingTables, pred, this.getVillage().getWorld()));
+		}
+		return null;
+	}
 }

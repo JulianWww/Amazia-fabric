@@ -1,13 +1,14 @@
 package net.denanu.amazia.entities.village.server.goal.utils.sleep;
 
+import net.denanu.amazia.block.AmaziaBlockProperties;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal;
 import net.denanu.amazia.village.scedule.VillageActivityGroups;
 import net.denanu.amazia.village.sceduling.utils.NoHeightPathingData;
+import net.minecraft.block.BedBlock;
 import net.minecraft.util.math.BlockPos;
 
 public class GoToBedGoal extends AmaziaGoToBlockGoal<AmaziaVillagerEntity> {
-	BlockPos bedPos;
 
 	public GoToBedGoal(final AmaziaVillagerEntity e, final int priority) {
 		super(e, priority);
@@ -26,9 +27,12 @@ public class GoToBedGoal extends AmaziaGoToBlockGoal<AmaziaVillagerEntity> {
 
 	@Override
 	protected BlockPos getTargetBlock() {
-		final NoHeightPathingData pos = this.entity.getVillage().getBeds().getLocation();
+		if (this.entity.hasBedLoc()) {
+			return this.entity.getBedAccessPoint();
+		}
+		final NoHeightPathingData pos = this.entity.getVillage().getBeds().getLocation(state -> state.getBlock() instanceof BedBlock && !state.get(AmaziaBlockProperties.RESERVED));
 		if (pos != null) {
-			this.bedPos = pos.getPos();
+			this.entity.reserveBed(pos.getPos());
 			return pos.getAccessPoint();
 		}
 		return null;
@@ -41,8 +45,8 @@ public class GoToBedGoal extends AmaziaGoToBlockGoal<AmaziaVillagerEntity> {
 
 	@Override
 	public void stop() {
-		if (this.bedPos.getSquaredDistance(this.entity.getBlockPos()) < 9) {
-			this.entity.sleep(this.bedPos);
+		if (this.entity.getBedLocation().getSquaredDistance(this.entity.getBlockPos()) < 9) {
+			this.entity.sleep(this.entity.getBedLocation());
 		}
 		this.entity.getMoveControl().stop();
 		super.stop();

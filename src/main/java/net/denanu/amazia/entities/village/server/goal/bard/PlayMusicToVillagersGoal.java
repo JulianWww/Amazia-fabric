@@ -28,8 +28,11 @@ public class PlayMusicToVillagersGoal extends TimedVillageGoal<BardEntity> {
 
 	@Override
 	protected int getRequiredTime() {
-		final Optional<Integer> time = this.soundEvent.getTickPlayTime();
-		return time.isPresent() ? time.get() : 20;
+		if (this.soundEvent != null) {
+			final Optional<Integer> time = this.soundEvent.getTickPlayTime();
+			return time.isPresent() ? time.get() : 20;
+		}
+		return 20;
 	}
 
 	@Override

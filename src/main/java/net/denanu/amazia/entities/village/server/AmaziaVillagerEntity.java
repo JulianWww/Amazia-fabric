@@ -15,6 +15,7 @@ import com.google.common.collect.ImmutableList;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.GUI.AmaziaVillagerUIScreenHandler;
+import net.denanu.amazia.block.AmaziaBlockProperties;
 import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.both.VillagerData;
@@ -47,6 +48,7 @@ import net.denanu.amazia.village.events.VillageDieEventData;
 import net.denanu.amazia.village.events.VillageEvents;
 import net.denanu.amazia.village.scedule.VillageActivityGroups;
 import net.denanu.amazia.village.scedule.VillagerScedule;
+import net.denanu.blockhighlighting.utils.NbtUtils;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.Block;
@@ -113,6 +115,8 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	private float happyness;
 
 	private Optional<Integer> bestFoodItem;
+
+	BlockPos bedLocation = null;
 
 
 	public final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -323,6 +327,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		nbt.put("professions", this.professionLevelManager.save());
 		nbt.put("Scedule", this.activityScedule.writeCustomNbt(new NbtCompound()));
 		nbt.put("type", this.dataTracker.get(AmaziaVillagerEntity.VILLAGER_DATA).toNbt());
+		nbt.put("bed", NbtUtils.toNbt(this.bedLocation));
 	}
 
 	@Override
@@ -336,10 +341,13 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		this.happyness = nbt.contains("Happyness") ? nbt.getFloat("Happyness") : IAmaziaHappynessEntity.getDefaultHappyness();
 		this.professionLevelManager.load(nbt.getCompound("professions"), this.getProfession());
 		this.activityScedule.readCustomNbt(nbt.getCompound("Scedule"));
+		this.bedLocation = NbtUtils.toBlockPos(nbt.getList("bed", NbtElement.INT_TYPE));
 
 		if (nbt.contains("type")) {
 			this.dataTracker.set(AmaziaVillagerEntity.VILLAGER_DATA, new VillagerData(nbt.getCompound("type")));
 		}
+
+		this.setPositionInBed();
 	}
 
 	@Override
@@ -827,6 +835,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		if (!this.world.isClient && this.hasVillage()) {
 			this.village.emmitEvent(VillageEvents.VILLAGER_DIE, new VillageDieEventData(this, this.isBaby()));
 		}
+		this.releaseBed();
 	}
 
 	private void onSeeVillagerDie(final EventData data) {
@@ -843,21 +852,58 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		}
 		if ((blockState = this.world.getBlockState(pos)).getBlock() instanceof BedBlock) {
 			if (blockState.get(BedBlock.OCCUPIED)) {
+				this.releaseBed();
 				return;
 			}
 			this.world.setBlockState(pos, blockState.with(BedBlock.OCCUPIED, true), Block.NOTIFY_ALL);
 			this.setPositionInBed(pos, blockState.get(HorizontalFacingBlock.FACING));
+
+			this.setPose(EntityPose.SLEEPING);
+			this.setSleepingPosition(pos);
+			this.setVelocity(Vec3d.ZERO);
+			this.velocityDirty = true;
 		}
-		this.setPose(EntityPose.SLEEPING);
-		this.setSleepingPosition(pos);
-		this.setVelocity(Vec3d.ZERO);
-		this.velocityDirty = true;
+		else {
+			this.releaseBed();
+		}
+	}
+
+	private void setPositionInBed() {
+		if (this.isSleeping() && this.getSleepingPosition().isPresent()) {
+			this.setPositionInBed(this.getSleepingPosition().get(), this.getSleepingDirection());
+		}
 	}
 
 	protected void setPositionInBed(final BlockPos pos, final Direction direction) {
 		this.setPosition(
-				pos.getX() + 0.5 + 0.5 * direction.getOffsetX(),
+				pos.getX() + 0.5,
 				pos.getY() + 0.6875,
-				pos.getZ() + 0.5 + 0.5 * direction.getOffsetZ());
+				pos.getZ() + 0.5);
+	}
+
+	public void reserveBed(final BlockPos pos) {
+		this.releaseBed();
+		if (AmaziaBlockProperties.setBedReservation(this.world, pos, true)) {
+			this.bedLocation = pos;
+		}
+	}
+
+	public void releaseBed() {
+		if (this.bedLocation != null) {
+			AmaziaBlockProperties.setBedReservation(this.world, this.bedLocation, false);
+			this.bedLocation = null;
+		}
+	}
+
+	public boolean hasBedLoc() {
+		return this.bedLocation != null;
+	}
+
+	public BlockPos getBedAccessPoint() {
+		return this.village.getPathingGraph().getAccessPoint(this.bedLocation);
+	}
+
+	public BlockPos getBedLocation() {
+		return this.bedLocation;
 	}
 }

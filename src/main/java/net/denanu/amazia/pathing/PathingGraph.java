@@ -31,7 +31,7 @@ public class PathingGraph {
 		this.eventEmiter = new PathingEventEmiter();
 
 		this.lvl0 = new PathingLvl();
-		this.clusters = new HashMap<Integer, HashMap<Integer, HashMap<Integer, PathingCluster>>>();
+		this.clusters = new HashMap<>();
 
 		this.nodeQueue = new NodeQueue();
 
@@ -90,7 +90,6 @@ public class PathingGraph {
 		this.updateNode(map, pos.getY());
 		this.updateNode(map, pos.getY() - 1);
 		this.updateNode(map, pos.getY() - 2);
-		return;
 	}
 	private void updateNode(final HashMap<Integer, BasePathingNode> map, final int y) {
 		final BasePathingNode node = map.get(y);
@@ -110,7 +109,6 @@ public class PathingGraph {
 		this.removeNode(map, pos.getY());
 		this.removeNode(map, pos.getY() - 1);
 		this.removeNodeRising(map, pos.getY() - 2);
-		return;
 	}
 	private void removeNode(final HashMap<Integer, BasePathingNode> map, final int y) {
 		final BasePathingNode node = map.get(y);
@@ -162,7 +160,6 @@ public class PathingGraph {
 			final BasePathingNode baseNode = new BasePathingNode(bp, this, clearanceHeight, PathingCluster.get(this, bp, 0));
 			baseNode.sceduleUpdate(this);
 		}
-		return;
 	}
 
 	public boolean isInRange(final BlockPos bp) {
@@ -196,5 +193,21 @@ public class PathingGraph {
 
 	public BlockPos getRandomNode() {
 		return this.lvl0.getRandom();
+	}
+
+	public BlockPos getAccessPoint(final BlockPos pos) {
+		for (short idx=0; idx < 4; idx++) {
+			final BasePathingNode node = this.getNode(switch(idx) {
+			case 0 -> pos.north();
+			case 1 -> pos.south();
+			case 2 -> pos.east();
+			default -> pos.west();
+			});
+
+			if (node != null) {
+				return node.getBlockPos();
+			}
+		}
+		return null;
 	}
 }

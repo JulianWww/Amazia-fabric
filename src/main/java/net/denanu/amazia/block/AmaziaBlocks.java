@@ -138,5 +138,6 @@ public class AmaziaBlocks {
 
 	public static void registerModBlocks() {
 		Amazia.LOGGER.debug("Registering ModBlocks for " + Amazia.MOD_ID);
+		AmaziaBlockProperties.setup();
 	}
 }
