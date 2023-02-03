@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 34],
 	"textures": {
-		"2": "amazia:miner_transformation_token",
-		"particle": "amazia:miner_transformation_token"
+		"2": "amazia:item/miner_transformation_token",
+		"particle": "amazia:item/miner_transformation_token"
 	},
 	"elements": [
 		{
@@ -106,5 +106,40 @@
 				"down": {"uv": [5, 15.05882, 11, 14.11765], "texture": "#2"}
 			}
 		}
-	]
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-7.39, 13.86, 85.43],
+			"translation": [-2, -2, -0.25],
+			"scale": [0.3, 0.3, 0.3]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-7.39, 13.86, 85.43],
+			"translation": [-2, -2, -0.25],
+			"scale": [0.3, 0.3, 0.3]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 16, -84],
+			"translation": [0, 5, 5.75],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"firstperson_lefthand": {
+			"rotation": [180, -8, -82],
+			"translation": [-2.75, 5.25, 6.75],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"ground": {
+			"rotation": [90, 0, 0],
+			"translation": [0, -1.5, 1.75],
+			"scale": [0.3, 0.3, 0.3]
+		},
+		"gui": {
+			"rotation": [90, 0, 0],
+			"scale": [0.9, 0.9, 0.9]
+		},
+		"fixed": {
+			"rotation": [90, 0, 0],
+			"translation": [0, 0, 7.5]
+		}
+	}
 }
