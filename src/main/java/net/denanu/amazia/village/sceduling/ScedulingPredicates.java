@@ -30,6 +30,6 @@ public class ScedulingPredicates {
 	}
 
 	public static boolean isBed(final BlockState state) {
-		return state.getBlock() instanceof BedBlock && BedPart.FOOT.equals(state.get(BedBlock.PART));
+		return state.getBlock() instanceof BedBlock && BedPart.HEAD.equals(state.get(BedBlock.PART));
 	}
 }
