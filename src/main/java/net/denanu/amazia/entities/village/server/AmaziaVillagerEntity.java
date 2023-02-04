@@ -30,6 +30,7 @@ import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.combat.AmaziaEscapeDangerGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.sleep.GoToBedGoal;
 import net.denanu.amazia.item.AmaziaItems;
+import net.denanu.amazia.item.custom.VillagerTransformationTokenItem;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
 import net.denanu.amazia.mechanics.VillagerTypes;
@@ -580,7 +581,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 	@Override
 	public ActionResult interactMob(final PlayerEntity player, final Hand hand) {
-		if (this.isAlive() && !player.getEquippedStack(EquipmentSlot.MAINHAND).isOf(AmaziaItems.BOOK_OF_INTELLIGENCE)) {
+		if (this.isAlive() && !player.getEquippedStack(EquipmentSlot.MAINHAND).isOf(AmaziaItems.BOOK_OF_INTELLIGENCE) && !(player.getEquippedStack(EquipmentSlot.MAINHAND).getItem() instanceof VillagerTransformationTokenItem)) {
 			if (hand == Hand.MAIN_HAND) {
 				player.incrementStat(Stats.TALKED_TO_VILLAGER);
 			}

@@ -1,7 +1,9 @@
 package net.denanu.amazia.item;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.item.custom.IntelligenceBoostingBookItem;
+import net.denanu.amazia.item.custom.VillagerTransformationTokenItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -26,9 +28,10 @@ public class AmaziaItems {
 			);
 
 	public static final Item MINER_TOKEM = AmaziaItems.registerItem("miner_transformation_token",
-			new Item(new FabricItemSettings()
+			new VillagerTransformationTokenItem<>(new FabricItemSettings()
 					.rarity(Rarity.UNCOMMON)
-					.group(AmaziaItemGroup.VILLAGE)
+					.group(AmaziaItemGroup.VILLAGE),
+					AmaziaEntities.MINER
 					)
 			);
 
