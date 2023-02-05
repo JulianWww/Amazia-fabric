@@ -1,9 +1,7 @@
 name: Generate Conversion Tokens
 
 on:
-  push:
-    paths:
-    - generators/token/*
+  [push]
 
 permissions:
   contents: write
@@ -18,7 +16,6 @@ jobs:
         with:
           python-version: '3.x'
 
-    # Install dependencies with `pip`
       - name: Install requirements
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
@@ -37,4 +34,3 @@ jobs:
           git add .
           # Force the build to succeed, even if no files were changed
           git commit -m 'regenerated tokens' || true
-          git push
