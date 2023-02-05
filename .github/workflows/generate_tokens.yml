@@ -1,9 +1,9 @@
 name: Generate Conversion Tokens
 
 on:
-  [push]
-  paths:
-  - generators/token
+  push:
+    paths:
+    - generators/token
 
 permissions:
   contents: write
