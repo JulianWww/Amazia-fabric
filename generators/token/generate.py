@@ -1,5 +1,5 @@
 import wget
-from os import remove, path, chdir
+from os import remove, path, chdir, system
 import cv2
 import numpy as np
 
@@ -43,4 +43,5 @@ for entity, img in images.items():
 
 
   if (img[0] != "/"): remove(file)
-  
+
+system(f"cp base_token.png {outPath}base.png")
