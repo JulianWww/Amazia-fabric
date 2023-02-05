@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
   	"textures": {
-		"layer0": "amazia:item/tokens/miner"
+		"layer0": "amazia:item/tokens/farmer"
 	}
 }

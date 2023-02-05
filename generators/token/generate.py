@@ -12,10 +12,10 @@ path = f"https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1
 outPath = "../../src/main/resources/assets/amazia/textures/item/tokens/"
 
 images = {
-  "miner": "stone_pickaxe",
+  "miner": "iron_pickaxe",
   "bard": "music_disc_chirp",
   "chef": "cooked_beef",
-  "druid": "kelp",
+  "druid": "bone_meal",
   "cleric": "white_candle",
   "farmer": "iron_hoe",
   "rancher": "lead",
@@ -24,6 +24,8 @@ images = {
   "lumberjack": "iron_axe",
   "blacksmith": "/hammer"
 }
+
+system(f"rm -r {outPath}")
 
 base = cv2.imread("base_token.png", cv2.IMREAD_UNCHANGED)
 
