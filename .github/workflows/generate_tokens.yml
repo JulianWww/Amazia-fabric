@@ -1,7 +1,9 @@
 name: Generate Conversion Tokens
 
 on:
-  [push]
+  push:
+    paths:
+    - generators/token/*
 
 permissions:
   contents: write
@@ -29,3 +31,4 @@ jobs:
           git add .
           # Force the build to succeed, even if no files were changed
           git commit -m 'regenerated tokens' || true
+          git push
