@@ -1,6 +1,7 @@
 package net.denanu.amazia.item.custom;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.entities.village.server.ChildEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,8 +20,13 @@ public class VillagerTransformationTokenItem<T extends AmaziaVillagerEntity> ext
 	}
 
 	@Override
+	public boolean hasGlint(final ItemStack stack) {
+		return true;
+	}
+
+	@Override
 	public ActionResult useOnEntity(final ItemStack stack, final PlayerEntity user, final LivingEntity entity, final Hand hand) {
-		if (entity instanceof final AmaziaVillagerEntity villager && villager.getType() != this.type) {
+		if (entity instanceof final AmaziaVillagerEntity villager && villager.getType() != this.type && !(villager instanceof ChildEntity)) {
 			if (!user.world.isClient) {
 				final NbtCompound nbt = villager.writeNbt(new NbtCompound());
 				final AmaziaVillagerEntity other = this.type.create(user.world);

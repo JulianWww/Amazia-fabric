@@ -27,11 +27,76 @@ public class AmaziaItems {
 					)
 			);
 
+	private static FabricItemSettings tokenSettings() {
+		return new FabricItemSettings()
+				.rarity(Rarity.UNCOMMON)
+				.group(AmaziaItemGroup.VILLAGE);
+	}
+
+	public static final Item BARD_TOKEM = AmaziaItems.registerItem("bard_transformation_token",
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
+					AmaziaEntities.BARD
+					)
+			);
+
+	public static final Item CHEF_TOKEM = AmaziaItems.registerItem("chef_transformation_token",
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
+					AmaziaEntities.CHEF
+					)
+			);
+
+	public static final Item DRUID_TOKEM = AmaziaItems.registerItem("druid_transformation_token",
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
+					AmaziaEntities.DRUID
+					)
+			);
+
 	public static final Item MINER_TOKEM = AmaziaItems.registerItem("miner_transformation_token",
-			new VillagerTransformationTokenItem<>(new FabricItemSettings()
-					.rarity(Rarity.UNCOMMON)
-					.group(AmaziaItemGroup.VILLAGE),
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
 					AmaziaEntities.MINER
+					)
+			);
+
+	public static final Item CLERIC_TOKEM = AmaziaItems.registerItem("cleric_transformation_token",
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
+					AmaziaEntities.CLERIC
+					)
+			);
+
+	public static final Item FARMER_TOKEM = AmaziaItems.registerItem("farmer_transformation_token",
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
+					AmaziaEntities.FARMER
+					)
+			);
+
+	public static final Item RANCHER_TOKEM = AmaziaItems.registerItem("rancher_transformation_token",
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
+					AmaziaEntities.RANCHER
+					)
+			);
+
+
+	public static final Item TEACHER_TOKEM = AmaziaItems.registerItem("teacher_transformation_token",
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
+					AmaziaEntities.TEACHER
+					)
+			);
+
+	public static final Item ENCHANTER_TOKEM = AmaziaItems.registerItem("enchanter_transformation_token",
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
+					AmaziaEntities.ENCHANTER
+					)
+			);
+
+	public static final Item BLACKSMITH_TOKEM = AmaziaItems.registerItem("blacksmith_transformation_token",
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
+					AmaziaEntities.BLACKSMITH
+					)
+			);
+
+	public static final Item LUMBERJACK_TOKEM = AmaziaItems.registerItem("lumberjack_transformation_token",
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
+					AmaziaEntities.LUMBERJACK
 					)
 			);
 
