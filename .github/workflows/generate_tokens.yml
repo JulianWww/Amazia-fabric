@@ -19,7 +19,7 @@ jobs:
       - name: Install requirements
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install wget numpy opencv
+          python3 -m pip install wget numpy opencv-python
         
       - uses: jannekem/run-python-script-action@v1
         with:
