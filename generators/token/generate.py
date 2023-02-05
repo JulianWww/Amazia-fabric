@@ -25,7 +25,8 @@ images = {
   "blacksmith": "/hammer"
 }
 
-system(f"rm -r {outPath}")
+system(f"rm {outPath}*")
+system(f"mkdir {outPath}")
 
 base = cv2.imread("base_token.png", cv2.IMREAD_UNCHANGED)
 
@@ -34,8 +35,6 @@ for entity, img in images.items():
 
   mask = cv2.imread(file, cv2.IMREAD_UNCHANGED)
   mask = np.pad(mask, ((3,3), (3, 3), (0, 0)), "constant", constant_values = 0)
-  
-  print(mask.shape)
 
   pos = np.where(mask[:,:,3] != 0)
   new_base = np.copy(base)
@@ -45,5 +44,7 @@ for entity, img in images.items():
 
 
   if (img[0] != "/"): remove(file)
+  
+  print (f"generated {entity} conversion token")
 
 system(f"cp base_token.png {outPath}base.png")
