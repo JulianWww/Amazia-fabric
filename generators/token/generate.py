@@ -1,7 +1,11 @@
 import wget
-from os import remove
+from os import remove, path, chdir
 import cv2
 import numpy as np
+
+abspath = path.abspath(__file__)
+dname = path.dirname(abspath)
+chdir(dname)
 
 mc_version = "1.19.3"
 path = f"https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.19.3/assets/minecraft/textures/item/"
