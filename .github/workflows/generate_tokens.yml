@@ -3,7 +3,7 @@ name: Generate Conversion Tokens
 on:
   paths:
   - generators/token
-	
+
 permissions:
   contents: write
 
