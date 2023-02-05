@@ -16,7 +16,7 @@ images = {
   "bard": "music_disc_chirp",
   "chef": "cooked_beef",
   "druid": "kelp",
-  "clerid": "white_candle",
+  "cleric": "white_candle",
   "farmer": "iron_hoe",
   "rancher": "lead",
   "teacher": "writable_book",
