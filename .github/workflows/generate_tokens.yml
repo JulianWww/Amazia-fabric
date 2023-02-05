@@ -1,14 +1,14 @@
 name: Generate Conversion Tokens
 
 on:
-	paths:
-	- generators/token
+  paths:
+  - generators/token
 	
 permissions:
   contents: write
 
 jobs:
-	build:
+  build:
     runs-on: ubuntu-latest
 
     steps:
