@@ -24,8 +24,7 @@ jobs:
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
-            python --version
-            python /generators/token/generate.py
+            import generators.token.generate
         
       - name: Commit to the repo
         run: |
