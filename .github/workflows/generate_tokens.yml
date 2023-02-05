@@ -12,19 +12,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
 
       - name: Install requirements
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
           python3 -m pip install wget numpy opencv-python
         
-      - uses: jannekem/run-python-script-action@v1
-        with:
-          script: |
-            import generators.token.generate
+      - name: Generate
+        run: |
+          python3 generators/token/generate.py
         
       - name: Commit to the repo
         run: |
