@@ -1,4 +1,4 @@
-package net.denanu.amazia.status_effects;
+package net.denanu.amazia.data;
 
 import net.denanu.amazia.Amazia;
 import net.minecraft.entity.effect.StatusEffect;

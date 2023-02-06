@@ -34,7 +34,7 @@ def getShapedBase():
   }
 
 def getLogs(type):
-  if ("warped" in type):
+  if ("warped" in type or "crimson" in type):
     return f"minecraft:{type}_stem"
   return f"minecraft:{type}_log"
 

@@ -1,4 +1,4 @@
-package net.denanu.amazia.status_effects;
+package net.denanu.amazia.data;
 
 import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.happyness.IAmaziaHappynessEntity;
