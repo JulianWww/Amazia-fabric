@@ -154,7 +154,6 @@ def getDeskCabinets(types) :
     getDeskCabinet(type, False)
 
 def getTrough(type, name):
-  removeOf("trough")
   data = getShapedBase()
   data = addTroughIn(data, type)
   data = addOut(data, f"amazia:{name}_trough", 1)
@@ -171,6 +170,8 @@ if __name__ == "__main__":
   getChairs(types)
   getDesks(types)
   getDeskCabinets(types)
+
+  removeOf("trough")
 
   getTrough("birch", "chicken")
   getTrough("oak", "cow")
