@@ -1,6 +1,3 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "amazia:item/sheep_trough"
-  }
+  "parent": "amazia:block/sheep_trough"
 }
