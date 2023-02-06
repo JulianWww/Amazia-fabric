@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+      "#D#",
+      "###"
+  ],
+  "key": {
+      "#": {
+        "tag": "minecraft:planks"
+      },
+      "D": {
+          "item": "minecraft:dirt"
+      }
+  },
+  "result": {
+      "item": "amazia:tree_school",
+      "count": 1
+  }
+}

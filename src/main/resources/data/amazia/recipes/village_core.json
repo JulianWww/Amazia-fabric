@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+      "iRi",
+      "RGR",
+      "iRi"
+  ],
+  "key": {
+      "i": {
+          "item": "minecraft:iron_ingot"
+      },
+      "R": {
+          "item": "amazia:ruby_block"
+      },
+      "G": {
+          "item": "minecraft:diamond"
+      }
+  },
+  "result": {
+      "item": "amazia:village_core",
+      "count": 1
+  }
+}

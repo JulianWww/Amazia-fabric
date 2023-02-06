@@ -33,10 +33,13 @@ def getShapedBase():
     "type": "minecraft:crafting_shaped"
   }
 
-def getPlanks(type):
+def getLogs(type):
   if ("warped" in type):
     return f"minecraft:{type}_stem"
   return f"minecraft:{type}_log"
+
+def getPlanks(type):
+  return f"minecraft:{type}_planks"
 
 def addChairIn(data, type, alt):
   data["pattern"] = [
@@ -46,7 +49,7 @@ def addChairIn(data, type, alt):
   ]
   data["key"] = {
     "#": {
-      "item": getPlanks(type)
+      "item": getLogs(type)
       },
     "/": {
       "item": "minecraft:stick"
@@ -61,7 +64,7 @@ def addDeskIn(data, type):
   ]
   data["key"] = {
     "#": {
-      "item": getPlanks(type)
+      "item": getLogs(type)
       },
     "/": {
       "item": "minecraft:stick"
@@ -76,7 +79,7 @@ def addDeskCabinetIn(data, type, alt):
   ]
   data["key"] = {
     "#": {
-      "item": getPlanks(type)
+      "item": getLogs(type)
       },
     "/": {
       "item": "minecraft:stick"
@@ -84,6 +87,19 @@ def addDeskCabinetIn(data, type, alt):
     "C": {
       "item": "minecraft:chest"
     }
+  }
+  return data
+
+def addTroughIn(data, type):
+  data["pattern"] = [
+    "# #",
+    "# #",
+    "###"
+  ]
+  data["key"] = {
+    "#": {
+      "item": getPlanks(type)
+      }
   }
   return data
 
@@ -137,6 +153,14 @@ def getDeskCabinets(types) :
     getDeskCabinet(type, True)
     getDeskCabinet(type, False)
 
+def getTrough(type, name):
+  removeOf("trough")
+  data = getShapedBase()
+  data = addTroughIn(data, type)
+  data = addOut(data, f"amazia:{name}_trough", 1)
+
+  save(f"{name}_trough", data)
+
 
 def save(name, data):
   with open(f"{path}{name}.json", "w") as file:
@@ -147,3 +171,8 @@ if __name__ == "__main__":
   getChairs(types)
   getDesks(types)
   getDeskCabinets(types)
+
+  getTrough("birch", "chicken")
+  getTrough("oak", "cow")
+  getTrough("spruce", "pig")
+  getTrough("dark_oak", "sheep")
