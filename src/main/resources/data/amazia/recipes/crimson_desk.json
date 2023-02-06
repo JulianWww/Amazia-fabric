@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "/ /"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:crimson_log"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "amazia:crimson_desk",
+        "count": 1
+    }
+}

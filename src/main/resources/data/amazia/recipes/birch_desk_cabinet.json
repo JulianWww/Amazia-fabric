@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "/ C"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:birch_log"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        },
+        "C": {
+            "item": "minecraft:chest"
+        }
+    },
+    "result": {
+        "item": "amazia:birch_desk_cabinet",
+        "count": 1
+    }
+}
