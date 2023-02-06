@@ -1,0 +1,35 @@
+name: Generate Assets
+
+on:
+  push:
+    paths:
+    - generators/*
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install requirements
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          python3 -m pip install wget numpy opencv-python
+        
+      - name: Generate
+        run: |
+          python3 generators/token/generate.py
+          python3 generators/makeAmaziaDescription.py
+        
+      - name: Commit to the repo
+        run: |
+          git config --global user.name "JulianWww/generator"
+          git config --global user.email "generator[bot]@JulianWww.github.io"
+          git add .
+          # Force the build to succeed, even if no files were changed
+          git commit -m 'auto generated data'
+          git push
