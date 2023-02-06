@@ -3,7 +3,7 @@ name: Generate Assets
 on:
   push:
     paths:
-    - generators/*
+    - generators/**
 
 permissions:
   contents: write
