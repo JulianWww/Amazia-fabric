@@ -32,5 +32,5 @@ jobs:
           git config --global user.email "generator[bot]@JulianWww.github.io"
           git add .
           # Force the build to succeed, even if no files were changed
-          git commit -m 'auto generated data'
+          git commit -m 'auto generated data' || true
           git push
