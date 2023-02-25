@@ -49,6 +49,8 @@ dependencies {
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinalComponentsVersion}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinalComponentsVersion}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cardinalComponentsVersion}"
+    
+    implementation 'com.github.javafaker:javafaker:1.0.2'
 }
 
 processResources {
