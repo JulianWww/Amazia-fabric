@@ -566,7 +566,12 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 	@Override
 	public void eatFood(final float amount) {
-		this.hunger = (float) Math.min(this.hunger + amount, this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER));
+		this.hunger = Math.min(this.hunger + amount, this.getMaxHunger());
+	}
+
+	@Override
+	public float getMaxHunger() {
+		return (float) this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER);
 	}
 
 	@Override
@@ -662,8 +667,8 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			return false;
 		}
 		intelligence += amount;
-		if (intelligence > 100f) {
-			intelligence = 100f;
+		if (intelligence > this.maxIntelligence()) {
+			intelligence = this.maxIntelligence();
 		}
 		this.dataTracker.set(AmaziaVillagerEntity.INTELLIGENCE, intelligence);
 		return true;
@@ -677,8 +682,8 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	@Override
 	public void gainHappyness(final float amount) {
 		this.happyness = this.happyness + amount;
-		if (this.happyness > 100f) {
-			this.happyness = 100f;
+		if (this.happyness > this.getMaxHappyness()) {
+			this.happyness = this.getMaxHappyness();
 		}
 
 		this.emmitMood(VillagerMoods.HAPPY);

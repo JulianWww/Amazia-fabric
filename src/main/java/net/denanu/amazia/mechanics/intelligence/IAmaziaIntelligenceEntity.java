@@ -13,4 +13,12 @@ public interface IAmaziaIntelligenceEntity {
 	float getIntelligence();
 
 	boolean modifyIntelligence(float amount);
+
+	default float maxIntelligence() {
+		return IAmaziaIntelligenceEntity.maxIntelligence_s();
+	}
+
+	static float maxIntelligence_s() {
+		return 100;
+	}
 }
