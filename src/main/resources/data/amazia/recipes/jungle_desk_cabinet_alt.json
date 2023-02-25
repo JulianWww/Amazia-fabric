@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "C /"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:jungle_log"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        },
+        "C": {
+            "item": "minecraft:chest"
+        }
+    },
+    "result": {
+        "item": "amazia:jungle_desk_cabinet",
+        "count": 1
+    }
+}

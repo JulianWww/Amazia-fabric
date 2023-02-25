@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "/ C"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:stripped_crimson_stem"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        },
+        "C": {
+            "item": "minecraft:chest"
+        }
+    },
+    "result": {
+        "item": "amazia:stripped_crimson_desk_cabinet",
+        "count": 1
+    }
+}

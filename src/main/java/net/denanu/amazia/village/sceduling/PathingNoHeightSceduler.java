@@ -48,6 +48,7 @@ public class PathingNoHeightSceduler extends VillageSceduler {
 
 	@Override
 	public void discover(final ServerWorld world, final BlockPos pos) {
+		NoHeightPathingData table;
 		if (this.tester.test(world.getBlockState(pos))) {
 			this.enchantingTables.add(pos);
 			this.setChanged();
@@ -55,7 +56,8 @@ public class PathingNoHeightSceduler extends VillageSceduler {
 			VillageSceduler.markBlockAsFound(pos, world);
 			Highlighter.highlight(world, this.id, pos);
 		}
-		else if(this.tables.remove(pos) != null) {
+		else if((table = this.tables.remove(pos)) != null) {
+			table.destroy(this.getVillage());
 			this.enchantingTables.remove(pos);
 			this.setChanged();
 			VillageSceduler.markBlockAsLost(pos, world);
@@ -81,6 +83,14 @@ public class PathingNoHeightSceduler extends VillageSceduler {
 	public NoHeightPathingData getLocation() {
 		if (this.tables.size() > 0) {
 			return this.tables.get(JJUtils.getRandomListElement(this.enchantingTables));
+		}
+		return null;
+	}
+
+	@Nullable
+	public NoHeightPathingData getLocation(final Predicate<BlockState> pred) {
+		if (this.tables.size() > 0) {
+			return this.tables.get(JJUtils.getRandomListElement(this.enchantingTables, pred, this.getVillage().getWorld()));
 		}
 		return null;
 	}

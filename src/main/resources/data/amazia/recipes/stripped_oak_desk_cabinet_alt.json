@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "C /"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:stripped_oak_log"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        },
+        "C": {
+            "item": "minecraft:chest"
+        }
+    },
+    "result": {
+        "item": "amazia:stripped_oak_desk_cabinet",
+        "count": 1
+    }
+}

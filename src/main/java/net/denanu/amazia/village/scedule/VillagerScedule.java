@@ -6,7 +6,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
 public class VillagerScedule {
-	private static RandomnessFactory<Integer> WAKEUP_TIME_FACTORY = 	new ConstrainedGaussianIntRandom(23500f, 	400f, 	24000, 	23000);
+	private static RandomnessFactory<Integer> WAKEUP_TIME_FACTORY = 	new ConstrainedGaussianIntRandom(  500f,  	400f, 	1000, 		0);
 	private static RandomnessFactory<Integer> ENDWORK_TIME_FACTORY = 	new ConstrainedGaussianIntRandom( 9000f, 	400f, 	10000, 	 8000);
 	private static RandomnessFactory<Integer> SLEEP_TIME_FACTORY = 		new ConstrainedGaussianIntRandom(12500f, 	400f, 	13000, 	12000);
 
@@ -30,9 +30,9 @@ public class VillagerScedule {
 		if (nbt == null) {
 			this.generate();
 		} else {
-		this.wakeupTime		= VillagerScedule.readOrGenerate(nbt, "WakeupTime", 	VillagerScedule.WAKEUP_TIME_FACTORY);
-		this.endWorkTime	= VillagerScedule.readOrGenerate(nbt, "EndWorkTime", 	VillagerScedule.ENDWORK_TIME_FACTORY);
-		this.sleepTime		= VillagerScedule.readOrGenerate(nbt, "StartSleepTime", VillagerScedule.SLEEP_TIME_FACTORY);
+			this.wakeupTime		= VillagerScedule.readOrGenerate(nbt, "WakeupTime", 	VillagerScedule.WAKEUP_TIME_FACTORY);
+			this.endWorkTime	= VillagerScedule.readOrGenerate(nbt, "EndWorkTime", 	VillagerScedule.ENDWORK_TIME_FACTORY);
+			this.sleepTime		= VillagerScedule.readOrGenerate(nbt, "StartSleepTime", VillagerScedule.SLEEP_TIME_FACTORY);
 		}
 	}
 
@@ -47,14 +47,15 @@ public class VillagerScedule {
 	}
 
 	private VillageActivityGroups computeCurrentActionGroup(final World world) {
-		long time = world.getTimeOfDay();
-		if (this.pastGetUpTime(time) && !this.pastRelaxTime(time)) {
-			return VillageActivityGroups.WORK;
+		final long time = world.getTimeOfDay() % 24000;
+		if (this.pastGetUpTime(time)) {
+			if (!this.pastRelaxTime(time)) {
+				return VillageActivityGroups.WORK;
+			}
+			if (!this.isPastBeadTime(time)) {
+				return VillageActivityGroups.RECREATION;
+			}
 		}
-		if (!this.isPastBeadTime(time)) {
-			return VillageActivityGroups.RECREATION;
-		}
-
 		return VillageActivityGroups.SLEEP;
 	}
 
@@ -75,6 +76,6 @@ public class VillagerScedule {
 	}
 
 	private boolean pastGetUpTime(final long time) {
-		return time > this.wakeupTime || time < 12000;
+		return time > this.wakeupTime;
 	}
 }

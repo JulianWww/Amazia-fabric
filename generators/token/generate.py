@@ -1,0 +1,50 @@
+import wget
+from os import remove, path, chdir, system
+import cv2
+import numpy as np
+
+abspath = path.abspath(__file__)
+dname = path.dirname(abspath)
+chdir(dname)
+
+mc_version = "1.19.3"
+path = f"https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.19.3/assets/minecraft/textures/item/"
+outPath = "../../src/main/resources/assets/amazia/textures/item/tokens/"
+
+images = {
+  "miner": "iron_pickaxe",
+  "bard": "music_disc_chirp",
+  "chef": "cooked_beef",
+  "druid": "bone_meal",
+  "cleric": "white_candle",
+  "farmer": "iron_hoe",
+  "rancher": "lead",
+  "teacher": "writable_book",
+  "enchanter": "enchanted_book",
+  "lumberjack": "iron_axe",
+  "blacksmith": "/hammer"
+}
+
+system(f"rm {outPath}*")
+system(f"mkdir {outPath}")
+
+base = cv2.imread("base_token.png", cv2.IMREAD_UNCHANGED)
+
+for entity, img in images.items():
+  file = img[1:] + ".png" if img[0] == "/" else wget.download(path + img + ".png")
+
+  mask = cv2.imread(file, cv2.IMREAD_UNCHANGED)
+  mask = np.pad(mask, ((3,3), (3, 3), (0, 0)), "constant", constant_values = 0)
+
+  pos = np.where(mask[:,:,3] != 0)
+  new_base = np.copy(base)
+  new_base[pos] = mask[pos]
+
+  cv2.imwrite(outPath + entity + ".png", new_base)
+
+
+  if (img[0] != "/"): remove(file)
+  
+  print (f"generated {entity} conversion token")
+
+system(f"cp base_token.png {outPath}base.png")

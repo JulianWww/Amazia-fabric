@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.server.goal;
 
 import javax.annotation.Nullable;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.pathing.PathingPath;
@@ -36,6 +37,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 
 	@Override
 	public void start() {
+		Amazia.LOGGER.info("pathing for" + this.toString());
 		super.start();
 		this.isRunning = true;
 		this.reached = false;
@@ -64,7 +66,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 	}
 
 	protected boolean subShouldContinue() {
-		return this.targetPos != null && !this.reached && (this.path != null && this.path.getLength() > 1 || this.directMovement);
+		return this.targetPos != null && !this.reached && (this.path != null && this.path.getLength() > 1 || this.directMovement) && super.shouldContinue();
 	}
 
 	@Override
@@ -129,12 +131,11 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		this.ticksStanding = 0;
 	}
 
-	protected void fail() {};
+	protected void fail() {}
 
 	private void getNewTargetPos() {
 		if (this.targetPos == null) {
 			this.targetPos = this.getTargetBlock();
-			return;
 		}
 	}
 

@@ -33,6 +33,8 @@
 	"profession.amazia.toolsmith": "Toolsmith",
 	"profession.amazia.weaponsmith": "Weaponsmith",
 	
+	"entity.amazia.lumberjack": "Lumberjack",
+	
 	"amazia:village-enemies-glow": "Village Enemies Glow",
 	
 	"amazia:attribute.villager.max_hunger": "Max Hunger",

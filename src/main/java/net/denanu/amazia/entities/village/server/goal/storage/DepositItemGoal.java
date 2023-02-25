@@ -48,7 +48,7 @@ public class DepositItemGoal extends BaseAmaziaVillageGoal<AmaziaVillagerEntity>
 
 	@Override
 	public boolean shouldContinue() {
-		return this.canStart() && !this.isDone;
+		return this.canStart() && !this.isDone && super.shouldContinue();
 	}
 
 	@Override

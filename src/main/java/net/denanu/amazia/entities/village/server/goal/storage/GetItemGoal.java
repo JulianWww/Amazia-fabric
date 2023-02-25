@@ -49,7 +49,7 @@ public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> impleme
 
 	@Override
 	public boolean shouldContinue() {
-		return this.canStart() && !this.isDone;
+		return this.canStart() && !this.isDone  && super.shouldContinue();
 	}
 
 	@Override
@@ -66,7 +66,6 @@ public class GetItemGoal extends AmaziaVillageGoal<AmaziaVillagerEntity> impleme
 		super.stop();
 		this.target = null;
 		this.item = null;
-		return;
 	}
 
 	@Override

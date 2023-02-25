@@ -15,6 +15,7 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.Identifier;
 
 public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 	Collection<StatusEffectInstance> activeStatusEffects = new ArrayList<>();
@@ -56,20 +57,49 @@ public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 		return this.deleget.get(0);
 	}
 
+	public float getMaxHealth() {
+		return this.entity.getMaxHealth();
+	}
+
 	public int getHunger() {
 		return this.deleget.get(1);
 	}
 
-	public int geHappyness() {
+	public float getMaxHunger() {
+		return this.entity.getMaxHunger();
+	}
+
+	public int getHappyness() {
 		return this.deleget.get(3);
+	}
+
+	public float getMaxHappyness() {
+		return this.entity.getMaxHappyness();
 	}
 
 	public int getIntelligence() {
 		return (int) this.entity.getIntelligence();
 	}
 
+	public float getMaxIntelligence() {
+		return this.entity.maxIntelligence();
+	}
+
 	public int getEducation() {
 		return this.deleget.get(2);
+	}
+
+	public float getMaxEducation() {
+		return this.entity.maxEducation();
+	}
+
+	public Identifier getProfessionId() {
+		return this.entity.getProfession();
+	}
+
+	public Identifier getProfessionTokenId() {
+		final Identifier profession = this.getProfessionId();
+		return Identifier.of(profession.getNamespace(), new StringBuilder().append("textures/item/tokens/").append(profession.getPath()).append(".png").toString());
 	}
 
 	@Override

@@ -42,7 +42,7 @@ public class Village {
 	private final MineingSceduler mineing;
 	private final LumberSceduler  lumber;
 	private final RancherSceduler ranching;
-	private final PathingNoHeightSceduler enchanting, desks, chair;
+	private final PathingNoHeightSceduler enchanting, desks, chair, beds;
 	private final AbstractFurnaceSceduler smelting;
 	private final AbstractFurnaceSceduler blasting;
 	private final AbstractFurnaceSceduler smoking;
@@ -68,6 +68,7 @@ public class Village {
 		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable, 	BlockHighlightingAmaziaIds.ENCHANTING);
 		this.desks		 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isDesk, 			BlockHighlightingAmaziaIds.DESK);
 		this.chair			= new PathingNoHeightSceduler	(this, ScedulingPredicates::isChair, 			BlockHighlightingAmaziaIds.CHAIR);
+		this.beds			= new PathingNoHeightSceduler	(this, ScedulingPredicates::isBed, 				BlockHighlightingAmaziaIds.BEDS);
 		this.smelting	 	= new AbstractFurnaceSceduler	(this, Blocks.FURNACE.getClass(),				BlockHighlightingAmaziaIds.NORMAL_FURNACES);
 		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass(), 		BlockHighlightingAmaziaIds.BLAST_FURNACES);
 		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass(), 				BlockHighlightingAmaziaIds.SMOKER_FURNACES);
@@ -105,6 +106,7 @@ public class Village {
 		this.library.initialize();
 		this.desks.initialize();
 		this.chair.initialize();
+		this.beds.initialize();
 
 		this.register(this.coreBlock.getWorld());
 	}
@@ -143,6 +145,7 @@ public class Village {
 		nbt.put("library",			this.library.		writeNbt());
 		nbt.put("desk", 			this.desks.			writeNbt());
 		nbt.put("chair", 			this.chair.			writeNbt());
+		nbt.put("bed",				this.beds.			writeNbt());
 		return nbt;
 	}
 	public void readNbt(final NbtCompound nbt) {
@@ -161,6 +164,7 @@ public class Village {
 		this.library.		readNbt(nbt.getCompound("library"));
 		this.desks.			readNbt(nbt.getCompound("desk"));
 		this.chair.			readNbt(nbt.getCompound("chair"));
+		this.beds.			readNbt(nbt.getCompound("bed"));
 	}
 
 	public boolean isValid() {
@@ -190,6 +194,7 @@ public class Village {
 		this.library.		discover(world, blockPos);
 		this.desks.			discover(world, blockPos);
 		this.chair.			discover(world, blockPos);
+		this.beds.			discover(world, blockPos);
 	}
 
 
@@ -246,6 +251,9 @@ public class Village {
 	}
 	public PathingNoHeightSceduler getChairs() {
 		return this.chair;
+	}
+	public PathingNoHeightSceduler getBeds() {
+		return this.beds;
 	}
 
 	public static int getSize() {
