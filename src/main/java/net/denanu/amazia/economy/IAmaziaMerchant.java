@@ -16,31 +16,31 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 public interface IAmaziaMerchant {
-	public float getProfitMargin();
-	
-	public Collection<String> getTradePossibilities();
-	
-	public AmaziaTradeOfferList getOffers();
-	
-	public void setOffersFromServer(AmaziaTradeOfferList offers);
-	
-	public void setCustomer(PlayerEntity player);
-	
-	default public void sendOffers(PlayerEntity player2, AmaziaTradeOfferList trades, Text name, LivingEntity merchant) {
+	float getProfitMargin();
+
+	Collection<String> getTradePossibilities();
+
+	AmaziaTradeOfferList getOffers();
+
+	void setOffersFromServer(AmaziaTradeOfferList offers);
+
+	void setCustomer(PlayerEntity player);
+
+	default void sendOffers(final PlayerEntity player2, final AmaziaTradeOfferList trades, final Text name, final LivingEntity merchant) {
 		trades.finalize(merchant);
-		OptionalInt optionalInt = player2.openHandledScreen(new SimpleNamedScreenHandlerFactory((syncId, playerInventory, player) -> new TradingScreenHandler(syncId, playerInventory, this), name));
+		final OptionalInt optionalInt = player2.openHandledScreen(new SimpleNamedScreenHandlerFactory((syncId, playerInventory, player) -> new TradingScreenHandler(syncId, playerInventory, this), name));
 		if (optionalInt.isPresent() && !trades.isEmpty()) {
-			PacketByteBuf buf = PacketByteBufs.create();
+			final PacketByteBuf buf = PacketByteBufs.create();
 			buf.writeInt(optionalInt.getAsInt());
-			ServerPlayNetworking.send((ServerPlayerEntity) (player2), AmaziaNetworking.SET_TRADE_OFFERS, trades.toPacket(buf));
-        }
-    }
+			ServerPlayNetworking.send((ServerPlayerEntity) player2, AmaziaNetworking.S2C.SET_TRADE_OFFERS, trades.toPacket(buf));
+		}
+	}
 
-	public boolean isClient();
+	boolean isClient();
 
-	public void onSellingItem(ItemStack stack);
+	void onSellingItem(ItemStack stack);
 
-	public PlayerEntity getCustomer();
+	PlayerEntity getCustomer();
 
-	public void trade(AmaziaTradeOffer tradeOffer);
+	void trade(AmaziaTradeOffer tradeOffer);
 }

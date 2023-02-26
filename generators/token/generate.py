@@ -2,6 +2,7 @@ import wget
 from os import remove, path, chdir, system
 import cv2
 import numpy as np
+import json
 
 abspath = path.abspath(__file__)
 dname = path.dirname(abspath)
@@ -48,3 +49,59 @@ for entity, img in images.items():
   print (f"generated {entity} conversion token")
 
 system(f"cp base_token.png {outPath}base.png")
+
+print(f"Generating token based advancements")
+
+outPath = "../../src/main/resources/data/amazia/advancements/village/"
+
+villagerTypes: {
+  "miner": 100,
+  "bard": 100,
+  "chef": 100,
+  "druid": 100,
+  "cleric": 100,
+  "farmer": 100,
+  "rancher": 100,
+  "teacher": 100,
+  "enchanter": 100,
+  "lumberjack": 100,
+  "blacksmith": 100
+}
+
+def genAchivement(villager):
+	return{
+	  "parent": "amazia:village/root",
+	  "criteria": {
+	    "make_bard": {
+	      "conditions": {
+		"item": {
+		    f"amazia:{villager}_transformation_token"
+		}
+	      },
+	      "trigger": "minecraft:using_item"
+	    }
+	  },
+	  "display": {
+	    "announce_to_chat": True,
+	    "description": {
+	      "translate": f"advancements.village.{villager}.description"
+	    },
+	    "frame": "goal",
+	    "icon": {
+	      "item": f"amazia:{villager}_transformation_token"
+	    },
+	    "show_toast": True,
+	    "title": {
+	      "translate": f"advancements.village.{villager}.title"
+	    }
+	  },
+	  "rewards": {
+	    "experience": 85
+	  }
+	}
+
+for villager, reward in villagerTypes.items():
+	with open(outPath + villager + ".json", "w") as file:
+		json.dump(genAchivement(villager), file, indent=4)
+
+for type in 

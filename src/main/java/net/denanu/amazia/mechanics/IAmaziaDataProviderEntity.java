@@ -5,6 +5,7 @@ import net.denanu.amazia.mechanics.happyness.IAmaziaHappynessEntity;
 import net.denanu.amazia.mechanics.hunger.IAmaziaFoodConsumerEntity;
 import net.denanu.amazia.mechanics.intelligence.IAmaziaIntelligenceEntity;
 import net.denanu.amazia.mechanics.leveling.IAmaziaLevelProviderEntity;
+import net.minecraft.util.Identifier;
 
 public interface IAmaziaDataProviderEntity extends
 IAmaziaLevelProviderEntity,
@@ -12,4 +13,6 @@ IAmaziaFoodConsumerEntity,
 IAmaziaIntelligenceEntity,
 IAmaziaEducatedEntity,
 IAmaziaHappynessEntity
-{}
+{
+	Identifier getProfession();
+}

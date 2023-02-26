@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
+
 public class AmaziaItems {
 	public static final Item RUBY = AmaziaItems.registerItem("ruby",
 			new Item(new FabricItemSettings().group(AmaziaItemGroup.VILLAGE)));

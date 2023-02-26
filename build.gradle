@@ -40,6 +40,7 @@ dependencies {
 	modImplementation "net.denanu.BlockHighlighting:BlockHighlighting-${project.minecraft_version}:${BlockHighlighting_version}"
 	modImplementation "net.denanu.DynamicSoundManager:DynamicSoundManager-${project.minecraft_version}:${DynamicSoundManagerVersion}"
 	modImplementation "net.denanu.StoppableSound:StoppableSound-${project.minecraft_version}:${StoppableSound_version}"
+	modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
 
 
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinalComponentsVersion}"

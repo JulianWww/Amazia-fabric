@@ -15,6 +15,7 @@ import net.denanu.amazia.block.entity.AmaziaBlockEntities;
 import net.denanu.amazia.commands.AmaziaCommand;
 import net.denanu.amazia.commands.AmaziaGameRules;
 import net.denanu.amazia.commands.args.AmaziaArgumentTypes;
+import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
 import net.denanu.amazia.data.AmaziaStatusEffects;
 import net.denanu.amazia.data.LootTables;
 import net.denanu.amazia.economy.Economy;
@@ -94,6 +95,11 @@ public class Amazia implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			Amazia.chunkScanner = server.getWorld(World.OVERWORLD).getPersistentStateManager()
 					.getOrCreate(ChunkScanner::fromNbt, ChunkScanner::init, Amazia.MOD_ID + ":structures");
+		});
+
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			server.getWorld(World.OVERWORLD).getPersistentStateManager()
+			.getOrCreate(NamingLanguageOptions.Loader::fromNbt, NamingLanguageOptions.Loader::loadDefault, Amazia.MOD_ID + ":config");
 		});
 
 		// Networking

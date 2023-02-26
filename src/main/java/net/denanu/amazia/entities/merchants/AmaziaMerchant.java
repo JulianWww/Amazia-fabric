@@ -25,12 +25,13 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -51,9 +52,9 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IAnimatable {
-	
-	private AnimationFactory factory = new AnimationFactory(this);
-	
+
+	private final AnimationFactory factory = new AnimationFactory(this);
+
 	String profession;
 	@Nullable
 	private PlayerEntity customer;
@@ -61,68 +62,66 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 	protected AmaziaTradeOfferList offers;
 	private BlockPos home;
 
-	public AmaziaMerchant(EntityType<? extends PassiveEntity> entityType, World world) {
+	public AmaziaMerchant(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
-		return;
 	}
-	
+
 	@Override
-    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
-		EntityData data = super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+	public EntityData initialize(final ServerWorldAccess world, final LocalDifficulty difficulty, final SpawnReason spawnReason, @Nullable final EntityData entityData, @Nullable final NbtCompound entityNbt) {
+		final EntityData data = super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
 		this.home = this.getBlockPos();
 		return data;
 	}
-	
+
 	@Override
-    public boolean cannotDespawn() {
-    	return true;
-    }
-	
+	public boolean cannotDespawn() {
+		return true;
+	}
+
 	@Override
-    protected void initGoals() {
+	protected void initGoals() {
 		this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new EscapeDangerGoal(this, 2.0));
-        this.goalSelector.add(3, new TemptGoal(this, 1, Ingredient.ofItems(Items.EMERALD, Items.EMERALD_BLOCK), false));
+		this.goalSelector.add(1, new EscapeDangerGoal(this, 2.0));
+		this.goalSelector.add(3, new TemptGoal(this, 1, Ingredient.ofItems(Items.EMERALD, Items.EMERALD_BLOCK), false));
 		this.goalSelector.add(7, new WonderAroundSameYGoal(this, 0.5));
 		this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
 		this.goalSelector.add(9, new LookAroundGoal(this));
 	}
-	
-	@Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        nbt.put("home", NbtUtils.toNbt(this.home));
-        nbt.putString("profession", this.profession);
-        if (this.offers != null) { nbt.put("Trades", this.offers.toNbt()); }
-    }
 
-    @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        this.home = NbtUtils.toBlockPos(nbt.getList("home", NbtList.INT_TYPE));
-        this.profession = nbt.getString("profession");
-        this.offers = new AmaziaTradeOfferList(nbt.getCompound("Trades"));
-        return;
-    }
-	
 	@Override
-	public PassiveEntity createChild(ServerWorld var1, PassiveEntity var2) {
+	public void writeCustomDataToNbt(final NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		nbt.put("home", NbtUtils.toNbt(this.home));
+		nbt.putString("profession", this.profession);
+		if (this.offers != null) { nbt.put("Trades", this.offers.toNbt()); }
+	}
+
+	@Override
+	public void readCustomDataFromNbt(final NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		this.home = NbtUtils.toBlockPos(nbt.getList("home", NbtElement.INT_TYPE));
+		this.profession = nbt.getString("profession");
+		this.offers = new AmaziaTradeOfferList(nbt.getCompound("Trades"));
+	}
+
+	@Override
+	public PassiveEntity createChild(final ServerWorld var1, final PassiveEntity var2) {
 		return null;
 	}
-	
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
-            return PlayState.CONTINUE;
-        }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
-        return PlayState.CONTINUE;
-    }
+	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
+		if (event.isMoving()) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
+			return PlayState.CONTINUE;
+		}
+
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
+		return PlayState.CONTINUE;
+	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<AmaziaMerchant>(this, "controller", 0, this::predicate));
+	public void registerControllers(final AnimationData data) {
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -131,37 +130,38 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 	}
 
 	public static DefaultAttributeContainer.Builder setAttributes() {
-        return PassiveEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2f);
-    }
-	
-	// Merchant
-	
-	@Override
-    public ActionResult interactMob(PlayerEntity player, Hand hand) {
-		if (this.isAlive() && !this.hasCustomer() && !this.isBaby()) {
-			if (hand == Hand.MAIN_HAND) {
-                player.incrementStat(Stats.TALKED_TO_VILLAGER);
-            }
-            /*if (this.getOffers().isEmpty()) {
-                return ActionResult.success(this.world.isClient);
-            }*/
-            if (!this.world.isClient) {
-                this.setCustomer(player);
-                this.sendOffers(player, this.getOffers(), this.getName(), this);
-            }
-            return ActionResult.success(this.world.isClient);
-		}
-        return super.interactMob(player, hand);
-    }
-	
-	@Override
-	public Text getDefaultName() {
-		return this.profession != "" ? Text.translatable("profession." + profession) : super.getDefaultName();
-		
+		return MobEntity.createMobAttributes()
+				.add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
+				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2f);
 	}
 
+	// Merchant
+
+	@Override
+	public ActionResult interactMob(final PlayerEntity player, final Hand hand) {
+		if (this.isAlive() && !this.hasCustomer() && !this.isBaby()) {
+			if (hand == Hand.MAIN_HAND) {
+				player.incrementStat(Stats.TALKED_TO_VILLAGER);
+			}
+			/*if (this.getOffers().isEmpty()) {
+                return ActionResult.success(this.world.isClient);
+            }*/
+			if (!this.world.isClient) {
+				this.setCustomer(player);
+				this.sendOffers(player, this.getOffers(), this.getName(), this);
+			}
+			return ActionResult.success(this.world.isClient);
+		}
+		return super.interactMob(player, hand);
+	}
+
+	@Override
+	public Text getDefaultName() {
+		return this.profession != "" ? Text.translatable("profession." + this.profession) : super.getDefaultName();
+
+	}
+
+	@Override
 	public AmaziaTradeOfferList getOffers() {
 		if (this.offers == null || this.offers.isEmpty()) {
 			Amazia.LOGGER.info("Built trades");
@@ -187,22 +187,23 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 		return Economy.getTrades(8, this.profession);
 	}
 
+	@Override
 	@Nullable
 	public PlayerEntity getCustomer() {
-		return customer;
+		return this.customer;
 	}
 
 	@Override
-	public void setCustomer(PlayerEntity customer) {
+	public void setCustomer(final PlayerEntity customer) {
 		this.customer = customer;
 	}
-	
+
 	public boolean hasCustomer() {
 		return this.customer != null;
 	}
 
 	@Override
-	public void setOffersFromServer(AmaziaTradeOfferList offers) {
+	public void setOffersFromServer(final AmaziaTradeOfferList offers) {
 	}
 
 	@Override
@@ -211,21 +212,21 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 	}
 
 	@Override
-	public void onSellingItem(ItemStack stack) {
+	public void onSellingItem(final ItemStack stack) {
 	}
 
 	@Override
-    public void trade(AmaziaTradeOffer offer) {
-        offer.use();
-        this.ambientSoundChance = -this.getMinAmbientSoundDelay();
-        this.afterUsing(offer);
-    }
+	public void trade(final AmaziaTradeOffer offer) {
+		offer.use();
+		this.ambientSoundChance = -this.getMinAmbientSoundDelay();
+		this.afterUsing(offer);
+	}
 
-	private void afterUsing(AmaziaTradeOffer offer) {
+	private void afterUsing(final AmaziaTradeOffer offer) {
 		if (this.world.isClient) { throw new RuntimeException("runnign server script on client"); }
-		
+
 		offer.updateModifiers(this);
 		Amazia.economy.getItem(offer.getKey()).updatePrice(offer.getQuantity(), offer.isBuy());
-		ServerPlayNetworking.send((ServerPlayerEntity)this.customer, AmaziaNetworking.SET_TRADE_OFFERS, AmaziaSetTradeOffersS2CPacket.toBuf(this.customer.currentScreenHandler.syncId, this.getOffers()));
+		ServerPlayNetworking.send((ServerPlayerEntity)this.customer, AmaziaNetworking.S2C.SET_TRADE_OFFERS, AmaziaSetTradeOffersS2CPacket.toBuf(this.customer.currentScreenHandler.syncId, this.getOffers()));
 	}
 }

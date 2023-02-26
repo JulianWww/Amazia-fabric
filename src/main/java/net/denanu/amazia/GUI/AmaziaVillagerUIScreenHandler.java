@@ -15,6 +15,7 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
@@ -113,5 +114,9 @@ public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 
 	public void tick() {
 
+	}
+
+	public Text getCustomName() {
+		return this.entity.getCustomName();
 	}
 }

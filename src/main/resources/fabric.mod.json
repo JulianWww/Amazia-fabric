@@ -28,7 +28,10 @@
             ],
             "cardinal-components-block": [
                   "net.denanu.amazia.components.AmaziaBlockComponents"
-            ]
+            ],
+            "modmenu": [
+      		"net.denanu.amazia.compat.modmenu.ModMenuImpl"
+    	    ]
       },
       "mixins": [
             "amazia.mixins.json"

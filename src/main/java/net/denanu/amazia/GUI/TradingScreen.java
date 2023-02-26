@@ -47,7 +47,7 @@ extends HandledScreen<TradingScreenHandler> {
 	private void syncRecipeIndex() {
 		this.handler.setRecipeIndex(this.selectedIndex);
 		this.handler.switchTo(this.selectedIndex);
-		ClientPlayNetworking.send(AmaziaNetworking.MERCHANT_TRADE_SELECT, AmaziaMerchantTradeSelectC2SPacket.toBuf(this.selectedIndex));
+		ClientPlayNetworking.send(AmaziaNetworking.C2S.MERCHANT_TRADE_SELECT, AmaziaMerchantTradeSelectC2SPacket.toBuf(this.selectedIndex));
 	}
 
 	@Override
@@ -119,7 +119,6 @@ extends HandledScreen<TradingScreenHandler> {
 		if (j < k || !VillagerData.canLevelUp(i)) {
 			return;
 		}
-		final int l = 100;
 		final float f = 100.0f / (VillagerData.getUpperLevelExperience(i) - k);
 		final int m = Math.min(MathHelper.floor(f * (j - k)), 100);
 		DrawableHelper.drawTexture(matrices, x + 136, y + 16, this.getZOffset(), 0.0f, 191.0f, m + 1, 5, 512, 256);
@@ -135,7 +134,6 @@ extends HandledScreen<TradingScreenHandler> {
 		if (i > 1) {
 			final int j = 139 - (27 + (i - 1) * 139 / i);
 			final int k = 1 + j / i + 139 / i;
-			final int l = 113;
 			int m = Math.min(113, this.indexStartOffset * k);
 			if (this.indexStartOffset == i - 1) {
 				m = 113;

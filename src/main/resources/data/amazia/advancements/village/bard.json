@@ -1,0 +1,30 @@
+{
+  "parent": "amazia:village/root",
+  "criteria": {
+    "make_bard": {
+      "conditions": {
+        "item": {
+            "amazia:bard_transformation_token"
+        }
+      },
+      "trigger": "minecraft:using_item"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.village.bard.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "item": "amazia:bard_transformation_token"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.village.bard.title"
+    }
+  },
+  "rewards": {
+    "experience": 85
+  }
+}

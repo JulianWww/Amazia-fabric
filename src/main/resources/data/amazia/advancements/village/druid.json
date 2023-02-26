@@ -1,0 +1,30 @@
+{
+  "parent": "amazia:village/root",
+  "criteria": {
+    "make_druid": {
+      "conditions": {
+        "item": {
+            "amazia:druid_transformation_token"
+        }
+      },
+      "trigger": "minecraft:using_item"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.village.druid.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "item": "amazia:druid_transformation_token"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.village.druid.title"
+    }
+  },
+  "rewards": {
+    "experience": 85
+  }
+}
