@@ -3,7 +3,7 @@
     "criteria": {
         "make_bard": {
             "conditions": {
-                "item": "amazia:miner_transformation_token"
+                "item": "amazia:enchanter_transformation_token"
             },
             "trigger": "minecraft:using_item"
         }
@@ -11,15 +11,15 @@
     "display": {
         "announce_to_chat": true,
         "description": {
-            "translate": "advancements.village.miner.description"
+            "translate": "advancements.village.enchanter.description"
         },
         "frame": "goal",
         "icon": {
-            "item": "amazia:miner_transformation_token"
+            "item": "amazia:enchanter_transformation_token"
         },
         "show_toast": true,
         "title": {
-            "translate": "advancements.village.miner.title"
+            "translate": "advancements.village.enchanter.title"
         }
     },
     "rewards": {

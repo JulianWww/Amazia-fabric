@@ -54,7 +54,7 @@ print(f"Generating token based advancements")
 
 outPath = "../../src/main/resources/data/amazia/advancements/village/"
 
-villagerTypes: {
+villagerTypes = {
   "miner": 100,
   "bard": 100,
   "chef": 100,
@@ -69,14 +69,12 @@ villagerTypes: {
 }
 
 def genAchivement(villager):
-	return{
+	return {
 	  "parent": "amazia:village/root",
 	  "criteria": {
 	    "make_bard": {
 	      "conditions": {
-		"item": {
-		    f"amazia:{villager}_transformation_token"
-		}
+		"item": f"amazia:{villager}_transformation_token"
 	      },
 	      "trigger": "minecraft:using_item"
 	    }
@@ -103,5 +101,3 @@ def genAchivement(villager):
 for villager, reward in villagerTypes.items():
 	with open(outPath + villager + ".json", "w") as file:
 		json.dump(genAchivement(villager), file, indent=4)
-
-for type in 
