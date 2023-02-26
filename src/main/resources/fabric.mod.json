@@ -30,8 +30,8 @@
                   "net.denanu.amazia.components.AmaziaBlockComponents"
             ],
             "modmenu": [
-      		"net.denanu.amazia.compat.modmenu.ModMenuImpl"
-    	    ]
+                  "net.denanu.amazia.compat.modmenu.ModMenuImpl"
+            ]
       },
       "mixins": [
             "amazia.mixins.json"
