@@ -1,0 +1,37 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_items_amazia:stripped_birch_desk_cabinet": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:stripped_birch_log",
+              "minecraft:stick",
+              "minecraft:chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "amazia:stripped_birch_desk_cabinet"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_items_amazia:stripped_birch_desk_cabinet",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "amazia:stripped_birch_desk_cabinet"
+    ],
+    "experience": 1000
+  }
+}

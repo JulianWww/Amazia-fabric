@@ -14,7 +14,7 @@ public class AmaziaItems {
 	public static final Item RUBY = AmaziaItems.registerItem("ruby",
 			new Item(new FabricItemSettings().group(AmaziaItemGroup.VILLAGE)));
 
-	public static final Item BOOK_OF_INTELLIGENCE = AmaziaItems.registerItem("book_of_intelligence",
+	public static final Item BOOK_OF_INTELLIGENCE = AmaziaItems.registerItem("book_of_intelligence", // uncraftable
 			new IntelligenceBoostingBookItem(new FabricItemSettings()
 					.rarity(Rarity.EPIC)
 					.group(AmaziaItemGroup.VILLAGE)
@@ -100,6 +100,12 @@ public class AmaziaItems {
 			);
 
 	public static final Item LUMBERJACK_TOKEN = AmaziaItems.registerItem("lumberjack_transformation_token",
+			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
+					AmaziaEntities.LUMBERJACK
+					)
+			);
+
+	public static final Item GUARD_TOKEN = AmaziaItems.registerItem("guard_transformation_token",
 			new VillagerTransformationTokenItem<>(AmaziaItems.tokenSettings(),
 					AmaziaEntities.LUMBERJACK
 					)

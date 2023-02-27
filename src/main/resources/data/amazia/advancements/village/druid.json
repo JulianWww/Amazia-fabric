@@ -1,9 +1,13 @@
 {
-    "parent": "amazia:village/root",
+    "parent": "amazia:village/farmer",
     "criteria": {
         "make_bard": {
             "conditions": {
-                "item": "amazia:druid_transformation_token"
+                "item": {
+                    "items": [
+                        "amazia:druid_transformation_token"
+                    ]
+                }
             },
             "trigger": "minecraft:using_item"
         }
@@ -13,7 +17,7 @@
         "description": {
             "translate": "advancements.village.druid.description"
         },
-        "frame": "goal",
+        "frame": "task",
         "icon": {
             "item": "amazia:druid_transformation_token"
         },
@@ -23,6 +27,6 @@
         }
     },
     "rewards": {
-        "experience": 85
+        "experience": 100
     }
 }

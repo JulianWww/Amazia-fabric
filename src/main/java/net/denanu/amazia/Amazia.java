@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.advancement.criterion.AmaziaCriterions;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.AmaziaBlockEntities;
 import net.denanu.amazia.commands.AmaziaCommand;
@@ -132,6 +133,7 @@ public class Amazia implements ModInitializer {
 
 		// Status effects
 		AmaziaStatusEffects.setup();
+		AmaziaCriterions.setup();
 	}
 
 	public static VillageManager getVillageManager() {

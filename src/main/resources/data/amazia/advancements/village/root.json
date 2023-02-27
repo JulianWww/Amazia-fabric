@@ -1,24 +1,42 @@
 {
-	"criteria": {
-		"first_village": {
-			"conditions": {
-				"block": "amazia:village_core"
-			},
-			"trigger": "minecraft:placed_block"
-		}
-	},
-	"display": {
-		"background": "minecraft:textures/block/oak_log.png",
-		"description": {
-			"translate": "advancements.village.root.description"
-		},
-		"frame": "task",
-		"hidden": false,
-		"icon": {
-			"item": "amazia:village_core"
-		},
-		"title": {
-			"translate": "advancements.village.root.title"
-		}
-	}
+    "criteria": {
+        "first_village": {
+            "conditions": {
+                "block": "amazia:village_core"
+            },
+            "trigger": "minecraft:placed_block"
+        }
+    },
+    "display": {
+        "background": "minecraft:textures/block/oak_log.png",
+        "description": {
+            "translate": "advancements.village.root.description"
+        },
+        "frame": "task",
+        "hidden": false,
+        "icon": {
+            "item": "amazia:village_core"
+        },
+        "title": {
+            "translate": "advancements.village.root.title"
+        }
+    },
+    "rewards": {
+        "recipes": [
+            "miner_transformation_token",
+            "bard_transformation_token",
+            "chef_transformation_token",
+            "druid_transformation_token",
+            "cleric_transformation_token",
+            "farmer_transformation_token",
+            "rancher_transformation_token",
+            "teacher_transformation_token",
+            "enchanter_transformation_token",
+            "lumberjack_transformation_token",
+            "blacksmith_transformation_token",
+            "guard_transformation_token",
+            "base_transformation_token"
+        ],
+        "experience": 10000
+    }
 }

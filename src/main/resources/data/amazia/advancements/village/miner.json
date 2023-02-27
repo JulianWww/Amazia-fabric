@@ -3,7 +3,11 @@
     "criteria": {
         "make_bard": {
             "conditions": {
-                "item": "amazia:miner_transformation_token"
+                "item": {
+                    "items": [
+                        "amazia:miner_transformation_token"
+                    ]
+                }
             },
             "trigger": "minecraft:using_item"
         }
@@ -13,7 +17,7 @@
         "description": {
             "translate": "advancements.village.miner.description"
         },
-        "frame": "goal",
+        "frame": "task",
         "icon": {
             "item": "amazia:miner_transformation_token"
         },
@@ -23,6 +27,6 @@
         }
     },
     "rewards": {
-        "experience": 85
+        "experience": 100
     }
 }

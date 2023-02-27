@@ -18,5 +18,6 @@
     "result": {
         "item": "amazia:oak_desk_cabinet",
         "count": 1
-    }
+    },
+    "group": "amazia:desk_cabinet"
 }

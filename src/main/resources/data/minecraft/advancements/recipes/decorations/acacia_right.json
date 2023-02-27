@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_items_amazia:acacia_right": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:acacia_log"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_items_amazia:acacia_right"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "amazia:acacia_right"
+    ],
+    "experience": 1000
+  }
+}

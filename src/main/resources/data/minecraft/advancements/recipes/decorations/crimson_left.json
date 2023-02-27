@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_items_amazia:crimson_left": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:crimson_stem"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_items_amazia:crimson_left"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "amazia:crimson_left"
+    ],
+    "experience": 1000
+  }
+}

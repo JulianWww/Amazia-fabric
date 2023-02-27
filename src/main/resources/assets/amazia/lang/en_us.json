@@ -123,5 +123,9 @@
 	"advancements.village.lumberjack.title": "Tree master",
 	"advancements.village.lumberjack.description": "Use a Lumberjack Token on a Villager",
 	"advancements.village.blacksmith.title": "Hammer away",
-	"advancements.village.blacksmith.description": "Use a Blacksmith Token on a Villager"
+	"advancements.village.blacksmith.description": "Use a Blacksmith Token on a Villager",
+	"advancements.village.doctorate.title": "Get a PhD",
+	"advancements.village.doctorate.description": "A villager in a village founded by you reaches 80+ Education",
+	"advancements.village.professor.title": "Professor is here",
+	"advancements.village.professor.description": "A teacher in a village founded by you reaches 80+ Education"
 }

@@ -738,7 +738,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	}
 
 	private void updateName() {
-		super.setCustomName(Text.of(Titles.updateTitles(this.getCustomName().getString(), this)));
+		super.setCustomName(Text.of(Titles.updateTitles(this.getCustomName().getString(), this, this.hasVillage() ? this.getVillage().getMayor() : null)));
 	}
 
 	@Override

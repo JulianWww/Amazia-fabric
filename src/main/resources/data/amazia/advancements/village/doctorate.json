@@ -1,0 +1,28 @@
+{
+    "parent": "amazia:village/teacher",
+    "criteria": {
+        "doctorate": {
+            "conditions": {
+                "title": "phd"
+            },
+            "trigger": "amazia:gain_title"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.doctorate.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "minecraft:writable_book"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.doctorate.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}
