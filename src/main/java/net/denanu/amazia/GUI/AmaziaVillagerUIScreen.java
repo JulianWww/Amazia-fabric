@@ -8,7 +8,6 @@ import com.google.common.collect.Ordering;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.mixin.StatusEffectInstanceMixin;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -17,6 +16,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -44,41 +44,59 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 
 	@Override
 	protected void drawForeground(final MatrixStack matrices, final int mouseX, final int mouseY) {
-		this.textRenderer.draw(matrices,
-				Text.literal("Health: ").append(Integer.toString(this.getScreenHandler().getHealth())),
-				this.playerInventoryTitleX, this.titleY, 0x404040);
-
-		this.textRenderer.draw(matrices,
-				Text.literal("Food: ").append(Integer.toString(this.getScreenHandler().getHunger())),
-				this.playerInventoryTitleX, this.titleY + 10, 0x404040);
-
-		this.textRenderer.draw(matrices,
-				Text.literal("IQ: ").append(Integer.toString(this.getScreenHandler().getIntelligence())),
-				this.playerInventoryTitleX, this.titleY + 20, 0x404040);
-
-		this.textRenderer.draw(matrices,
-				Text.literal("Education: ").append(Integer.toString(this.getScreenHandler().getEducation())),
-				this.playerInventoryTitleX, this.titleY + 30, 0x404040);
-
-		this.textRenderer.draw(matrices,
-				Text.literal("Happyness: ").append(Integer.toString(this.getScreenHandler().geHappyness())),
-				this.playerInventoryTitleX, this.titleY + 40, 0x404040);
-
+		this.textRenderer.draw(matrices, this.title, this.backgroundWidth / 2 - this.textRenderer.getWidth(this.title) / 2, 6.0f, 0x404040);
 		this.renderProfessions(matrices);
+		this.renderProgressBars(matrices);
+		this.renderName(matrices);
 	}
 
-	private void renderProfessions(final MatrixStack matrices) {
-		var offset = 0;
-		for (var idx = 0; idx < AmaziaProfessions.PROFESSIONS.size(); idx++) {
-			final var lvl = this.getScreenHandler().getProfessionLevel(idx);
-			if (lvl > 0) {
-				this.textRenderer.draw(matrices,
-						Text.translatable(AmaziaProfessions.PROFESSIONS.get(idx).toTranslationKey()).append(": ")
-						.append(Integer.toString(lvl)),
-						this.playerInventoryTitleX, this.titleY + 50 + 10 * offset, 0x404040);
-				offset++;
-			}
+	private void renderName(final MatrixStack stack) {
+		this.textRenderer.draw(stack, this.getScreenHandler().getCustomName(), 133, 21, 0x404040);
+	}
+
+	private void renderProgressBars(final MatrixStack stack) {
+		this.renderProgressBar(stack, 129, 44,  this.getScreenHandler().getHealth(), 		this.getScreenHandler().getMaxHealth(), 		ProgressBarId.HEALTH);
+		this.renderProgressBar(stack, 129, 59,  this.getScreenHandler().getHunger(), 		this.getScreenHandler().getMaxHunger(), 		ProgressBarId.HUNGER);
+		this.renderProgressBar(stack, 129, 75,  this.getScreenHandler().getHappyness(), 	this.getScreenHandler().getMaxHappyness(), 		ProgressBarId.HAPPYNESS);
+		this.renderProgressBar(stack, 129, 92,  this.getScreenHandler().getIntelligence(), 	this.getScreenHandler().getMaxIntelligence(),	ProgressBarId.INTELLIGENCE);
+		this.renderProgressBar(stack, 129, 108, this.getScreenHandler().getEducation(), 	this.getScreenHandler().getMaxEducation(), 		ProgressBarId.EDUCATION);
+	}
+
+	private void renderProgressBar(final MatrixStack stack, final int x, final int y, final int val, final float max, final ProgressBarId bar) {
+		final int fillLength = (int)Math.floor(140 * val / max);
+
+		final MutableText label = Text.literal(Integer.toString(val));
+
+		final int txtWidth = this.textRenderer.getWidth(label);
+		int txtPos = x + fillLength - txtWidth / 2;
+		final int rightLim = 269;
+		if (x + fillLength + txtWidth > rightLim) {
+			txtPos = rightLim - txtWidth;
 		}
+		else if (txtPos < x) {
+			txtPos = x;
+		}
+
+		this.textRenderer.draw(stack, label, txtPos, y+6, 0x000000);
+
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, AmaziaVillagerUIScreen.TEXTURE);
+		DrawableHelper.drawTexture(stack, x, y, this.getZOffset(), 0, bar.pos, fillLength, 5, 512, 256);
+
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		DrawableHelper.drawTexture(stack, x, y+1, this.getZOffset(), 0, ProgressBarId.SHADER.pos, 140, 3, 512, 256);
+		RenderSystem.disableBlend();
+	}
+
+	private void renderProfessions(final MatrixStack stack) {
+		this.renderProfessionToken(stack);
+	}
+
+	private void renderProfessionToken(final MatrixStack stack) {
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, this.getScreenHandler().getProfessionTokenId());
+		DrawableHelper.drawTexture(stack, 104, 14, this.getZOffset(), 0, 0, 22, 22, 22, 22);
 	}
 
 	@Override
@@ -214,6 +232,21 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 			}
 		} catch (final ConcurrentModificationException statusEffect) {
 			// empty catch block
+		}
+	}
+
+	private enum ProgressBarId {
+		SHADER(191),
+		HEALTH(166),
+		HUNGER(171),
+		HAPPYNESS(176),
+		INTELLIGENCE(181),
+		EDUCATION(186);
+
+		public int pos;
+
+		ProgressBarId(final int pos) {
+			this.pos = pos;
 		}
 	}
 }

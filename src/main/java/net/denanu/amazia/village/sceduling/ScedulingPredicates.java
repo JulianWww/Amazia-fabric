@@ -3,8 +3,10 @@ package net.denanu.amazia.village.sceduling;
 import net.denanu.amazia.block.custom.ChairBlock;
 import net.denanu.amazia.block.custom.TeachersDeskBlock;
 import net.minecraft.block.AnvilBlock;
+import net.minecraft.block.BedBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.enums.BedPart;
 
 public class ScedulingPredicates {
 	public static boolean isEnchantingTable(final BlockState state) {
@@ -25,5 +27,9 @@ public class ScedulingPredicates {
 
 	public static boolean isAnvil(final BlockState state) {
 		return state.getBlock() instanceof AnvilBlock;
+	}
+
+	public static boolean isBed(final BlockState state) {
+		return state.getBlock() instanceof BedBlock && BedPart.HEAD.equals(state.get(BedBlock.PART));
 	}
 }

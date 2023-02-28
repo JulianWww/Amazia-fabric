@@ -36,6 +36,11 @@ public class BaseAmaziaVillageGoal<E extends AmaziaVillagerEntity> extends Goal 
 		return this.canRun() && this.isStartable();
 	}
 
+	@Override
+	public boolean shouldContinue() {
+		return this.canRun();
+	}
+
 	protected boolean canRun() {
 		return this.entity.getActivityScedule().getPerformActionGroup() == VillageActivityGroups.WORK;
 	}

@@ -5,7 +5,8 @@ import net.denanu.amazia.entities.furnature.SeatEntity;
 import net.denanu.amazia.entities.furnature.SeatRenderer;
 import net.denanu.amazia.entities.merchants.AmaziaMerchant;
 import net.denanu.amazia.entities.merchants.client.MerchantRenderer;
-import net.denanu.amazia.entities.village.client.BardRenderer;
+import net.denanu.amazia.entities.village.client.AmaziaModel;
+import net.denanu.amazia.entities.village.client.AmaziaRenderer;
 import net.denanu.amazia.entities.village.client.BlacksmithRenderer;
 import net.denanu.amazia.entities.village.client.ChefRenderer;
 import net.denanu.amazia.entities.village.client.ChildRenderer;
@@ -45,70 +46,77 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class AmaziaEntities {
+	private static float getVillagerHeight() {
+		return 2.1f;
+	}
+	private static float getVillagerWidth() {
+		return 0.6f;
+	}
+
 	public static final EntityType<FarmerEntity> FARMER = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "farmer"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, FarmerEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<MinerEntity> MINER = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "miner"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, MinerEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<LumberjackEntity> LUMBERJACK = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "lumberjack"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, LumberjackEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<RancherEntity> RANCHER = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "rancher"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, RancherEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<EnchanterEntity> ENCHANTER = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "enchanter"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, EnchanterEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<BlacksmithEntity> BLACKSMITH = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "blacksmith"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, BlacksmithEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<GuardEntity> GUARD = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "guard"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, GuardEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<NitwitEntity> NITWIT = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "nitwit"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, NitwitEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<DruidEntity> DRUID = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "druid"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, DruidEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<ClericEntity> CLERIC = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "cleric"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ClericEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<ChefEntity> CHEF = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "chef"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ChefEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<BardEntity> BARD = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "bard"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, BardEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<TeacherEntity> TEACHER = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "teacher"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, TeacherEntity::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<ChildEntity> CHILD = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "child"),
@@ -120,7 +128,7 @@ public class AmaziaEntities {
 	public static final EntityType<AmaziaMerchant> MERCHANT = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "merchant"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, AmaziaMerchant::new)
-			.dimensions(EntityDimensions.fixed(0.4f, 1.5f)).build());
+			.dimensions(EntityDimensions.fixed(AmaziaEntities.getVillagerWidth(), AmaziaEntities.getVillagerHeight())).build());
 
 	public static final EntityType<SeatEntity> SEAT = Registry.register(
 			Registry.ENTITY_TYPE, Identifier.of(Amazia.MOD_ID, "seat"),
@@ -162,7 +170,7 @@ public class AmaziaEntities {
 		EntityRendererRegistry.register(AmaziaEntities.DRUID, 		DruidRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.CLERIC,		ClericRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.CHEF,		ChefRenderer::new);
-		EntityRendererRegistry.register(AmaziaEntities.BARD,		BardRenderer::new);
+		EntityRendererRegistry.register(AmaziaEntities.BARD,		ctx -> new AmaziaRenderer<>(ctx, new AmaziaModel<>("bard")));
 		EntityRendererRegistry.register(AmaziaEntities.TEACHER, 	TeacherRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.CHILD, 		ChildRenderer::new);
 

@@ -10,17 +10,22 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.advancement.criterion.AmaziaCriterions;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.AmaziaBlockEntities;
 import net.denanu.amazia.commands.AmaziaCommand;
 import net.denanu.amazia.commands.AmaziaGameRules;
 import net.denanu.amazia.commands.args.AmaziaArgumentTypes;
+import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
+import net.denanu.amazia.data.AmaziaStatusEffects;
+import net.denanu.amazia.data.LootTables;
 import net.denanu.amazia.economy.Economy;
 import net.denanu.amazia.economy.EconomyFactory;
 import net.denanu.amazia.economy.ProfessionFactory;
 import net.denanu.amazia.economy.offerModifiers.price.AmaziaValueModifiers;
 import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.entities.AmaziaEntityAttributes;
+import net.denanu.amazia.entities.village.both.Trackers;
 import net.denanu.amazia.entities.village.server.ChefEntity;
 import net.denanu.amazia.entities.village.server.FarmerEntity;
 import net.denanu.amazia.entities.village.server.GuardEntity;
@@ -32,7 +37,6 @@ import net.denanu.amazia.mechanics.hunger.CraftingHungerManager;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.sounds.AmaziaSounds;
-import net.denanu.amazia.status_effects.AmaziaStatusEffects;
 import net.denanu.amazia.utils.Predicates;
 import net.denanu.amazia.utils.crafting.VillageRecipeManager;
 import net.denanu.amazia.utils.registry.AmaziaRegistrys;
@@ -94,6 +98,11 @@ public class Amazia implements ModInitializer {
 					.getOrCreate(ChunkScanner::fromNbt, ChunkScanner::init, Amazia.MOD_ID + ":structures");
 		});
 
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			server.getWorld(World.OVERWORLD).getPersistentStateManager()
+			.getOrCreate(NamingLanguageOptions.Loader::fromNbt, NamingLanguageOptions.Loader::loadDefault, Amazia.MOD_ID + ":config");
+		});
+
 		// Networking
 		AmaziaNetworking.registerC2SPackets();
 
@@ -111,10 +120,12 @@ public class Amazia implements ModInitializer {
 		// Registry
 		AmaziaRegistrys.setup();
 		AmaziaEntityAttributes.setup();
+		Trackers.setup();
 
 		// static data generated on runtime files
 		AmaziaData.setup();
 		Predicates.setup();
+		LootTables.setup();
 
 		// Mechanics
 		CraftingHungerManager.setup();
@@ -122,6 +133,7 @@ public class Amazia implements ModInitializer {
 
 		// Status effects
 		AmaziaStatusEffects.setup();
+		AmaziaCriterions.setup();
 	}
 
 	public static VillageManager getVillageManager() {

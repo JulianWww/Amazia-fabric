@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_items_amazia:stripped_mangrove_left": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:stripped_mangrove_log"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_items_amazia:stripped_mangrove_left"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "amazia:stripped_mangrove_left"
+    ],
+    "experience": 1000
+  }
+}

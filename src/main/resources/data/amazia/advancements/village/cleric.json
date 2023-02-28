@@ -1,0 +1,32 @@
+{
+    "parent": "amazia:village/guard",
+    "criteria": {
+        "make_bard": {
+            "conditions": {
+                "item": {
+                    "items": [
+                        "amazia:cleric_transformation_token"
+                    ]
+                }
+            },
+            "trigger": "minecraft:using_item"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.cleric.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:cleric_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.cleric.title"
+        }
+    },
+    "rewards": {
+        "experience": 100
+    }
+}

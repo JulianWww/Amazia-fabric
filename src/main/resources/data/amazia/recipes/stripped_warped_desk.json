@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "/ /"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:stripped_warped_stem"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "amazia:stripped_warped_desk",
+        "count": 1
+    },
+    "group": "amazia:desk"
+}

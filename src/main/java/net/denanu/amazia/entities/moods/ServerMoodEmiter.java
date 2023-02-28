@@ -15,11 +15,11 @@ import net.minecraft.util.math.Box;
 
 public class ServerMoodEmiter {
 	private static Box reciveBox = new Box(100,100,100,-100,-100,-100);
-	public static void sendMood(LivingEntity entity, VillagerMoods mood) {
-		PacketByteBuf buf = AmaziaEntityMoodS2CPacket.toBuf(entity, mood);
-		List<PlayerEntity> players = ((ServerWorld)entity.world).getPlayers(TargetPredicate.createNonAttackable(), entity, reciveBox.offset(entity.getBlockPos()));
-		for (PlayerEntity player : players) {
-			ServerPlayNetworking.send((ServerPlayerEntity)player, AmaziaNetworking.MOOD_UPDATE, buf);
+	public static void sendMood(final LivingEntity entity, final VillagerMoods mood) {
+		final PacketByteBuf buf = AmaziaEntityMoodS2CPacket.toBuf(entity, mood);
+		final List<PlayerEntity> players = ((ServerWorld)entity.world).getPlayers(TargetPredicate.createNonAttackable(), entity, ServerMoodEmiter.reciveBox.offset(entity.getBlockPos()));
+		for (final PlayerEntity player : players) {
+			ServerPlayNetworking.send((ServerPlayerEntity)player, AmaziaNetworking.S2C.MOOD_UPDATE, buf);
 		}
 	}
 }

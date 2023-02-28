@@ -19,7 +19,7 @@ public class NitwitRandomWanderAroundGoal<T extends AmaziaVillagerEntity> extend
 		if (this.age > 20) {
 			if (this.updateTime < this.entity.getRandom().nextFloat()) {
 				this.updateTime = this.entity.getRandom().nextFloat();
-				this.updateTime = 0.9f - JJUtils.square(JJUtils.square(this.updateTime)) * 0.5f;
+				this.updateTime = 0.7f - JJUtils.square(JJUtils.square(this.updateTime)) * 0.5f;
 				return super.canStart();
 			}
 			this.age = 0;

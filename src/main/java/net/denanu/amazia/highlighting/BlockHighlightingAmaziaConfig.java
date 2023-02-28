@@ -36,6 +36,8 @@ public class BlockHighlightingAmaziaConfig {
 	public static HighlightType BLAST_FURNACES		 		= BlockHighlightingAmaziaConfig.register("blast-furnace",		"#FFFFFFFF", "#20FFFFFF");
 	public static HighlightType SMOKER_FURNACES		 		= BlockHighlightingAmaziaConfig.register("smoker",				"#FFFFFFFF", "#20FFFFFF");
 
+	public static HighlightType BEDS		 				= BlockHighlightingAmaziaConfig.register("beds",				"#FFFFFFFF", "#20FFFFFF");
+
 
 
 	private static HighlightType register(final String name, final String outlineColor, final String fillColor) {

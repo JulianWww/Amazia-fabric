@@ -1,6 +1,11 @@
 import os
 import json
 
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
+
 path = "../src/main/resources/"
 
 config = path + "fabric.mod.json"

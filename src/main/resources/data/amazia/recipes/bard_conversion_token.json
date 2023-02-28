@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "amazia:base_transformation_token"
+        },
+        {
+            "item": "amazia:flute"
+        }
+    ],
+    "result": {
+        "item": "amazia:bard_transformation_token",
+        "count": 1
+    }
+}

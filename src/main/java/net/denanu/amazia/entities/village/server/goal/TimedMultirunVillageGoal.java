@@ -13,7 +13,7 @@ public abstract class TimedMultirunVillageGoal<E extends AmaziaVillagerEntity> e
 
 	@Override
 	public boolean shouldContinue() {
-		return this.notDone;
+		return this.notDone  && super.shouldContinue();
 	}
 
 	@Override

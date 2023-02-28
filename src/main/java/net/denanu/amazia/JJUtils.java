@@ -4,16 +4,19 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
 import net.denanu.amazia.mixin.MinecraftClientWorldAccessor;
 import net.denanu.amazia.mixin.MinecraftServerWorldAccessor;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 public class JJUtils {
 
@@ -102,5 +105,9 @@ public class JJUtils {
 
 	public static int square(final int d) {
 		return d * d;
+	}
+
+	public static BlockPos getRandomListElement(final List<BlockPos> tables, final Predicate<BlockState> pred, final World world) {
+		return JJUtils.getRandomListElement(tables.stream().filter(pos -> pred.test(world.getBlockState(pos))).toList());
 	}
 }

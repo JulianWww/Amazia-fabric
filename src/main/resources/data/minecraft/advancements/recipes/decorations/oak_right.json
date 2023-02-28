@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_items_amazia:oak_right": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:oak_log"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_items_amazia:oak_right"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "amazia:oak_right"
+    ],
+    "experience": 1000
+  }
+}

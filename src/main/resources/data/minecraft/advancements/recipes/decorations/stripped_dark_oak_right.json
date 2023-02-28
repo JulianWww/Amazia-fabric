@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_items_amazia:stripped_dark_oak_right": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:stripped_dark_oak_log"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_items_amazia:stripped_dark_oak_right"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "amazia:stripped_dark_oak_right"
+    ],
+    "experience": 1000
+  }
+}

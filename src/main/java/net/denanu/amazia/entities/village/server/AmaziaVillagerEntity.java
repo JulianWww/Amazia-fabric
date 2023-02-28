@@ -15,8 +15,11 @@ import com.google.common.collect.ImmutableList;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.GUI.AmaziaVillagerUIScreenHandler;
+import net.denanu.amazia.block.AmaziaBlockProperties;
+import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
 import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.moods.VillagerMoods;
+import net.denanu.amazia.entities.village.both.VillagerData;
 import net.denanu.amazia.entities.village.server.goal.AmaziaLookAroundGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.education.GoToLibraryGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.education.LearnFromReadingBooksGoal;
@@ -26,9 +29,12 @@ import net.denanu.amazia.entities.village.server.goal.storage.DepositItemGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.GetItemGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.combat.AmaziaEscapeDangerGoal;
+import net.denanu.amazia.entities.village.server.goal.utils.sleep.GoToBedGoal;
 import net.denanu.amazia.item.AmaziaItems;
+import net.denanu.amazia.item.custom.VillagerTransformationTokenItem;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
+import net.denanu.amazia.mechanics.VillagerTypes;
 import net.denanu.amazia.mechanics.education.IAmaziaEducatedEntity;
 import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.happyness.IAmaziaHappynessEntity;
@@ -37,14 +43,22 @@ import net.denanu.amazia.mechanics.hunger.AmaziaFoodData;
 import net.denanu.amazia.mechanics.intelligence.IAmaziaIntelligenceEntity;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.mechanics.leveling.ProfessionLevelManager;
+import net.denanu.amazia.mechanics.title.Titles;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.utils.crafting.CraftingUtils;
 import net.denanu.amazia.village.events.EventData;
 import net.denanu.amazia.village.events.VillageDieEventData;
 import net.denanu.amazia.village.events.VillageEvents;
+import net.denanu.amazia.village.scedule.VillageActivityGroups;
 import net.denanu.amazia.village.scedule.VillagerScedule;
+import net.denanu.blockhighlighting.utils.NbtUtils;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.block.BedBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.InventoryOwner;
@@ -57,6 +71,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -74,15 +89,22 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
 public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner, AmaziaMechanicsGuiEntity,
 InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactory {
+	private static final TrackedData<Float> INTELLIGENCE = DataTracker.registerData(AmaziaVillagerEntity.class, TrackedDataHandlerRegistry.FLOAT);
+	private static final TrackedData<VillagerData> VILLAGER_DATA = DataTracker.registerData(VillagerEntity.class, VillagerData.VILLAGER_DATA);
+
 	private final SimpleInventory inventory = new SimpleInventory(16);
 	private List<Item> requestedItems;
 	private CraftingRecipe wantsToCraft;
@@ -92,12 +114,14 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	private final VillagerScedule activityScedule = new VillagerScedule();
 
 	private float hunger;
-	private static final TrackedData<Float> INTELLIGENCE = DataTracker.registerData(AmaziaVillagerEntity.class, TrackedDataHandlerRegistry.FLOAT);
 	private float education;
 	protected final ProfessionLevelManager professionLevelManager;
 	private float happyness;
 
 	private Optional<Integer> bestFoodItem;
+
+	BlockPos bedLocation = null;
+
 
 	public final PropertyDelegate propertyDelegate = new PropertyDelegate() {
 		@Override
@@ -143,17 +167,21 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		this.professionLevelManager = new ProfessionLevelManager();
 
 		this.inventory.addListener(this);
+
+		this.setCustomName(Text.literal(NamingLanguageOptions.generateName(null)));
+		this.setCustomNameVisible(false);
 	}
 
 	public static DefaultAttributeContainer.Builder setAttributes() {
 		return AmaziaEntity.setAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
-				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.17f);
+				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.22f);
 	}
 
 	@Override
 	protected void initDataTracker() {
 		super.initDataTracker();
 		this.dataTracker.startTracking(AmaziaVillagerEntity.INTELLIGENCE, 0f);
+		this.dataTracker.startTracking(AmaziaVillagerEntity.VILLAGER_DATA, new VillagerData(VillagerTypes.SNOW));
 	}
 
 	public void registerBaseGoals() {
@@ -185,6 +213,9 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			this.goalSelector.add(24, new CraftGoal<>(this, 24));
 		}
 		this.goalSelector.add(10, new EatGoal(this));
+
+		this.goalSelector.add(11, new GoToBedGoal(this, 11));
+
 		this.goalSelector.add(25, new GetItemGoal(this, 25, getItemCallback));
 
 		this.goalSelector.add(80, new SequenceGoal<>(this, ImmutableList.of(
@@ -194,6 +225,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 		this.goalSelector.add(99, new DepositItemGoal(this, 99, depositItemCallback));
 		this.goalSelector.add(100, new AmaziaLookAroundGoal(this));
+
 	}
 
 	@Override
@@ -279,6 +311,19 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	}
 
 	@Override
+	public void mobTick() {
+		super.mobTick();
+		if (this.isSleeping()) {
+			if (this.getActivityScedule().getPerformActionGroup() != VillageActivityGroups.SLEEP) {
+				this.wakeUp();
+			}
+			if (!(this.world.getBlockState(this.getBlockPos()).getBlock() instanceof BedBlock)) {
+				this.wakeUp();
+			}
+		}
+	}
+
+	@Override
 	public void writeCustomDataToNbt(final NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		nbt.put("Inventory", this.inventory.toNbtList());
@@ -288,6 +333,8 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		nbt.putFloat("Happyness", this.happyness);
 		nbt.put("professions", this.professionLevelManager.save());
 		nbt.put("Scedule", this.activityScedule.writeCustomNbt(new NbtCompound()));
+		nbt.put("type", this.dataTracker.get(AmaziaVillagerEntity.VILLAGER_DATA).toNbt());
+		nbt.put("bed", NbtUtils.toNbt(this.bedLocation));
 	}
 
 	@Override
@@ -301,6 +348,14 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		this.happyness = nbt.contains("Happyness") ? nbt.getFloat("Happyness") : IAmaziaHappynessEntity.getDefaultHappyness();
 		this.professionLevelManager.load(nbt.getCompound("professions"), this.getProfession());
 		this.activityScedule.readCustomNbt(nbt.getCompound("Scedule"));
+		this.bedLocation = NbtUtils.toBlockPos(nbt.getList("bed", NbtElement.INT_TYPE));
+
+		if (nbt.contains("type")) {
+			this.dataTracker.set(AmaziaVillagerEntity.VILLAGER_DATA, new VillagerData(nbt.getCompound("type")));
+		}
+
+		this.setPositionInBed();
+		this.updateName();
 	}
 
 	@Override
@@ -518,7 +573,12 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 	@Override
 	public void eatFood(final float amount) {
-		this.hunger = (float) Math.min(this.hunger + amount, this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER));
+		this.hunger = Math.min(this.hunger + amount, this.getMaxHunger());
+	}
+
+	@Override
+	public float getMaxHunger() {
+		return (float) this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER);
 	}
 
 	@Override
@@ -533,12 +593,12 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 	@Override
 	public ActionResult interactMob(final PlayerEntity player, final Hand hand) {
-		if (this.isAlive() && !player.getEquippedStack(EquipmentSlot.MAINHAND).isOf(AmaziaItems.BOOK_OF_INTELLIGENCE)) {
+		if (this.isAlive() && !player.getEquippedStack(EquipmentSlot.MAINHAND).isOf(AmaziaItems.BOOK_OF_INTELLIGENCE) && !(player.getEquippedStack(EquipmentSlot.MAINHAND).getItem() instanceof VillagerTransformationTokenItem)) {
 			if (hand == Hand.MAIN_HAND) {
 				player.incrementStat(Stats.TALKED_TO_VILLAGER);
 			}
 			if (!this.world.isClient) {
-				this.sendVillagerData(player, this.getName());
+				this.sendVillagerData(player, this.getDefaultName());
 			}
 			return ActionResult.success(this.world.isClient);
 		}
@@ -603,6 +663,10 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		return this.dataTracker.get(AmaziaVillagerEntity.INTELLIGENCE);
 	}
 
+	public VillagerData getData() {
+		return this.dataTracker.get(AmaziaVillagerEntity.VILLAGER_DATA);
+	}
+
 	@Override
 	public boolean modifyIntelligence(final float amount) {
 		float intelligence = this.getIntelligence();
@@ -610,8 +674,8 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			return false;
 		}
 		intelligence += amount;
-		if (intelligence > 100f) {
-			intelligence = 100f;
+		if (intelligence > this.maxIntelligence()) {
+			intelligence = this.maxIntelligence();
 		}
 		this.dataTracker.set(AmaziaVillagerEntity.INTELLIGENCE, intelligence);
 		return true;
@@ -625,8 +689,8 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	@Override
 	public void gainHappyness(final float amount) {
 		this.happyness = this.happyness + amount;
-		if (this.happyness > 100f) {
-			this.happyness = 100f;
+		if (this.happyness > this.getMaxHappyness()) {
+			this.happyness = this.getMaxHappyness();
 		}
 
 		this.emmitMood(VillagerMoods.HAPPY);
@@ -644,6 +708,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		return this.happyness;
 	}
 
+	@Override
 	public abstract Identifier getProfession();
 
 	@Override
@@ -669,6 +734,17 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	@Override
 	public void learn(final float baseAmount) {
 		this.education = this.education + (this.dataTracker.get(AmaziaVillagerEntity.INTELLIGENCE) - this.education) * baseAmount;
+		this.updateName();
+	}
+
+	private void updateName() {
+		super.setCustomName(Text.of(Titles.updateTitles(this.getCustomName().getString(), this, this.hasVillage() ? this.getVillage().getMayor() : null)));
+	}
+
+	@Override
+	public void setCustomName(final Text txt) {
+		super.setCustomName(txt);
+		this.updateName();
 	}
 
 	protected boolean isLowHp() {
@@ -784,11 +860,75 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		if (!this.world.isClient && this.hasVillage()) {
 			this.village.emmitEvent(VillageEvents.VILLAGER_DIE, new VillageDieEventData(this, this.isBaby()));
 		}
+		this.releaseBed();
 	}
 
 	private void onSeeVillagerDie(final EventData data) {
 		if (this.squaredDistanceTo(data.getEmmiter()) < 10000 && this.canSee(data.getEmmiter())) {
 			HappynessMap.loseHappynessSeeVillagerDie(this, ((VillageDieEventData)data).getIsBaby());
 		}
+	}
+
+	@Override
+	public void sleep(final BlockPos pos) {
+		BlockState blockState;
+		if (this.hasVehicle()) {
+			this.stopRiding();
+		}
+		if ((blockState = this.world.getBlockState(pos)).getBlock() instanceof BedBlock) {
+			if (blockState.get(BedBlock.OCCUPIED)) {
+				this.releaseBed();
+				return;
+			}
+			this.world.setBlockState(pos, blockState.with(BedBlock.OCCUPIED, true), Block.NOTIFY_ALL);
+			this.setPositionInBed(pos, blockState.get(HorizontalFacingBlock.FACING));
+
+			this.setPose(EntityPose.SLEEPING);
+			this.setSleepingPosition(pos);
+			this.setVelocity(Vec3d.ZERO);
+			this.velocityDirty = true;
+		}
+		else {
+			this.releaseBed();
+		}
+	}
+
+	private void setPositionInBed() {
+		if (this.isSleeping() && this.getSleepingPosition().isPresent()) {
+			this.setPositionInBed(this.getSleepingPosition().get(), this.getSleepingDirection());
+		}
+	}
+
+	protected void setPositionInBed(final BlockPos pos, final Direction direction) {
+		this.setPosition(
+				pos.getX() + 0.5,
+				pos.getY() + 0.6875,
+				pos.getZ() + 0.5);
+	}
+
+	public void reserveBed(final BlockPos pos) {
+		this.releaseBed();
+		if (AmaziaBlockProperties.setBedReservation(this.world, pos, true)) {
+			this.bedLocation = pos;
+		}
+	}
+
+	public void releaseBed() {
+		if (this.bedLocation != null) {
+			AmaziaBlockProperties.setBedReservation(this.world, this.bedLocation, false);
+			this.bedLocation = null;
+		}
+	}
+
+	public boolean hasBedLoc() {
+		return this.bedLocation != null;
+	}
+
+	public BlockPos getBedAccessPoint() {
+		return this.village.getPathingGraph().getAccessPoint(this.bedLocation);
+	}
+
+	public BlockPos getBedLocation() {
+		return this.bedLocation;
 	}
 }

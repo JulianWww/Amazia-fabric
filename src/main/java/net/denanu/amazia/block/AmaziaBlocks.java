@@ -32,6 +32,7 @@ public class AmaziaBlocks {
 	public static final Block RUBY_ORE = AmaziaBlocks.registerBlock("ruby_ore",
 			new OreBlock(FabricBlockSettings.of(Material.STONE).strength(1f),
 					UniformIntProvider.create(3, 7)));
+
 	public static final Block DEEPSLATE_RUBY_ORE = AmaziaBlocks.registerBlock("deepslate_ruby_ore",
 			new OreBlock(FabricBlockSettings.of(Material.STONE).strength(1f),
 					UniformIntProvider.create(3, 7)));
@@ -138,5 +139,6 @@ public class AmaziaBlocks {
 
 	public static void registerModBlocks() {
 		Amazia.LOGGER.debug("Registering ModBlocks for " + Amazia.MOD_ID);
+		AmaziaBlockProperties.setup();
 	}
 }

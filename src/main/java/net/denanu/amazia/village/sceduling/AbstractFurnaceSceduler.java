@@ -73,6 +73,7 @@ public class AbstractFurnaceSceduler extends FacingPathingVillageSceduler {
 			}
 		} else if (this.location.remove(pos)) {
 			this.available.remove(pos);
+			this.pathing.remove(pos).destroy(this.getVillage());
 			VillageSceduler.markBlockAsLost(pos, world);
 			this.setChanged();
 

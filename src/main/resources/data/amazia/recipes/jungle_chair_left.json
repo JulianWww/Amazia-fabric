@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#  ",
+        "###",
+        "/ /"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:jungle_log"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "amazia:jungle_chair",
+        "count": 1
+    },
+    "group": "amazia:chair"
+}

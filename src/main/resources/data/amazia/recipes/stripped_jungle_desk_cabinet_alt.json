@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "C /"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:stripped_jungle_log"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        },
+        "C": {
+            "item": "minecraft:chest"
+        }
+    },
+    "result": {
+        "item": "amazia:stripped_jungle_desk_cabinet",
+        "count": 1
+    },
+    "group": "amazia:desk_cabinet"
+}

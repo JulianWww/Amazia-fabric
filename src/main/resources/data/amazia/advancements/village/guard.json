@@ -1,0 +1,32 @@
+{
+    "parent": "amazia:village/root",
+    "criteria": {
+        "make_bard": {
+            "conditions": {
+                "item": {
+                    "items": [
+                        "amazia:guard_transformation_token"
+                    ]
+                }
+            },
+            "trigger": "minecraft:using_item"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.guard.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:guard_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.guard.title"
+        }
+    },
+    "rewards": {
+        "experience": 100
+    }
+}

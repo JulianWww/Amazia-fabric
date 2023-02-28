@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#  ",
+        "###",
+        "/ /"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:warped_stem"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "amazia:warped_chair",
+        "count": 1
+    },
+    "group": "amazia:chair"
+}

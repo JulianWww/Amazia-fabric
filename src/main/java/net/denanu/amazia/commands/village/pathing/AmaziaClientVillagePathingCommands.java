@@ -41,7 +41,7 @@ public class AmaziaClientVillagePathingCommands {
 			else {
 				context.getSource().sendFeedback(Text.translatable("messages.amazia.commands.disabled_pathing_render"), false);
 			}
-			ServerPlayNetworking.send(context.getSource().getPlayer(), AmaziaNetworking.SETUP_PATHINGOVERLAY, AmaziaSetupVillageReneringS2CPacker.toBuf(pos, val));
+			ServerPlayNetworking.send(context.getSource().getPlayer(), AmaziaNetworking.S2C.SETUP_PATHINGOVERLAY, AmaziaSetupVillageReneringS2CPacker.toBuf(pos, val));
 		}
 		catch (final Exception e){
 			return -1;

@@ -30,8 +30,8 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
 public class VillagePathingOverlay implements ClientTickEvents.EndTick {
-	public static ArrayList<ClientPathingNode> nodes = new ArrayList<ClientPathingNode>();
-	public static Deque<BlockPos> queue = new LinkedList<BlockPos>();
+	public static ArrayList<ClientPathingNode> nodes = new ArrayList<>();
+	public static Deque<BlockPos> queue = new LinkedList<>();
 	public static boolean render = false;
 	public static BlockPos villageLoc = new BlockPos(0,0,0);
 
@@ -137,15 +137,15 @@ public class VillagePathingOverlay implements ClientTickEvents.EndTick {
 	}
 
 	public static void setup() {
-		final ArrayList<BlockPos> ajacents = new ArrayList<BlockPos>();
+		final ArrayList<BlockPos> ajacents = new ArrayList<>();
 		ajacents.add(new BlockPos(1, 0, 0));
 		VillagePathingOverlay.nodes.add(new ClientPathingNode(ajacents, new BlockPos(0,0,0)));
 	}
 
 	@Override
 	public void onEndTick(final MinecraftClient client) {
-		if (VillagePathingOverlay.render && !VillagePathingOverlay.queue.isEmpty() && ClientPlayNetworking.canSend(AmaziaNetworking.PATHING_OVERLAY_UPDATE_C2S)) {
-			ClientPlayNetworking.send(AmaziaNetworking.PATHING_OVERLAY_UPDATE_C2S, AmaziaPathingOverlayRequestUpdateC2SPacket.toBuf(VillagePathingOverlay.queue.pop(), VillagePathingOverlay.villageLoc));
+		if (VillagePathingOverlay.render && !VillagePathingOverlay.queue.isEmpty() && ClientPlayNetworking.canSend(AmaziaNetworking.C2S.PATHING_OVERLAY_UPDATE)) {
+			ClientPlayNetworking.send(AmaziaNetworking.C2S.PATHING_OVERLAY_UPDATE, AmaziaPathingOverlayRequestUpdateC2SPacket.toBuf(VillagePathingOverlay.queue.pop(), VillagePathingOverlay.villageLoc));
 		}
 	}
 }

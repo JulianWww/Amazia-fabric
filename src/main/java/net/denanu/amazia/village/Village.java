@@ -2,6 +2,7 @@ package net.denanu.amazia.village;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -25,7 +26,9 @@ import net.denanu.amazia.village.sceduling.StorageSceduler;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -42,13 +45,15 @@ public class Village {
 	private final MineingSceduler mineing;
 	private final LumberSceduler  lumber;
 	private final RancherSceduler ranching;
-	private final PathingNoHeightSceduler enchanting, desks, chair;
+	private final PathingNoHeightSceduler enchanting, desks, chair, beds;
 	private final AbstractFurnaceSceduler smelting;
 	private final AbstractFurnaceSceduler blasting;
 	private final AbstractFurnaceSceduler smoking;
 	private final PathingNoHeightSceduler blacksmithing;
 	private final GuardSceduler guarding;
 	private final PathingNoHeightSceduler library;
+
+	private UUID mayor;
 
 	private PathingGraph pathingGraph;
 	private final HashSet<IVillageEventListener> listeners = new HashSet<>();
@@ -68,6 +73,7 @@ public class Village {
 		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable, 	BlockHighlightingAmaziaIds.ENCHANTING);
 		this.desks		 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isDesk, 			BlockHighlightingAmaziaIds.DESK);
 		this.chair			= new PathingNoHeightSceduler	(this, ScedulingPredicates::isChair, 			BlockHighlightingAmaziaIds.CHAIR);
+		this.beds			= new PathingNoHeightSceduler	(this, ScedulingPredicates::isBed, 				BlockHighlightingAmaziaIds.BEDS);
 		this.smelting	 	= new AbstractFurnaceSceduler	(this, Blocks.FURNACE.getClass(),				BlockHighlightingAmaziaIds.NORMAL_FURNACES);
 		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass(), 		BlockHighlightingAmaziaIds.BLAST_FURNACES);
 		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass(), 				BlockHighlightingAmaziaIds.SMOKER_FURNACES);
@@ -85,6 +91,24 @@ public class Village {
 				-400,
 				core.getPos().getZ() - Village.SIZE
 				);
+	}
+
+	public void setMayor(final UUID usr) {
+		this.mayor = usr;
+	}
+
+	public UUID getMayorUUID() {
+		return this.mayor;
+	}
+
+	@SuppressWarnings("resource")
+	public ServerPlayerEntity getMayor() {
+		for (final ServerPlayerEntity player : this.getWorld().getServer().getPlayerManager().getPlayerList()) {
+			if (player.getGameProfile().getId().equals(this.mayor)) {
+				return player;
+			}
+		}
+		return null;
 	}
 
 	public void setupVillage() {
@@ -105,8 +129,21 @@ public class Village {
 		this.library.initialize();
 		this.desks.initialize();
 		this.chair.initialize();
+		this.beds.initialize();
 
 		this.register(this.coreBlock.getWorld());
+
+		if (this.mayor == null) {
+			final PlayerEntity newMayor = this.getWorld().getClosestPlayer(
+					this.origin.getX(),
+					this.origin.getY(),
+					this.origin.getZ(),
+					10,
+					false);
+			if (newMayor != null) {
+				this.mayor = newMayor.getGameProfile().getId();
+			}
+		}
 	}
 
 	public void remove(final World world) {
@@ -143,6 +180,11 @@ public class Village {
 		nbt.put("library",			this.library.		writeNbt());
 		nbt.put("desk", 			this.desks.			writeNbt());
 		nbt.put("chair", 			this.chair.			writeNbt());
+		nbt.put("bed",				this.beds.			writeNbt());
+
+		if (this.mayor != null) {
+			nbt.putUuid("mayor",	this.mayor);
+		}
 		return nbt;
 	}
 	public void readNbt(final NbtCompound nbt) {
@@ -161,6 +203,8 @@ public class Village {
 		this.library.		readNbt(nbt.getCompound("library"));
 		this.desks.			readNbt(nbt.getCompound("desk"));
 		this.chair.			readNbt(nbt.getCompound("chair"));
+		this.beds.			readNbt(nbt.getCompound("bed"));
+		this.mayor				  = nbt.getUuid("mayor");
 	}
 
 	public boolean isValid() {
@@ -190,6 +234,7 @@ public class Village {
 		this.library.		discover(world, blockPos);
 		this.desks.			discover(world, blockPos);
 		this.chair.			discover(world, blockPos);
+		this.beds.			discover(world, blockPos);
 	}
 
 
@@ -246,6 +291,9 @@ public class Village {
 	}
 	public PathingNoHeightSceduler getChairs() {
 		return this.chair;
+	}
+	public PathingNoHeightSceduler getBeds() {
+		return this.beds;
 	}
 
 	public static int getSize() {

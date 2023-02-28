@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+      "###",
+      "#I#",
+      "###"
+  ],
+  "key": {
+      "#": {
+          "item": "minecraft:cobblestone"
+      },
+      "I": {
+          "item": "minecraft:iron_pickaxe"
+      }
+  },
+  "result": {
+      "item": "amazia:mine_marker",
+      "count": 1
+  }
+}

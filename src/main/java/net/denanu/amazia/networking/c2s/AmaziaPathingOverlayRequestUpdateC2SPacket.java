@@ -30,7 +30,7 @@ public class AmaziaPathingOverlayRequestUpdateC2SPacket {
 			if (entity instanceof final VillageCoreBlockEntity core) {
 				final BasePathingNode node = core.getVillage().getPathingGraph().getNode(data.nodePos);
 				if (node != null) {
-					ServerPlayNetworking.send(player, AmaziaNetworking.PATHING_OVERLAY_UPDATE_S2C, AmaziaPathingOverlayUpdateS2CPacket.toBuf(node));
+					ServerPlayNetworking.send(player, AmaziaNetworking.S2C.PATHING_OVERLAY_UPDATE, AmaziaPathingOverlayUpdateS2CPacket.toBuf(node));
 				}
 			}
 		}
