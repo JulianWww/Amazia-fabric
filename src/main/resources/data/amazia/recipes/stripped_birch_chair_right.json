@@ -16,5 +16,6 @@
     "result": {
         "item": "amazia:stripped_birch_chair",
         "count": 1
-    }
+    },
+    "group": "amazia:chair"
 }

@@ -47,6 +47,11 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 		this.textRenderer.draw(matrices, this.title, this.backgroundWidth / 2 - this.textRenderer.getWidth(this.title) / 2, 6.0f, 0x404040);
 		this.renderProfessions(matrices);
 		this.renderProgressBars(matrices);
+		this.renderName(matrices);
+	}
+
+	private void renderName(final MatrixStack stack) {
+		this.textRenderer.draw(stack, this.getScreenHandler().getCustomName(), 133, 21, 0x404040);
 	}
 
 	private void renderProgressBars(final MatrixStack stack) {

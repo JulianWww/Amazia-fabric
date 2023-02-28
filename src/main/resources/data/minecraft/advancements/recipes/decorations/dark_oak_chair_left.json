@@ -1,0 +1,36 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_items_amazia:dark_oak_chair_left": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:dark_oak_log",
+              "minecraft:stick"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "amazia:dark_oak_chair_left"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_items_amazia:dark_oak_chair_left",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "amazia:dark_oak_chair_left"
+    ],
+    "experience": 1000
+  }
+}

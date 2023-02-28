@@ -91,5 +91,41 @@
 	"block.amazia.stripped_dark_oak_desk_cabinet": "Stripped Dark Oak Desk Cabinet",
 	"block.amazia.stripped_crimson_desk_cabinet": "Stripped Crimson Desk Cabinet",
 	"block.amazia.stripped_warped_desk_cabinet": "Stripped Warped Desk Cabinet",
-	"block.amazia.stripped_mangrove_desk_cabinet": "Stripped Mangrove Desk Cabinet"
+	"block.amazia.stripped_mangrove_desk_cabinet": "Stripped Mangrove Desk Cabinet",
+	
+	"amazia.options.namegenlang": "Name Generator Language ...",
+	"amazia.options.namegenlangWarning": "Name Generation may not be 100% accurate",
+	
+	"amazia.gui.button.config_gui.admin": "Admin",
+	"amazia.gui.button.config_gui.generic": "Generic",
+	
+	"advancements.village.root.title": "Village",
+	"advancements.village.root.description": "Start your first village by placing a Village core",
+	
+	"advancements.village.miner.title": "Industrial Mining",
+	"advancements.village.miner.description": "Use a Miner Token on a Villager",
+	"advancements.village.bard.title": "Song Time",
+	"advancements.village.bard.description": "Use a Bard Token on a Villager",
+	"advancements.village.chef.title": "Magic of food",
+	"advancements.village.chef.description": "Use a Chef Token on a Villager",
+	"advancements.village.druid.title": "Natural Magic",
+	"advancements.village.druid.description": "Use a Druid Token on a Villager",
+	"advancements.village.cleric.title": "Doctor Doctor",
+	"advancements.village.cleric.description": "Use a Cleric Token on a Villager",
+	"advancements.village.farmer.title": "Food Growth",
+	"advancements.village.farmer.description": "Use a Farmer Token on a Villager",
+	"advancements.village.rancher.title": "Animal Keeping",
+	"advancements.village.rancher.description": "Use a Rancher Token on a Villager",
+	"advancements.village.teacher.title": "value of Education",
+	"advancements.village.teacher.description": "Use a Teacher Token on a Villager",
+	"advancements.village.enchanter.title": "Magic Items ?",
+	"advancements.village.enchanter.description": "Use an Enchanter Token on a Villager",
+	"advancements.village.lumberjack.title": "Tree master",
+	"advancements.village.lumberjack.description": "Use a Lumberjack Token on a Villager",
+	"advancements.village.blacksmith.title": "Hammer away",
+	"advancements.village.blacksmith.description": "Use a Blacksmith Token on a Villager",
+	"advancements.village.doctorate.title": "Get a PhD",
+	"advancements.village.doctorate.description": "A villager in a village founded by you reaches 80+ Education",
+	"advancements.village.professor.title": "Professor is here",
+	"advancements.village.professor.description": "A teacher in a village founded by you reaches 80+ Education"
 }

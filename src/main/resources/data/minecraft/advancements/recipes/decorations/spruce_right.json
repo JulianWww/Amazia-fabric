@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_items_amazia:spruce_right": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:spruce_log"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_items_amazia:spruce_right"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "amazia:spruce_right"
+    ],
+    "experience": 1000
+  }
+}

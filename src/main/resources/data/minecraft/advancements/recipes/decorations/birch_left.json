@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_items_amazia:birch_left": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:birch_log"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_items_amazia:birch_left"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "amazia:birch_left"
+    ],
+    "experience": 1000
+  }
+}

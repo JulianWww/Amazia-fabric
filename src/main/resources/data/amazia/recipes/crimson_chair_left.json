@@ -16,5 +16,6 @@
     "result": {
         "item": "amazia:crimson_chair",
         "count": 1
-    }
+    },
+    "group": "amazia:chair"
 }

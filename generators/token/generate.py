@@ -2,6 +2,7 @@ import wget
 from os import remove, path, chdir, system
 import cv2
 import numpy as np
+import json
 
 abspath = path.abspath(__file__)
 dname = path.dirname(abspath)
@@ -11,19 +12,7 @@ mc_version = "1.19.3"
 path = f"https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.19.3/assets/minecraft/textures/item/"
 outPath = "../../src/main/resources/assets/amazia/textures/item/tokens/"
 
-images = {
-  "miner": "iron_pickaxe",
-  "bard": "music_disc_chirp",
-  "chef": "cooked_beef",
-  "druid": "bone_meal",
-  "cleric": "white_candle",
-  "farmer": "iron_hoe",
-  "rancher": "lead",
-  "teacher": "writable_book",
-  "enchanter": "enchanted_book",
-  "lumberjack": "iron_axe",
-  "blacksmith": "/hammer"
-}
+from villagers import images
 
 system(f"rm {outPath}*")
 system(f"mkdir {outPath}")
@@ -46,5 +35,83 @@ for entity, img in images.items():
   if (img[0] != "/"): remove(file)
   
   print (f"generated {entity} conversion token")
+ 
+root_acivement = "../../src/main/resources/data/amazia/advancements/village/root.json"
+with open(root_acivement, "r") as file:
+	data = json.load(file)
+	
+tokens = [x + "_transformation_token" for x in images]
+tokens.append("base_transformation_token")
+	
+data["rewards"] = {
+	"recipes": tokens,
+	"experience": 10000
+}
+	
+with open(root_acivement, "w") as file:
+	json.dump(data, file, indent=4)
 
 system(f"cp base_token.png {outPath}base.png")
+
+print(f"Generating token based advancements")
+
+outPath = "../../src/main/resources/data/amazia/advancements/village/"
+
+villagerTypes = {
+  "miner": ("root", 100),
+  "blacksmith": ("miner", 100),
+  
+  "lumberjack": ("root", 100),
+  
+  "farmer": ("root", 100),
+  "druid": ("farmer", 100),
+  "rancher": ("farmer", 100),
+  "chef": ("rancher", 100),
+  
+  "bard": ("root", 100),
+  
+  "guard": ("root", 100),
+  "cleric": ("guard", 100),
+  
+  "teacher": ("root", 100),
+  "enchanter": ("teacher", 100)
+}
+
+def genAchivement(villager, parent, reward):
+	return {
+	  "parent": f"amazia:village/{parent}",
+	  "criteria": {
+	    "make_bard": {
+	      "conditions": {
+		"item": {
+			"items": [f"amazia:{villager}_transformation_token"]
+		}
+	      },
+	      "trigger": "minecraft:using_item"
+	    }
+	  },
+	  "display": {
+	    "announce_to_chat": True,
+	    "description": {
+	      "translate": f"advancements.village.{villager}.description"
+	    },
+	    "frame": "task",
+	    "icon": {
+	      "item": f"amazia:{villager}_transformation_token"
+	    },
+	    "show_toast": True,
+	    "title": {
+	      "translate": f"advancements.village.{villager}.title"
+	    }
+	  },
+	  "rewards": {
+	    "experience": reward
+	  }
+	}
+
+for villager, data in villagerTypes.items():
+	with open(outPath + villager + ".json", "w") as file:
+		json.dump(genAchivement(villager, *data), file, indent=4)
+
+
+print(f"Generated token based advancements")

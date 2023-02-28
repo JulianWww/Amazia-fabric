@@ -1,0 +1,32 @@
+{
+    "parent": "amazia:village/root",
+    "criteria": {
+        "make_bard": {
+            "conditions": {
+                "item": {
+                    "items": [
+                        "amazia:farmer_transformation_token"
+                    ]
+                }
+            },
+            "trigger": "minecraft:using_item"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.farmer.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:farmer_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.farmer.title"
+        }
+    },
+    "rewards": {
+        "experience": 100
+    }
+}

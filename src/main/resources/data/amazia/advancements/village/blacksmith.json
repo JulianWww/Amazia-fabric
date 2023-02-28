@@ -1,0 +1,32 @@
+{
+    "parent": "amazia:village/miner",
+    "criteria": {
+        "make_bard": {
+            "conditions": {
+                "item": {
+                    "items": [
+                        "amazia:blacksmith_transformation_token"
+                    ]
+                }
+            },
+            "trigger": "minecraft:using_item"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.blacksmith.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:blacksmith_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.blacksmith.title"
+        }
+    },
+    "rewards": {
+        "experience": 100
+    }
+}

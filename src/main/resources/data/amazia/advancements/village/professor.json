@@ -1,0 +1,28 @@
+{
+    "parent": "amazia:village/doctorate",
+    "criteria": {
+        "professor": {
+            "conditions": {
+                "title": "professor"
+            },
+            "trigger": "amazia:gain_title"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.professor.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "minecraft:lectern"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.professor.title"
+        }
+    },
+    "rewards": {
+        "experience": 2048
+    }
+}

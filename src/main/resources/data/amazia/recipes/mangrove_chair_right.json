@@ -16,5 +16,6 @@
     "result": {
         "item": "amazia:mangrove_chair",
         "count": 1
-    }
+    },
+    "group": "amazia:chair"
 }

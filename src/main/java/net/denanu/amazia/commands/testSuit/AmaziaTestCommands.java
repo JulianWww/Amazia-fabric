@@ -8,6 +8,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
 import net.denanu.amazia.mechanics.hunger.CraftingHungerManager;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.command.CommandRegistryAccess;
@@ -18,6 +19,7 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
 public class AmaziaTestCommands {
@@ -30,6 +32,7 @@ public class AmaziaTestCommands {
 		value.then(CommandManager.literal("guardUsable").			executes(AmaziaTestCommands::spawnGuardUsableItems));
 		value.then(CommandManager.literal("smokableItems").			executes(AmaziaTestCommands::spawnSmeltingItems));
 		value.then(CommandManager.literal("getMissingCraftables").	executes(AmaziaTestCommands::spawnCraftableItems));
+		value.then(CommandManager.literal("testNameGen").			executes(AmaziaTestCommands::testNameGen));
 
 		return value;
 	}
@@ -87,6 +90,13 @@ public class AmaziaTestCommands {
 		AmaziaTestCommands.spawnItemsFromCraftingMap(context, pos, Amazia.CHEF_CRAFTABLES);
 		AmaziaTestCommands.spawnItemsFromCraftingMap(context, pos, Amazia.GUARD_CRAFTABLES);
 
+		return 1;
+	}
+
+	private static int testNameGen(final CommandContext<ServerCommandSource> context) {
+		for (int i = 0; i<16; i++) {
+			context.getSource().sendMessage(Text.literal(NamingLanguageOptions.generateName(null)));
+		}
 		return 1;
 	}
 

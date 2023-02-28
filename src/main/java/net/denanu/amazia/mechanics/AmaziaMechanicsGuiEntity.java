@@ -20,4 +20,6 @@ public interface AmaziaMechanicsGuiEntity extends NamedScreenHandlerFactory, IAm
 	float getMaxHunger();
 
 	Identifier getProfession();
+
+	Text getCustomName();
 }

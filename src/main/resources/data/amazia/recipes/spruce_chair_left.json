@@ -16,5 +16,6 @@
     "result": {
         "item": "amazia:spruce_chair",
         "count": 1
-    }
+    },
+    "group": "amazia:chair"
 }

@@ -16,6 +16,7 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.GUI.AmaziaVillagerUIScreenHandler;
 import net.denanu.amazia.block.AmaziaBlockProperties;
+import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
 import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.both.VillagerData;
@@ -42,6 +43,7 @@ import net.denanu.amazia.mechanics.hunger.AmaziaFoodData;
 import net.denanu.amazia.mechanics.intelligence.IAmaziaIntelligenceEntity;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.mechanics.leveling.ProfessionLevelManager;
+import net.denanu.amazia.mechanics.title.Titles;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.utils.crafting.CraftingUtils;
 import net.denanu.amazia.village.events.EventData;
@@ -87,6 +89,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -164,6 +167,9 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		this.professionLevelManager = new ProfessionLevelManager();
 
 		this.inventory.addListener(this);
+
+		this.setCustomName(Text.literal(NamingLanguageOptions.generateName(null)));
+		this.setCustomNameVisible(false);
 	}
 
 	public static DefaultAttributeContainer.Builder setAttributes() {
@@ -349,6 +355,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		}
 
 		this.setPositionInBed();
+		this.updateName();
 	}
 
 	@Override
@@ -591,7 +598,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 				player.incrementStat(Stats.TALKED_TO_VILLAGER);
 			}
 			if (!this.world.isClient) {
-				this.sendVillagerData(player, this.getName());
+				this.sendVillagerData(player, this.getDefaultName());
 			}
 			return ActionResult.success(this.world.isClient);
 		}
@@ -701,6 +708,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		return this.happyness;
 	}
 
+	@Override
 	public abstract Identifier getProfession();
 
 	@Override
@@ -726,6 +734,17 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	@Override
 	public void learn(final float baseAmount) {
 		this.education = this.education + (this.dataTracker.get(AmaziaVillagerEntity.INTELLIGENCE) - this.education) * baseAmount;
+		this.updateName();
+	}
+
+	private void updateName() {
+		super.setCustomName(Text.of(Titles.updateTitles(this.getCustomName().getString(), this, this.hasVillage() ? this.getVillage().getMayor() : null)));
+	}
+
+	@Override
+	public void setCustomName(final Text txt) {
+		super.setCustomName(txt);
+		this.updateName();
 	}
 
 	protected boolean isLowHp() {

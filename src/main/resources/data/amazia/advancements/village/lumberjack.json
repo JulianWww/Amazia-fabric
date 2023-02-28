@@ -1,0 +1,32 @@
+{
+    "parent": "amazia:village/root",
+    "criteria": {
+        "make_bard": {
+            "conditions": {
+                "item": {
+                    "items": [
+                        "amazia:lumberjack_transformation_token"
+                    ]
+                }
+            },
+            "trigger": "minecraft:using_item"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.lumberjack.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:lumberjack_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.lumberjack.title"
+        }
+    },
+    "rewards": {
+        "experience": 100
+    }
+}

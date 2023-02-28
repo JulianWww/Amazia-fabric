@@ -2,12 +2,14 @@ package net.denanu.amazia.item.custom;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.ChildEntity;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
@@ -33,6 +35,8 @@ public class VillagerTransformationTokenItem<T extends AmaziaVillagerEntity> ext
 				other.readNbt(nbt);
 				villager.discard();
 				user.world.spawnEntity(other);
+
+				Criteria.USING_ITEM.trigger((ServerPlayerEntity)user, stack);
 			}
 			return ActionResult.SUCCESS;
 		}

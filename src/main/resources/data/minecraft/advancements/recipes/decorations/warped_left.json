@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_items_amazia:warped_left": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:warped_stem"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_items_amazia:warped_left"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "amazia:warped_left"
+    ],
+    "experience": 1000
+  }
+}
