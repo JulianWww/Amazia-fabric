@@ -4,10 +4,15 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Optional;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Ordering;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
+import net.denanu.amazia.mechanics.title.AbilityRankTitles;
 import net.denanu.amazia.mixin.StatusEffectInstanceMixin;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -17,6 +22,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -42,12 +48,44 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 				this.backgroundHeight, 512, 256);
 	}
 
+
 	@Override
 	protected void drawForeground(final MatrixStack matrices, final int mouseX, final int mouseY) {
+		this.drawForegroundMouseAjusted(matrices, mouseX - this.x, mouseY - this.y);
+	}
+
+	protected void drawForegroundMouseAjusted(final MatrixStack matrices, final int mouseX, final int mouseY) {
 		this.textRenderer.draw(matrices, this.title, this.backgroundWidth / 2 - this.textRenderer.getWidth(this.title) / 2, 6.0f, 0x404040);
 		this.renderProfessions(matrices);
 		this.renderProgressBars(matrices);
 		this.renderName(matrices);
+		this.renderProfessionLevels(matrices, mouseX, mouseY);
+	}
+
+	// TODO: maybe add scroll ability, not currently needed
+	private void renderProfessionLevels(final MatrixStack stack, final int mouseX, final int mouseY) {
+		int y = 10;
+		for (int idx = 0; idx < AmaziaProfessions.PROFESSIONS.size(); idx++) {
+			y = this.renderProfessionLevel(stack, idx, y, mouseX, mouseY);
+		}
+	}
+
+	private int renderProfessionLevel(final MatrixStack stack, final int idx, int y, final int mouseX, final int mouseY) {
+		final int lvl = this.getScreenHandler().getProfessionLevel(idx);
+		final AbilityRankTitles ability = AbilityRankTitles.of(lvl);
+		if (ability.shouldRender()) {
+			y += 10;
+			this.textRenderer.draw(stack, AmaziaVillagerUIScreenHandler.getProfessionText(idx), 8, y , 0x404040);
+
+			final String level = Integer.toString(lvl);
+			final int width = this.textRenderer.getWidth(level);
+			this.textRenderer.draw(stack, level, 97 - width, y, AbilityRankTitles.of(lvl).getColor());
+
+			if (76 <= mouseX && 99 >= mouseX && y <= mouseY && y + 6 >= mouseY) {
+				this.renderTooltip(stack, ImmutableList.of(Text.translatable(ability.getTranslationKey())), mouseX, mouseY);
+			}
+		}
+		return y;
 	}
 
 	private void renderName(final MatrixStack stack) {
@@ -207,7 +245,7 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 		final var out = new StringBuilder();
 		var i = AmaziaVillagerUIScreen.romanDecimalNumbers.length - 1;
 		while (number > 0) {
-			var div = Math.floorDiv(number, AmaziaVillagerUIScreen.romanDecimalNumbers[i]);
+			int div = Math.floorDiv(number, AmaziaVillagerUIScreen.romanDecimalNumbers[i]);
 			number = number % AmaziaVillagerUIScreen.romanDecimalNumbers[i];
 			while (div > 0) {
 				out.append(AmaziaVillagerUIScreen.romanStringNumbers[i]);
@@ -233,6 +271,14 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 		} catch (final ConcurrentModificationException statusEffect) {
 			// empty catch block
 		}
+	}
+
+	@Override
+	protected void renderTextHoverEffect(final MatrixStack matrices, @Nullable final Style style, final int x, final int y) {
+		if (x >= 79 && x <= 97) {
+			this.renderTooltip(matrices, Text.literal("hi"), x, y);
+		}
+		super.renderTextHoverEffect(matrices, style, x, y);
 	}
 
 	private enum ProgressBarId {

@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
+import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -110,6 +111,10 @@ public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 
 	public int getProfessionLevel(final int idx) {
 		return this.deleget.get(idx + AmaziaVillagerEntity.nonProfessionPropertyCounts());
+	}
+
+	public static Text getProfessionText(final int idx) {
+		return Text.translatable(AmaziaProfessions.PROFESSIONS.get(idx).toTranslationKey());
 	}
 
 	public void tick() {

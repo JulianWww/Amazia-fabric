@@ -39,6 +39,7 @@
 	
 	"amazia:attribute.villager.max_hunger": "Max Hunger",
 	
+	"amazia.bard": "Bard",
 	"amazia.blacksmith": "Blacksmith",
 	"amazia.chef": "Chef",
 	"amazia.cleric": "Cleric",
@@ -51,6 +52,7 @@
 	"amazia.nitwit": "Nitwit",
 	"amazia.rancher": "Rancher",
 	"amazia.bard_day_music": "Bard Day Music",
+	"amazia.teacher": "Teacher",
 	
 	"effect.amazia.blessing": "Blessing",
 	
@@ -98,6 +100,17 @@
 	
 	"amazia.gui.button.config_gui.admin": "Admin",
 	"amazia.gui.button.config_gui.generic": "Generic",
+	
+	"amazia.abilityrank.novice.title": "Novice",
+	"amazia.abilityrank.beginner.title": "Beginner",
+	"amazia.abilityrank.aprentice.title": "Aprentice",
+	"amazia.abilityrank.journeyman.title": "Journeyman",
+	"amazia.abilityrank.student.title": "Student",
+	"amazia.abilityrank.grad_student.title": "Grad Student",
+	"amazia.abilityrank.expert.title": "Expert",
+	"amazia.abilityrank.leading_expert.title": "Leading Eexpert",
+	"amazia.abilityrank.master.title": "Master",
+	"amazia.abilityrank.grand_master.title": "Grand Master",
 	
 	"advancements.village.root.title": "Village",
 	"advancements.village.root.description": "Start your first village by placing a Village core",

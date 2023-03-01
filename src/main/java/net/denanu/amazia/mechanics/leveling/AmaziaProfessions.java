@@ -21,7 +21,7 @@ public class AmaziaProfessions {
 	public static final Identifier NITWIT		= AmaziaProfessions.register("nitwit");
 	public static final Identifier RANCHER 		= AmaziaProfessions.register("rancher");
 	public static final Identifier TEACHER  	= AmaziaProfessions.register("teacher");
-	public static final Identifier CHILD		= AmaziaProfessions.register("child");
+	public static final Identifier CHILD		= Identifier.of(Amazia.MOD_ID, "child");
 
 	public static Identifier register(final Identifier profession) {
 		AmaziaProfessions.PROFESSIONS.add(profession);
