@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/farmer_master",
+    "criteria": {
+        "amazia.gain_grand_master_rank_for_amazia:farmer": {
+            "conditions": {
+                "tier": "grand_master",
+                "profession": "amazia:farmer"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.farmer.grand_master.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:farmer_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.farmer.grand_master.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

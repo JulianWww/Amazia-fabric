@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/blacksmith_expert",
+    "criteria": {
+        "amazia.gain_leading_expert_rank_for_amazia:blacksmith": {
+            "conditions": {
+                "tier": "leading_expert",
+                "profession": "amazia:blacksmith"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.blacksmith.leading_expert.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:blacksmith_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.blacksmith.leading_expert.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

@@ -24,7 +24,7 @@ public enum AbilityRankTitles {
 		this.key = key;
 	}
 
-	private boolean qualifies(final int lvl) {
+	public boolean qualifies(final int lvl) {
 		return lvl >= this.levelRequired;
 	}
 
@@ -51,5 +51,30 @@ public enum AbilityRankTitles {
 			}
 		}
 		return AbilityRankTitles.UNTRAINED;
+	}
+
+	public static AbilityRankTitles of(final String key) {
+		for (final AbilityRankTitles title : AbilityRankTitles.values()) {
+			if (title.key.equals(key)) {
+				return title;
+			}
+		}
+		return null;
+	}
+
+	public AbilityRankTitles next() {
+		return switch(this) {
+		case GRAND_MASTER -> this;
+		default -> AbilityRankTitles.values()[this.ordinal() + 1];
+		};
+	}
+
+	public AbilityRankTitles nextIfQualifies(final int lvl) {
+		final AbilityRankTitles rank = this.next();
+		return rank.qualifies(lvl) ? rank : this;
+	}
+
+	public String getKey() {
+		return this.key;
 	}
 }

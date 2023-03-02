@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/rancher",
+    "criteria": {
+        "amazia.gain_novice_rank_for_amazia:rancher": {
+            "conditions": {
+                "tier": "novice",
+                "profession": "amazia:rancher"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.rancher.novice.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:rancher_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.rancher.novice.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

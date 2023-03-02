@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/cleric_expert",
+    "criteria": {
+        "amazia.gain_leading_expert_rank_for_amazia:cleric": {
+            "conditions": {
+                "tier": "leading_expert",
+                "profession": "amazia:cleric"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.cleric.leading_expert.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:cleric_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.cleric.leading_expert.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

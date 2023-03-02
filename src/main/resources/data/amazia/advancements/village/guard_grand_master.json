@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/guard_master",
+    "criteria": {
+        "amazia.gain_grand_master_rank_for_amazia:guard": {
+            "conditions": {
+                "tier": "grand_master",
+                "profession": "amazia:guard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.guard.grand_master.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:guard_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.guard.grand_master.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

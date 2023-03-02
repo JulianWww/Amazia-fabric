@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/druid_journeyman",
+    "criteria": {
+        "amazia.gain_student_rank_for_amazia:druid": {
+            "conditions": {
+                "tier": "student",
+                "profession": "amazia:druid"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.druid.student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:druid_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.druid.student.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

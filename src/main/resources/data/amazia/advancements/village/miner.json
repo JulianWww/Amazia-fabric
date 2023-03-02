@@ -1,7 +1,7 @@
 {
     "parent": "amazia:village/root",
     "criteria": {
-        "make_bard": {
+        "make_miner": {
             "conditions": {
                 "item": {
                     "items": [

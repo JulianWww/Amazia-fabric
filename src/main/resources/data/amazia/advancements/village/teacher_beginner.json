@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/teacher_novice",
+    "criteria": {
+        "amazia.gain_beginner_rank_for_amazia:teacher": {
+            "conditions": {
+                "tier": "beginner",
+                "profession": "amazia:teacher"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.teacher.beginner.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:teacher_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.teacher.beginner.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

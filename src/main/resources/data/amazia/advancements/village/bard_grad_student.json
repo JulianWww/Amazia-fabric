@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/bard_student",
+    "criteria": {
+        "amazia.gain_grad_student_rank_for_amazia:bard": {
+            "conditions": {
+                "tier": "grad_student",
+                "profession": "amazia:bard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.bard.grad_student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:bard_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.bard.grad_student.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

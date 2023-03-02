@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/rancher_student",
+    "criteria": {
+        "amazia.gain_grad_student_rank_for_amazia:rancher": {
+            "conditions": {
+                "tier": "grad_student",
+                "profession": "amazia:rancher"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.rancher.grad_student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:rancher_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.rancher.grad_student.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

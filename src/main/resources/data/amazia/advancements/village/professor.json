@@ -1,7 +1,7 @@
 {
     "parent": "amazia:village/doctorate",
     "criteria": {
-        "professor": {
+        "doctorate": {
             "conditions": {
                 "title": "professor"
             },

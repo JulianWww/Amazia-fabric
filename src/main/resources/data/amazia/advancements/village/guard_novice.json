@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/guard",
+    "criteria": {
+        "amazia.gain_novice_rank_for_amazia:guard": {
+            "conditions": {
+                "tier": "novice",
+                "profession": "amazia:guard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.guard.novice.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:guard_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.guard.novice.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

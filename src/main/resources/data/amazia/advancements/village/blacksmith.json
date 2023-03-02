@@ -1,7 +1,7 @@
 {
     "parent": "amazia:village/miner",
     "criteria": {
-        "make_bard": {
+        "make_blacksmith": {
             "conditions": {
                 "item": {
                     "items": [

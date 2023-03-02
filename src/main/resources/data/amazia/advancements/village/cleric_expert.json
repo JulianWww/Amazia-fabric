@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/cleric_grad_student",
+    "criteria": {
+        "amazia.gain_expert_rank_for_amazia:cleric": {
+            "conditions": {
+                "tier": "expert",
+                "profession": "amazia:cleric"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.cleric.expert.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:cleric_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.cleric.expert.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

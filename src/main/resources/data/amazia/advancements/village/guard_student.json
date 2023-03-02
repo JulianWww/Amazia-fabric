@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/guard_journeyman",
+    "criteria": {
+        "amazia.gain_student_rank_for_amazia:guard": {
+            "conditions": {
+                "tier": "student",
+                "profession": "amazia:guard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.guard.student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:guard_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.guard.student.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

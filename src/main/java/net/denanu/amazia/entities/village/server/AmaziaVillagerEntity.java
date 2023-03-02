@@ -346,7 +346,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		this.dataTracker.set(AmaziaVillagerEntity.INTELLIGENCE, nbt.contains("Intelligence") ? nbt.getFloat("Intelligence") : IAmaziaIntelligenceEntity.getInitalIntelligence());
 		this.education = nbt.contains("Education") ? nbt.getFloat("Education") : IAmaziaEducatedEntity.baseEducation(this);
 		this.happyness = nbt.contains("Happyness") ? nbt.getFloat("Happyness") : IAmaziaHappynessEntity.getDefaultHappyness();
-		this.professionLevelManager.load(nbt.getCompound("professions"), this.getProfession());
+		this.professionLevelManager.load(nbt.getCompound("professions"), this.getProfession(), this.getVillage());
 		this.activityScedule.readCustomNbt(nbt.getCompound("Scedule"));
 		this.bedLocation = NbtUtils.toBlockPos(nbt.getList("bed", NbtElement.INT_TYPE));
 
@@ -599,6 +599,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			}
 			if (!this.world.isClient) {
 				this.sendVillagerData(player, this.getDefaultName());
+				this.professionLevelManager.update(this.village, this.getProfession());
 			}
 			return ActionResult.success(this.world.isClient);
 		}
@@ -718,7 +719,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 	@Override
 	public void gainXp(final Identifier profession, final float xpVal) {
-		this.professionLevelManager.gainXp(profession, xpVal, this.dataTracker.get(AmaziaVillagerEntity.INTELLIGENCE));
+		this.professionLevelManager.gainXp(profession, xpVal, this.education, this.getVillage());
 	}
 
 	@Override

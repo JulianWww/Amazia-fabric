@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/guard_aprentice",
+    "criteria": {
+        "amazia.gain_journeyman_rank_for_amazia:guard": {
+            "conditions": {
+                "tier": "journeyman",
+                "profession": "amazia:guard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.guard.journeyman.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:guard_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.guard.journeyman.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

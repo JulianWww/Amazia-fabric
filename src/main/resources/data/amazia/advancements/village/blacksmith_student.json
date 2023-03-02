@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/blacksmith_journeyman",
+    "criteria": {
+        "amazia.gain_student_rank_for_amazia:blacksmith": {
+            "conditions": {
+                "tier": "student",
+                "profession": "amazia:blacksmith"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.blacksmith.student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:blacksmith_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.blacksmith.student.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

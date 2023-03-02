@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/guard_student",
+    "criteria": {
+        "amazia.gain_grad_student_rank_for_amazia:guard": {
+            "conditions": {
+                "tier": "grad_student",
+                "profession": "amazia:guard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.guard.grad_student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:guard_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.guard.grad_student.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

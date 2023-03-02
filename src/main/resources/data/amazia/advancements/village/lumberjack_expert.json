@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/lumberjack_grad_student",
+    "criteria": {
+        "amazia.gain_expert_rank_for_amazia:lumberjack": {
+            "conditions": {
+                "tier": "expert",
+                "profession": "amazia:lumberjack"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.lumberjack.expert.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:lumberjack_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.lumberjack.expert.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/teacher_expert",
+    "criteria": {
+        "amazia.gain_leading_expert_rank_for_amazia:teacher": {
+            "conditions": {
+                "tier": "leading_expert",
+                "profession": "amazia:teacher"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.teacher.leading_expert.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:teacher_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.teacher.leading_expert.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

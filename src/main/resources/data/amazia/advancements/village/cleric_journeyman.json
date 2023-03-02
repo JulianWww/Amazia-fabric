@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/cleric_aprentice",
+    "criteria": {
+        "amazia.gain_journeyman_rank_for_amazia:cleric": {
+            "conditions": {
+                "tier": "journeyman",
+                "profession": "amazia:cleric"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.cleric.journeyman.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:cleric_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.cleric.journeyman.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

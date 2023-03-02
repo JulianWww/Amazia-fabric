@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/chef_aprentice",
+    "criteria": {
+        "amazia.gain_journeyman_rank_for_amazia:chef": {
+            "conditions": {
+                "tier": "journeyman",
+                "profession": "amazia:chef"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.chef.journeyman.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:chef_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.chef.journeyman.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

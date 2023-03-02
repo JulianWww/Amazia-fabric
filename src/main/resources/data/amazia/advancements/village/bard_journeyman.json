@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/bard_aprentice",
+    "criteria": {
+        "amazia.gain_journeyman_rank_for_amazia:bard": {
+            "conditions": {
+                "tier": "journeyman",
+                "profession": "amazia:bard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.bard.journeyman.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:bard_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.bard.journeyman.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

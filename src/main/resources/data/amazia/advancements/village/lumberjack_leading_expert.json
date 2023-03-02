@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/lumberjack_expert",
+    "criteria": {
+        "amazia.gain_leading_expert_rank_for_amazia:lumberjack": {
+            "conditions": {
+                "tier": "leading_expert",
+                "profession": "amazia:lumberjack"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.lumberjack.leading_expert.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:lumberjack_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.lumberjack.leading_expert.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

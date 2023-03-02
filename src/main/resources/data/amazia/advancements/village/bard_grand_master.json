@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/bard_master",
+    "criteria": {
+        "amazia.gain_grand_master_rank_for_amazia:bard": {
+            "conditions": {
+                "tier": "grand_master",
+                "profession": "amazia:bard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.bard.grand_master.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:bard_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.bard.grand_master.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

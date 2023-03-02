@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/rancher_master",
+    "criteria": {
+        "amazia.gain_grand_master_rank_for_amazia:rancher": {
+            "conditions": {
+                "tier": "grand_master",
+                "profession": "amazia:rancher"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.rancher.grand_master.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:rancher_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.rancher.grand_master.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

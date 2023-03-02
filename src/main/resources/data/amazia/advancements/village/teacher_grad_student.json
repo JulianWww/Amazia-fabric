@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/teacher_student",
+    "criteria": {
+        "amazia.gain_grad_student_rank_for_amazia:teacher": {
+            "conditions": {
+                "tier": "grad_student",
+                "profession": "amazia:teacher"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.teacher.grad_student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:teacher_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.teacher.grad_student.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/blacksmith_beginner",
+    "criteria": {
+        "amazia.gain_aprentice_rank_for_amazia:blacksmith": {
+            "conditions": {
+                "tier": "aprentice",
+                "profession": "amazia:blacksmith"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.blacksmith.aprentice.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:blacksmith_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.blacksmith.aprentice.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

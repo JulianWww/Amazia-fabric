@@ -1,8 +1,9 @@
 import wget
-from os import remove, path, chdir, system
+from os import remove, path, chdir, system, mkdir
 import cv2
 import numpy as np
 import json
+import shutil
 
 abspath = path.abspath(__file__)
 dname = path.dirname(abspath)
@@ -36,26 +37,20 @@ for entity, img in images.items():
   
   print (f"generated {entity} conversion token")
  
-root_acivement = "../../src/main/resources/data/amazia/advancements/village/root.json"
-with open(root_acivement, "r") as file:
-	data = json.load(file)
-	
-tokens = [x + "_transformation_token" for x in images]
-tokens.append("base_transformation_token")
-	
-data["rewards"] = {
-	"recipes": tokens,
-	"experience": 10000
-}
-	
-with open(root_acivement, "w") as file:
-	json.dump(data, file, indent=4)
-
 system(f"cp base_token.png {outPath}base.png")
 
 print(f"Generating token based advancements")
 
 outPath = "../../src/main/resources/data/amazia/advancements/village/"
+
+try:
+	shutil.rmtree(outPath)
+except FileNotFoundError as e:
+	print(e)
+mkdir(outPath)
+
+
+
 
 villagerTypes = {
   "miner": ("root", 100),
@@ -81,7 +76,7 @@ def genAchivement(villager, parent, reward):
 	return {
 	  "parent": f"amazia:village/{parent}",
 	  "criteria": {
-	    "make_bard": {
+	    f"make_{villager}": {
 	      "conditions": {
 		"item": {
 			"items": [f"amazia:{villager}_transformation_token"]
@@ -115,3 +110,128 @@ for villager, data in villagerTypes.items():
 
 
 print(f"Generated token based advancements")
+
+print(f"Generation level advancement Acivements")
+
+def genLevelAcivement(villager, parent, reward, type, frame):
+	return {
+	  "parent": f"amazia:village/{parent}",
+	  "criteria": {
+	    f"amazia.gain_{type}_rank_for_amazia:{villager}": {
+	      "conditions": {
+		"tier": type,
+		"profession": f"amazia:{villager}"
+	      },
+	      "trigger": "amazia:gain_advancement"
+	    }
+	  },
+	  "display": {
+	    "announce_to_chat": True,
+	    "description": {
+	      "translate": f"advancements.village.{villager}.{type}.description"
+	    },
+	    "frame": frame,
+	    "icon": {
+	      "item": f"amazia:{villager}_transformation_token"
+	    },
+	    "show_toast": True,
+	    "title": {
+	      "translate": f"advancements.village.{villager}.{type}.title"
+	    }
+	  },
+	  "rewards": {
+	    "experience": reward
+	  }
+	}
+
+acivementLevels = [
+	("novice", 				"task"),
+	("beginner", 			"task"),
+	("aprentice", 		"task"),
+	("journeyman", 		"task"),
+	("student", 			"goal"),
+	("grad_student", 	"goal"),
+	("expert", 				"goal"),
+	("leading_expert","challenge"),
+	("master",				"challenge"),
+	("grand_master",  "challenge")
+]
+
+for idx, (lvl, frame) in enumerate(acivementLevels):
+	for villager in villagerTypes:
+		with open(outPath + villager + "_" + lvl + ".json", "w") as file:
+			json.dump(genLevelAcivement(villager, villager if lvl == "novice" else villager + "_" + acivementLevels[idx - 1][0], 1024, lvl, frame), file, indent=4)
+			
+print("Generated level advanement Acivements")
+
+print("Generate titles")
+
+def getTitleAcivements(title, name, icon, xp, parent):
+	return {
+	    "parent": f"amazia:village/{parent}",
+	    "criteria": {
+		"doctorate": {
+		    "conditions": {
+		        "title": title
+		    },
+		    "trigger": "amazia:gain_title"
+		}
+	    },
+	    "display": {
+		"announce_to_chat": True,
+		"description": {
+		    "translate": f"advancements.village.{name}.description"
+		},
+		"frame": "challenge",
+		"icon": {
+		    "item": icon
+		},
+		"show_toast": True,
+		"title": {
+		    "translate": f"advancements.village.{name}.title"
+		}
+	    },
+	    "rewards": {
+		"experience": xp
+	    }
+	}
+
+titles = [
+	("phd", 	"doctorate", "minecraft:writable_book", 1024, "teacher"),
+	("professor", 	"professor", "minecraft:lectern",	2048, "doctorate")
+]
+
+for data in titles:
+	with open(outPath + data[1] + ".json", "w") as file:
+		json.dump(getTitleAcivements(*data), file, indent=4)
+
+print("Generated titles")
+
+
+with open(outPath + "root.json", "w") as file:
+	json.dump(
+		{
+		    "criteria": {
+			"first_village": {
+			    "conditions": {
+				"block": "amazia:village_core"
+			    },
+			    "trigger": "minecraft:placed_block"
+			}
+		    },
+		    "display": {
+			"background": "minecraft:textures/block/oak_log.png",
+			"description": {
+			    "translate": "advancements.village.root.description"
+			},
+			"frame": "task",
+			"hidden": False,
+			"icon": {
+			    "item": "amazia:village_core"
+			},
+			"title": {
+			    "translate": "advancements.village.root.title"
+			}
+		    }
+		},
+		file, indent=4)

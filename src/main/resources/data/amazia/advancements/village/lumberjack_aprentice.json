@@ -1,0 +1,29 @@
+{
+    "parent": "amazia:village/lumberjack_beginner",
+    "criteria": {
+        "amazia.gain_aprentice_rank_for_amazia:lumberjack": {
+            "conditions": {
+                "tier": "aprentice",
+                "profession": "amazia:lumberjack"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.lumberjack.aprentice.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:lumberjack_transformation_token"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "advancements.village.lumberjack.aprentice.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

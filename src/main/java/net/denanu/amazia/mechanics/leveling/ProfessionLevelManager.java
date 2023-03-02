@@ -6,6 +6,9 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.mutable.MutableFloat;
 
+import net.denanu.amazia.advancement.criterion.AmaziaCriterions;
+import net.denanu.amazia.mechanics.title.AbilityRankTitles;
+import net.denanu.amazia.village.Village;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
@@ -13,16 +16,18 @@ public class ProfessionLevelManager {
 	private Map<Identifier, MutableFloat> professionLevel;
 	private float professionEfficency;
 	private float levelBoost = 0;
+	private AbilityRankTitles abilityRankTitle;
 
 	public ProfessionLevelManager() {
 		this.setup();
 	}
 
-	public void load(final NbtCompound nbt, final Identifier profession) {
+	public void load(final NbtCompound nbt, final Identifier profession, final Village village) {
 		for (final String key : nbt.getKeys()) {
 			this.professionLevel.put(new Identifier(key), new MutableFloat(nbt.getFloat(key)));
 		}
 		this.updateEfficency(this.getUnmodLevel(profession));
+		this.updateAbilityRankFromNbt(village, profession);
 	}
 
 	public NbtCompound save() {
@@ -48,12 +53,13 @@ public class ProfessionLevelManager {
 		return this.professionLevel.get(profession).getValue();
 	}
 
-	public void gainXp(final Identifier profession, final float xpVal, final float intelligence) {
+	public void gainXp(final Identifier profession, final float xpVal, final float intelligence, final Village village) {
 		final MutableFloat level = this.professionLevel.get(profession);
 		level.add(
 				(intelligence - level.getValue()) * xpVal
 				);
 		this.updateEfficency(level.getValue());
+		this.updateAbilityRank(profession, village);
 	}
 
 	public int getLevelById(final int idx) {
@@ -61,6 +67,29 @@ public class ProfessionLevelManager {
 			return (int) Math.ceil(this.professionLevel.get(AmaziaProfessions.PROFESSIONS.get(idx)).getValue());
 		}
 		return 0;
+	}
+
+	public void updateAbilityRankFromNbt(final Village village, final Identifier profession) {
+		this.abilityRankTitle = AbilityRankTitles.of((int)this.getLevel(profession));
+	}
+
+	private void updateAbilityRank(final Identifier profession, final Village village) {
+		final int lvl = (int)this.getLevel(profession);
+		final AbilityRankTitles rank = this.abilityRankTitle.nextIfQualifies(lvl);
+		if (this.abilityRankTitle != rank) {
+			this.triggerUpdateEvent(village, rank, profession);
+		}
+		this.abilityRankTitle = rank;
+	}
+
+	public void update(final Village village, final Identifier profession) {
+		this.triggerUpdateEvent(village, this.abilityRankTitle, profession);
+	}
+
+	private void triggerUpdateEvent(final Village village, final AbilityRankTitles rank, final Identifier profession) {
+		if (village != null) {
+			AmaziaCriterions.GAIN_ADVANCEMENT.trigger(village.getMayor(), rank, profession);
+		}
 	}
 
 
