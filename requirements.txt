@@ -1,3 +1,0 @@
-wget
-numpy
-opencv
