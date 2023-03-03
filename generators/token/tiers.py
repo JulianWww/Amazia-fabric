@@ -5,7 +5,6 @@ from villagers import acivementLevels
 from pathes import item_models, tier_models
 import json
 import shutil
-import matplotlib.pyplot as plt
 
 abspath = path.abspath(__file__)
 dname = path.dirname(abspath)
