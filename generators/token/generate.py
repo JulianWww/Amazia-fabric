@@ -4,6 +4,9 @@ import cv2
 import numpy as np
 import json
 import shutil
+from tiers import getImage, updateTokeTierOverrides
+
+langFile = "../../src/main/resources/assets/amazia/lang/en_us.json"
 
 abspath = path.abspath(__file__)
 dname = path.dirname(abspath)
@@ -13,7 +16,10 @@ mc_version = "1.19.3"
 path = f"https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.19.3/assets/minecraft/textures/item/"
 outPath = "../../src/main/resources/assets/amazia/textures/item/tokens/"
 
-from villagers import images
+with open(langFile, "r") as file:
+	lang = json.load(file)
+
+from villagers import images, acivementLevels
 
 system(f"rm {outPath}*")
 system(f"mkdir {outPath}")
@@ -21,21 +27,28 @@ system(f"mkdir {outPath}")
 base = cv2.imread("base_token.png", cv2.IMREAD_UNCHANGED)
 
 for entity, img in images.items():
-  file = img[1:] + ".png" if img[0] == "/" else wget.download(path + img + ".png")
+	file = img[1:] + ".png" if img[0] == "/" else wget.download(path + img + ".png")
 
-  mask = cv2.imread(file, cv2.IMREAD_UNCHANGED)
-  mask = np.pad(mask, ((3,3), (3, 3), (0, 0)), "constant", constant_values = 0)
+	mask = cv2.imread(file, cv2.IMREAD_UNCHANGED)
+	mask = np.pad(mask, ((3,3), (3, 3), (0, 0)), "constant", constant_values = 0)
 
-  pos = np.where(mask[:,:,3] != 0)
-  new_base = np.copy(base)
-  new_base[pos] = mask[pos]
+	pos = np.where(mask[:,:,3] != 0)
+	new_base = np.copy(base)
+	new_base[pos] = mask[pos]
 
-  cv2.imwrite(outPath + entity + ".png", new_base)
+	cv2.imwrite(outPath + entity + ".png", new_base)
 
+	for acivement_data in acivementLevels:
+		lvl = acivement_data[0]
+		x, y = acivement_data[2]
 
-  if (img[0] != "/"): remove(file)
+		cv2.imwrite(outPath + entity + "_" + lvl + ".png", getImage(x, y, mask))
+
+	if (img[0] != "/"): remove(file)
+
+	updateTokeTierOverrides(entity)
   
-  print (f"generated {entity} conversion token")
+	print (f"generated {entity} conversion token")
  
 system(f"cp base_token.png {outPath}base.png")
 
@@ -74,13 +87,13 @@ villagerTypes = {
 
 def genAchivement(villager, parent, reward):
 	return {
-	  "parent": f"amazia:village/{parent}",
+	  "parent": f"amazia:village/root",
 	  "criteria": {
 	    f"make_{villager}": {
 	      "conditions": {
-		"item": {
-			"items": [f"amazia:{villager}_transformation_token"]
-		}
+					"item": {
+						"items": [f"amazia:{villager}_transformation_token"]
+					}
 	      },
 	      "trigger": "minecraft:using_item"
 	    }
@@ -113,14 +126,14 @@ print(f"Generated token based advancements")
 
 print(f"Generation level advancement Acivements")
 
-def genLevelAcivement(villager, parent, reward, type, frame):
+def genLevelAcivement(villager, parent, reward, type, frame, idx):
 	return {
 	  "parent": f"amazia:village/{parent}",
 	  "criteria": {
 	    f"amazia.gain_{type}_rank_for_amazia:{villager}": {
 	      "conditions": {
-		"tier": type,
-		"profession": f"amazia:{villager}"
+					"tier": type,
+					"profession": f"amazia:{villager}"
 	      },
 	      "trigger": "amazia:gain_advancement"
 	    }
@@ -132,9 +145,11 @@ def genLevelAcivement(villager, parent, reward, type, frame):
 	    },
 	    "frame": frame,
 	    "icon": {
-	      "item": f"amazia:{villager}_transformation_token"
+	      "item": f"amazia:{villager}_transformation_token",
+	      "nbt": "{CustomModelData:" + str(idx + 1) + "}"
 	    },
-	    "show_toast": True,
+	    "show_toast": False,
+	    "hidden": True,
 	    "title": {
 	      "translate": f"advancements.village.{villager}.{type}.title"
 	    }
@@ -144,23 +159,14 @@ def genLevelAcivement(villager, parent, reward, type, frame):
 	  }
 	}
 
-acivementLevels = [
-	("novice", 				"task"),
-	("beginner", 			"task"),
-	("aprentice", 		"task"),
-	("journeyman", 		"task"),
-	("student", 			"goal"),
-	("grad_student", 	"goal"),
-	("expert", 				"goal"),
-	("leading_expert","challenge"),
-	("master",				"challenge"),
-	("grand_master",  "challenge")
-]
-
-for idx, (lvl, frame) in enumerate(acivementLevels):
+for idx, (lvl, frame, _) in enumerate(acivementLevels):
 	for villager in villagerTypes:
 		with open(outPath + villager + "_" + lvl + ".json", "w") as file:
-			json.dump(genLevelAcivement(villager, villager if lvl == "novice" else villager + "_" + acivementLevels[idx - 1][0], 1024, lvl, frame), file, indent=4)
+			json.dump(genLevelAcivement(villager, villager if lvl == "novice" else villager + "_" + acivementLevels[idx - 1][0], 2**(idx+1), lvl, frame, idx), file, indent=4)
+		
+		level = lvl.replace("_", " ").title()
+		lang[f"advancements.village.{villager}.{lvl}.description"] = f"Have a {villager.title()} reach the rank of {level} in your village"
+		lang[f"advancements.village.{villager}.{lvl}.title"] = f"{level} {villager.title()}"
 			
 print("Generated level advanement Acivements")
 
@@ -170,12 +176,12 @@ def getTitleAcivements(title, name, icon, xp, parent):
 	return {
 	    "parent": f"amazia:village/{parent}",
 	    "criteria": {
-		"doctorate": {
-		    "conditions": {
-		        "title": title
-		    },
-		    "trigger": "amazia:gain_title"
-		}
+				"doctorate": {
+						"conditions": {
+								"title": title
+						},
+						"trigger": "amazia:gain_title"
+				}
 	    },
 	    "display": {
 		"announce_to_chat": True,
@@ -197,7 +203,7 @@ def getTitleAcivements(title, name, icon, xp, parent):
 	}
 
 titles = [
-	("phd", 	"doctorate", "minecraft:writable_book", 1024, "teacher"),
+	("phd", 	"doctorate", "minecraft:writable_book", 1024, "root"),
 	("professor", 	"professor", "minecraft:lectern",	2048, "doctorate")
 ]
 
@@ -235,3 +241,6 @@ with open(outPath + "root.json", "w") as file:
 		    }
 		},
 		file, indent=4)
+
+with open("../../src/main/resources/assets/amazia/lang/en_us.json", "w") as file:
+	json.dump(lang, file, indent=4)

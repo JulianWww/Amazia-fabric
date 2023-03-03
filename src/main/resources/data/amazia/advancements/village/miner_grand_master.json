@@ -16,9 +16,11 @@
         },
         "frame": "challenge",
         "icon": {
-            "item": "amazia:miner_transformation_token"
+            "item": "amazia:miner_transformation_token",
+            "nbt": "{CustomModelData:10}"
         },
-        "show_toast": true,
+        "show_toast": false,
+        "hidden": true,
         "title": {
             "translate": "advancements.village.miner.grand_master.title"
         }

@@ -16,9 +16,11 @@
         },
         "frame": "challenge",
         "icon": {
-            "item": "amazia:teacher_transformation_token"
+            "item": "amazia:teacher_transformation_token",
+            "nbt": "{CustomModelData:10}"
         },
-        "show_toast": true,
+        "show_toast": false,
+        "hidden": true,
         "title": {
             "translate": "advancements.village.teacher.grand_master.title"
         }

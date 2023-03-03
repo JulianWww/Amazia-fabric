@@ -1,5 +1,5 @@
 {
-    "parent": "amazia:village/guard",
+    "parent": "amazia:village/root",
     "criteria": {
         "make_cleric": {
             "conditions": {

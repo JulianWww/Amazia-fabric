@@ -1,5 +1,5 @@
 {
-    "parent": "amazia:village/miner",
+    "parent": "amazia:village/root",
     "criteria": {
         "make_blacksmith": {
             "conditions": {

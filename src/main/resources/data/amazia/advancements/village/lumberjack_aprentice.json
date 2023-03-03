@@ -16,14 +16,16 @@
         },
         "frame": "task",
         "icon": {
-            "item": "amazia:lumberjack_transformation_token"
+            "item": "amazia:lumberjack_transformation_token",
+            "nbt": "{CustomModelData:3}"
         },
-        "show_toast": true,
+        "show_toast": false,
+        "hidden": true,
         "title": {
             "translate": "advancements.village.lumberjack.aprentice.title"
         }
     },
     "rewards": {
-        "experience": 1024
+        "experience": 8
     }
 }

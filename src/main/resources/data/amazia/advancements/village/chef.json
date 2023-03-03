@@ -1,5 +1,5 @@
 {
-    "parent": "amazia:village/rancher",
+    "parent": "amazia:village/root",
     "criteria": {
         "make_chef": {
             "conditions": {

@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "amazia:item/tokens/cleric_expert"
+    }
+}

@@ -16,14 +16,16 @@
         },
         "frame": "challenge",
         "icon": {
-            "item": "amazia:guard_transformation_token"
+            "item": "amazia:guard_transformation_token",
+            "nbt": "{CustomModelData:9}"
         },
-        "show_toast": true,
+        "show_toast": false,
+        "hidden": true,
         "title": {
             "translate": "advancements.village.guard.master.title"
         }
     },
     "rewards": {
-        "experience": 1024
+        "experience": 512
     }
 }

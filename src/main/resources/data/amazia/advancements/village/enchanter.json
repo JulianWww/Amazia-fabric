@@ -1,5 +1,5 @@
 {
-    "parent": "amazia:village/teacher",
+    "parent": "amazia:village/root",
     "criteria": {
         "make_enchanter": {
             "conditions": {

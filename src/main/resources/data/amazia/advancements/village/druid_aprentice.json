@@ -16,14 +16,16 @@
         },
         "frame": "task",
         "icon": {
-            "item": "amazia:druid_transformation_token"
+            "item": "amazia:druid_transformation_token",
+            "nbt": "{CustomModelData:3}"
         },
-        "show_toast": true,
+        "show_toast": false,
+        "hidden": true,
         "title": {
             "translate": "advancements.village.druid.aprentice.title"
         }
     },
     "rewards": {
-        "experience": 1024
+        "experience": 8
     }
 }

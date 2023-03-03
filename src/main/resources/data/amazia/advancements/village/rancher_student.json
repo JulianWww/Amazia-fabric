@@ -16,14 +16,16 @@
         },
         "frame": "goal",
         "icon": {
-            "item": "amazia:rancher_transformation_token"
+            "item": "amazia:rancher_transformation_token",
+            "nbt": "{CustomModelData:5}"
         },
-        "show_toast": true,
+        "show_toast": false,
+        "hidden": true,
         "title": {
             "translate": "advancements.village.rancher.student.title"
         }
     },
     "rewards": {
-        "experience": 1024
+        "experience": 32
     }
 }

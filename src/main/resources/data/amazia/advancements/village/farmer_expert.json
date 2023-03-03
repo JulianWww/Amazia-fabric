@@ -16,14 +16,16 @@
         },
         "frame": "goal",
         "icon": {
-            "item": "amazia:farmer_transformation_token"
+            "item": "amazia:farmer_transformation_token",
+            "nbt": "{CustomModelData:7}"
         },
-        "show_toast": true,
+        "show_toast": false,
+        "hidden": true,
         "title": {
             "translate": "advancements.village.farmer.expert.title"
         }
     },
     "rewards": {
-        "experience": 1024
+        "experience": 128
     }
 }

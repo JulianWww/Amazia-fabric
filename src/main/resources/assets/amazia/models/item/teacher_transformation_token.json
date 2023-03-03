@@ -1,6 +1,68 @@
 {
-	"parent": "minecraft:item/generated",
-  	"textures": {
-		"layer0": "amazia:item/tokens/teacher"
-	}
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "amazia:item/tokens/teacher"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "custom_model_data": 1
+            },
+            "model": "amazia:item/tier/teacher_novice"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 2
+            },
+            "model": "amazia:item/tier/teacher_beginner"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 3
+            },
+            "model": "amazia:item/tier/teacher_aprentice"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 4
+            },
+            "model": "amazia:item/tier/teacher_journeyman"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 5
+            },
+            "model": "amazia:item/tier/teacher_student"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 6
+            },
+            "model": "amazia:item/tier/teacher_grad_student"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 7
+            },
+            "model": "amazia:item/tier/teacher_expert"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 8
+            },
+            "model": "amazia:item/tier/teacher_leading_expert"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 9
+            },
+            "model": "amazia:item/tier/teacher_master"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 10
+            },
+            "model": "amazia:item/tier/teacher_grand_master"
+        }
+    ]
 }
