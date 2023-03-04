@@ -22,7 +22,7 @@ jobs:
       - name: Install requirements
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install deep_translator
+          python3 -m pip install deep_translator wget
         
       - name: Generate
         run: |
