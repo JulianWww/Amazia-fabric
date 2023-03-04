@@ -39,7 +39,7 @@ def printToGit(*args, **kwargs):
 
 def makeTranslation(transKey, filenames):
   printToGit(f"Translating to {transKey}")
-  s = start()
+  s = time()
 
   if isinstance(filenames, str):
     filenames = [filenames]
