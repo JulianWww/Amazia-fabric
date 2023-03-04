@@ -39,23 +39,26 @@ def makeTranslation(transKey, filenames):
   
   langTimeTable.append([transKey, f"{int(time() - start)} s"])
 
-with open(origFile, "r") as file:
-  en_us = load(file)
+  
+if __name__ == "__main__":
+  with open(origFile, "r") as file:
+    en_us = load(file)
 
-with open("langs.json") as file:
-  langs = load(file)
+  with open("langs.json") as file:
+    langs = load(file)
 
-with open("langs.json", "w") as file:
-  dump(langs, file, indent=4, sort_keys=True)
+  with open("langs.json", "w") as file:
+    dump(langs, file, indent=4, sort_keys=True)
 
-threads = []
 
-for args in langs.items():
-  translator = Thread(target=makeTranslation, args=args)
-  translator.start()
-  threads.append(translator)
+  threads = []
 
-for thread in threads:
-  thread.join()
+  for args in langs.items():
+    translator = Thread(target=makeTranslation, args=args)
+    translator.start()
+    threads.append(translator)
 
-print(langTimeTable)
+  for thread in threads:
+    thread.join()
+
+  print(langTimeTable)
