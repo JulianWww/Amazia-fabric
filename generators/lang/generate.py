@@ -26,6 +26,8 @@ def translate(orig, dest):
   return out
 
 def makeTranslation(transKey, filenames):
+  print(f"translating to {transKey}")
+
   if isinstance(filenames, str):
     filenames = [filenames]
 
