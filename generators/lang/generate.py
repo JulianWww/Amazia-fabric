@@ -66,7 +66,6 @@ if __name__ == "__main__":
     thread = Thread(target=makeTranslation, args=args)
     thread.start()
     threads.append(thread)
-    sleep(0.21)
     break
   
   for thread in threads:
