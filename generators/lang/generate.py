@@ -33,12 +33,7 @@ def translate(orig, dest):
 
   return out
 
-def printToGit(*args, **kwargs):
-  with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-    print(*args, file=fh, **kwargs)
-
 def makeTranslation(transKey, filenames):
-  printToGit(f"Translating to {transKey}")
   s = time()
 
   if isinstance(filenames, str):
@@ -49,9 +44,6 @@ def makeTranslation(transKey, filenames):
   for filename in filenames:
     with open(f"{langDir}{filename}.json", "w") as file:
       dump(data, file, indent=4, sort_keys=True)
-
-
-  printToGit(f"Translated to {transKey}, time {time() - s}")
   
   langTimeTable.append([transKey, f"{int(time() - start)} s"])
 
