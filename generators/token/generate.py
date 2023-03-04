@@ -242,6 +242,6 @@ with open(outPath + "root.json", "w") as file:
 		file, indent=4)
 
 with open("../../src/main/resources/assets/amazia/lang/en_us.json", "w") as file:
-	json.dump(lang, file, indent=4)
+	json.dump(lang, file, indent=4, sort_keys=True)
 
 system(f"rm -r ./tmp")
