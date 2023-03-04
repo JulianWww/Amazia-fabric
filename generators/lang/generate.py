@@ -40,7 +40,7 @@ def makeTranslation(transKey, filenames):
     filenames = [filenames]
 
   start = time()
-  data = translate(en_us, "fr")
+  data = translate(en_us, transKey)
   for filename in filenames:
     with open(f"{langDir}{filename}.json", "w") as file:
       dump(data, file, indent=4, sort_keys=True)
@@ -60,15 +60,8 @@ if __name__ == "__main__":
   with open("langs.json", "w") as file:
     dump(langs, file, indent=4, sort_keys=True)
 
-  threads = []
 
   for args in langs.items():
-    thread = Thread(target=makeTranslation, args=args)
-    thread.start()
-    threads.append(thread)
-    break
-  
-  for thread in threads:
-    thread.join()
+    makeTranslation(*args)
 
   print(langTimeTable)
