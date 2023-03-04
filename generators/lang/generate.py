@@ -2,7 +2,7 @@ from json import load, dump
 from deep_translator import GoogleTranslator
 import os, sys
 from pathlib import Path
-from time import time, sleep
+from time import time
 from threading import Thread
 
 abspath = os.path.abspath(__file__)
@@ -33,9 +33,11 @@ def translate(orig, dest):
 
   return out
 
-def makeTranslation(transKey, filenames):
-  print(f"translating to {transKey}")
+def printToGit(*args, **kwargs):
+  with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+    print(*args, file=fh, **kwargs)
 
+def makeTranslation(transKey, filenames):
   if isinstance(filenames, str):
     filenames = [filenames]
 
@@ -45,7 +47,8 @@ def makeTranslation(transKey, filenames):
     with open(f"{langDir}{filename}.json", "w") as file:
       dump(data, file, indent=4, sort_keys=True)
 
-  print(f"\t\t\tTranslated to {transKey}")
+
+  printToGit(f"Translated to {transKey}")
   
   langTimeTable.append([transKey, f"{int(time() - start)} s"])
 
