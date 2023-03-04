@@ -19,7 +19,7 @@ outPath = "../../src/main/resources/assets/amazia/textures/item/tokens/"
 with open(langFile, "r") as file:
 	lang = json.load(file)
 
-from villagers import images, acivementLevels
+from villagers import images, acivementLevels, toast
 
 system(f"rm {outPath}*")
 system(f"mkdir {outPath}")
@@ -107,7 +107,7 @@ def genAchivement(villager, parent, reward):
 	    "icon": {
 	      "item": f"amazia:{villager}_transformation_token"
 	    },
-	    "show_toast": True,
+	    "show_toast": toast,
 	    "title": {
 	      "translate": f"advancements.village.{villager}.title"
 	    }
@@ -148,7 +148,7 @@ def genLevelAcivement(villager, parent, reward, type, frame, idx):
 	      "item": f"amazia:{villager}_transformation_token",
 	      "nbt": "{CustomModelData:" + str(idx + 1) + "}"
 	    },
-	    "show_toast": False,
+	    "show_toast": toast,
 	    "hidden": True,
 	    "title": {
 	      "translate": f"advancements.village.{villager}.{type}.title"
@@ -192,7 +192,7 @@ def getTitleAcivements(title, name, icon, xp, parent):
 		"icon": {
 		    "item": icon
 		},
-		"show_toast": True,
+		"show_toast": toast,
 		"title": {
 		    "translate": f"advancements.village.{name}.title"
 		}

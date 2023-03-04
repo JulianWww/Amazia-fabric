@@ -21,7 +21,7 @@
         "icon": {
             "item": "amazia:miner_transformation_token"
         },
-        "show_toast": true,
+        "show_toast": false,
         "title": {
             "translate": "advancements.village.miner.title"
         }

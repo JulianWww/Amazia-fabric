@@ -21,7 +21,7 @@
         "icon": {
             "item": "amazia:rancher_transformation_token"
         },
-        "show_toast": true,
+        "show_toast": false,
         "title": {
             "translate": "advancements.village.rancher.title"
         }

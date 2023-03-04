@@ -21,7 +21,7 @@
         "icon": {
             "item": "amazia:druid_transformation_token"
         },
-        "show_toast": true,
+        "show_toast": false,
         "title": {
             "translate": "advancements.village.druid.title"
         }

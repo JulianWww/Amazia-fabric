@@ -26,6 +26,8 @@ acivementLevels = [
 	("grand_master",  "challenge", (2, 1))
 ]
 
+toast = False
+
 
 if __name__ == "__main__":
     import generate
