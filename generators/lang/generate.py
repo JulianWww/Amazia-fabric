@@ -38,6 +38,9 @@ def printToGit(*args, **kwargs):
     print(*args, file=fh, **kwargs)
 
 def makeTranslation(transKey, filenames):
+  printToGit(f"Translating to {transKey}")
+  s = start()
+
   if isinstance(filenames, str):
     filenames = [filenames]
 
@@ -48,7 +51,7 @@ def makeTranslation(transKey, filenames):
       dump(data, file, indent=4, sort_keys=True)
 
 
-  printToGit(f"Translated to {transKey}")
+  printToGit(f"Translated to {transKey}, time {time() - s}")
   
   langTimeTable.append([transKey, f"{int(time() - start)} s"])
 
