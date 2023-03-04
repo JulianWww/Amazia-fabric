@@ -18,22 +18,18 @@ TOR_PATH = os.path.normpath(os.getcwd()+"/Tor/tor/tor.exe")
 
 
 langTimeTable = []
-tor = None
 
 PROXIES = {
     'http': 'socks5://127.0.0.1:9050',
     'https': 'socks5://127.0.0.1:9050'
 }
 
-def printer(x):
-  print(x)
-  return x
 
 def translate(orig, dest):
   #runTor()
   translator = GoogleTranslator(source='en', target=dest, proxies=PROXIES)
 
-  out = {x: printer(translator.translate(y)) for x, y in orig.items()}
+  out = {x: translator.translate(y) for x, y in orig.items()}
 
   return out
 
@@ -77,5 +73,3 @@ if __name__ == "__main__":
     thread.join()
 
   print(langTimeTable)
-
-  tor.kill()
