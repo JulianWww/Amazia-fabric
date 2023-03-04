@@ -7,7 +7,7 @@ on:
       - '!master'
     paths:
     - generators/lang**
-    - src/main/resources/assets/lang/en_us.json
+    - src/main/resources/assets/amazia/lang/en_us.json
 
 permissions:
   contents: write
