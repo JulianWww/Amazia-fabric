@@ -10,6 +10,7 @@ import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.malilib.util.StringUtils;
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.networking.c2s.AmaziaRequestNamingSystemC2SPacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -115,6 +116,11 @@ public class GuiConfigs extends GuiConfigsBase {
 			this.parent.reCreateListWidget(); // apply the new config width
 			this.parent.getListWidget().resetScrollbarPosition();
 			this.parent.initGui();
+
+			switch(this.tab) {
+			case ADMIN -> AmaziaRequestNamingSystemC2SPacket.send();
+			default -> {}
+			}
 		}
 	}
 

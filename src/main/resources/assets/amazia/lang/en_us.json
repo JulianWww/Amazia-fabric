@@ -1,4 +1,5 @@
 {
+	"blocks.amazia.village_core": "Village Core",
     "item.amazia.ruby": "Ruby",
     "item.amazia.ruby_ore": "Ruby Ore",
     "item.amazia.deepslate_ruby_ore": "Deepslate Ruby Ore",
@@ -674,5 +675,15 @@
     "advancements.village.teacher.Grand Master.description": "Have a Teacher reach the rank of Grand Master in your village",
     "advancements.village.teacher.Grand Master.title": "Grand Master Teacher",
     "advancements.village.enchanter.Grand Master.description": "Have a Enchanter reach the rank of Grand Master in your village",
-    "advancements.village.enchanter.Grand Master.title": "Grand Master Enchanter"
+    "advancements.village.enchanter.Grand Master.title": "Grand Master Enchanter",
+    "entity.amazia.bard": "Bard",
+    "entity.amazia.chef": "Chef",
+    "entity.amazia.druid": "Druid",
+    "entity.amazia.cleric": "Cleric",
+    "entity.amazia.farmer": "Farmer",
+    "entity.amazia.rancher": "Rancher",
+    "entity.amazia.teacher": "Teacher",
+    "entity.amazia.enchanter": "Enchanter",
+    "entity.amazia.blacksmith": "Blacksmith",
+    "entity.amazia.guard": "Guard"
 }

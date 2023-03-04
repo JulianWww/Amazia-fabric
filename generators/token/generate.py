@@ -48,6 +48,8 @@ for entity, img in images.items():
 	updateTokeTierOverrides(entity)
   
 	print (f"generated {entity} conversion token")
+
+	lang[f"entity.amazia.{entity}"] = entity.title()
  
 system(f"cp base_token.png {outPath}base.png")
 
@@ -60,8 +62,6 @@ try:
 except FileNotFoundError as e:
 	print(e)
 mkdir(outPath)
-
-
 
 
 villagerTypes = {

@@ -21,6 +21,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -33,7 +34,7 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 
 	public AmaziaVillagerUIScreen(final AmaziaVillagerUIScreenHandler handler, final PlayerInventory inventory,
 			final Text title) {
-		super(handler, inventory, title);
+		super(handler, inventory, handler.getTitle());
 		this.backgroundWidth = 276;
 	}
 
@@ -60,6 +61,12 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 		this.renderProgressBars(matrices);
 		this.renderName(matrices);
 		this.renderProfessionLevels(matrices, mouseX, mouseY);
+
+		for (final Slot slot : this.getScreenHandler().slots) {
+			if (mouseX >= slot.x - 1 && mouseX <= slot.x + 16 && mouseY >= slot.y - 1 && mouseY <= slot.y + 16 && !slot.getStack().isEmpty()) {
+				this.renderTooltip(matrices, slot.getStack(), mouseX, mouseY);
+			}
+		}
 	}
 
 	// TODO: maybe add scroll ability, not currently needed
@@ -271,6 +278,7 @@ public class AmaziaVillagerUIScreen extends HandledScreen<AmaziaVillagerUIScreen
 		} catch (final ConcurrentModificationException statusEffect) {
 			// empty catch block
 		}
+		super.handledScreenTick();
 	}
 
 	@Override

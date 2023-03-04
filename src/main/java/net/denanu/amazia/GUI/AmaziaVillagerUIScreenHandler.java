@@ -3,6 +3,7 @@ package net.denanu.amazia.GUI;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.denanu.amazia.GUI.widgets.AmaziaLockableSlot;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
@@ -10,6 +11,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ArrayPropertyDelegate;
@@ -48,11 +50,30 @@ public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 		this.addProperties(delegate);
 		this.entity = entity;
 		this.activeStatusEffects = effects;
+		this.addInventory();
+	}
+
+	private void addInventory() {
+		final SimpleInventory inventory = this.getInventory();
+		for (int x = 0; x < 9; x++) {
+			for (int y = 0; y < 2; y++) {
+				this.addSlot(new AmaziaLockableSlot(inventory, x + 9 * y, 108 + 18 * x, 124 + 18 * y));
+			}
+		}
+
 	}
 
 	@Override
 	public ItemStack transferSlot(final PlayerEntity var1, final int var2) {
 		return ItemStack.EMPTY;
+	}
+
+	public Text getTitle() {
+		return this.entity.getDefaultNameAcessor();
+	}
+
+	public SimpleInventory getInventory() {
+		return this.entity.getInventory();
 	}
 
 	public int getHealth() {

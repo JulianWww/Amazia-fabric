@@ -10,6 +10,7 @@ import net.denanu.amazia.advancement.criterion.AmaziaCriterions;
 import net.denanu.amazia.mechanics.title.AbilityRankTitles;
 import net.denanu.amazia.village.Village;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class ProfessionLevelManager {
@@ -88,7 +89,10 @@ public class ProfessionLevelManager {
 
 	private void triggerUpdateEvent(final Village village, final AbilityRankTitles rank, final Identifier profession) {
 		if (village != null) {
-			AmaziaCriterions.GAIN_ADVANCEMENT.trigger(village.getMayor(), rank, profession);
+			final ServerPlayerEntity mayor = village.getMayor();
+			if (mayor != null) {
+				AmaziaCriterions.GAIN_ADVANCEMENT.trigger(village.getMayor(), rank, profession);
+			}
 		}
 	}
 

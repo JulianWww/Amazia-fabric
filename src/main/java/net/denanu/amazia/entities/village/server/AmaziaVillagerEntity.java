@@ -105,7 +105,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	private static final TrackedData<Float> INTELLIGENCE = DataTracker.registerData(AmaziaVillagerEntity.class, TrackedDataHandlerRegistry.FLOAT);
 	private static final TrackedData<VillagerData> VILLAGER_DATA = DataTracker.registerData(VillagerEntity.class, VillagerData.VILLAGER_DATA);
 
-	private final SimpleInventory inventory = new SimpleInventory(16);
+	private final SimpleInventory inventory = new SimpleInventory(18);
 	private List<Item> requestedItems;
 	private CraftingRecipe wantsToCraft;
 	private Map<Item, Integer> craftInput;
@@ -560,6 +560,11 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			}
 		}
 		return -1;
+	}
+
+	@Override
+	public Text getDefaultNameAcessor() {
+		return this.getDefaultName();
 	}
 
 	@Override
