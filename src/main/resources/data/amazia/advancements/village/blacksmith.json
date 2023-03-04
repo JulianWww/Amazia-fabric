@@ -1,7 +1,7 @@
 {
-    "parent": "amazia:village/miner",
+    "parent": "amazia:village/root",
     "criteria": {
-        "make_bard": {
+        "make_blacksmith": {
             "conditions": {
                 "item": {
                     "items": [
@@ -21,7 +21,7 @@
         "icon": {
             "item": "amazia:blacksmith_transformation_token"
         },
-        "show_toast": true,
+        "show_toast": false,
         "title": {
             "translate": "advancements.village.blacksmith.title"
         }

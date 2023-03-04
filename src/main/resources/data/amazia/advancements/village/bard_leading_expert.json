@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/bard_expert",
+    "criteria": {
+        "amazia.gain_leading_expert_rank_for_amazia:bard": {
+            "conditions": {
+                "tier": "leading_expert",
+                "profession": "amazia:bard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.bard.leading_expert.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:bard_transformation_token",
+            "nbt": "{CustomModelData:8}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.bard.leading_expert.title"
+        }
+    },
+    "rewards": {
+        "experience": 256
+    }
+}

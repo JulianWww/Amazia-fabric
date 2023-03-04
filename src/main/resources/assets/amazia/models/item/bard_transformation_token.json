@@ -1,6 +1,68 @@
 {
-	"parent": "minecraft:item/generated",
-  	"textures": {
-		"layer0": "amazia:item/tokens/bard"
-	}
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "amazia:item/tokens/bard"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "custom_model_data": 1
+            },
+            "model": "amazia:item/tier/bard_novice"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 2
+            },
+            "model": "amazia:item/tier/bard_beginner"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 3
+            },
+            "model": "amazia:item/tier/bard_aprentice"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 4
+            },
+            "model": "amazia:item/tier/bard_journeyman"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 5
+            },
+            "model": "amazia:item/tier/bard_student"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 6
+            },
+            "model": "amazia:item/tier/bard_grad_student"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 7
+            },
+            "model": "amazia:item/tier/bard_expert"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 8
+            },
+            "model": "amazia:item/tier/bard_leading_expert"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 9
+            },
+            "model": "amazia:item/tier/bard_master"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 10
+            },
+            "model": "amazia:item/tier/bard_grand_master"
+        }
+    ]
 }

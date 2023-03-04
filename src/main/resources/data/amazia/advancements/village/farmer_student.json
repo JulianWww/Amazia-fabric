@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/farmer_journeyman",
+    "criteria": {
+        "amazia.gain_student_rank_for_amazia:farmer": {
+            "conditions": {
+                "tier": "student",
+                "profession": "amazia:farmer"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.farmer.student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:farmer_transformation_token",
+            "nbt": "{CustomModelData:5}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.farmer.student.title"
+        }
+    },
+    "rewards": {
+        "experience": 32
+    }
+}

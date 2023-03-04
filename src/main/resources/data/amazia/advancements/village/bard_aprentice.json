@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/bard_beginner",
+    "criteria": {
+        "amazia.gain_aprentice_rank_for_amazia:bard": {
+            "conditions": {
+                "tier": "aprentice",
+                "profession": "amazia:bard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.bard.aprentice.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:bard_transformation_token",
+            "nbt": "{CustomModelData:3}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.bard.aprentice.title"
+        }
+    },
+    "rewards": {
+        "experience": 8
+    }
+}

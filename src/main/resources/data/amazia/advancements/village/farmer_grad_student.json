@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/farmer_student",
+    "criteria": {
+        "amazia.gain_grad_student_rank_for_amazia:farmer": {
+            "conditions": {
+                "tier": "grad_student",
+                "profession": "amazia:farmer"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.farmer.grad_student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:farmer_transformation_token",
+            "nbt": "{CustomModelData:6}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.farmer.grad_student.title"
+        }
+    },
+    "rewards": {
+        "experience": 64
+    }
+}

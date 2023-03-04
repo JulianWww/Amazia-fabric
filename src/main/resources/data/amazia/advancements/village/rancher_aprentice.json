@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/rancher_beginner",
+    "criteria": {
+        "amazia.gain_aprentice_rank_for_amazia:rancher": {
+            "conditions": {
+                "tier": "aprentice",
+                "profession": "amazia:rancher"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.rancher.aprentice.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:rancher_transformation_token",
+            "nbt": "{CustomModelData:3}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.rancher.aprentice.title"
+        }
+    },
+    "rewards": {
+        "experience": 8
+    }
+}

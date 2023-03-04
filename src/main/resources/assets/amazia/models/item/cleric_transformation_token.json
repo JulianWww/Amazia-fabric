@@ -1,6 +1,68 @@
 {
-	"parent": "minecraft:item/generated",
-  	"textures": {
-		"layer0": "amazia:item/tokens/cleric"
-	}
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "amazia:item/tokens/cleric"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "custom_model_data": 1
+            },
+            "model": "amazia:item/tier/cleric_novice"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 2
+            },
+            "model": "amazia:item/tier/cleric_beginner"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 3
+            },
+            "model": "amazia:item/tier/cleric_aprentice"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 4
+            },
+            "model": "amazia:item/tier/cleric_journeyman"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 5
+            },
+            "model": "amazia:item/tier/cleric_student"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 6
+            },
+            "model": "amazia:item/tier/cleric_grad_student"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 7
+            },
+            "model": "amazia:item/tier/cleric_expert"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 8
+            },
+            "model": "amazia:item/tier/cleric_leading_expert"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 9
+            },
+            "model": "amazia:item/tier/cleric_master"
+        },
+        {
+            "predicate": {
+                "custom_model_data": 10
+            },
+            "model": "amazia:item/tier/cleric_grand_master"
+        }
+    ]
 }

@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/blacksmith_student",
+    "criteria": {
+        "amazia.gain_grad_student_rank_for_amazia:blacksmith": {
+            "conditions": {
+                "tier": "grad_student",
+                "profession": "amazia:blacksmith"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.blacksmith.grad_student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:blacksmith_transformation_token",
+            "nbt": "{CustomModelData:6}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.blacksmith.grad_student.title"
+        }
+    },
+    "rewards": {
+        "experience": 64
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/farmer_leading_expert",
+    "criteria": {
+        "amazia.gain_master_rank_for_amazia:farmer": {
+            "conditions": {
+                "tier": "master",
+                "profession": "amazia:farmer"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.farmer.master.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:farmer_transformation_token",
+            "nbt": "{CustomModelData:9}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.farmer.master.title"
+        }
+    },
+    "rewards": {
+        "experience": 512
+    }
+}

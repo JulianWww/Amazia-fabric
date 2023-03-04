@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/farmer_aprentice",
+    "criteria": {
+        "amazia.gain_journeyman_rank_for_amazia:farmer": {
+            "conditions": {
+                "tier": "journeyman",
+                "profession": "amazia:farmer"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.farmer.journeyman.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:farmer_transformation_token",
+            "nbt": "{CustomModelData:4}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.farmer.journeyman.title"
+        }
+    },
+    "rewards": {
+        "experience": 16
+    }
+}

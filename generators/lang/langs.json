@@ -1,0 +1,130 @@
+{
+    "af": "ar_za",
+    "ar": "ar_sa",
+    "az": "az_az",
+    "be": "be_by",
+    "bg": "bg_bg",
+    "bs": "bs_ba",
+    "ca": "ca_es",
+    "cs": "cs_cz",
+    "da": "da_dk",
+    "de": [
+        "ast_es",
+        "bar",
+        "de_at",
+        "de_ch",
+        "de_de",
+        "ksh_DE",
+        "nds_de",
+        "sxu"
+    ],
+    "el": "el_gr",
+    "en": [
+        "cy_bg",
+        "en_au",
+        "en_ca",
+        "en_gb",
+        "en_nz",
+        "en_pt",
+        "en_ud",
+        "enp",
+        "enws",
+        "kw_gb",
+        "lol_us"
+    ],
+    "eo": "eo_uy",
+    "es": [
+        "es_ar",
+        "es_cl",
+        "es_ec",
+        "es_es",
+        "es_mx",
+        "es_uy",
+        "es_ve",
+        "esan",
+        "nah",
+        "val_es"
+    ],
+    "et": "et_ee",
+    "eu": "eu_es",
+    "fa": "fa_ir",
+    "fi": "fi_fi",
+    "fr": [
+        "fr_fr",
+        "br_fr",
+        "fr_ca",
+        ""
+    ],
+    "ga": "ga_ie",
+    "gd": "gl_es",
+    "haw": "haw_us",
+    "hi": "hi_in",
+    "hr": "hr_hr",
+    "hu": "hu_hu",
+    "hy": "hy_am",
+    "id": "id_id",
+    "ig": "ig_ng",
+    "is": "is_is",
+    "it": [
+        "it_it",
+        "lmo",
+        "vec_it"
+    ],
+    "iw": "he_il",
+    "ja": "ja_jp",
+    "ka": "ka_ge",
+    "kk": "kz",
+    "kn": "kn_in",
+    "ko": "ko_kr",
+    "la": "la_la",
+    "lb": "lb_lu",
+    "lt": "lt_lt",
+    "lv": "lv_lv",
+    "mk": "mk_mk",
+    "mn": "mn_mn",
+    "ms": [
+        "ms_my",
+        "zlm_arab"
+    ],
+    "mt": "mt_mt",
+    "nl": [
+        "brb",
+        "nl_be",
+        "nl_nl"
+    ],
+    "no": [
+        "nn_no",
+        "no_no"
+    ],
+    "pl": "pl_pl",
+    "pt": [
+        "pt_br",
+        "pt_pt"
+    ],
+    "ro": "ro_ro",
+    "ru": [
+        "rpr",
+        "ru_ru"
+    ],
+    "sk": "sk_sk",
+    "sl": "sl_si",
+    "so": "so_so",
+    "sq": "sq_al",
+    "sr": "sr_sp",
+    "sv": "sv_se",
+    "ta": "ta_in",
+    "th": "th_th",
+    "tl": "fil_ph",
+    "tr": "tr_tr",
+    "tt": "tt_ru",
+    "uk": "uk_ua",
+    "vi": "vi_vn",
+    "yi": "yi_de",
+    "yo": "ng",
+    "zh-CN": [
+        "lzh",
+        "zh_cn",
+        "zh_hk",
+        "zh_tw"
+    ]
+}

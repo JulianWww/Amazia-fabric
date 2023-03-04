@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/enchanter",
+    "criteria": {
+        "amazia.gain_novice_rank_for_amazia:enchanter": {
+            "conditions": {
+                "tier": "novice",
+                "profession": "amazia:enchanter"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.enchanter.novice.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:enchanter_transformation_token",
+            "nbt": "{CustomModelData:1}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.enchanter.novice.title"
+        }
+    },
+    "rewards": {
+        "experience": 2
+    }
+}

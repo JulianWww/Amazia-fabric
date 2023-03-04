@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/farmer_beginner",
+    "criteria": {
+        "amazia.gain_aprentice_rank_for_amazia:farmer": {
+            "conditions": {
+                "tier": "aprentice",
+                "profession": "amazia:farmer"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.farmer.aprentice.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:farmer_transformation_token",
+            "nbt": "{CustomModelData:3}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.farmer.aprentice.title"
+        }
+    },
+    "rewards": {
+        "experience": 8
+    }
+}

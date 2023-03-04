@@ -1,7 +1,7 @@
 {
     "parent": "amazia:village/doctorate",
     "criteria": {
-        "professor": {
+        "doctorate": {
             "conditions": {
                 "title": "professor"
             },
@@ -17,7 +17,7 @@
         "icon": {
             "item": "minecraft:lectern"
         },
-        "show_toast": true,
+        "show_toast": false,
         "title": {
             "translate": "advancements.village.professor.title"
         }

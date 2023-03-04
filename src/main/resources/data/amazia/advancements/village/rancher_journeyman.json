@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/rancher_aprentice",
+    "criteria": {
+        "amazia.gain_journeyman_rank_for_amazia:rancher": {
+            "conditions": {
+                "tier": "journeyman",
+                "profession": "amazia:rancher"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.rancher.journeyman.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:rancher_transformation_token",
+            "nbt": "{CustomModelData:4}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.rancher.journeyman.title"
+        }
+    },
+    "rewards": {
+        "experience": 16
+    }
+}

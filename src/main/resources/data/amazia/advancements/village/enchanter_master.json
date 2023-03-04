@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/enchanter_leading_expert",
+    "criteria": {
+        "amazia.gain_master_rank_for_amazia:enchanter": {
+            "conditions": {
+                "tier": "master",
+                "profession": "amazia:enchanter"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.enchanter.master.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:enchanter_transformation_token",
+            "nbt": "{CustomModelData:9}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.enchanter.master.title"
+        }
+    },
+    "rewards": {
+        "experience": 512
+    }
+}

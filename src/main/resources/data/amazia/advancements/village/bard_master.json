@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/bard_leading_expert",
+    "criteria": {
+        "amazia.gain_master_rank_for_amazia:bard": {
+            "conditions": {
+                "tier": "master",
+                "profession": "amazia:bard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.bard.master.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:bard_transformation_token",
+            "nbt": "{CustomModelData:9}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.bard.master.title"
+        }
+    },
+    "rewards": {
+        "experience": 512
+    }
+}

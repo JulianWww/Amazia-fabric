@@ -21,7 +21,7 @@
         "icon": {
             "item": "amazia:bard_transformation_token"
         },
-        "show_toast": true,
+        "show_toast": false,
         "title": {
             "translate": "advancements.village.bard.title"
         }

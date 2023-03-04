@@ -12,3 +12,22 @@ images = {
   "blacksmith": "/hammer",
   "guard": "iron_sword"
 }
+
+acivementLevels = [
+	("novice", 				"task", (0, 0)),
+	("beginner", 			"task", (0, 1)),
+	("aprentice", 		"task", (0, 2)),
+	("journeyman", 		"task", (0, 3)),
+	("student", 			"goal", (1, 0)),
+	("grad_student", 	"goal", (1, 1)),
+	("expert", 				"goal", (1, 2)),
+	("leading_expert","challenge", (1, 3)),
+	("master",				"challenge", (2, 0)),
+	("grand_master",  "challenge", (2, 1))
+]
+
+toast = False
+
+
+if __name__ == "__main__":
+    import generate

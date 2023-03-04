@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/bard_journeyman",
+    "criteria": {
+        "amazia.gain_student_rank_for_amazia:bard": {
+            "conditions": {
+                "tier": "student",
+                "profession": "amazia:bard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.bard.student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:bard_transformation_token",
+            "nbt": "{CustomModelData:5}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.bard.student.title"
+        }
+    },
+    "rewards": {
+        "experience": 32
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/miner_beginner",
+    "criteria": {
+        "amazia.gain_aprentice_rank_for_amazia:miner": {
+            "conditions": {
+                "tier": "aprentice",
+                "profession": "amazia:miner"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.miner.aprentice.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:miner_transformation_token",
+            "nbt": "{CustomModelData:3}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.miner.aprentice.title"
+        }
+    },
+    "rewards": {
+        "experience": 8
+    }
+}

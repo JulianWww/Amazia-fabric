@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/miner",
+    "criteria": {
+        "amazia.gain_novice_rank_for_amazia:miner": {
+            "conditions": {
+                "tier": "novice",
+                "profession": "amazia:miner"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.miner.novice.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:miner_transformation_token",
+            "nbt": "{CustomModelData:1}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.miner.novice.title"
+        }
+    },
+    "rewards": {
+        "experience": 2
+    }
+}

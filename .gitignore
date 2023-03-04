@@ -32,3 +32,8 @@ bin/
 
 run/
 libs/automatone-0.9.0.jar
+
+*.pyc
+generators/token/tmp/
+generators/lang/TableIt.py
+generators/lang/Tor/

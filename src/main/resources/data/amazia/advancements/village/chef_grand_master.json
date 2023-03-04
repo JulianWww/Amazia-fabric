@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/chef_master",
+    "criteria": {
+        "amazia.gain_grand_master_rank_for_amazia:chef": {
+            "conditions": {
+                "tier": "grand_master",
+                "profession": "amazia:chef"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.chef.grand_master.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:chef_transformation_token",
+            "nbt": "{CustomModelData:10}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.chef.grand_master.title"
+        }
+    },
+    "rewards": {
+        "experience": 1024
+    }
+}

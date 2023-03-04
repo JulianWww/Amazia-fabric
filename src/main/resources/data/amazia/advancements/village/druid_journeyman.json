@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/druid_aprentice",
+    "criteria": {
+        "amazia.gain_journeyman_rank_for_amazia:druid": {
+            "conditions": {
+                "tier": "journeyman",
+                "profession": "amazia:druid"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.druid.journeyman.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:druid_transformation_token",
+            "nbt": "{CustomModelData:4}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.druid.journeyman.title"
+        }
+    },
+    "rewards": {
+        "experience": 16
+    }
+}

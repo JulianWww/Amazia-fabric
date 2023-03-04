@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/druid_expert",
+    "criteria": {
+        "amazia.gain_leading_expert_rank_for_amazia:druid": {
+            "conditions": {
+                "tier": "leading_expert",
+                "profession": "amazia:druid"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.druid.leading_expert.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:druid_transformation_token",
+            "nbt": "{CustomModelData:8}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.druid.leading_expert.title"
+        }
+    },
+    "rewards": {
+        "experience": 256
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/chef_student",
+    "criteria": {
+        "amazia.gain_grad_student_rank_for_amazia:chef": {
+            "conditions": {
+                "tier": "grad_student",
+                "profession": "amazia:chef"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.chef.grad_student.description"
+        },
+        "frame": "goal",
+        "icon": {
+            "item": "amazia:chef_transformation_token",
+            "nbt": "{CustomModelData:6}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.chef.grad_student.title"
+        }
+    },
+    "rewards": {
+        "experience": 64
+    }
+}

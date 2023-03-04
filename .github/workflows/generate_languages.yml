@@ -1,0 +1,38 @@
+name: Generate Language Files
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!master'
+    paths:
+    - generators/lang**
+    - src/main/resources/assets/amazia/lang/en_us.json
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: [Linux, self-hosted, ubuntu]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install requirements
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          python3 -m pip install deep_translator pysocks
+        
+      - name: Generate
+        run: |
+          python3 generators/lang/generate.py
+        
+      - name: Commit to the repo
+        run: |
+          git config --global user.name "JulianWww/generator"
+          git config --global user.email "generator[bot]@JulianWww.github.io"
+          git add .
+          # Force the build to succeed, even if no files were changed
+          git commit -m 'auto language files' || true
+          git push

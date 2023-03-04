@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/blacksmith",
+    "criteria": {
+        "amazia.gain_novice_rank_for_amazia:blacksmith": {
+            "conditions": {
+                "tier": "novice",
+                "profession": "amazia:blacksmith"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.blacksmith.novice.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:blacksmith_transformation_token",
+            "nbt": "{CustomModelData:1}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.blacksmith.novice.title"
+        }
+    },
+    "rewards": {
+        "experience": 2
+    }
+}

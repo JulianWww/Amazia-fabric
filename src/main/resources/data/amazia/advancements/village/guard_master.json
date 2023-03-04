@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/guard_leading_expert",
+    "criteria": {
+        "amazia.gain_master_rank_for_amazia:guard": {
+            "conditions": {
+                "tier": "master",
+                "profession": "amazia:guard"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.guard.master.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "item": "amazia:guard_transformation_token",
+            "nbt": "{CustomModelData:9}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.guard.master.title"
+        }
+    },
+    "rewards": {
+        "experience": 512
+    }
+}

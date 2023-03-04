@@ -4,6 +4,7 @@ import net.denanu.amazia.mechanics.education.IAmaziaEducatedEntity;
 import net.denanu.amazia.mechanics.happyness.IAmaziaHappynessEntity;
 import net.denanu.amazia.mechanics.intelligence.IAmaziaIntelligenceEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -22,4 +23,7 @@ public interface AmaziaMechanicsGuiEntity extends NamedScreenHandlerFactory, IAm
 	Identifier getProfession();
 
 	Text getCustomName();
+	Text getDefaultNameAcessor();
+
+	SimpleInventory getInventory();
 }

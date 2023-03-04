@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/chef_novice",
+    "criteria": {
+        "amazia.gain_beginner_rank_for_amazia:chef": {
+            "conditions": {
+                "tier": "beginner",
+                "profession": "amazia:chef"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.chef.beginner.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:chef_transformation_token",
+            "nbt": "{CustomModelData:2}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.chef.beginner.title"
+        }
+    },
+    "rewards": {
+        "experience": 4
+    }
+}

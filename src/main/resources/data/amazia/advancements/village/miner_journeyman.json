@@ -1,0 +1,31 @@
+{
+    "parent": "amazia:village/miner_aprentice",
+    "criteria": {
+        "amazia.gain_journeyman_rank_for_amazia:miner": {
+            "conditions": {
+                "tier": "journeyman",
+                "profession": "amazia:miner"
+            },
+            "trigger": "amazia:gain_advancement"
+        }
+    },
+    "display": {
+        "announce_to_chat": true,
+        "description": {
+            "translate": "advancements.village.miner.journeyman.description"
+        },
+        "frame": "task",
+        "icon": {
+            "item": "amazia:miner_transformation_token",
+            "nbt": "{CustomModelData:4}"
+        },
+        "show_toast": false,
+        "hidden": true,
+        "title": {
+            "translate": "advancements.village.miner.journeyman.title"
+        }
+    },
+    "rewards": {
+        "experience": 16
+    }
+}

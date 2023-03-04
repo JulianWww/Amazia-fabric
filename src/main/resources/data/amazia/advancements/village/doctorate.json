@@ -1,5 +1,5 @@
 {
-    "parent": "amazia:village/teacher",
+    "parent": "amazia:village/root",
     "criteria": {
         "doctorate": {
             "conditions": {
@@ -17,7 +17,7 @@
         "icon": {
             "item": "minecraft:writable_book"
         },
-        "show_toast": true,
+        "show_toast": false,
         "title": {
             "translate": "advancements.village.doctorate.title"
         }
