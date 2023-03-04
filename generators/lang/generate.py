@@ -2,8 +2,7 @@ from json import load, dump
 from deep_translator import GoogleTranslator
 import os, sys
 from pathlib import Path
-from threading import Thread
-from time import time
+from time import time, sleep
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
@@ -20,10 +19,9 @@ langTimeTable = []
 def translate(orig, dest):
   translator = GoogleTranslator(source='en', target=dest)
 
-  out = {}
-  for key, txt in orig.items():
-    translated = translator.translate(txt)
-    out[key] = translated
+  translated = translator.translate_batch(orig.values())
+
+  out = {x: y for x, y in zip(orig.keys(), translated)}
 
   return out
 
@@ -51,14 +49,9 @@ if __name__ == "__main__":
     dump(langs, file, indent=4, sort_keys=True)
 
 
-  threads = []
 
   for args in langs.items():
-    translator = Thread(target=makeTranslation, args=args)
-    translator.start()
-    threads.append(translator)
-
-  for thread in threads:
-    thread.join()
+    makeTranslation(*args)
+    sleep(1)
 
   print(langTimeTable)
