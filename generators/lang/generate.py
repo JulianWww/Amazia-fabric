@@ -1,6 +1,7 @@
 from json import load, dump
 from deep_translator import GoogleTranslator
-import os
+import os, sys
+from pathlib import Path
 from threading import Thread
 from time import time
 from wget import download
@@ -8,6 +9,7 @@ from wget import download
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
+sys.path.insert(1, str(Path(abspath).parent))
 
 langDir = "../../src/main/resources/assets/amazia/lang/"
 origFile = langDir + "en_us.json"
