@@ -5,6 +5,7 @@
 [![GitHub downloads](https://img.shields.io/github/downloads/JulianWww/Amazia-fabric/total?label=Github%20downloads&logo=github)](https://github.com/JulianWww/Amazia-fabric/releases)
 [![GitHub contributors](https://img.shields.io/github/contributors/JulianWww/Amazia-fabric?label=Contributors&logo=github)](https://github.com/JulianWww/Amazia-fabric/graphs/contributors)
 [![Generate Assets](https://github.com/JulianWww/Amazia-fabric/actions/workflows/generate_data.yml/badge.svg)](https://github.com/JulianWww/Amazia-fabric/actions/workflows/generate_data.yml)
+[![Generate Language Files](https://github.com/JulianWww/Amazia-fabric/actions/workflows/generate_languages.yml/badge.svg)](https://github.com/JulianWww/Amazia-fabric/actions/workflows/generate_languages.yml)
 
 ## Setup
 
