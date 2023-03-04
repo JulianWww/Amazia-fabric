@@ -23,11 +23,12 @@ from villagers import images, acivementLevels, toast
 
 system(f"rm {outPath}*")
 system(f"mkdir {outPath}")
+system(f"mkdir ./tmp")
 
 base = cv2.imread("base_token.png", cv2.IMREAD_UNCHANGED)
 
 for entity, img in images.items():
-	file = img[1:] + ".png" if img[0] == "/" else wget.download(path + img + ".png")
+	file = img[1:] + ".png" if img[0] == "/" else wget.download(path + img + ".png", f"./tmp/{img}.png")
 
 	mask = cv2.imread(file, cv2.IMREAD_UNCHANGED)
 	mask = np.pad(mask, ((3,3), (3, 3), (0, 0)), "constant", constant_values = 0)
@@ -43,8 +44,6 @@ for entity, img in images.items():
 		x, y = acivement_data[2]
 
 		cv2.imwrite(outPath + entity + "_" + lvl + ".png", getImage(x, y, mask))
-
-	if (img[0] != "/"): remove(file)
 
 	updateTokeTierOverrides(entity)
   
@@ -244,3 +243,5 @@ with open(outPath + "root.json", "w") as file:
 
 with open("../../src/main/resources/assets/amazia/lang/en_us.json", "w") as file:
 	json.dump(lang, file, indent=4)
+
+system(f"rm -r ./tmp")

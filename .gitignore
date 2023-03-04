@@ -34,3 +34,4 @@ run/
 libs/automatone-0.9.0.jar
 
 *.pyc
+generators/token/tmp/
