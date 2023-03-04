@@ -1,4 +1,4 @@
-name: Generate Assets
+name: Generate Language Files
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - '*'
       - '!master'
     paths:
-    - generators/**
-    - '!generators/lang/**'
+    - generators/lang**
+    - src/main/resources/assets/lang/en_us.json
 
 permissions:
   contents: write
@@ -22,13 +22,11 @@ jobs:
       - name: Install requirements
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install wget numpy opencv-python
+          python3 -m pip install googletrans
         
       - name: Generate
         run: |
-          python3 generators/token/generate.py
-          python3 generators/makeAmaziaDescription.py
-          python3 generators/generateRecipies.py
+          python3 generators/lang/generate.py
         
       - name: Commit to the repo
         run: |
@@ -36,5 +34,5 @@ jobs:
           git config --global user.email "generator[bot]@JulianWww.github.io"
           git add .
           # Force the build to succeed, even if no files were changed
-          git commit -m 'auto generated data' || true
+          git commit -m 'auto language files' || true
           git push
