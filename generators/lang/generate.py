@@ -4,7 +4,6 @@ import os, sys
 from pathlib import Path
 from threading import Thread
 from time import time
-from wget import download
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
@@ -14,11 +13,6 @@ sys.path.insert(1, str(Path(abspath).parent))
 langDir = "../../src/main/resources/assets/amazia/lang/"
 origFile = langDir + "en_us.json"
 
-if (not os.path.exists("TableIt.py")):
-  download("https://raw.githubusercontent.com/SuperMaZingCoder/TableIt/master/TableIt.py")
-  print("downloaded Tableit")
-
-from TableIt import printTable
 
 langTimeTable = []
 
@@ -64,4 +58,4 @@ for args in langs.items():
 for thread in threads:
   thread.join()
 
-printTable(langTimeTable)
+print(langTimeTable)
