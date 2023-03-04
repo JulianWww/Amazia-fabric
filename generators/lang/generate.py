@@ -49,7 +49,7 @@ def makeTranslation(transKey, filenames):
     with open(f"{langDir}{filename}.json", "w") as file:
       dump(data, file, indent=4, sort_keys=True)
 
-  print(f"Translated to {transKey}")
+  print(f"\t\t\tTranslated to {transKey}")
   
   langTimeTable.append([transKey, f"{int(time() - start)} s"])
 
