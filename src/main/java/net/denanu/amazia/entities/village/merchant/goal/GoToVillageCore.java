@@ -54,9 +54,15 @@ public class GoToVillageCore extends AmaziaGoToBlockGoal<AmaziaVillageMerchant> 
 	@Override
 	protected BlockPos getTargetBlock() {
 		this.action = this.entity.getMove_phase();
-		return this.entity.cannotDespawn() ? this.entity.getVillage().getOrigin().up() : this.entity.getOrigin();
+		return this.entity.cannotDespawn() ? GoToVillageCore.upIfThere(this.entity.getVillage().getOrigin()) : this.entity.getOrigin();
 	}
 
+	private static BlockPos upIfThere(final BlockPos pos) {
+		if (pos == null) {
+			return null;
+		}
+		return pos.up();
+	}
 
 
 

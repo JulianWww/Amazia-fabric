@@ -98,6 +98,7 @@ public class Village {
 
 	public void setMayor(final UUID usr) {
 		this.mayor = usr;
+		this.setChanged();
 	}
 
 	public UUID getMayorUUID() {
@@ -207,7 +208,7 @@ public class Village {
 		this.desks.			readNbt(nbt.getCompound("desk"));
 		this.chair.			readNbt(nbt.getCompound("chair"));
 		this.beds.			readNbt(nbt.getCompound("bed"));
-		this.mayor				  = nbt.getUuid("mayor");
+		this.mayor				  = nbt.contains("mayor") ? nbt.getUuid("mayor") : null;
 	}
 
 	public boolean isValid() {
