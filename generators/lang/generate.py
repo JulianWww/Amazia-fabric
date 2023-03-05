@@ -48,17 +48,18 @@ def translate(orig, dest):
   #runTor()
   translator = GoogleTranslator(source='en', target=dest, proxies=PROXIES)
   s = time()
-
-  try:
-    out = {}
-    for idx, (x, y) in enumerate(orig.items()):
-      printProgress(idx, len(orig), time() - s)
-      s = time()
-      out[x] = translator.translate(y)
-  except Exception as e:
-    sleep(0.2)
-    file_print(f"TRANSLATION FAILED {e}")
-    return translate(orig, dest)
+  
+  out = {}
+  for idx, (x, y) in enumerate(orig.items()):
+    printProgress(idx, len(orig), time() - s)
+    s = time()
+    while True:
+      try:
+        out[x] = translator.translate(y)
+        break
+      except Exception as e:
+        sleep(0.2)
+        file_print(f"TRANSLATION FAILED {e}")
 
   return out
 
