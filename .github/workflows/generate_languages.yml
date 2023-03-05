@@ -13,7 +13,8 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  genereate:
+    timeout-minutes: 54600
     runs-on: [Linux, self-hosted, ubuntu]
 
     steps:
@@ -25,7 +26,6 @@ jobs:
           python3 -m pip install deep_translator pysocks
         
       - name: Generate
-        timeout-minutes: 54600
         run: |
           python3 generators/lang/generate.py
         
