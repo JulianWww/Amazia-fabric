@@ -29,7 +29,10 @@ def translate(orig, dest):
   #runTor()
   translator = GoogleTranslator(source='en', target=dest, proxies=PROXIES)
 
-  out = {x: translator.translate(y) for x, y in orig.items()}
+  try:
+    out = {x: translator.translate(y) for x, y in orig.items()}
+  except:
+    return translate(orig, dest)
 
   return out
 
