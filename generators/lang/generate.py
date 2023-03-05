@@ -2,7 +2,7 @@ from json import load, dump
 from deep_translator import GoogleTranslator
 import os, sys
 from pathlib import Path
-from time import time
+from time import time, sleep
 from threading import Thread
 
 abspath = os.path.abspath(__file__)
@@ -32,6 +32,7 @@ def translate(orig, dest):
   try:
     out = {x: translator.translate(y) for x, y in orig.items()}
   except:
+    sleep(0.2)
     return translate(orig, dest)
 
   return out
