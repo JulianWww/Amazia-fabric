@@ -38,4 +38,8 @@ public class NitwitRandomWanderAroundGoal<T extends AmaziaVillagerEntity> extend
 		return this.entity.getVillage().getPathingGraph().getRandomNode();
 	}
 
+	@Override
+	protected boolean canRun() {
+		return true;
+	}
 }
