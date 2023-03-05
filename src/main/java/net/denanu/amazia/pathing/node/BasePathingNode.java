@@ -71,7 +71,7 @@ public class BasePathingNode extends PathingNode {
 			if (!BasePathingNode.canWalkOn(world, pos)) {
 				pos = pos.down();
 				if (!BasePathingNode.canWalkOn(world, pos)) {
-					pos = pos.down();
+					return false;
 				}
 			}
 		}

@@ -48,7 +48,7 @@ import net.minecraft.util.registry.Registry;
 
 public class AmaziaEntities {
 	private static float getVillagerHeight() {
-		return 2.1f;
+		return 1.9f;
 	}
 	private static float getVillagerWidth() {
 		return 0.6f;
