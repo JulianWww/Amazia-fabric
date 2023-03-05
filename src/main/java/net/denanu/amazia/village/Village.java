@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
+import net.denanu.amazia.entities.village.merchant.AmaziaVillageMerchant;
 import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
 import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.village.events.EventData;
@@ -36,7 +37,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class Village {
-	private static int SIZE = 120;
+	private static int SIZE = 50;
 	private BlockPos origin;
 	private boolean valid;
 
@@ -57,6 +58,8 @@ public class Village {
 
 	private PathingGraph pathingGraph;
 	private final HashSet<IVillageEventListener> listeners = new HashSet<>();
+
+	private AmaziaVillageMerchant merchant;
 
 	@Nullable
 	private final VillageCoreBlockEntity coreBlock;
@@ -95,6 +98,7 @@ public class Village {
 
 	public void setMayor(final UUID usr) {
 		this.mayor = usr;
+		this.setChanged();
 	}
 
 	public UUID getMayorUUID() {
@@ -204,7 +208,7 @@ public class Village {
 		this.desks.			readNbt(nbt.getCompound("desk"));
 		this.chair.			readNbt(nbt.getCompound("chair"));
 		this.beds.			readNbt(nbt.getCompound("bed"));
-		this.mayor				  = nbt.getUuid("mayor");
+		this.mayor				  = nbt.contains("mayor") ? nbt.getUuid("mayor") : null;
 	}
 
 	public boolean isValid() {
@@ -219,7 +223,22 @@ public class Village {
 	}
 	private void update() {
 		this.pathingGraph.update();
+
+		if (this.getWorld().isDay() && this.merchant == null) {
+			this.spawnMerchant();
+		}
+		else if (this.getWorld().isNight() && this.merchant != null) {
+			this.merchant.leave();
+			this.merchant = null;
+		}
 	}
+
+	private void spawnMerchant() {
+		final BlockPos pos = this.pathingGraph.getRandomVillageEnterNode();
+		final AmaziaVillageMerchant merchant = AmaziaVillageMerchant.of(this.getWorld(), this, pos);
+		this.getWorld().spawnEntity(merchant);
+	}
+
 	private void discover(final ServerWorld world, final BlockPos blockPos) {
 		this.farming.   	discover(world, blockPos);
 		this.storage.   	discover(world, blockPos);
@@ -298,6 +317,14 @@ public class Village {
 
 	public static int getSize() {
 		return Village.SIZE;
+	}
+
+	public AmaziaVillageMerchant getMerchant() {
+		return this.merchant;
+	}
+
+	public void setMerchant(final AmaziaVillageMerchant merchant) {
+		this.merchant = merchant;
 	}
 
 	public boolean isInVillage(final BlockPos pos) {

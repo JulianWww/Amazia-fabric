@@ -29,6 +29,7 @@ public class GuiConfigs extends GuiConfigsBase {
 		return GuiConfigs.INSTANCE;
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public void initGui()
 	{
@@ -41,7 +42,7 @@ public class GuiConfigs extends GuiConfigsBase {
 		final MinecraftClient client = MinecraftClient.getInstance();
 
 		x += this.createButton(x, y, -1, ConfigGuiTab.GENERIC);
-		x += this.createButton(x, y, -1, ConfigGuiTab.ADMIN, client.player.hasPermissionLevel(3));
+		x += this.createButton(x, y, -1, ConfigGuiTab.ADMIN, MinecraftClient.getInstance().player != null && client.player.hasPermissionLevel(3));
 	}
 
 	private int createButton(final int x, final int y, final int width, final ConfigGuiTab tab) {
@@ -50,11 +51,15 @@ public class GuiConfigs extends GuiConfigsBase {
 
 	private int createButton(final int x, final int y, final int width, final ConfigGuiTab tab, final boolean active)
 	{
-		final ButtonGeneric button = new ButtonGeneric(x, y, width, 20, tab.getDisplayName());
-		button.setEnabled(DataManager.getConfigGuiTab() != tab && active);
-		this.addButton(button, new ButtonListener(tab, this));
+		if (active) {
+			final ButtonGeneric button = new ButtonGeneric(x, y, width, 20, tab.getDisplayName());
+			button.setEnabled(DataManager.getConfigGuiTab() != tab && active);
+			this.addButton(button, new ButtonListener(tab, this));
 
-		return button.getWidth() + 2;
+			return button.getWidth() + 2;
+		}
+
+		return 0;
 	}
 
 	@Override

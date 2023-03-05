@@ -195,6 +195,10 @@ public class PathingGraph {
 		return this.lvl0.getRandom();
 	}
 
+	public BlockPos getRandomVillageEnterNode() {
+		return this.lvl0.getRandomVillageEnterNode();
+	}
+
 	public BlockPos getAccessPoint(final BlockPos pos) {
 		for (short idx=0; idx < 4; idx++) {
 			final BasePathingNode node = this.getNode(switch(idx) {

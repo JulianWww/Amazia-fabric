@@ -55,7 +55,7 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
-	String profession;
+	private String profession = "";
 	@Nullable
 	private PlayerEntity customer;
 	@Nullable
@@ -69,7 +69,7 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 	@Override
 	public EntityData initialize(final ServerWorldAccess world, final LocalDifficulty difficulty, final SpawnReason spawnReason, @Nullable final EntityData entityData, @Nullable final NbtCompound entityNbt) {
 		final EntityData data = super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
-		this.home = this.getBlockPos();
+		this.setHome();
 		return data;
 	}
 
@@ -86,6 +86,14 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 		this.goalSelector.add(7, new WonderAroundSameYGoal(this, 0.5));
 		this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
 		this.goalSelector.add(9, new LookAroundGoal(this));
+	}
+
+	public boolean canWander() {
+		return true;
+	}
+
+	public void setHome() {
+		this.home = this.getBlockPos();
 	}
 
 	@Override

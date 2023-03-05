@@ -9,6 +9,8 @@ import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
+import fi.dy.masa.malilib.config.options.ConfigBoolean;
+import fi.dy.masa.malilib.config.options.ConfigColor;
 import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
@@ -23,6 +25,10 @@ public class Config implements IConfigHandler {
 
 	public static class Generic {
 		public static final ArrayList<IConfigBase> OPTIONS = new ArrayList<>();
+
+		public static ConfigColor PROBLEM_COLOR = Generic.register(new ConfigColor("problem_color", "#00820000", "Color used in chat for Problems"));
+		public static ConfigBoolean SHOW_NAMES_IN_CHAT = Generic.register(new ConfigBoolean("show_names", true, "If chat messages should contain entity names", "Chat Names"));
+
 		protected static <T extends IConfigBase> T register(final T config) {
 			Generic.OPTIONS.add(config);
 			return config;

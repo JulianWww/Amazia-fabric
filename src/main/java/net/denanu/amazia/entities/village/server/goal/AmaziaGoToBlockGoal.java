@@ -1,8 +1,8 @@
 package net.denanu.amazia.entities.village.server.goal;
 
-import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal.PathingAmaziaVillagerEntity;
 
-public abstract class AmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> extends BaseAmaziaGoToBlockGoal<E> {
+public abstract class AmaziaGoToBlockGoal<E extends PathingAmaziaVillagerEntity> extends BaseAmaziaGoToBlockGoal<E> {
 
 	public AmaziaGoToBlockGoal(final E e, final int priority) {
 		super(e, priority);
@@ -18,5 +18,11 @@ public abstract class AmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> extend
 	@Override
 	public boolean canStart() {
 		return super.canStart() && !this.entity.isDeposeting();
+	}
+
+	public interface PathingAmaziaVillagerEntity extends BasePathingAmaziaVillagerEntity {
+
+		boolean isDeposeting();
+
 	}
 }

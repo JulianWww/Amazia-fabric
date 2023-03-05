@@ -5,6 +5,7 @@ import net.denanu.amazia.networking.c2s.AmaziaMerchantTradeSelectC2SPacket;
 import net.denanu.amazia.networking.c2s.AmaziaPathingOverlayRequestUpdateC2SPacket;
 import net.denanu.amazia.networking.c2s.AmaziaRequestNamingSystemC2SPacket;
 import net.denanu.amazia.networking.c2s.UpdateNamingSystemC2SPacket;
+import net.denanu.amazia.networking.s2c.AmaziaCustomChatMessageS2CPacket;
 import net.denanu.amazia.networking.s2c.AmaziaEntityMoodS2CPacket;
 import net.denanu.amazia.networking.s2c.AmaziaGetNameingSystemS2CPacket;
 import net.denanu.amazia.networking.s2c.AmaziaPathingOverlayUpdateS2CPacket;
@@ -28,6 +29,7 @@ public class AmaziaNetworking {
 		public static final Identifier PATHING_OVERLAY_UPDATE = Identifier.of(Amazia.MOD_ID, "pathing_sc");
 		public static final Identifier SETUP_PATHINGOVERLAY = Identifier.of(Amazia.MOD_ID, "setup_pathing");
 		public static final Identifier GET_NAME_GENERATOR = Identifier.of(Amazia.MOD_ID, "get_name");
+		public static final Identifier SEND_CUSTOM_CHAT = Identifier.of(Amazia.MOD_ID, "custom_chat");
 	}
 
 
@@ -44,5 +46,6 @@ public class AmaziaNetworking {
 		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.S2C.PATHING_OVERLAY_UPDATE, 	AmaziaPathingOverlayUpdateS2CPacket::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.S2C.SETUP_PATHINGOVERLAY, AmaziaSetupVillageReneringS2CPacker::receive);
 		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.S2C.GET_NAME_GENERATOR, AmaziaGetNameingSystemS2CPacket::receive);
+		ClientPlayNetworking.registerGlobalReceiver(AmaziaNetworking.S2C.SEND_CUSTOM_CHAT, AmaziaCustomChatMessageS2CPacket::receive);
 	}
 }

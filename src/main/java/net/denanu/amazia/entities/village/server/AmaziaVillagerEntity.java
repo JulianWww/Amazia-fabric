@@ -20,6 +20,7 @@ import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
 import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.both.VillagerData;
+import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal.PathingAmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaLookAroundGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.education.GoToLibraryGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.education.LearnFromReadingBooksGoal;
@@ -101,7 +102,7 @@ import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
 public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner, AmaziaMechanicsGuiEntity,
-InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactory {
+InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactory, PathingAmaziaVillagerEntity {
 	private static final TrackedData<Float> INTELLIGENCE = DataTracker.registerData(AmaziaVillagerEntity.class, TrackedDataHandlerRegistry.FLOAT);
 	private static final TrackedData<VillagerData> VILLAGER_DATA = DataTracker.registerData(VillagerEntity.class, VillagerData.VILLAGER_DATA);
 
@@ -402,6 +403,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		return count;
 	}
 
+	@Override
 	public boolean isDeposeting() {
 		return this.isDeposeting || !this.hasFreeSlot();
 	}
@@ -840,6 +842,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		});
 	}
 
+	@Override
 	public VillagerScedule getActivityScedule() {
 		return this.activityScedule;
 	}

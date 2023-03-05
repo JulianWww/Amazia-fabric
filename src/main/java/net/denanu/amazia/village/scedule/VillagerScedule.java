@@ -5,7 +5,7 @@ import net.denanu.amazia.utils.random.RandomnessFactory;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
-public class VillagerScedule {
+public class VillagerScedule extends BaseVillagerScedule {
 	private static RandomnessFactory<Integer> WAKEUP_TIME_FACTORY = 	new ConstrainedGaussianIntRandom(  500f,  	400f, 	1000, 		0);
 	private static RandomnessFactory<Integer> ENDWORK_TIME_FACTORY = 	new ConstrainedGaussianIntRandom( 9000f, 	400f, 	10000, 	 8000);
 	private static RandomnessFactory<Integer> SLEEP_TIME_FACTORY = 		new ConstrainedGaussianIntRandom(12500f, 	400f, 	13000, 	12000);

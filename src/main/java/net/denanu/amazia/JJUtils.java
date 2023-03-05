@@ -1,6 +1,8 @@
 package net.denanu.amazia;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -109,5 +111,40 @@ public class JJUtils {
 
 	public static BlockPos getRandomListElement(final List<BlockPos> tables, final Predicate<BlockState> pred, final World world) {
 		return JJUtils.getRandomListElement(tables.stream().filter(pos -> pred.test(world.getBlockState(pos))).toList());
+	}
+
+	public static <T> T getRandomExtreme(
+			final Set<Entry<Integer, T>> entrySet) {
+		if (JJUtils.rand.nextBoolean()) {
+			return JJUtils.min(entrySet);
+		}
+		return JJUtils.max(entrySet);
+	}
+
+	public static <T> T min(final Set<Entry<Integer, T>> entrySet) {
+		final Iterator<Entry<Integer, T>> iter = entrySet.iterator();
+		Entry<Integer, T> next, out = iter.next();
+
+
+		while (iter.hasNext()) {
+			next = iter.next();
+			if (out.getKey() > next.getKey()) {
+				out = next;
+			}
+		}
+		return out.getValue();
+	}
+
+	public static <T> T max(final Set<Entry<Integer, T>> entrySet) {
+		final Iterator<Entry<Integer, T>> iter = entrySet.iterator();
+		Entry<Integer, T> next, out = iter.next();
+
+		while (iter.hasNext()) {
+			next = iter.next();
+			if (out.getKey() < next.getKey()) {
+				out = next;
+			}
+		}
+		return out.getValue();
 	}
 }
