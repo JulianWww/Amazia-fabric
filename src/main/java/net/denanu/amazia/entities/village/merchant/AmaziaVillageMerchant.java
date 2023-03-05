@@ -2,6 +2,7 @@ package net.denanu.amazia.entities.village.merchant;
 
 import javax.annotation.Nullable;
 
+import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
 import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.entities.merchants.AmaziaMerchant;
 import net.denanu.amazia.entities.village.merchant.goal.GoToVillageCore;
@@ -13,6 +14,7 @@ import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.scedule.BaseVillagerScedule;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -42,6 +44,8 @@ public class AmaziaVillageMerchant extends AmaziaMerchant implements PathingAmaz
 		super.initGoals();
 
 		this.goalSelector.add(6, new GoToVillageCore(this, 6));
+		this.setCustomName(Text.literal(NamingLanguageOptions.generateName(null)));
+		this.setCustomNameVisible(false);
 	}
 
 	@Override

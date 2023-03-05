@@ -90,7 +90,10 @@ public class AmaziaTestCommands {
 	private static int chatMessage(final CommandContext<ServerCommandSource> context) {
 		final Style style = Style.EMPTY.withFormatting(Formatting.DARK_PURPLE);
 		context.getSource().getPlayer().sendMessage(
-				Text.translatable("No path found %0", "hello").setStyle(style)
+				Text.translatable(
+						"Merchant%s was unable to find a Path to your Village",
+						", hello,"
+						).setStyle(style)
 				);
 		return 1;
 	}

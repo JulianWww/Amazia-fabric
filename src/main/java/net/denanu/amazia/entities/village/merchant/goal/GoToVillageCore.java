@@ -3,6 +3,7 @@ package net.denanu.amazia.entities.village.merchant.goal;
 import net.denanu.amazia.entities.village.merchant.AmaziaVillageMerchant;
 import net.denanu.amazia.entities.village.merchant.AmaziaVillageMerchant.MovementPhases;
 import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal;
+import net.denanu.amazia.networking.s2c.AmaziaCustomChatMessageS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -43,9 +44,10 @@ public class GoToVillageCore extends AmaziaGoToBlockGoal<AmaziaVillageMerchant> 
 	public void fail() {
 		if (this.entity.hasVillage()) {
 			final ServerPlayerEntity mayor = this.entity.getVillage().getMayor();
-			mayor.sendMessage(Text.translatable("amazia.village.merchant.nopath"));
+			if (mayor != null) {
+				AmaziaCustomChatMessageS2CPacket.sendWarning(mayor, "amazia.village.merchant.nopath", Text.literal(", ").append(this.entity.getName()).append(","));
+			}
 		}
-
 		this.entity.discard();
 	}
 
