@@ -10,11 +10,12 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.entities.village.server.AmaziaEntity;
+import net.denanu.amazia.pathing.PathFinder.AmaziaPathfinderEntity;
 import net.denanu.amazia.pathing.edge.PathingEdge;
 import net.denanu.amazia.pathing.node.BasePathingNode;
 import net.denanu.amazia.pathing.node.PathingNode;
 import net.denanu.amazia.utils.queue.PriorityElement;
+import net.denanu.amazia.village.Village;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -24,24 +25,24 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.ai.pathing.PathNodeNavigator;
-import net.minecraft.particle.ParticleTypes;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-public class PathFinder extends EntityNavigation {
-	protected AmaziaEntity entity;
-	protected PriorityQueue<PriorityElement<PathingNode>> nodeQueue = new PriorityQueue<PriorityElement<PathingNode>>(PriorityElement.comparator);
+public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends EntityNavigation {
+	protected T entity;
+	protected PriorityQueue<PriorityElement<PathingNode>> nodeQueue = new PriorityQueue<>(PriorityElement.comparator);
 	protected BlockPos currentLoc = BlockPos.ORIGIN;
 	protected boolean canSwim = true;
 
-	public PathFinder(final AmaziaEntity entityNav) {
-		super(entityNav, entityNav.getWorld());
-		this.entity = entityNav;
+	public PathFinder(final T amaziaVillageMerchant) {
+		super(amaziaVillageMerchant, amaziaVillageMerchant.getWorld());
+		this.entity = amaziaVillageMerchant;
 	}
 
-	public PathingGraph getGraph() {
+	public final PathingGraph getGraph() {
 		if (this.entity.hasVillage()) {
 			return this.entity.getVillage().getPathingGraph();
 		}
@@ -85,8 +86,7 @@ public class PathFinder extends EntityNavigation {
 			if (endNode == startNode) {
 				return null;
 			}
-			final PathingPath out = this.findPathTo(startNode, endNode, graph);
-			return out;
+			return this.findPathTo(startNode, endNode, graph);
 		}
 		return null;
 	}
@@ -110,7 +110,7 @@ public class PathFinder extends EntityNavigation {
 			return null;
 		}
 		final BlockPos targetPos = end.getBlockPos();
-		final List<PathingNode> path = new LinkedList<PathingNode>();
+		final List<PathingNode> path = new LinkedList<>();
 		path.add(end);
 		for (; end.getBlockPos().from != null; end = end.getBlockPos().from.to(end)) {
 			path.addAll(end.getBlockPos().from.toPath(end));
@@ -122,7 +122,7 @@ public class PathFinder extends EntityNavigation {
 			return null;
 		}
 		final BlockPos targetPos = end.getBlockPos();
-		final List<PathingNode> path = new LinkedList<PathingNode>();
+		final List<PathingNode> path = new LinkedList<>();
 		while (end != null) {
 			path.add(end);
 			end = end.movedFromNode;
@@ -151,12 +151,12 @@ public class PathFinder extends EntityNavigation {
 			if (current.getRight().getParent() != null && startNode.inSameSuperCluster(current.getRight()) && currentEval!=current.getRight().getParent().lastEvaluation) {
 				next = current.getRight().getTopParent();
 				next.lastEvaluation = currentEval;
-				this.nodeQueue.add(new PriorityElement<PathingNode>(0, next));
+				this.nodeQueue.add(new PriorityElement<>(0, next));
 			}
 			if (current.getRight().getChild() != null && endNode.inSameSubCluster(current.getRight()) && currentEval!=current.getRight().getChild().lastEvaluation) {
 				next = current.getRight().getChild();
 				next.lastEvaluation = currentEval;
-				this.nodeQueue.add(new PriorityElement<PathingNode>(0, next));
+				this.nodeQueue.add(new PriorityElement<>(0, next));
 				currentLvl = next.getLvl();
 			}
 			if (current.getRight().getLvl() >= currentLvl) { // maybe remove
@@ -172,7 +172,7 @@ public class PathFinder extends EntityNavigation {
 
 						next.distance = current.getRight().distance + edge.getLength();
 
-						this.nodeQueue.add(new PriorityElement<PathingNode>(PathFinder.estimateDistance(next, endNode) + next.distance, next));
+						this.nodeQueue.add(new PriorityElement<>(PathFinder.estimateDistance(next, endNode) + next.distance, next));
 					}
 				}
 			}
@@ -184,8 +184,8 @@ public class PathFinder extends EntityNavigation {
 		graph.nextEval();
 		final int currentEval = graph.getEvalIndex();
 
-		final PriorityQueue<PriorityElement<BasePathingNode>> nodeQueue = new PriorityQueue<PriorityElement<BasePathingNode>>(PriorityElement.comparator);
-		nodeQueue.add(new PriorityElement<BasePathingNode>(PathFinder.estimateHyperGreadyDistance(startNode, endNode), startNode));
+		final PriorityQueue<PriorityElement<BasePathingNode>> nodeQueue = new PriorityQueue<>(PriorityElement.comparator);
+		nodeQueue.add(new PriorityElement<>(PathFinder.estimateHyperGreadyDistance(startNode, endNode), startNode));
 		startNode.lastEvaluation = currentEval;
 
 		startNode.distance = 0;
@@ -205,7 +205,7 @@ public class PathFinder extends EntityNavigation {
 					next.distance = current.getRight().distance + 1;
 
 					next.lastEvaluation = currentEval;
-					nodeQueue.add(new PriorityElement<BasePathingNode>(next.distance + PathFinder.estimateHyperGreadyDistance(next, endNode), next));
+					nodeQueue.add(new PriorityElement<>(next.distance + PathFinder.estimateHyperGreadyDistance(next, endNode), next));
 				}
 			}
 		}
@@ -219,6 +219,8 @@ public class PathFinder extends EntityNavigation {
 	private static int estimateHyperGreadyDistance(final PathingNode n1, final PathingNode n2) {
 		return n1.getSquaredDistance(n2);
 	}
+
+
 
 	// Minecraft pathfinding override requirements (arg)
 
@@ -254,7 +256,7 @@ public class PathFinder extends EntityNavigation {
 			node = graph.getNode(blockpos2.getX(), i - 1, blockpos2.getZ());
 		}
 		if (node == null) {
-			final Set<BlockPos> set = new HashSet<BlockPos>();
+			final Set<BlockPos> set = new HashSet<>();
 			set.add(new BlockPos(this.entity.getX() + 1, i, this.entity.getZ() + 1));
 			set.add(new BlockPos(this.entity.getX() + 1, i, this.entity.getZ() - 1));
 			set.add(new BlockPos(this.entity.getX() - 1, i, this.entity.getZ() + 1));
@@ -287,8 +289,10 @@ public class PathFinder extends EntityNavigation {
 		BlockState blockState = this.world.getBlockState(new BlockPos(this.entity.getX(), i, this.entity.getZ()));
 		int j = 0;
 		while (blockState.isOf(Blocks.WATER)) {
-			blockState = this.world.getBlockState(new BlockPos(this.entity.getX(), ++i, this.entity.getZ()));
-			if (++j <= 16) {
+			i++;
+			blockState = this.world.getBlockState(new BlockPos(this.entity.getX(), i, this.entity.getZ()));
+			j++;
+			if (j <= 16) {
 				continue;
 			}
 			return this.entity.getBlockY();
@@ -387,7 +391,7 @@ public class PathFinder extends EntityNavigation {
 		final double e = Math.abs(this.entity.getY() - vec3i.getY());
 		final double f = Math.abs(this.entity.getZ() - (vec3i.getZ() + 0.5));
 
-		((ServerWorld)this.world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, vec3i.getX(), vec3i.getY(), vec3i.getZ(), 2, 0,0,0,0);
+		//((ServerWorld)this.world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, vec3i.getX(), vec3i.getY(), vec3i.getZ(), 2, 0,0,0,0);
 
 		bl = d < this.nodeReachProximity && f < this.nodeReachProximity && e < 1.0;
 		if (bl || this.entity.canJumpToNextPathNode(this.currentPath.getCurrentNode().type) && this.shouldJumpToNextNode(vec3d)) {
@@ -421,10 +425,10 @@ public class PathFinder extends EntityNavigation {
 	}
 
 	private void setBlocOpenState(final boolean value, final BlockPos pos) {
-		BlockState state = ((ServerWorld)this.entity.world).getBlockState(pos);
+		BlockState state = ((ServerWorld)this.entity.getWorld()).getBlockState(pos);
 
 		if (state.getBlock() instanceof DoorBlock) {
-			((DoorBlock)state.getBlock()).setOpen(this.entity, this.entity.world, state, pos, value);
+			((DoorBlock)state.getBlock()).setOpen(this.entity, this.entity.getWorld(), state, pos, value);
 		}
 		else if (state.getBlock() instanceof FenceGateBlock) {
 			state = state.with(FenceGateBlock.OPEN, value);
@@ -446,5 +450,10 @@ public class PathFinder extends EntityNavigation {
 	@Override
 	public void setCanSwim(final boolean canSwim) {
 		this.canSwim = canSwim;
+	}
+
+	public interface AmaziaPathfinderEntity {
+		boolean hasVillage();
+		Village getVillage();
 	}
 }

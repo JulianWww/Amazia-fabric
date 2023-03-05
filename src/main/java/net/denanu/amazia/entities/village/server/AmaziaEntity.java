@@ -9,6 +9,7 @@ import net.denanu.amazia.entities.moods.ServerMoodEmiter;
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.server.controll.AmaziaEntityMoveControl;
 import net.denanu.amazia.pathing.PathFinder;
+import net.denanu.amazia.pathing.PathFinder.AmaziaPathfinderEntity;
 import net.denanu.amazia.utils.CuboidSampler;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
@@ -31,7 +32,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class AmaziaEntity extends PassiveEntity implements IVillageEventListener {
+public class AmaziaEntity extends PassiveEntity implements IVillageEventListener, AmaziaPathfinderEntity {
 	protected Village village;
 	protected BlockPos villageCorePos;
 	private CuboidSampler villageSampler;

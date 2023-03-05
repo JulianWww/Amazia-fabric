@@ -3,14 +3,17 @@ package net.denanu.amazia.entities.village.server.goal;
 import javax.annotation.Nullable;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.entities.village.server.controll.AmaziaEntityMoveControl;
+import net.denanu.amazia.entities.village.server.goal.BaseAmaziaGoToBlockGoal.BasePathingAmaziaVillagerEntity;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
+import net.denanu.amazia.mechanics.hunger.IAmaziaFoodConsumerEntity;
 import net.denanu.amazia.pathing.PathingPath;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
-public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> extends BaseAmaziaVillageGoal<E> {
+public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillagerEntity> extends BaseAmaziaVillageGoal<E> {
 	public static final int BASE_FOOD_USAGE = 200;
 	protected BlockPos targetPos;
 	private boolean isRunning;
@@ -81,6 +84,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		final Vec3d targetPos = new Vec3d(this.targetPos.getX() + 0.5, this.targetPos.getY(), this.targetPos.getZ() + 0.5);
 		if (this.nav.isIdle()) {
 			this.ticksStanding++;
+			this.nav.startMovingAlong(this.path, this.speed);
 		}
 		else {
 			this.ticksStanding = 0;
@@ -126,7 +130,15 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 		}
 		if (this.path == null && !this.directMovement) {
 			this.fail();
+			return;
 		}
+
+		/*for (int i = 0; i < this.path.getLength(); i++) {
+			final PathNode node = this.path.getNode(i);
+			final var stand = new ArmorStandEntity(this.entity.getWorld(), node.x + 0.5, node.y + 0.5, node.z + 0.5);
+			((ServerWorld)this.entity.getWorld()).spawnEntity(stand);
+		}*/
+
 		this.nav.startMovingAlong(this.path, 1);
 		this.ticksStanding = 0;
 	}
@@ -144,5 +156,16 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends AmaziaVillagerEntity> ex
 
 	public boolean isRunning() {
 		return this.isRunning;
+	}
+
+	public interface BasePathingAmaziaVillagerEntity extends BaseAmaziaVillagerEntity, IAmaziaFoodConsumerEntity {
+
+		EntityNavigation getNavigation();
+
+		Vec3d getPos();
+
+		AmaziaEntityMoveControl getMoveControl();
+		World getWorld();
+
 	}
 }

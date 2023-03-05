@@ -11,7 +11,7 @@ public class PathingLvl {
 	private final HashMap<Integer, HashMap<Integer, HashMap<Integer, BasePathingNode>>> positionMap;
 
 	PathingLvl() {
-		this.positionMap = new HashMap<Integer, HashMap<Integer, HashMap<Integer, BasePathingNode>>>();
+		this.positionMap = new HashMap<>();
 	}
 
 	public BasePathingNode get(final BlockPos pos) {
@@ -70,5 +70,15 @@ public class PathingLvl {
 										).getValue().entrySet()
 								).getValue().entrySet()
 						).getValue().getBlockPos();
+	}
+
+	public BlockPos getRandomVillageEnterNode() {
+		return JJUtils.max(
+				JJUtils.getRandomExtreme(
+						JJUtils.getRandomExtreme(
+								this.positionMap.entrySet()
+								).entrySet()
+						).entrySet()
+				).getBlockPos();
 	}
 }
