@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
 
   for idx, args in enumerate(langs.items()):
-    file_print(idx, end="")
+    file_print(idx, end=" ")
     makeTranslation(*args)
 
   print(langTimeTable)
