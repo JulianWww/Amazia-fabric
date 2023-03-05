@@ -16,6 +16,7 @@ import net.minecraft.block.FluidBlock;
 import net.minecraft.block.WallBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 public class BasePathingNode extends PathingNode {
 	private final byte clearanceHeight;
@@ -27,7 +28,7 @@ public class BasePathingNode extends PathingNode {
 		this.clearanceHeight = clearance;
 		graph.lvl0.add(pos, this);
 		graph.getEventEmiter().sendCreate(pos);
-		this.ajacentNodes = new HashSet<BasePathingNode>();
+		this.ajacentNodes = new HashSet<>();
 	}
 
 	public boolean hasRisingEdge() {
@@ -112,8 +113,7 @@ public class BasePathingNode extends PathingNode {
 			if (BasePathingNode.isPassable(world, pos.up(2))) {
 				clearance++;
 			}
-			final BasePathingNode out = new BasePathingNode(pos, graph, clearance, PathingCluster.get(graph, pos, 0));
-			return out;
+			return new BasePathingNode(pos, graph, clearance, PathingCluster.get(graph, pos, 0));
 		}
 		return null;
 	}
@@ -144,5 +144,22 @@ public class BasePathingNode extends PathingNode {
 		}
 		graph.getEventEmiter().sendDestroy(this.getBlockPos());
 		super.destroy(graph);
+	}
+
+	@Override
+	public PathingNode getByDirection(final Direction dir) {
+		for (final PathingNode node : this.ajacentNodes) {
+			if (BasePathingNode.testWithDirection(this, node, dir)) {
+				return node;
+			}
+		}
+		return null;
+	}
+
+	private static boolean testWithDirection(final PathingNode orig, final PathingNode ajacent, final Direction dir) {
+		return switch(dir.getDirection()) {
+		case POSITIVE -> orig.getAxisPosition(dir.getAxis()) < ajacent.getAxisPosition(dir.getAxis());
+		case NEGATIVE -> orig.getAxisPosition(dir.getAxis()) > ajacent.getAxisPosition(dir.getAxis());
+		};
 	}
 }

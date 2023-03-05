@@ -7,6 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.denanu.amazia.village.VillageBoundingBox;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
 import net.minecraft.client.render.Camera;
@@ -22,7 +23,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class VillageBorderRenderer {
 	private static final Identifier FORCEFIELD = new Identifier("textures/misc/forcefield.png");
-	public static HashSet<VillageBoundingBox> villageBoxes = new HashSet<VillageBoundingBox>();
+	public static HashSet<VillageBoundingBox> villageBoxes = new HashSet<>();
 
 	public static void renderWorldBorder(final Camera camera, final ClientWorld world, final MinecraftClient client, final VillageBoundingBox worldBorder) {
 		float v;
@@ -138,7 +139,7 @@ public class VillageBorderRenderer {
 		}
 	}
 
-	public static void clear(final MinecraftClient client) {
+	public static void clear(final ClientPlayNetworkHandler handler, final MinecraftClient client) {
 		VillageBorderRenderer.villageBoxes.clear();
 	}
 }
