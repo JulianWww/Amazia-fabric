@@ -37,3 +37,4 @@ libs/automatone-0.9.0.jar
 generators/token/tmp/
 generators/lang/TableIt.py
 generators/lang/Tor/
+generators/lang/out.log
