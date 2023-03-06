@@ -16,10 +16,8 @@ import net.denanu.amazia.block.entity.AmaziaBlockEntities;
 import net.denanu.amazia.commands.AmaziaCommand;
 import net.denanu.amazia.commands.AmaziaGameRules;
 import net.denanu.amazia.commands.args.AmaziaArgumentTypes;
-import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
 import net.denanu.amazia.data.AmaziaStatusEffects;
 import net.denanu.amazia.data.LootTables;
-import net.denanu.amazia.economy.Economy;
 import net.denanu.amazia.economy.EconomyFactory;
 import net.denanu.amazia.economy.ProfessionFactory;
 import net.denanu.amazia.economy.offerModifiers.price.AmaziaValueModifiers;
@@ -37,10 +35,10 @@ import net.denanu.amazia.mechanics.hunger.CraftingHungerManager;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.sounds.AmaziaSounds;
+import net.denanu.amazia.utils.AmaziaPersistentStateHandler;
 import net.denanu.amazia.utils.Predicates;
 import net.denanu.amazia.utils.crafting.VillageRecipeManager;
 import net.denanu.amazia.utils.registry.AmaziaRegistrys;
-import net.denanu.amazia.utils.scanners.ChunkScanner;
 import net.denanu.amazia.village.AmaziaData;
 import net.denanu.amazia.village.VillageManager;
 import net.fabricmc.api.ModInitializer;
@@ -66,8 +64,7 @@ public class Amazia implements ModInitializer {
 	public static HashMap<Item, ArrayList<CraftingRecipe>> CHEF_CRAFTABLES;
 	public static HashMap<Item, ArrayList<CraftingRecipe>> GUARD_CRAFTABLES;
 
-	public static Economy economy;
-	public static ChunkScanner chunkScanner;
+	private static AmaziaPersistentStateHandler manager;
 
 	private static VillageManager villageManager;
 
@@ -88,19 +85,7 @@ public class Amazia implements ModInitializer {
 		ProfessionFactory.setup();
 		AmaziaValueModifiers.setup();
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			Amazia.economy = server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(Economy::fromNbt,
-					Economy::new, Amazia.MOD_ID + ":economy");
-		});
-
-		// Scanners
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			Amazia.chunkScanner = server.getWorld(World.OVERWORLD).getPersistentStateManager()
-					.getOrCreate(ChunkScanner::fromNbt, ChunkScanner::init, Amazia.MOD_ID + ":structures");
-		});
-
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			server.getWorld(World.OVERWORLD).getPersistentStateManager()
-			.getOrCreate(NamingLanguageOptions.Loader::fromNbt, NamingLanguageOptions.Loader::loadDefault, Amazia.MOD_ID + ":config");
+			Amazia.manager = server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(AmaziaPersistentStateHandler::fromNbt, AmaziaPersistentStateHandler::loadDefault, Amazia.MOD_ID);
 		});
 
 		// Networking

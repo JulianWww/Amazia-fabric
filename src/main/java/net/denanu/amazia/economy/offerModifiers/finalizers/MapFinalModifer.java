@@ -1,8 +1,8 @@
 package net.denanu.amazia.economy.offerModifiers.finalizers;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.economy.AmaziaTradeOffer;
 import net.denanu.amazia.utils.random.WeightedRandomCollection;
+import net.denanu.amazia.utils.scanners.ChunkScanner;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.map.MapIcon;
@@ -19,30 +19,30 @@ public class MapFinalModifer extends OfferFinalModifer {
 	private final WeightedRandomCollection<Identifier> structures;
 	private final MapIcon.Type icon;
 	private final String nameKey;
-	
-	public MapFinalModifer(MapIcon.Type icon, String name, Identifier ident) {
+
+	public MapFinalModifer(final MapIcon.Type icon, final String name, final Identifier ident) {
 		super(ident);
 		this.nameKey = name;
 		this.icon = icon;
-		this.structures = new WeightedRandomCollection<Identifier>();
+		this.structures = new WeightedRandomCollection<>();
 	}
-	
-	
-	public MapFinalModifer add(Identifier structure, float weight) {
+
+
+	public MapFinalModifer add(final Identifier structure, final float weight) {
 		this.structures.add(weight, structure);
 		return this;
 	}
 
 	@Override
-	public void modify(AmaziaTradeOffer offer, LivingEntity merchant) {
-		ServerWorld world = (ServerWorld)merchant.world;
-		
-		Identifier structure = this.structures.next();
-		ChunkPos pos = Amazia.chunkScanner.getPos(structure);
+	public void modify(final AmaziaTradeOffer offer, final LivingEntity merchant) {
+		final ServerWorld world = (ServerWorld)merchant.world;
+
+		final Identifier structure = this.structures.next();
+		final ChunkPos pos = ChunkScanner.getPos(structure);
 		offer.item.setCustomName(Text.translatable(this.nameKey));
 		if (pos!= null) {
-			BlockPos loc = pos.getBlockPos(6, 0, 6);
-			Amazia.chunkScanner.markDirty(structure);
+			final BlockPos loc = pos.getBlockPos(6, 0, 6);
+			ChunkScanner.markDirty(structure);
 			offer.item = FilledMapItem.createMap(world, loc.getX(), loc.getZ(), (byte)2, true, true);
 			MapState.addDecorationsNbt(offer.item, loc, "+", this.icon);
 		}
@@ -53,7 +53,7 @@ public class MapFinalModifer extends OfferFinalModifer {
 
 
 
-	public MapFinalModifer add(RegistryKey<Structure> key, float weight) {
+	public MapFinalModifer add(final RegistryKey<Structure> key, final float weight) {
 		return this.add(key.getValue(), weight);
 	}
 
