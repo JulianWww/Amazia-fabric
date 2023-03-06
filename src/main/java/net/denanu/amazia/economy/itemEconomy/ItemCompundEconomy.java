@@ -19,15 +19,15 @@ import net.minecraft.nbt.NbtElement;
 public class ItemCompundEconomy extends BaseItemEconomy {
 	private final ImmutableSet<ImmutablePair<BaseItemEconomy, Float>> ingredients;
 	private final RandomnessFactory<Integer> stackSizeFactory;
-	
-	public ItemCompundEconomy(Item itm, RandomnessFactory<Integer> stackSizeFactory, ImmutableSet<ImmutablePair<BaseItemEconomy, Float>> ingredients) {
+
+	public ItemCompundEconomy(final Item itm, final RandomnessFactory<Integer> stackSizeFactory, final ImmutableSet<ImmutablePair<BaseItemEconomy, Float>> ingredients) {
 		super(itm);
 		this.ingredients = ingredients;
 		this.stackSizeFactory = stackSizeFactory;
 	}
 
 	@Override
-	public void fromNbt(NbtCompound compound) {
+	public void fromNbt(final NbtCompound compound) {
 	}
 
 	@Override
@@ -35,6 +35,7 @@ public class ItemCompundEconomy extends BaseItemEconomy {
 		return null;
 	}
 
+	@Override
 	protected ItemStack getStack() {
 		return new ItemStack(this.itm, this.stackSizeFactory.next());
 	}
@@ -48,9 +49,9 @@ public class ItemCompundEconomy extends BaseItemEconomy {
 	}
 
 	@Override
-	public float getPriceDelta(float quantity, boolean buy) {
+	public float getPriceDelta(final float quantity, final boolean buy) {
 		float delta = 1;
-		for (ImmutablePair<BaseItemEconomy, Float> child : this.ingredients) {
+		for (final ImmutablePair<BaseItemEconomy, Float> child : this.ingredients) {
 			delta += child.getLeft().getPriceDelta(quantity * child.getRight(), buy);
 		}
 		return delta;
@@ -59,31 +60,31 @@ public class ItemCompundEconomy extends BaseItemEconomy {
 	@Override
 	public float getCurrentPrice() {
 		float value = 0;
-		for (ImmutablePair<BaseItemEconomy, Float> child : this.ingredients) {
+		for (final ImmutablePair<BaseItemEconomy, Float> child : this.ingredients) {
 			value += child.getLeft().getCurrentPrice() * child.getRight();
 		}
 		return value;
 	}
 
 	@Override
-	public void setCurrentValue(float float1) {
+	public void setCurrentValue(final float float1) {
 	}
 
 	@Override
-	public void updatePrice(float quantity, boolean buy) {
-		for (ImmutablePair<BaseItemEconomy, Float> child : this.ingredients) {
-			child.getLeft().updatePrice(quantity * child.getRight(), buy);;
+	public void updatePrice(final float quantity, final boolean buy) {
+		for (final ImmutablePair<BaseItemEconomy, Float> child : this.ingredients) {
+			child.getLeft().updatePrice(quantity * child.getRight(), buy);
 		}
 	}
-	
-	public static BaseItemEconomy register(Item itm, ImmutableSet<ImmutablePair<BaseItemEconomy, Float>> ingredients, RandomnessFactory<Integer> stackSizeFactory, ImmutableSet<String> professions) {
-		return register(Amazia.MOD_ID, itm, ingredients, stackSizeFactory, professions);
+
+	public static BaseItemEconomy register(final Item itm, final ImmutableSet<ImmutablePair<BaseItemEconomy, Float>> ingredients, final RandomnessFactory<Integer> stackSizeFactory, final ImmutableSet<String> professions) {
+		return ItemCompundEconomy.register(Amazia.MOD_ID, itm, ingredients, stackSizeFactory, professions);
 	}
-	
-	public static BaseItemEconomy register(String modid, Item itm, ImmutableSet<ImmutablePair<BaseItemEconomy, Float>> ingredients, RandomnessFactory<Integer> stackSizeFactory, ImmutableSet<String> professions) {
-		return EconomyFactory.register(Amazia.MOD_ID, itm, new ItemCompundEconomy(itm, stackSizeFactory, ingredients), professions);
+
+	public static BaseItemEconomy register(final String modid, final Item itm, final ImmutableSet<ImmutablePair<BaseItemEconomy, Float>> ingredients, final RandomnessFactory<Integer> stackSizeFactory, final ImmutableSet<String> professions) {
+		return EconomyFactory.register(modid, itm, new ItemCompundEconomy(itm, stackSizeFactory, ingredients), professions);
 	}
-	
+
 	@Override
 	public boolean hasNbt() {
 		return false;

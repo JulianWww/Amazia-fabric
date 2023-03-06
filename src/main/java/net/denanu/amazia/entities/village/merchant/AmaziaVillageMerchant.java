@@ -1,9 +1,13 @@
 package net.denanu.amazia.entities.village.merchant;
 
+import java.util.Collection;
+
 import javax.annotation.Nullable;
 
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
+import net.denanu.amazia.economy.Economy;
+import net.denanu.amazia.economy.ProfessionFactory;
 import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.entities.merchants.AmaziaMerchant;
 import net.denanu.amazia.entities.village.merchant.goal.GoToVillageCore;
@@ -185,6 +189,15 @@ public class AmaziaVillageMerchant extends AmaziaMerchant implements PathingAmaz
 
 	public MovementPhases getMove_phase() {
 		return this.move_phase;
+	}
+
+	@Override
+	public Collection<String> getTradePossibilities() {
+		if (this.world.isClient) {
+			throw new RuntimeException("Client executing serveronly code");
+		}
+		this.profession = ProfessionFactory.get();
+		return Economy.getVillagMerchantTrades();
 	}
 
 	public enum MovementPhases {

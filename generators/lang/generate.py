@@ -24,21 +24,49 @@ PROXIES = {
     'https': 'socks5://127.0.0.1:9050'
 }
 
+log = open("out.log", "w")
+
+def file_print(*args, **kwargs):
+  print(*args, file=log, flush=True, **kwargs)
+
+def remove_last_line():
+  global log
+  log.close()
+  with open("out.log", "r") as file:
+    lines = file.readlines()
+  
+  log = open("out.log", "w")
+  log.writelines(lines[:-1])
+
+def printProgress(done, todo, time):
+  if (done > 0):
+    remove_last_line()
+  file_print(f"{done} / {todo} \t\t {time} s")
+
 
 def translate(orig, dest):
   #runTor()
   translator = GoogleTranslator(source='en', target=dest, proxies=PROXIES)
-
-  try:
-    out = {x: translator.translate(y) for x, y in orig.items()}
-  except:
-    sleep(0.2)
-    return translate(orig, dest)
+  s = time()
+  
+  out = {}
+  for idx, (x, y) in enumerate(orig.items()):
+    printProgress(idx, len(orig), time() - s)
+    s = time()
+    while True:
+      try:
+        out[x] = translator.translate(y)
+        break
+      except Exception as e:
+        sleep(0.2)
+        file_print(f"TRANSLATION FAILED {e}\n")
 
   return out
 
 def makeTranslation(transKey, filenames):
   s = time()
+
+  file_print(f"Translating to {transKey}")
 
   if isinstance(filenames, str):
     filenames = [filenames]
@@ -48,6 +76,8 @@ def makeTranslation(transKey, filenames):
   for filename in filenames:
     with open(f"{langDir}{filename}.json", "w") as file:
       dump(data, file, indent=4, sort_keys=True)
+
+  file_print(f"Translated to {transKey} {time() - start} s")
   
   langTimeTable.append([transKey, f"{int(time() - start)} s"])
 
@@ -63,7 +93,10 @@ if __name__ == "__main__":
     dump(langs, file, indent=4, sort_keys=True)
 
 
-  for args in langs.items():
+  for idx, args in enumerate(langs.items()):
+    file_print(idx, end=" ")
     makeTranslation(*args)
 
   print(langTimeTable)
+
+  log.close()

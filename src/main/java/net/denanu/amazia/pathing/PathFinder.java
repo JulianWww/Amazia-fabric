@@ -24,9 +24,12 @@ import net.minecraft.block.FenceGateBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.Path;
+import net.minecraft.entity.ai.pathing.PathNode;
 import net.minecraft.entity.ai.pathing.PathNodeNavigator;
+import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.annotation.Debug;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -202,7 +205,7 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 						return next;
 					}
 
-					next.distance = current.getRight().distance + 1;
+					next.distance = current.getRight().distance + next.getY() == current.getRight().getY() ? 1 : 16;
 
 					next.lastEvaluation = currentEval;
 					nodeQueue.add(new PriorityElement<>(next.distance + PathFinder.estimateHyperGreadyDistance(next, endNode), next));
@@ -391,16 +394,27 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 		final double e = Math.abs(this.entity.getY() - vec3i.getY());
 		final double f = Math.abs(this.entity.getZ() - (vec3i.getZ() + 0.5));
 
-		//((ServerWorld)this.world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, vec3i.getX(), vec3i.getY(), vec3i.getZ(), 2, 0,0,0,0);
-
 		bl = d < this.nodeReachProximity && f < this.nodeReachProximity && e < 1.0;
 		if (bl || this.entity.canJumpToNextPathNode(this.currentPath.getCurrentNode().type) && this.shouldJumpToNextNode(vec3d)) {
 			this.currentPath.next();
 			this.openBlock();
+			//this.debug();
 		}
 		this.checkTimeouts(vec3d);
 	}
 
+	@Debug
+	private void debug() {
+		for (final ArmorStandEntity stand : this.entity.getWorld().getEntitiesByClass(ArmorStandEntity.class, this.entity.getVillage().getBox(), e -> true)) {
+			stand.discard();
+		}
+
+		for (int idx = this.currentPath.getCurrentNodeIndex(); idx < this.currentPath.getLength(); idx++) {
+			final PathNode node = this.currentPath.getNode(idx);
+			final ArmorStandEntity stand = new ArmorStandEntity(this.entity.getWorld(), node.x + 0.5, node.y, node.z + 0.5);
+			this.entity.getWorld().spawnEntity(stand);
+		}
+	}
 
 	private boolean shouldJumpToNextNode(final Vec3d currentPos) {
 		if (this.currentPath.getCurrentNodeIndex() + 1 >= this.currentPath.getLength()) {
