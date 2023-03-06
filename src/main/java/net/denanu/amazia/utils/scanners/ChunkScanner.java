@@ -17,104 +17,91 @@ import net.minecraft.structure.StructureStart;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.PersistentState;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.structure.Structure;
 
-public class ChunkScanner extends PersistentState {
+public class ChunkScanner {
 	private static CuboidChunkSampler sampler = new CuboidChunkSampler(0,0,20,20);
-	
-	public static final Set<Identifier> toLookFor = new HashSet<Identifier>();
-	
-	private int i;
-	public Map<Identifier, ChunkPos> structureLocations;
-	public Set<Identifier> dirtys;
-	
-	public ChunkScanner() {
-		this.i = 0;
-		this.structureLocations = new HashMap<Identifier, ChunkPos>();
-		this.dirtys = new HashSet<Identifier>();
+
+	public static final Set<Identifier> toLookFor = new HashSet<>();
+
+	private static int i = 0;
+	public static Map<Identifier, ChunkPos> structureLocations = new HashMap<>();
+	public static Set<Identifier> dirtys = new HashSet<>();
+
+	public static void init() {
+		ChunkScanner.dirtys = ChunkScanner.toLookFor;
 	}
-	public static ChunkScanner init() {
-		ChunkScanner out = new ChunkScanner();
-		out.dirtys = toLookFor;
-		return out;
-	}
-	
-	public static ChunkScanner fromNbt(NbtCompound nbt) {
-		ChunkScanner out = new ChunkScanner();
-		
-		NbtCompound structures = (NbtCompound)nbt.get("structures");
-		for (String key : structures.getKeys()) {
-			out.structureLocations.put(
+
+	public static void fromNbt(final NbtCompound nbt) {
+		final NbtCompound structures = (NbtCompound)nbt.get("structures");
+		for (final String key : structures.getKeys()) {
+			ChunkScanner.structureLocations.put(
 					new Identifier(key),
-					NbtUtils.toChunkPos(((NbtList)structures.get(key)))
-				);
+					NbtUtils.toChunkPos((NbtList)structures.get(key))
+					);
 		}
-		NbtList dirtiesNbt = (NbtList)nbt.get("dirties");
-		for (NbtElement dirty : dirtiesNbt) {
-			out.dirtys.add(new Identifier(dirty.asString()));
+		final NbtList dirtiesNbt = (NbtList)nbt.get("dirties");
+		for (final NbtElement dirty : dirtiesNbt) {
+			ChunkScanner.dirtys.add(new Identifier(dirty.asString()));
 		}
-		return out;
 	}
-	
-	public void tick(ServerWorld world) {
-		if (world.getPlayers().size() > 0 && this.dirtys.size() > 0) {
-			ChunkPos pos = this.getPos(world);
-			Chunk chunk = world.getChunkManager().getWorldChunk(pos.x, pos.z);
+
+	public static void tick(final ServerWorld world) {
+		if (world.getPlayers().size() > 0 && ChunkScanner.dirtys.size() > 0) {
+			final ChunkPos pos = ChunkScanner.getPos(world);
+			final Chunk chunk = world.getChunkManager().getWorldChunk(pos.x, pos.z);
 			if (chunk!= null) {
-				Map<Structure, StructureStart> structures = chunk.getStructureStarts();
-				for (Structure entry : structures.keySet()) {		
-					Identifier key = world.getRegistryManager().get(Registry.STRUCTURE_KEY).getId(entry);
-					
-					structureLocations.put(key, pos);
-					this.dirtys.remove(key);
+				final Map<Structure, StructureStart> structures = chunk.getStructureStarts();
+				for (final Structure entry : structures.keySet()) {
+					final Identifier key = world.getRegistryManager().get(Registry.STRUCTURE_KEY).getId(entry);
+
+					ChunkScanner.structureLocations.put(key, pos);
+					ChunkScanner.dirtys.remove(key);
 				}
 			}
 		}
 	}
-	
-	public ChunkPos getPos(Identifier structure) {
-		return this.structureLocations.get(structure);
-	}
-	
-	public void markDirty(Identifier structure) {
-		this.dirtys.add(structure);
-	}
-	
-	private ChunkPos getPos(ServerWorld world) {
-		i++;
-		i = i % world.getPlayers().size();
-		sampler.setPos(world.getPlayers().get(i));
 
-		return sampler.getPos();
+	public static ChunkPos getPos(final Identifier structure) {
+		return ChunkScanner.structureLocations.get(structure);
 	}
 
-	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		nbt.put("structures", this.getStructuresNbt());
-		nbt.put("dirties",    this.getDirtyNbt());
+	public static void markDirty(final Identifier structure) {
+		ChunkScanner.dirtys.add(structure);
+	}
+
+	private static ChunkPos getPos(final ServerWorld world) {
+		ChunkScanner.i++;
+		ChunkScanner.i = ChunkScanner.i % world.getPlayers().size();
+		ChunkScanner.sampler.setPos(world.getPlayers().get(ChunkScanner.i));
+
+		return ChunkScanner.sampler.getPos();
+	}
+
+	public static NbtCompound writeNbt() {
+		return ChunkScanner.writeNbt(new NbtCompound());
+	}
+
+	public static NbtCompound writeNbt(final NbtCompound nbt) {
+		nbt.put("structures", ChunkScanner.getStructuresNbt());
+		nbt.put("dirties",    ChunkScanner.getDirtyNbt());
 		return nbt;
 	}
-	
-	@Override
-	public boolean isDirty() {
-		return true;
-	}
-	
-	private NbtCompound getStructuresNbt() {
-		NbtCompound nbt = new NbtCompound();
-		for (Entry<Identifier, ChunkPos> struct : this.structureLocations.entrySet()) {
-			nbt.put(struct.getKey().toString(), 
+
+	private static NbtCompound getStructuresNbt() {
+		final NbtCompound nbt = new NbtCompound();
+		for (final Entry<Identifier, ChunkPos> struct : ChunkScanner.structureLocations.entrySet()) {
+			nbt.put(struct.getKey().toString(),
 					NbtUtils.toNbt(struct.getValue())
-				);
+					);
 		}
 		return nbt;
 	}
-	
-	private NbtElement getDirtyNbt() {
-		NbtList nbt = new NbtList();
-		for (Identifier item : this.dirtys) {
+
+	private static NbtElement getDirtyNbt() {
+		final NbtList nbt = new NbtList();
+		for (final Identifier item : ChunkScanner.dirtys) {
 			nbt.add(NbtString.of(item.toString()));
 		}
 		return nbt;

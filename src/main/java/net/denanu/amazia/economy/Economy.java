@@ -13,19 +13,16 @@ import net.denanu.amazia.economy.offerModifiers.ModifierEconomy;
 import net.denanu.amazia.economy.offerModifiers.finalizers.OfferFinalModifer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.PersistentState;
 
-public class Economy extends PersistentState {
+public class Economy {
 	private static Map<String, BaseItemEconomy> salePossibilites = new HashMap<>();
 	private static Map<String, ArrayList<String>> professionSales = new HashMap<>();
-	private static List<String> VILLAGER_MERCHANT_TRADES = new ArrayList<>();
+
 
 	private static Map<String, ModifierEconomy> modifierPossibilities = new HashMap<>();
 	private static Map<Identifier, OfferFinalModifer> finalizers = new HashMap<>();
 
-	//private Map<String, IItemEconomy> salePossibilites;
-
-	public static Economy fromNbt(final NbtCompound nbt) {
+	public static void fromNbt(final NbtCompound nbt) {
 		for (final Entry<String, BaseItemEconomy> element : Economy.salePossibilites.entrySet()) {
 			if (nbt.contains(element.getKey())) {
 				element.getValue().fromNbt(nbt.getCompound(element.getKey()));
@@ -36,18 +33,20 @@ public class Economy extends PersistentState {
 				element.getValue().fromNbt(nbt.getCompound(element.getKey()));
 			}
 		}
-
-		return new Economy();
 	}
 
-	@Override
-	public NbtCompound writeNbt(final NbtCompound nbt) {
-		nbt.put("items", this.itemEconomyToNbt());
-		nbt.put("modifiers", this.itemModifiersToNbt());
+	public static NbtCompound writeNbt() {
+		return Economy.writeNbt(new NbtCompound());
+	}
+
+	public static NbtCompound writeNbt(final NbtCompound nbt) {
+		nbt.put("items", Economy.itemEconomyToNbt());
+		nbt.put("modifiers", Economy.itemModifiersToNbt());
 		return nbt;
 	}
 
-	private NbtCompound itemEconomyToNbt() {
+	private static NbtCompound itemEconomyToNbt() {
+
 		final NbtCompound nbt = new NbtCompound();
 		for (final Entry<String, BaseItemEconomy> element : Economy.salePossibilites.entrySet()) {
 			if (element.getValue().hasNbt()) {
@@ -56,7 +55,8 @@ public class Economy extends PersistentState {
 		}
 		return nbt;
 	}
-	private NbtCompound itemModifiersToNbt() {
+
+	private static NbtCompound itemModifiersToNbt() {
 		final NbtCompound nbt = new NbtCompound();
 		for (final Entry<String, ModifierEconomy> element : Economy.modifierPossibilities.entrySet()) {
 			nbt.put(element.getKey(), element.getValue().toNbt());
@@ -107,21 +107,11 @@ public class Economy extends PersistentState {
 		}
 	}
 
-	public static void addVillagerItem(final String key) {
-		if (!Economy.VILLAGER_MERCHANT_TRADES.contains(key)) {
-			Economy.VILLAGER_MERCHANT_TRADES.add(key);
-		}
-	}
-
-	public static List<String> getVillagMerchantTrades() {
-		return Economy.VILLAGER_MERCHANT_TRADES;
-	}
-
-	public BaseItemEconomy getItem(final String key) {
+	public static BaseItemEconomy getItem(final String key) {
 		return Economy.salePossibilites.get(key);
 	}
 
-	public AmaziaTradeOfferList buildTrades(final IAmaziaMerchant merchant) {
+	public static AmaziaTradeOfferList buildTrades(final IAmaziaMerchant merchant) {
 		final AmaziaTradeOfferList out = new AmaziaTradeOfferList();
 		final Collection<String> items = merchant.getTradePossibilities();
 		for (final String item : items) {
@@ -137,12 +127,7 @@ public class Economy extends PersistentState {
 		return Economy.professionSales.get(profession);
 	}
 
-	@Override
-	public boolean isDirty() {
-		return true;
-	}
-
-	public void reset() {
+	public static void reset() {
 		for (final Entry<String, BaseItemEconomy> entry : Economy.salePossibilites.entrySet()) {
 			entry.getValue().reset();
 		}
