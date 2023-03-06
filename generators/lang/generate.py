@@ -59,7 +59,7 @@ def translate(orig, dest):
         break
       except Exception as e:
         sleep(0.2)
-        file_print(f"TRANSLATION FAILED {e}")
+        file_print(f"TRANSLATION FAILED {e}\n")
 
   return out
 
