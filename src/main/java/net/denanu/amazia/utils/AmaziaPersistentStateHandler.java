@@ -7,7 +7,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.PersistentState;
 
 public class AmaziaPersistentStateHandler extends PersistentState {
-
 	@Override
 	public NbtCompound writeNbt(final NbtCompound nbt) {
 		nbt.put("economy", Economy.writeNbt());

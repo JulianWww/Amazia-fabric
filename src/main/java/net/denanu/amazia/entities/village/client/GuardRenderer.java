@@ -1,6 +1,8 @@
 package net.denanu.amazia.entities.village.client;
 
 import net.denanu.amazia.entities.village.server.GuardEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -19,6 +21,7 @@ import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.ExtendedGeoEntityRenderer;
 
+@Environment(EnvType.CLIENT)
 public class GuardRenderer extends ExtendedGeoEntityRenderer<GuardEntity> {
 
 	private static final Identifier TEXTURE = new Identifier(GeckoLib.ModID,

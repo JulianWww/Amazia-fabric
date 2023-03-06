@@ -2,6 +2,7 @@ package net.denanu.amazia.compat.malilib;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.compat.malilib.NameGeneratorLocalOptionsScreen.LanguageSelectionListWidget.LanguageEntry;
+import net.denanu.amazia.config.Config;
 import net.denanu.amazia.networking.c2s.UpdateNamingSystemC2SPacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -17,6 +18,7 @@ import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
+@Environment(EnvType.CLIENT)
 public class NameGeneratorLocalOptionsScreen extends GameOptionsScreen {
 	private static final Text LANGUAGE_WARNING_TEXT = Text.literal("(").append(Text.translatable(Amazia.MOD_ID + ".options.namegenlangWarning")).append(")").formatted(Formatting.GRAY);
 	private LanguageSelectionListWidget languageSelectionList;
@@ -34,7 +36,9 @@ public class NameGeneratorLocalOptionsScreen extends GameOptionsScreen {
 		this.addDrawableChild(this.gameOptions.getForceUnicodeFont().createButton(this.gameOptions, this.width / 2 - 155, this.height - 38, 150));
 		this.addDrawableChild(new ButtonWidget(this.width / 2 - 155 + 160, this.height - 38, 150, 20, ScreenTexts.DONE, button -> {
 			if (this.languageSelectionList.getSelectedOrNull() != null) {
-				UpdateNamingSystemC2SPacket.send(this.languageSelectionList.getSelectedOrNull().getLanguageDefinition());
+				final NamingLanguageOptions lang = this.languageSelectionList.getSelectedOrNull().getLanguageDefinition();
+				UpdateNamingSystemC2SPacket.send(lang);
+				Config.Admin.NAMELANGUAGE.setOptionListValue(new NameFakerOption(lang));
 			}
 			this.client.setScreen(this.parent);
 		}));

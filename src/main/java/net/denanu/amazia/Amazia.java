@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.GUI.AmaziaScreens;
 import net.denanu.amazia.advancement.criterion.AmaziaCriterions;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.entity.AmaziaBlockEntities;
@@ -64,8 +65,6 @@ public class Amazia implements ModInitializer {
 	public static HashMap<Item, ArrayList<CraftingRecipe>> CHEF_CRAFTABLES;
 	public static HashMap<Item, ArrayList<CraftingRecipe>> GUARD_CRAFTABLES;
 
-	private static AmaziaPersistentStateHandler manager;
-
 	private static VillageManager villageManager;
 
 	@Override
@@ -85,7 +84,7 @@ public class Amazia implements ModInitializer {
 		ProfessionFactory.setup();
 		AmaziaValueModifiers.setup();
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			Amazia.manager = server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(AmaziaPersistentStateHandler::fromNbt, AmaziaPersistentStateHandler::loadDefault, Amazia.MOD_ID);
+			server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(AmaziaPersistentStateHandler::fromNbt, AmaziaPersistentStateHandler::loadDefault, Amazia.MOD_ID);
 		});
 
 		// Networking
@@ -119,6 +118,7 @@ public class Amazia implements ModInitializer {
 		// Status effects
 		AmaziaStatusEffects.setup();
 		AmaziaCriterions.setup();
+		AmaziaScreens.setup();
 	}
 
 	public static VillageManager getVillageManager() {

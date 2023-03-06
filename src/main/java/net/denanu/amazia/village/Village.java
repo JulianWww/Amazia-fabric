@@ -96,8 +96,6 @@ public class Village {
 				-400,
 				core.getPos().getZ() - Village.SIZE
 				);
-
-		this.init_time = core.getWorld().getTime();
 	}
 
 	public void setMayor(final UUID usr) {
@@ -120,6 +118,7 @@ public class Village {
 	}
 
 	public void setupVillage() {
+		Amazia.LOGGER.info("Setup Village");
 		this.origin = this.coreBlock.getPos();
 
 		this.pathingGraph = new PathingGraph((ServerWorld)this.coreBlock.getWorld(), this);
@@ -152,6 +151,8 @@ public class Village {
 				this.mayor = newMayor.getGameProfile().getId();
 			}
 		}
+
+		this.init_time = this.coreBlock.getWorld().getTime();
 	}
 
 	public void remove(final World world) {
@@ -242,10 +243,15 @@ public class Village {
 	}
 
 	private void spawnMerchant() {
-		if (this.getWorld().getTime() > this.init_time + 10000) {
+		if (this.getWorld().getTime() > this.init_time + 100) {
 			final BlockPos pos = this.pathingGraph.getRandomVillageEnterNode();
 			final AmaziaVillageMerchant merchant = AmaziaVillageMerchant.of(this.getWorld(), this, pos);
 			this.getWorld().spawnEntity(merchant);
+			//
+			//			final ServerPlayerEntity mayor = this.getMayor();
+			//			if (mayor != null) {
+			//				mayor.teleport(merchant.getX(), merchant.getY(), merchant.getZ());
+			//			}
 		}
 	}
 

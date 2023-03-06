@@ -3,7 +3,7 @@ package net.denanu.amazia.networking.c2s;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.networking.NetworkingUtils;
-import net.denanu.amazia.networking.s2c.AmaziaPathingOverlayUpdateS2CPacket;
+import net.denanu.amazia.networking.s2c.AmaziaDataSetterS2C;
 import net.denanu.amazia.networking.s2c.data.AmaziaPathingOverlayUpdateS2SPacketData;
 import net.denanu.amazia.pathing.node.BasePathingNode;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -30,7 +30,7 @@ public class AmaziaPathingOverlayRequestUpdateC2SPacket {
 			if (entity instanceof final VillageCoreBlockEntity core) {
 				final BasePathingNode node = core.getVillage().getPathingGraph().getNode(data.nodePos);
 				if (node != null) {
-					ServerPlayNetworking.send(player, AmaziaNetworking.S2C.PATHING_OVERLAY_UPDATE, AmaziaPathingOverlayUpdateS2CPacket.toBuf(node));
+					ServerPlayNetworking.send(player, AmaziaNetworking.S2C.PATHING_OVERLAY_UPDATE, AmaziaDataSetterS2C.toPathingOverlayBuf(node));
 				}
 			}
 		}

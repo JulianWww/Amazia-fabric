@@ -11,14 +11,16 @@ public class AmaziaScreens {
 	public static final Identifier MERCHANT = new Identifier(Amazia.MOD_ID, "merchant_screen");
 	public static final Identifier VILLAGER = new Identifier(Amazia.MOD_ID, "villager_screen");
 
-	public static final ScreenHandlerType<AmaziaVillagerUIScreenHandler> VILLAGER_SCREEN_HANDLER = registerAdvanced(VILLAGER, AmaziaVillagerUIScreenHandler::new);
+	public static final ScreenHandlerType<AmaziaVillagerUIScreenHandler> VILLAGER_SCREEN_HANDLER = AmaziaScreens.registerAdvanced(AmaziaScreens.VILLAGER, AmaziaVillagerUIScreenHandler::new);
 	public static final ScreenHandlerType<TradingScreenHandler> TRADING_SCREEN_HANDLER = AmaziaScreens.register(AmaziaScreens.MERCHANT, TradingScreenHandler::new);
 
 	private static <T extends ScreenHandler> ScreenHandlerType<T> register(final Identifier id, final ScreenHandlerType.Factory<T> factory) {
-		return Registry.register(Registry.SCREEN_HANDLER, id, new ScreenHandlerType<T>(factory));
+		return Registry.register(Registry.SCREEN_HANDLER, id, new ScreenHandlerType<>(factory));
 	}
-	
+
 	private static <T extends ScreenHandler> ScreenHandlerType<T> registerAdvanced(final Identifier id, final ExtendedScreenHandlerType.ExtendedFactory<T> factory) {
-		return Registry.register(Registry.SCREEN_HANDLER, id, new ExtendedScreenHandlerType<T>(factory));
+		return Registry.register(Registry.SCREEN_HANDLER, id, new ExtendedScreenHandlerType<>(factory));
 	}
+
+	public static void setup() {}
 }

@@ -120,7 +120,7 @@ public class AmaziaTestCommands {
 
 	private static int testNameGen(final CommandContext<ServerCommandSource> context) {
 		for (int i = 0; i<16; i++) {
-			context.getSource().sendMessage(Text.literal(NamingLanguageOptions.generateName(null)));
+			context.getSource().sendFeedback(Text.literal(NamingLanguageOptions.generateName(null)), true);
 		}
 		return 1;
 	}

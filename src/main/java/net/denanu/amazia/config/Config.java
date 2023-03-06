@@ -15,6 +15,7 @@ import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.compat.malilib.NameFakerOption;
 import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -38,7 +39,7 @@ public class Config implements IConfigHandler {
 	public static class Admin {
 		public static final ArrayList<IConfigBase> OPTIONS = new ArrayList<>();
 
-		public static final ConfigOptionList NAMELANGUAGE = Admin.register(new ConfigOptionList("Name generator Language", NamingLanguageOptions.ENGLISH, "The language the name generator will use to generate names for the villagers"));
+		public static final ConfigOptionList NAMELANGUAGE = Admin.register(new ConfigOptionList("Name generator Language", new NameFakerOption(NamingLanguageOptions.ENGLISH), "The language the name generator will use to generate names for the villagers"));
 
 		protected static <T extends IConfigBase> T register(final T config) {
 			Admin.OPTIONS.add(config);

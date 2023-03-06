@@ -16,4 +16,5 @@ public class DataManager {
 		return DataManager.currentTab;
 	}
 
+	public static void setup() {}
 }

@@ -14,7 +14,7 @@ public class EconomyModiferArgumentSerializer
 implements ArgumentSerializer<EconomyModifierArgumentType, net.denanu.amazia.commands.args.serializers.EconomyModiferArgumentSerializer.Properties> {
 	@Override
 	public void writePacket(final Properties properties, final PacketByteBuf packetByteBuf) {
-		packetByteBuf.writeString(properties.data);
+		packetByteBuf.writeString(properties.data == null ? "" : properties.data);
 	}
 
 	@Override

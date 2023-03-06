@@ -5,7 +5,8 @@ import net.denanu.amazia.GUI.AmaziaVillagerUIScreen;
 import net.denanu.amazia.GUI.TradingScreen;
 import net.denanu.amazia.GUI.debug.VillagePathingOverlay;
 import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
-import net.denanu.amazia.entities.AmaziaEntities;
+import net.denanu.amazia.config.DataManager;
+import net.denanu.amazia.entities.ClientEntities;
 import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
@@ -19,7 +20,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 public class AmaziaClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		AmaziaEntities.registerRenderer();
+		ClientEntities.registerRenderer();
 
 		// Networking
 		AmaziaNetworking.registerS2CPackets();
@@ -39,6 +40,7 @@ public class AmaziaClient implements ClientModInitializer {
 		ClientPlayConnectionEvents.DISCONNECT.register(VillageBorderRenderer::clear);
 		AmaziaProfessions.setup();
 		BlockHighlightingAmaziaConfig.setup();
+		DataManager.setup();
 	}
 
 }

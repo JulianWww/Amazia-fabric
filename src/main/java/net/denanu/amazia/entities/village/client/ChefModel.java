@@ -2,9 +2,12 @@ package net.denanu.amazia.entities.village.client;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.ChefEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
+@Environment(EnvType.CLIENT)
 public class ChefModel extends AnimatedGeoModel<ChefEntity> {
 	@Override
 	public Identifier getModelResource(final ChefEntity object) {

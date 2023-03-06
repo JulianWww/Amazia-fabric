@@ -940,4 +940,16 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	public BlockPos getBedLocation() {
 		return this.bedLocation;
 	}
+
+
+	// Forwarders
+	@Override
+	public float getMaxVillagerHealth() {
+		return super.getMaxHealth();
+	}
+
+	@Override
+	public Text getCustomName() {
+		return super.getCustomName();
+	}
 }

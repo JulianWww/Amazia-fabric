@@ -2,6 +2,8 @@ package net.denanu.amazia.entities.village.client;
 
 import net.denanu.amazia.entities.village.client.features.AmaziaVillagerClothingFeatureRenderer;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -21,6 +23,7 @@ import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.ExtendedGeoEntityRenderer;
 
+@Environment(EnvType.CLIENT)
 public class AmaziaRenderer<T extends AmaziaVillagerEntity & IAnimatable> extends ExtendedGeoEntityRenderer<T> {
 	public AmaziaRenderer(final EntityRendererFactory.Context ctx, final AnimatedGeoModel<T> model) {
 		super(ctx, model);

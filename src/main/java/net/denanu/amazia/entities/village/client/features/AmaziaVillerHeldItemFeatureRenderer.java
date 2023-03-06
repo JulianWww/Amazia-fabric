@@ -1,6 +1,8 @@
 package net.denanu.amazia.entities.village.client.features;
 
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
@@ -13,6 +15,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
+@Environment(EnvType.CLIENT)
 public class AmaziaVillerHeldItemFeatureRenderer<T extends AmaziaVillagerEntity & IAnimatable> extends GeoLayerRenderer<T> {
 	private final HeldItemRenderer heldItemRenderer;
 

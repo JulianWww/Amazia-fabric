@@ -81,7 +81,7 @@ public class AmaziaVillagerUIScreenHandler extends ScreenHandler {
 	}
 
 	public float getMaxHealth() {
-		return this.entity.getMaxHealth();
+		return this.entity.getMaxVillagerHealth();
 	}
 
 	public int getHunger() {

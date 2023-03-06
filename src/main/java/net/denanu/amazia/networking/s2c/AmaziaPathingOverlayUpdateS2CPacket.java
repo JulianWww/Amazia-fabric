@@ -3,9 +3,7 @@ package net.denanu.amazia.networking.s2c;
 import java.util.ArrayList;
 
 import net.denanu.amazia.GUI.debug.VillagePathingOverlay;
-import net.denanu.amazia.pathing.node.BasePathingNode;
 import net.denanu.amazia.pathing.node.ClientPathingNode;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -22,16 +20,5 @@ public class AmaziaPathingOverlayUpdateS2CPacket {
 
 		VillagePathingOverlay.addNode(node);
 		VillagePathingOverlay.addToQueue(ajacents);
-	}
-
-	public static PacketByteBuf toBuf(final BasePathingNode node) {
-		final PacketByteBuf buf = PacketByteBufs.create();
-
-		buf.writeBlockPos(node.getBlockPos());
-		buf.writeCollection(node.ajacentNodes, (buf2, pos) -> {
-			buf2.writeBlockPos(pos.getBlockPos());
-		});
-
-		return buf;
 	}
 }

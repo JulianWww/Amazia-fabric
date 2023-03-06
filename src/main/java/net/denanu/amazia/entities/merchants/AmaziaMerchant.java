@@ -12,7 +12,7 @@ import net.denanu.amazia.economy.IAmaziaMerchant;
 import net.denanu.amazia.economy.ProfessionFactory;
 import net.denanu.amazia.entities.merchants.goals.WonderAroundSameYGoal;
 import net.denanu.amazia.networking.AmaziaNetworking;
-import net.denanu.amazia.networking.s2c.AmaziaSetTradeOffersS2CPacket;
+import net.denanu.amazia.networking.s2c.AmaziaDataSetterS2C;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.EntityData;
@@ -235,6 +235,10 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 
 		offer.updateModifiers(this);
 		Economy.getItem(offer.getKey()).updatePrice(offer.getQuantity(), offer.isBuy());
-		ServerPlayNetworking.send((ServerPlayerEntity)this.customer, AmaziaNetworking.S2C.SET_TRADE_OFFERS, AmaziaSetTradeOffersS2CPacket.toBuf(this.customer.currentScreenHandler.syncId, this.getOffers()));
+		ServerPlayNetworking.send(
+				(ServerPlayerEntity)this.customer,
+				AmaziaNetworking.S2C.SET_TRADE_OFFERS,
+				AmaziaDataSetterS2C.toSetTradeOfferBuf(this.customer.currentScreenHandler.syncId, this.getOffers())
+				);
 	}
 }

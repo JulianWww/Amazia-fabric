@@ -2,6 +2,8 @@ package net.denanu.amazia.entities.village.client;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.TeacherEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -10,6 +12,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
+@Environment(EnvType.CLIENT)
 public class TeacherRenderer extends GeoEntityRenderer<TeacherEntity> {
 	public TeacherRenderer(final EntityRendererFactory.Context ctx) {
 		super(ctx, new TeacherModel());

@@ -4,16 +4,9 @@ import java.util.Locale;
 
 import com.github.javafaker.Faker;
 
-import fi.dy.masa.malilib.config.IConfigOptionListEntry;
-import fi.dy.masa.malilib.gui.GuiBase;
-import net.denanu.amazia.config.Config;
-import net.denanu.amazia.config.GuiConfigs;
 import net.denanu.amazia.mechanics.title.Titles;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.world.PersistentState;
 
-public enum NamingLanguageOptions implements IConfigOptionListEntry {
+public enum NamingLanguageOptions {
 	BULGARIAN("bg", "български"),
 	CANADIAN(Locale.CANADA, "ca", "Canadian"),
 	DANISH("da-DK", "Dansk"),
@@ -82,12 +75,10 @@ public enum NamingLanguageOptions implements IConfigOptionListEntry {
 		return this.locale;
 	}
 
-	@Override
 	public String getStringValue() {
 		return this.name;
 	}
 
-	@Override
 	public String getDisplayName() {
 		return this.display;
 	}
@@ -101,15 +92,7 @@ public enum NamingLanguageOptions implements IConfigOptionListEntry {
 		return NamingLanguageOptions.ENGLISH;
 	}
 
-	@Override
-	public IConfigOptionListEntry cycle(final boolean forward) {
-		final MinecraftClient client = MinecraftClient.getInstance();
-		GuiBase.openGui(new NameGeneratorLocalOptionsScreen(GuiConfigs.getInstance(), client.options, this));
-		return this;
-	}
-
-	@Override
-	public IConfigOptionListEntry fromString(final String value) {
+	public NamingLanguageOptions fromString(final String value) {
 		return NamingLanguageOptions.of(value);
 	}
 
@@ -127,37 +110,7 @@ public enum NamingLanguageOptions implements IConfigOptionListEntry {
 	}
 
 	public static void update(final NamingLanguageOptions selected) {
-		Config.Admin.NAMELANGUAGE.setOptionListValue(selected);
 		selected.updateNameGeneratorService();
 		NamingLanguageOptions.NAMINGLANGUAGE = selected;
-		Loader.update();
-	}
-
-	public static class Loader extends PersistentState {
-		private static Loader INSTANCE;
-
-		public static void update() {
-			if (Loader.INSTANCE != null) {
-				Loader.INSTANCE.markDirty();
-			}
-		}
-
-		@Override
-		public NbtCompound writeNbt(final NbtCompound nbt) {
-			nbt.putInt("NameGenLang", NamingLanguageOptions.NAMINGLANGUAGE.ordinal());
-			return nbt;
-		}
-
-		public static Loader loadDefault() {
-			NamingLanguageOptions.update(NamingLanguageOptions.ENGLISH);
-			return Loader.INSTANCE = new Loader();
-		}
-
-		public static Loader fromNbt(final NbtCompound nbt) {
-			NamingLanguageOptions.update(
-					NamingLanguageOptions.values()[nbt.getInt("NameGenLang")]
-					);
-			return Loader.INSTANCE = new Loader();
-		}
 	}
 }

@@ -35,7 +35,7 @@ dependencies {
 	
 	modCompileOnly "com.terraformersmc:modmenu:${project.mod_menu_version}"
 	
-	implementation group: 'org.javatuples', name: 'javatuples', version: '1.2'
+	// implementation group: 'org.javatuples', name: 'javatuples', version: '1.2'
 
 	modImplementation "net.denanu.BlockHighlighting:BlockHighlighting-${project.minecraft_version}:${BlockHighlighting_version}"
 	modImplementation "net.denanu.DynamicSoundManager:DynamicSoundManager-${project.minecraft_version}:${DynamicSoundManagerVersion}"
@@ -52,6 +52,8 @@ dependencies {
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cardinalComponentsVersion}"
     
     implementation 'com.github.javafaker:javafaker:1.0.2'
+    include 'com.github.javafaker:javafaker:1.0.2'
+    include "org.yaml:snakeyaml:1.16"
 }
 
 processResources {

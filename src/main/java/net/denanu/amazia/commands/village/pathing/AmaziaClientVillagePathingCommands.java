@@ -6,7 +6,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 
 import net.denanu.amazia.networking.AmaziaNetworking;
-import net.denanu.amazia.networking.s2c.AmaziaSetupVillageReneringS2CPacker;
+import net.denanu.amazia.networking.s2c.AmaziaDataSetterS2C;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.BlockPosArgumentType;
@@ -41,7 +41,7 @@ public class AmaziaClientVillagePathingCommands {
 			else {
 				context.getSource().sendFeedback(Text.translatable("messages.amazia.commands.disabled_pathing_render"), false);
 			}
-			ServerPlayNetworking.send(context.getSource().getPlayer(), AmaziaNetworking.S2C.SETUP_PATHINGOVERLAY, AmaziaSetupVillageReneringS2CPacker.toBuf(pos, val));
+			ServerPlayNetworking.send(context.getSource().getPlayer(), AmaziaNetworking.S2C.SETUP_PATHINGOVERLAY, AmaziaDataSetterS2C.toSetupBasePathingRendereingBuf(pos, val));
 		}
 		catch (final Exception e){
 			return -1;

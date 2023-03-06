@@ -4,14 +4,12 @@
   "package": "net.denanu.amazia.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "AbstractInventoryScreenMixin",
     "AdvancementProviderAccessor",
     "ArrowEntityMixin",
     "BedBlockMixin",
     "BlastFurnaceBlockEntityMixin",
     "EnchantingTableBlockEntityMixin",
     "EntityMixin",
-    "MinecraftClientWorldAccessor",
     "MinecraftServerAccessor",
     "MinecraftServerMixin",
     "MinecraftServerWorldAccessor",
@@ -39,7 +37,9 @@
   ],
   "client": [
   	"client.WorldRendererAccessor",
-  	"client.WorldRendererMixin"
+  	"client.WorldRendererMixin",
+  	"AbstractInventoryScreenMixin",
+  	"MinecraftClientWorldAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

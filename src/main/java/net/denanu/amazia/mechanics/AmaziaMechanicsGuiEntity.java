@@ -17,7 +17,7 @@ public interface AmaziaMechanicsGuiEntity extends NamedScreenHandlerFactory, IAm
 	@Override
 	float getIntelligence();
 
-	float getMaxHealth();
+	float getMaxVillagerHealth();
 	float getMaxHunger();
 
 	Identifier getProfession();

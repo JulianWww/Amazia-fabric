@@ -2,9 +2,12 @@ package net.denanu.amazia.entities.village.client;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.NitwitEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
+@Environment(EnvType.CLIENT)
 public class NitwitModel extends AnimatedGeoModel<NitwitEntity> {
 	@Override
 	public Identifier getModelResource(final NitwitEntity object) {

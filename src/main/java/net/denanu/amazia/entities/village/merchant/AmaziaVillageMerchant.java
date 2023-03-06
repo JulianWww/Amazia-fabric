@@ -19,11 +19,14 @@ import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.scedule.BaseVillagerScedule;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class AmaziaVillageMerchant extends AmaziaMerchant implements PathingAmaziaVillagerEntity, AmaziaPathfinderEntity {
@@ -158,6 +161,28 @@ public class AmaziaVillageMerchant extends AmaziaMerchant implements PathingAmaz
 	@Override
 	public boolean isDeposeting() {
 		return false;
+	}
+
+	// ?????????? WHY ?????????? (Errors if not there)
+
+	@Override
+	public EntityNavigation getNavigation() {
+		return super.getNavigation();
+	}
+
+	@Override
+	public Vec3d getPos() {
+		return super.getPos();
+	}
+
+	@Override
+	public World getWorld() {
+		return super.getWorld();
+	}
+
+	@Override
+	public Random getRandom() {
+		return super.getRandom();
 	}
 
 	@Override
