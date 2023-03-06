@@ -220,6 +220,7 @@ public class Village {
 	public boolean isValid() {
 		return this.valid;
 	}
+
 	public void destroy() {
 		this.valid = false;
 	}
@@ -227,6 +228,7 @@ public class Village {
 	public void tick(final ServerWorld world) {
 		this.update();
 	}
+
 	private void update() {
 		this.pathingGraph.update();
 
