@@ -55,7 +55,7 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
-	private String profession = "";
+	protected String profession = "";
 	@Nullable
 	private PlayerEntity customer;
 	@Nullable

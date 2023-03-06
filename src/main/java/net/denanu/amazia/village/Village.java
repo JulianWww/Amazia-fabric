@@ -37,7 +37,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class Village {
-	private static int SIZE = 50;
+	private static int SIZE = 120;
 	private BlockPos origin;
 	private boolean valid;
 
@@ -53,6 +53,8 @@ public class Village {
 	private final PathingNoHeightSceduler blacksmithing;
 	private final GuardSceduler guarding;
 	private final PathingNoHeightSceduler library;
+
+	private long init_time;
 
 	private UUID mayor;
 
@@ -94,6 +96,8 @@ public class Village {
 				-400,
 				core.getPos().getZ() - Village.SIZE
 				);
+
+		this.init_time = core.getWorld().getTime();
 	}
 
 	public void setMayor(final UUID usr) {
@@ -185,6 +189,7 @@ public class Village {
 		nbt.put("desk", 			this.desks.			writeNbt());
 		nbt.put("chair", 			this.chair.			writeNbt());
 		nbt.put("bed",				this.beds.			writeNbt());
+		nbt.putLong("init_time", 	this.init_time);
 
 		if (this.mayor != null) {
 			nbt.putUuid("mayor",	this.mayor);
@@ -208,12 +213,14 @@ public class Village {
 		this.desks.			readNbt(nbt.getCompound("desk"));
 		this.chair.			readNbt(nbt.getCompound("chair"));
 		this.beds.			readNbt(nbt.getCompound("bed"));
-		this.mayor				  = nbt.contains("mayor") ? nbt.getUuid("mayor") : null;
+		this.mayor			= nbt.contains("mayor") ? nbt.getUuid("mayor") : null;
+		this.init_time		= nbt.contains("init_time") ? nbt.getLong("init_time") : this.getWorld().getTime();
 	}
 
 	public boolean isValid() {
 		return this.valid;
 	}
+
 	public void destroy() {
 		this.valid = false;
 	}
@@ -221,6 +228,7 @@ public class Village {
 	public void tick(final ServerWorld world) {
 		this.update();
 	}
+
 	private void update() {
 		this.pathingGraph.update();
 
@@ -234,9 +242,11 @@ public class Village {
 	}
 
 	private void spawnMerchant() {
-		final BlockPos pos = this.pathingGraph.getRandomVillageEnterNode();
-		final AmaziaVillageMerchant merchant = AmaziaVillageMerchant.of(this.getWorld(), this, pos);
-		this.getWorld().spawnEntity(merchant);
+		if (this.getWorld().getTime() > this.init_time + 10000) {
+			final BlockPos pos = this.pathingGraph.getRandomVillageEnterNode();
+			final AmaziaVillageMerchant merchant = AmaziaVillageMerchant.of(this.getWorld(), this, pos);
+			this.getWorld().spawnEntity(merchant);
+		}
 	}
 
 	private void discover(final ServerWorld world, final BlockPos blockPos) {

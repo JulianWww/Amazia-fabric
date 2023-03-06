@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.economy.AmaziaTradeOffer;
+import net.denanu.amazia.economy.Economy;
 import net.denanu.amazia.economy.IAmaziaMerchant;
 import net.denanu.amazia.economy.offerModifiers.OfferModifier;
 import net.denanu.amazia.economy.offerModifiers.finalizers.OfferFinalModifer;
@@ -16,12 +17,12 @@ public abstract class BaseItemEconomy {
 	protected final Item itm;
 	protected final ArrayList<OfferModifier> modifiers;
 	private int count;
-	private ArrayList<OfferFinalModifer> finalizers;
-	
+	private final ArrayList<OfferFinalModifer> finalizers;
+
 	public BaseItemEconomy(final Item itm) {
 		this.itm = itm;
-		this.modifiers = new ArrayList<OfferModifier>();
-		this.finalizers = new ArrayList<OfferFinalModifer>();
+		this.modifiers = new ArrayList<>();
+		this.finalizers = new ArrayList<>();
 		this.count = 1;
 	}
 
@@ -40,22 +41,22 @@ public abstract class BaseItemEconomy {
 	public abstract void setCurrentValue(float float1);
 
 	public abstract void updatePrice(float quantity, boolean buy);
-	
+
 	protected abstract ItemStack getStack();
 
-	public String getName() { return this.itm.getTranslationKey(); };
+	public String getName() { return this.itm.getTranslationKey(); }
 
-	public BaseItemEconomy modify(OfferModifier mod) {
+	public BaseItemEconomy modify(final OfferModifier mod) {
 		this.modifiers.add(mod);
 		return this;
 	}
-	
-	public BaseItemEconomy finalize(OfferFinalModifer mod) {
+
+	public BaseItemEconomy finalize(final OfferFinalModifer mod) {
 		this.finalizers.add(mod);
 		return this;
 	}
-	
-	public AmaziaTradeOffer build(IAmaziaMerchant merchant) {
+
+	public AmaziaTradeOffer build(final IAmaziaMerchant merchant) {
 		this.finalizers.trimToSize();
 		this.modifiers.trimToSize();
 		return new AmaziaTradeOffer(this.getStack(), this.getCurrentPrice(), JJUtils.rand.nextBoolean()).modify(this.modifiers).setFinalizers(this.finalizers).build();
@@ -65,12 +66,17 @@ public abstract class BaseItemEconomy {
 		return true;
 	}
 
-	public BaseItemEconomy count(int i) {
+	public BaseItemEconomy count(final int i) {
 		this.count = i;
 		return this;
 	}
-	
+
 	public int getCount() {
 		return this.count;
+	}
+
+	public BaseItemEconomy addToVillage() {
+		Economy.addVillagerItem(this.getName());
+		return this;
 	}
 }

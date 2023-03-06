@@ -18,6 +18,7 @@ public class Economy {
 	private static Map<String, BaseItemEconomy> salePossibilites = new HashMap<>();
 	private static Map<String, ArrayList<String>> professionSales = new HashMap<>();
 
+
 	private static Map<String, ModifierEconomy> modifierPossibilities = new HashMap<>();
 	private static Map<Identifier, OfferFinalModifer> finalizers = new HashMap<>();
 
@@ -45,6 +46,7 @@ public class Economy {
 	}
 
 	private static NbtCompound itemEconomyToNbt() {
+
 		final NbtCompound nbt = new NbtCompound();
 		for (final Entry<String, BaseItemEconomy> element : Economy.salePossibilites.entrySet()) {
 			if (element.getValue().hasNbt()) {
@@ -53,6 +55,7 @@ public class Economy {
 		}
 		return nbt;
 	}
+
 	private static NbtCompound itemModifiersToNbt() {
 		final NbtCompound nbt = new NbtCompound();
 		for (final Entry<String, ModifierEconomy> element : Economy.modifierPossibilities.entrySet()) {

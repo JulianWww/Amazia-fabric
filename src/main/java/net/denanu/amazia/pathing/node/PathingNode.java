@@ -14,10 +14,12 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Pair;
 import net.minecraft.util.annotation.Debug;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Direction.Axis;
 
 public class PathingNode implements PathingPathInterface {
 	private PathingCell pos;
-	private int lvl;
+	private final int lvl;
 	protected PathingNode parent, child;
 	protected boolean queued;
 	protected boolean destroyed;
@@ -34,7 +36,6 @@ public class PathingNode implements PathingPathInterface {
 		this.cluster = cluster;
 		this.init(pos, graph);
 		PathingNode.buildParents(pos, graph, 1, PathingUtils.getHeigestLevel(pos), this);
-		return;
 	}
 	public PathingNode(final PathingCell pos, final PathingGraph graph, final int lvl, final PathingCluster cluster, final PathingCluster childCluster) {
 		this.lvl = lvl;
@@ -47,8 +48,8 @@ public class PathingNode implements PathingPathInterface {
 		this.pos = pos;
 		this.parent = null;
 		this.child = null;
-		this.edges = new HashSet<PathingEdge>();
-		this.baseEdges = new HashSet<PathingEdge>();
+		this.edges = new HashSet<>();
+		this.baseEdges = new HashSet<>();
 		this.destroyed = false;
 	}
 
@@ -196,8 +197,7 @@ public class PathingNode implements PathingPathInterface {
 		//this.debugUpdate(world);
 		if (!this.destroyed) {
 			this.dequeue();
-			final int out = this.updateConnections(world, graph);
-			return out;
+			return this.updateConnections(world, graph);
 		}
 		return 1;
 	}
@@ -248,8 +248,7 @@ public class PathingNode implements PathingPathInterface {
 	public int hashCode() {
 		int result = this.getBlockPos().getX() % 1024;
 		result = result << 8 + this.getBlockPos().getY() % 1024;
-		result = result << 8 + this.getBlockPos().getZ() % 1024;
-		return result;
+		return result << 8 + this.getBlockPos().getZ() % 1024;
 	}
 
 	@Override
@@ -296,7 +295,7 @@ public class PathingNode implements PathingPathInterface {
 		for (final PathingEdge edge : this.edges) {
 			if (edge.to(this).lvllessEquals(next)) {
 				return true;
-			};
+			}
 		}
 		return false;
 	}
@@ -304,5 +303,29 @@ public class PathingNode implements PathingPathInterface {
 	@Debug
 	public void debugPlace(final ServerWorld world) {
 		world.setBlockState(new BlockPos(this.pos.getX(), -64, this.pos.getZ()), Blocks.STONE.getDefaultState());
+	}
+
+	public int getX() {
+		return this.pos.getX();
+	}
+
+	public int getY() {
+		return this.pos.getY();
+	}
+
+	public int getZ() {
+		return this.pos.getZ();
+	}
+
+	public int getAxisPosition(final Axis ax) {
+		return switch(ax) {
+		case X -> this.getX();
+		case Y -> this.getY();
+		case Z -> this.getZ();
+		};
+	}
+
+	public PathingNode getByDirection(final Direction dir) {
+		return null;
 	}
 }
