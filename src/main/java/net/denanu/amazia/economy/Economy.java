@@ -18,6 +18,7 @@ public class Economy {
 	private static Map<String, BaseItemEconomy> salePossibilites = new HashMap<>();
 	private static Map<String, ArrayList<String>> professionSales = new HashMap<>();
 
+	private static List<String> VILLAGER_MERCHANT_TRADES = new ArrayList<>();
 
 	private static Map<String, ModifierEconomy> modifierPossibilities = new HashMap<>();
 	private static Map<Identifier, OfferFinalModifer> finalizers = new HashMap<>();
@@ -121,6 +122,16 @@ public class Economy {
 			}
 		}
 		return out;
+	}
+
+	public static void addVillagerItem(final String key) {
+		if (!Economy.VILLAGER_MERCHANT_TRADES.contains(key)) {
+			Economy.VILLAGER_MERCHANT_TRADES.add(key);
+		}
+	}
+
+	public static List<String> getVillagMerchantTrades() {
+		return Economy.VILLAGER_MERCHANT_TRADES;
 	}
 
 	public static List<String> getTrades(final int tries, final String profession) {
