@@ -15,6 +15,7 @@ import net.denanu.amazia.entities.village.server.goal.druid.RegeneratMineGoToSub
 import net.denanu.amazia.entities.village.server.goal.druid.RegenerateMineSubGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
+import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.denanu.amazia.village.structures.MineStructure;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -34,8 +35,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class DruidEntity extends AmaziaVillagerEntity implements IAnimatable {
-	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
-	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of();
+	public static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of();
+	public static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of();
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 

@@ -16,6 +16,8 @@ import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.mechanics.leveling.AmaziaXpGainMap;
+import net.denanu.amazia.particles.AmaziaParticles;
+import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -46,10 +48,21 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class FarmerEntity extends AmaziaVillagerEntity implements IAnimatable {
-	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.WOODEN_HOE, Items.STONE_HOE, Items.IRON_HOE, Items.GOLDEN_HOE, Items.DIAMOND_HOE, Items.NETHERITE_HOE, Items.AIR);
+	public static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of(
+			VillageItemDataPropvider.of(Items.WOODEN_HOE, AmaziaParticles.HOE),
+			VillageItemDataPropvider.of(Items.STONE_HOE, AmaziaParticles.HOE),
+			VillageItemDataPropvider.of(Items.IRON_HOE, AmaziaParticles.HOE),
+			VillageItemDataPropvider.of(Items.GOLDEN_HOE,AmaziaParticles.HOE),
+			VillageItemDataPropvider.of(Items.DIAMOND_HOE, AmaziaParticles.HOE),
+			VillageItemDataPropvider.of(Items.NETHERITE_HOE, AmaziaParticles.HOE),
+			VillageItemDataPropvider.of(Items.AIR, AmaziaParticles.HOE)
+			);
 	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_HOE, Items.STICK);
-	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.CARROT, 16, Items.POTATO, 16,
-			Items.WHEAT_SEEDS, 16, Items.BEETROOT_SEEDS, 16);
+	public static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of(
+			VillageItemDataPropvider.of(Items.CARROT, AmaziaParticles.CARROT), 16,
+			VillageItemDataPropvider.of(Items.POTATO, AmaziaParticles.POTATO), 16,
+			VillageItemDataPropvider.of(Items.WHEAT_SEEDS, AmaziaParticles.WHEAT_SEEDS), 16,
+			VillageItemDataPropvider.of(Items.BEETROOT_SEEDS, AmaziaParticles.BEETROOT_SEEDS), 16);
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 

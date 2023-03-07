@@ -13,6 +13,8 @@ import net.denanu.amazia.entities.village.server.goal.enchanting.EnchantGoal;
 import net.denanu.amazia.entities.village.server.goal.enchanting.GoToEnchantingTable;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
+import net.denanu.amazia.particles.AmaziaParticles;
+import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.entity.EntityType;
@@ -36,8 +38,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class EnchanterEntity extends AmaziaVillagerEntity implements IAnimatable, VoidToVoidCallback {
-	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
-	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.LAPIS_LAZULI, 64);
+	public static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of();
+	public static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of(VillageItemDataPropvider.of(Items.LAPIS_LAZULI, AmaziaParticles.LAPIS), 64);
 	private final AnimationFactory factory = new AnimationFactory(this);
 	private Optional<Integer> enchantableItem;
 	private BlockPos targetPos;

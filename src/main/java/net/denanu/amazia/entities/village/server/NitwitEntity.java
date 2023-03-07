@@ -8,11 +8,11 @@ import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.entities.village.server.goal.nitwit.NitwitRandomWanderAroundGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
+import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -28,8 +28,8 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 // Also doubles as the child
 
 public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
-	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.AIR);
-	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of();
+	public static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of();
+	public static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of();
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 

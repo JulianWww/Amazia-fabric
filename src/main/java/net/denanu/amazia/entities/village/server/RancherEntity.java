@@ -15,6 +15,8 @@ import net.denanu.amazia.entities.village.server.goal.rancher.FeedAnimalGoal;
 import net.denanu.amazia.entities.village.server.goal.rancher.FetchAnimal;
 import net.denanu.amazia.entities.village.server.goal.rancher.LeashAnimal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
+import net.denanu.amazia.particles.AmaziaParticles;
+import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -36,8 +38,15 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
-	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.SHEARS, Items.AIR);
-	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.WHEAT, 32, Items.CARROT, 32, Items.POTATO, 32, Items.BEETROOT, 32, Items.WHEAT_SEEDS, 32);
+	public static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of(
+			VillageItemDataPropvider.of(Items.SHEARS, AmaziaParticles.SHEARS),
+			VillageItemDataPropvider.of(Items.AIR, null));
+	public static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of(
+			VillageItemDataPropvider.of(Items.WHEAT, AmaziaParticles.WHEAT), 32,
+			VillageItemDataPropvider.of(Items.CARROT, AmaziaParticles.CARROT), 32,
+			VillageItemDataPropvider.of(Items.POTATO, AmaziaParticles.POTATO), 32,
+			VillageItemDataPropvider.of(Items.BEETROOT, AmaziaParticles.BEETROOT), 32,
+			VillageItemDataPropvider.of(Items.WHEAT_SEEDS, AmaziaParticles.WHEAT_SEEDS), 32);
 	public static final ImmutableSet<Item> CRAFTABLE_ITEMS = ImmutableSet.of();
 
 	private final AnimationFactory factory = new AnimationFactory(this);

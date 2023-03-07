@@ -18,6 +18,8 @@ import net.denanu.amazia.entities.village.server.goal.mineing.LightUpMine;
 import net.denanu.amazia.entities.village.server.goal.mineing.MoveToEndOfMine;
 import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
+import net.denanu.amazia.particles.AmaziaParticles;
+import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.denanu.amazia.utils.nbt.NbtUtils;
 import net.denanu.amazia.village.structures.MineStructure;
 import net.minecraft.block.Block;
@@ -49,10 +51,15 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable {
-	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
+	public static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of();
 	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_PICKAXE, Items.TORCH, Items.STICK);
 	public static final ImmutableSet<Item> MINE_REQUIRED = ImmutableSet.of();
-	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COBBLESTONE, 32, Items.TORCH, 32, Items.STICK, 32, Items.COAL, 32);
+	public static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of(
+			VillageItemDataPropvider.of(Items.COBBLESTONE, null), 32,
+			VillageItemDataPropvider.of(Items.TORCH, AmaziaParticles.TORCH), 32,
+			VillageItemDataPropvider.of(Items.STICK, AmaziaParticles.STICK), 32,
+			VillageItemDataPropvider.of(Items.COAL, AmaziaParticles.COAL), 32
+			);
 	public static final ImmutableMap<Item, Integer> MAX_PICKUPS = ImmutableMap.of(Items.COBBLESTONE, 64);
 	private static final Vec3i ITEM_PICK_UP_RANGE_EXPANDER_WHILE_MINEING = new Vec3i(5, 5, 5);
 
