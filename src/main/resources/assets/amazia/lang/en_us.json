@@ -607,6 +607,7 @@
     "amazia.options.namegenlangWarning": "Name Generation may not be 100% accurate",
     "amazia.rancher": "Rancher",
     "amazia.teacher": "Teacher",
+    "amazia.village.merchant.nopath": "Merchant%s was unable to find a path to your village",
     "amazia:attribute.villager.max_hunger": "Max Hunger",
     "amazia:village-enemies-glow": "Village Enemies Glow",
     "block.amazia.acacia_desk": "Acacia Desk",
@@ -685,6 +686,5 @@
     "profession.amazia.mason": "Mason",
     "profession.amazia.shepherd": "Shepherd",
     "profession.amazia.toolsmith": "Toolsmith",
-    "profession.amazia.weaponsmith": "Weaponsmith",
-    "amazia.village.merchant.nopath": "Merchant%s was unable to find a path to your village"
+    "profession.amazia.weaponsmith": "Weaponsmith"
 }
