@@ -68,8 +68,8 @@ def generateJavaClientRegister(particles):
 
 
 
-def getItem(source, item, to=downloadFolder):
-  download(f"{source}{item}.png", out=to + item + ".png")
+def getItem(source, item, key, to=downloadFolder):
+  download(f"{source}{item}.png", out=to + key + ".png")
 
 def generateConfigFile(particle):
   with open(particle_dir + particle + ".json", "w") as file:
@@ -84,12 +84,12 @@ def generateConfigFile(particle):
       indent="\t"
     )
 
-def generateTexture(data):
+def generateTexture(data, key):
   if "item" in data:
-    getItem(item_path, data["item"], texturePath)
+    getItem(item_path, data["item"], key, texturePath)
   
   if "block" in data:
-    getItem(block_path, data["block"], texturePath)
+    getItem(block_path, data["block"], key, texturePath)
 
 with open("particles.json", "r") as file:
   particles = load(file)
@@ -101,7 +101,7 @@ with open("particles.json", "w") as file:
 
 for particle, data in particles.items():
   generateConfigFile(particle)
-  generateTexture(data)
+  generateTexture(data, particle)
 
 generateJavaRegister(particles.keys())
 generateJavaClientRegister(particles.keys())
