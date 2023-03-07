@@ -13,8 +13,8 @@ public class AmaziaClientParticles {
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.CARROT, SuspendParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.COAL, SuspendParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.HOE, SuspendParticle.Factory::new);
-		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.LAPIS, SuspendParticle.Factory::new);
-		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.PICK_AXE, SuspendParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.LAPIS_LAZULI, SuspendParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.PICKAXE, SuspendParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.POTATO, SuspendParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.SAPLING, SuspendParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.SWORD, SuspendParticle.Factory::new);

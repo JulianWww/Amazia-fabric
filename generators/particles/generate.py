@@ -63,7 +63,25 @@ def generateJavaClientRegister(particles):
   gen = [f"""ParticleFactoryRegistry.getInstance().register(AmaziaParticles.{particle.upper()}, SuspendParticle.Factory::new);""" for particle in particles]
   putSegments(gen, filename)
   
+def defGenerateItemParticleMap(particles):
+  filename = javaPath + "AmaziaItemParticleMap.java"
 
+  gen = []
+  for key, data in particles.items():
+    items = [key]
+    if "items" in data:
+      items = data["items"]
+    elif "type" in data:
+      group = data["type"]
+      if group == "tool":
+        items = [f"{type}_{key}" for type in ["wooden", "stone", "iron", "golden", "diamond", "netherite"]]
+      
+      elif group == "tree":
+        items = [f"{type}_{key}" for type in ["oak", "spruce", "birch", "jungle", "acacia", "dark_oak"]]
+    
+    gen.extend([f"""AmaziaItemParticleMap.itemParticleMap.put(Items.{item.upper()}, AmaziaParticles.{key.upper()});""" for item in items])
+
+  putSegments(gen, filename)
 
 
 
@@ -105,3 +123,4 @@ for particle, data in particles.items():
 
 generateJavaRegister(particles.keys())
 generateJavaClientRegister(particles.keys())
+defGenerateItemParticleMap(particles)

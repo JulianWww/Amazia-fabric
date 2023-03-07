@@ -14,8 +14,8 @@ public class AmaziaParticles {
 	public static final DefaultParticleType CARROT = AmaziaParticles.register(FabricParticleTypes.simple(), "carrot");
 	public static final DefaultParticleType COAL = AmaziaParticles.register(FabricParticleTypes.simple(), "coal");
 	public static final DefaultParticleType HOE = AmaziaParticles.register(FabricParticleTypes.simple(), "hoe");
-	public static final DefaultParticleType LAPIS = AmaziaParticles.register(FabricParticleTypes.simple(), "lapis");
-	public static final DefaultParticleType PICK_AXE = AmaziaParticles.register(FabricParticleTypes.simple(), "pick_axe");
+	public static final DefaultParticleType LAPIS_LAZULI = AmaziaParticles.register(FabricParticleTypes.simple(), "lapis_lazuli");
+	public static final DefaultParticleType PICKAXE = AmaziaParticles.register(FabricParticleTypes.simple(), "pickaxe");
 	public static final DefaultParticleType POTATO = AmaziaParticles.register(FabricParticleTypes.simple(), "potato");
 	public static final DefaultParticleType SAPLING = AmaziaParticles.register(FabricParticleTypes.simple(), "sapling");
 	public static final DefaultParticleType SWORD = AmaziaParticles.register(FabricParticleTypes.simple(), "sword");
@@ -30,5 +30,7 @@ public class AmaziaParticles {
 		return type;
 	}
 
-	public static void setup() {}
+	public static void setup() {
+		AmaziaItemParticleMap.setup();
+	}
 }

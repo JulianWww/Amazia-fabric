@@ -45,6 +45,7 @@ import net.denanu.amazia.mechanics.intelligence.IAmaziaIntelligenceEntity;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.mechanics.leveling.ProfessionLevelManager;
 import net.denanu.amazia.mechanics.title.Titles;
+import net.denanu.amazia.particles.AmaziaItemParticleMap;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.utils.crafting.CraftingUtils;
 import net.denanu.amazia.village.events.EventData;
@@ -84,6 +85,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -490,7 +492,16 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 			if (canCraft) {
 				this.wantsToCraft = recipy;
 				this.requestedItems = ingredients;
+				return;
 			}
+		}
+		this.failCraft(itm);
+	}
+
+	public void failCraft(final Item item) {
+		final DefaultParticleType particle = AmaziaItemParticleMap.get(item);
+		if (particle != null) {
+			((ServerWorld)this.world).spawnParticles(particle, this.getX(), this.getY() + 2, this.getZ(), 1, 0, 0, 0, 0);
 		}
 	}
 
