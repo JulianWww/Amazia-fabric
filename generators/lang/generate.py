@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
 
   for idx, args in enumerate(langs.items()):
-    file_print(idx, end=" ")
+    file_print(f"{idx} / {len(langs)} ", end="")
     makeTranslation(*args)
 
   print(langTimeTable)
