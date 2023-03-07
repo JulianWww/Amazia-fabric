@@ -15,8 +15,6 @@ import net.denanu.amazia.entities.village.server.goal.blacksmithing.PutItemsInFu
 import net.denanu.amazia.entities.village.server.goal.utils.CraftAtCraftingLocationGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
-import net.denanu.amazia.particles.AmaziaParticles;
-import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -39,8 +37,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class BlacksmithEntity extends AmaziaSmelterVillagerEntity implements IAnimatable {
-	public static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of();
-	public static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of(VillageItemDataPropvider.of(Items.COAL, AmaziaParticles.COAL), 64);
+	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
+	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COAL, 64);
 
 	public static boolean isCraftable(final ArmorItem armor) {
 		return armor.getMaterial() != ArmorMaterials.NETHERITE && armor.getMaterial() != ArmorMaterials.CHAIN && armor != Items.TURTLE_HELMET;
@@ -71,7 +69,7 @@ public class BlacksmithEntity extends AmaziaSmelterVillagerEntity implements IAn
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<BlacksmithEntity>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -83,12 +81,12 @@ public class BlacksmithEntity extends AmaziaSmelterVillagerEntity implements IAn
 
 	@Override
 	protected void initGoals() {
-		this.goalSelector.add(50, new SequenceGoal<>(this, ImmutableList.of(
-				new GoToBlastFurnaceGoal<>(this, 50),
-				new PutItemsInFurnaceGoal<>(this, 50)
+		this.goalSelector.add(50, new SequenceGoal<BlacksmithEntity>(this, ImmutableList.of(
+				new GoToBlastFurnaceGoal<BlacksmithEntity>(this, 50),
+				new PutItemsInFurnaceGoal<BlacksmithEntity>(this, 50)
 				)));
 
-		this.goalSelector.add(51, new SequenceGoal<>(this, ImmutableList.of(
+		this.goalSelector.add(51, new SequenceGoal<BlacksmithEntity>(this, ImmutableList.of(
 				new GoToAnvilGoal(this, 51),
 				new CraftAtCraftingLocationGoal(this, 51, false)
 				)));

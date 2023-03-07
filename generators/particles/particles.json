@@ -29,12 +29,6 @@
 	"sapling": {
 		"block": "oak_sapling"
 	},
-	"shears": {
-		"item": "shears"
-	},
-	"stick": {
-		"item": "stick"
-	},
 	"sword": {
 		"item": "iron_sword"
 	},

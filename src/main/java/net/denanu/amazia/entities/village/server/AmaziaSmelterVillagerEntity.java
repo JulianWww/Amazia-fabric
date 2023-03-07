@@ -8,8 +8,6 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-import net.denanu.amazia.particles.AmaziaParticles;
-import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
@@ -21,10 +19,8 @@ import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
 public abstract class AmaziaSmelterVillagerEntity extends AmaziaVillagerEntity {
-	public static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of();
-	public static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of(
-			VillageItemDataPropvider.of(Items.COAL, AmaziaParticles.COAL)
-			, 64);
+	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
+	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COAL, 64);
 
 	private Optional<Integer> blastingItem;
 	private int amountOfCoal;

@@ -11,8 +11,6 @@ import net.denanu.amazia.entities.village.server.goal.lumber.GoToLumberLocationG
 import net.denanu.amazia.entities.village.server.goal.lumber.HarvestTreeGoal;
 import net.denanu.amazia.entities.village.server.goal.lumber.PlantSaplingGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
-import net.denanu.amazia.particles.AmaziaParticles;
-import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.denanu.amazia.village.AmaziaData;
 import net.denanu.amazia.village.sceduling.utils.LumberPathingData;
 import net.minecraft.entity.EntityType;
@@ -35,23 +33,9 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatable {
-	public static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of(
-			VillageItemDataPropvider.of(Items.WOODEN_AXE, AmaziaParticles.AXE),
-			VillageItemDataPropvider.of(Items.STONE_AXE, AmaziaParticles.AXE),
-			VillageItemDataPropvider.of(Items.IRON_AXE, AmaziaParticles.AXE),
-			VillageItemDataPropvider.of(Items.GOLDEN_AXE, AmaziaParticles.AXE),
-			VillageItemDataPropvider.of(Items.DIAMOND_AXE, AmaziaParticles.AXE),
-			VillageItemDataPropvider.of(Items.NETHERITE_AXE, AmaziaParticles.AXE)
-			);
+	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of(Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, Items.NETHERITE_AXE);
 	public static final ImmutableSet<Item> CRAFTABLES = ImmutableSet.of(Items.WOODEN_AXE, Items.STICK);
-	public static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of(
-			VillageItemDataPropvider.of(Items.ACACIA_SAPLING, AmaziaParticles.SAPLING), 64,
-			VillageItemDataPropvider.of(Items.BIRCH_SAPLING, AmaziaParticles.SAPLING), 64,
-			VillageItemDataPropvider.of(Items.DARK_OAK_SAPLING, AmaziaParticles.SAPLING), 64,
-			VillageItemDataPropvider.of(Items.JUNGLE_SAPLING, AmaziaParticles.SAPLING), 64,
-			VillageItemDataPropvider.of(Items.OAK_SAPLING, AmaziaParticles.SAPLING), 64,
-			VillageItemDataPropvider.of(Items.SPRUCE_SAPLING, AmaziaParticles.SAPLING), 64
-			);
+	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.ACACIA_SAPLING, 64, Items.BIRCH_SAPLING, 64, Items.DARK_OAK_SAPLING, 64, Items.JUNGLE_SAPLING, 64, Items.OAK_SAPLING, 64, Items.SPRUCE_SAPLING, 64);
 	private static final Vec3i ITEM_PICK_UP_RANGE_EXPANDER_WHILE_LUMBERING = new Vec3i(5, 5, 5);
 
 	private final AnimationFactory factory = new AnimationFactory(this);
@@ -83,7 +67,7 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 
 	@Override
 	public void registerControllers(final AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<LumberjackEntity>(this, "controller", 0, this::predicate));
 	}
 
 	@Override
@@ -171,7 +155,7 @@ public class LumberjackEntity extends AmaziaVillagerEntity implements IAnimatabl
 
 	public void requestAxe() {
 		if (!this.hasRequestedItems()) {
-			for (final VillageItemDataPropvider itm : LumberjackEntity.USABLE_ITEMS) { this.requestItem(itm.itm); }
+			for (final Item itm : LumberjackEntity.USABLE_ITEMS) { this.requestItem(itm); }
 		}
 	}
 

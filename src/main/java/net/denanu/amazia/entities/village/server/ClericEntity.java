@@ -15,7 +15,6 @@ import net.denanu.amazia.entities.village.server.goal.cleric.SelectHealingTarget
 import net.denanu.amazia.entities.village.server.goal.utils.AmaziaGoToTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
-import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,8 +33,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class ClericEntity extends AmaziaVillagerEntity implements IAnimatable {
-	private static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of();
-	private static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of();
+	private static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of();
+	private static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 

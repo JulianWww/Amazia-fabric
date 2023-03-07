@@ -17,8 +17,6 @@ import net.denanu.amazia.entities.village.server.goal.chef.GoToSmokerGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.CraftAtCraftingLocationGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
-import net.denanu.amazia.particles.AmaziaParticles;
-import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.denanu.amazia.village.AmaziaData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -38,8 +36,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class ChefEntity extends AmaziaSmelterVillagerEntity implements IAnimatable {
-	public static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of();
-	public static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of(VillageItemDataPropvider.of(Items.COAL, AmaziaParticles.COAL), 64);
+	public static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
+	public static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of(Items.COAL, 64);
 	public static final ImmutableList<Item> CRAFTABLES = ImmutableList.of(Items.GOLDEN_APPLE, Items.GOLDEN_CARROT, Items.BEETROOT_SOUP, Items.CAKE, Items.BREAD, Items.SUGAR, Items.PUMPKIN_PIE, Items.COOKIE);
 
 

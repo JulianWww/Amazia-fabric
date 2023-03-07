@@ -10,7 +10,6 @@ import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.entities.village.server.goal.child.ChildGoToSchoolGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
-import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.denanu.amazia.village.scedule.VillageActivityGroups;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -31,8 +30,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class ChildEntity extends AmaziaVillagerEntity implements IAnimatable {
-	private static final ImmutableMap<VillageItemDataPropvider, Integer> REQUIRED_ITEMS = ImmutableMap.of();
-	private static final ImmutableSet<VillageItemDataPropvider> USABLE_ITEMS = ImmutableSet.of();
+	private static final ImmutableMap<Item, Integer> REQUIRED_ITEMS = ImmutableMap.of();
+	private static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 	public ChildEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {

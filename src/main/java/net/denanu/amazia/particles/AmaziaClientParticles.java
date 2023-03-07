@@ -17,12 +17,10 @@ public class AmaziaClientParticles {
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.PICK_AXE, SuspendParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.POTATO, SuspendParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.SAPLING, SuspendParticle.Factory::new);
-		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.STICK, SuspendParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.SWORD, SuspendParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.TORCH, SuspendParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.WHEAT, SuspendParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.WHEAT_SEEDS, SuspendParticle.Factory::new);
-		ParticleFactoryRegistry.getInstance().register(AmaziaParticles.SHEARS, SuspendParticle.Factory::new);
 		// PYTHON GENERATOR END
 	}
 }

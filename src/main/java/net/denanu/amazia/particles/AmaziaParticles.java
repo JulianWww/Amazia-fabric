@@ -18,12 +18,10 @@ public class AmaziaParticles {
 	public static final DefaultParticleType PICK_AXE = AmaziaParticles.register(FabricParticleTypes.simple(), "pick_axe");
 	public static final DefaultParticleType POTATO = AmaziaParticles.register(FabricParticleTypes.simple(), "potato");
 	public static final DefaultParticleType SAPLING = AmaziaParticles.register(FabricParticleTypes.simple(), "sapling");
-	public static final DefaultParticleType STICK = AmaziaParticles.register(FabricParticleTypes.simple(), "stick");
 	public static final DefaultParticleType SWORD = AmaziaParticles.register(FabricParticleTypes.simple(), "sword");
 	public static final DefaultParticleType TORCH = AmaziaParticles.register(FabricParticleTypes.simple(), "torch");
 	public static final DefaultParticleType WHEAT = AmaziaParticles.register(FabricParticleTypes.simple(), "wheat");
 	public static final DefaultParticleType WHEAT_SEEDS = AmaziaParticles.register(FabricParticleTypes.simple(), "wheat_seeds");
-	public static final DefaultParticleType SHEARS = AmaziaParticles.register(FabricParticleTypes.simple(), "shears");
 	// PYTHON GENERATOR END
 
 

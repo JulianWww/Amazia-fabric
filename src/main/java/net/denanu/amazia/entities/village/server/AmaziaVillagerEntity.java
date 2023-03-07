@@ -45,7 +45,6 @@ import net.denanu.amazia.mechanics.intelligence.IAmaziaIntelligenceEntity;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.mechanics.leveling.ProfessionLevelManager;
 import net.denanu.amazia.mechanics.title.Titles;
-import net.denanu.amazia.particles.VillageItemDataPropvider;
 import net.denanu.amazia.utils.callback.VoidToVoidCallback;
 import net.denanu.amazia.utils.crafting.CraftingUtils;
 import net.denanu.amazia.village.events.EventData;
@@ -390,8 +389,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		return this.bestFoodItem.isPresent() && this.bestFoodItem.get() == idx;
 	}
 
-	@SuppressWarnings("unlikely-arg-type")
-	protected Map<Item, Integer> getItemCounts(final Map<VillageItemDataPropvider, Integer> minItems) {
+	protected Map<Item, Integer> getItemCounts(final Map<Item, Integer> minItems) {
 		final Map<Item, Integer> count = new HashMap<>();
 		for (int idx = 0; idx < this.getInventory().size(); idx++) {
 			final ItemStack itm = this.getInventory().getStack(idx);
@@ -425,8 +423,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		return counter;
 	}
 
-	@SuppressWarnings("unlikely-arg-type")
-	protected Triplet<ItemStack, Integer, Integer> getDepositableItems(final Set<VillageItemDataPropvider> toIgnore, final Map<VillageItemDataPropvider, Integer> minItems) {
+	protected Triplet<ItemStack, Integer, Integer> getDepositableItems(final Set<Item> toIgnore, final Map<Item, Integer> minItems) {
 		final Map<Item, Integer> itemCounts = this.getItemCounts(minItems);
 		final int counter = 0;
 		Triplet<ItemStack, Integer, Integer> out = null;
