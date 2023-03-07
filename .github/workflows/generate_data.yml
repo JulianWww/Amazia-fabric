@@ -29,6 +29,7 @@ jobs:
           python3 generators/token/generate.py
           python3 generators/makeAmaziaDescription.py
           python3 generators/generateRecipies.py
+          python3 generators/particles/generate.py
         
       - name: Commit to the repo
         run: |

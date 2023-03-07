@@ -1,0 +1,44 @@
+{
+	"axe": {
+		"item": "iron_axe"
+	},
+	"beetroot": {
+		"item": "beetroot"
+	},
+	"beetroot_seeds": {
+		"item": "beetroot_seeds"
+	},
+	"carrot": {
+		"item": "carrot"
+	},
+	"coal": {
+		"item": "coal"
+	},
+	"hoe": {
+		"item": "iron_hoe"
+	},
+	"lapis": {
+		"item": "lapis_lazuli"
+	},
+	"pick_axe": {
+		"item": "iron_pickaxe"
+	},
+	"potato": {
+		"item": "potato"
+	},
+	"sapling": {
+		"block": "oak_sapling"
+	},
+	"sword": {
+		"item": "iron_sword"
+	},
+	"torch": {
+		"block": "torch"
+	},
+	"wheat": {
+		"item": "wheat"
+	},
+	"wheat_seeds": {
+		"item": "wheat_seeds"
+	}
+}

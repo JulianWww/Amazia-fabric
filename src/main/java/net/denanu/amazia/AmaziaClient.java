@@ -10,6 +10,7 @@ import net.denanu.amazia.entities.ClientEntities;
 import net.denanu.amazia.highlighting.BlockHighlightingAmaziaConfig;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
+import net.denanu.amazia.particles.AmaziaClientParticles;
 import net.denanu.amazia.utils.Predicates;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -41,6 +42,7 @@ public class AmaziaClient implements ClientModInitializer {
 		AmaziaProfessions.setup();
 		BlockHighlightingAmaziaConfig.setup();
 		DataManager.setup();
+		AmaziaClientParticles.setup();
 	}
 
 }
