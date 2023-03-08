@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - '*'
-      - '!master'
+      - '!main'
     paths:
     - generators/lang**
     - src/main/resources/assets/amazia/lang/en_us.json
