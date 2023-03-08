@@ -29,11 +29,13 @@ jobs:
           python3 generators/token/generate.py
           python3 generators/makeAmaziaDescription.py
           python3 generators/generateRecipies.py
+          python3 generators/particles/generate.py
         
       - name: Commit to the repo
         run: |
           git config --global user.name "JulianWww/generator"
           git config --global user.email "generator[bot]@JulianWww.github.io"
+          git pull
           git add .
           # Force the build to succeed, even if no files were changed
           git commit -m 'auto generated data' || true

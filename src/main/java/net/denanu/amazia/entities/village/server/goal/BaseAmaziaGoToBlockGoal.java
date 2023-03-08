@@ -89,7 +89,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 		else {
 			this.ticksStanding = 0;
 		}
-		final double distance = targetPos.squaredDistanceTo(this.entity.getPos());
+		final double distance = BaseAmaziaGoToBlockGoal.getSquareDistance(targetPos, this.entity.getPos());
 		if (distance > this.getDesiredDistanceToTarget()) {
 			this.reached = false;
 			this.directMovement = false;
@@ -109,6 +109,13 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 		ActivityFoodConsumerMap.walkUseFood(this.entity, this.foodUsage);
 	}
 
+	private static double getSquareDistance(final Vec3d pos, final Vec3d loc) {
+		final double x = pos.getX() - loc.getX() + 0.5;
+		final double z = pos.getZ() - loc.getZ() + 0.5;
+		final double y = Math.floor(pos.getY() - loc.getY());
+		return x*x + z * z + y*y;
+	}
+
 	private void runBackupMotion() {
 		this.entity.getNavigation().stop();
 		this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() , this.targetPos.getZ() + 0.5, 1);
@@ -119,7 +126,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 	}
 
 	public double getDesiredDistanceToTarget() {
-		return 0.2; // note distance squared
+		return 0.1; // note distance squared
 	}
 
 	protected void recalcPath() {

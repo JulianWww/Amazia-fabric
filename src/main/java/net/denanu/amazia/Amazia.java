@@ -35,6 +35,7 @@ import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.mechanics.hunger.CraftingHungerManager;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.networking.AmaziaNetworking;
+import net.denanu.amazia.particles.AmaziaParticles;
 import net.denanu.amazia.sounds.AmaziaSounds;
 import net.denanu.amazia.utils.AmaziaPersistentStateHandler;
 import net.denanu.amazia.utils.Predicates;
@@ -119,6 +120,7 @@ public class Amazia implements ModInitializer {
 		AmaziaStatusEffects.setup();
 		AmaziaCriterions.setup();
 		AmaziaScreens.setup();
+		AmaziaParticles.setup();
 	}
 
 	public static VillageManager getVillageManager() {
