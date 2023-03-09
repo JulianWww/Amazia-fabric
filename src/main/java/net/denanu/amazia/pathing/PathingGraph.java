@@ -119,7 +119,7 @@ public class PathingGraph {
 	}
 	private void removeNodeRising(final HashMap<Integer, BasePathingNode> map, final int y) {
 		final BasePathingNode node = map.get(y);
-		if (node != null && node.hasRisingEdge()) {
+		if (node != null && node.hasRisingEdge(this.world)) {
 			node.destroy(this);
 			map.remove(y);
 		}

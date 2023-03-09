@@ -225,7 +225,7 @@ public class PathingNode implements PathingPathInterface {
 
 	@Override
 	public String toString() {
-		return "[" + this.lvl + "," + this.pos + "]\n";
+		return "[" + this.lvl + "," + this.pos + "]";
 	}
 
 	@Debug

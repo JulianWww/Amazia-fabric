@@ -2,6 +2,8 @@ package net.denanu.amazia.pathing;
 
 import java.util.HashMap;
 
+import javax.annotation.Nullable;
+
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.pathing.node.BasePathingNode;
 import net.minecraft.util.math.BlockPos;
@@ -72,6 +74,7 @@ public class PathingLvl {
 						).getValue().getBlockPos();
 	}
 
+	@Nullable
 	public BlockPos getRandomVillageEnterNode() {
 		return JJUtils.max(
 				JJUtils.getRandomExtreme(

@@ -135,7 +135,11 @@ public class JJUtils {
 		return out.getValue();
 	}
 
+	@Nullable
 	public static <T> T max(final Set<Entry<Integer, T>> entrySet) {
+		if (entrySet == null || entrySet.isEmpty()) {
+			return null;
+		}
 		final Iterator<Entry<Integer, T>> iter = entrySet.iterator();
 		Entry<Integer, T> next, out = iter.next();
 
