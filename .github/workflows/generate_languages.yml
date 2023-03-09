@@ -2,13 +2,6 @@ name: Generate Language Files
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - '*'
-      - '!main'
-    paths:
-    - generators/lang**
-    - src/main/resources/assets/amazia/lang/en_us.json
 
 permissions:
   contents: write
