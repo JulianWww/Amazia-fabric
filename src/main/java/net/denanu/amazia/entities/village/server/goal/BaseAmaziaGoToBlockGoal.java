@@ -24,6 +24,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 	private int ticksStanding;
 	private boolean directMovement;
 	private final int foodUsage;
+	private int currentX, currentZ = 0;
 
 	public BaseAmaziaGoToBlockGoal(final E e, final int priority) {
 		this(e, priority, BaseAmaziaGoToBlockGoal.BASE_FOOD_USAGE, 1.0f);
@@ -82,11 +83,16 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 		this.entity.getNavigation().setSpeed(this.speed);
 		this.entity.getMoveControl().setSpeed(this.speed);
 		final Vec3d targetPos = new Vec3d(this.targetPos.getX() + 0.5, this.targetPos.getY(), this.targetPos.getZ() + 0.5);
-		if (this.nav.isIdle()) {
+		final BlockPos currentBlockPos = this.entity.getBlockPos();
+		if (currentBlockPos.getX() == this.currentX && currentBlockPos.getZ() == this.currentZ) {
 			this.ticksStanding++;
-			this.nav.startMovingAlong(this.path, this.speed);
+			if (this.nav.isIdle()) {
+				this.nav.startMovingAlong(this.path, this.speed);
+			}
 		}
 		else {
+			this.currentZ = currentBlockPos.getZ();
+			this.currentX = currentBlockPos.getX();
 			this.ticksStanding = 0;
 		}
 		final double distance = BaseAmaziaGoToBlockGoal.getSquareDistance(targetPos, this.entity.getPos());
@@ -110,10 +116,12 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 	}
 
 	private static double getSquareDistance(final Vec3d pos, final Vec3d loc) {
-		final double x = pos.getX() - loc.getX() + 0.5;
-		final double z = pos.getZ() - loc.getZ() + 0.5;
-		final double y = Math.floor(pos.getY() - loc.getY());
-		return x*x + z * z + y*y;
+		return Math.max(
+				Math.max(
+						Math.abs(pos.getX() - loc.getX()),
+						Math.abs(pos.getZ() - loc.getZ())
+						),
+				Math.floor(Math.abs(pos.getY() - loc.getY())));
 	}
 
 	private void runBackupMotion() {
@@ -126,7 +134,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 	}
 
 	public double getDesiredDistanceToTarget() {
-		return 0.1; // note distance squared
+		return 0.2; // note distance squared
 	}
 
 	protected void recalcPath() {
@@ -170,6 +178,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 		EntityNavigation getNavigation();
 
 		Vec3d getPos();
+		BlockPos getBlockPos();
 
 		AmaziaEntityMoveControl getMoveControl();
 		World getWorld();

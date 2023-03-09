@@ -2,6 +2,7 @@ package net.denanu.amazia.pathing.node;
 
 import java.util.HashSet;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.pathing.PathingCell;
 import net.denanu.amazia.pathing.PathingCluster;
@@ -13,10 +14,12 @@ import net.minecraft.block.DoorBlock;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.FluidBlock;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.WallBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Direction.Axis;
 
 public class BasePathingNode extends PathingNode {
 	private final byte clearanceHeight;
@@ -31,13 +34,13 @@ public class BasePathingNode extends PathingNode {
 		this.ajacentNodes = new HashSet<>();
 	}
 
-	public boolean hasRisingEdge() {
+	public boolean hasRisingEdge(final ServerWorld world) {
 		for (final BasePathingNode node: this.ajacentNodes) {
 			if (node.getBlockPos().getY() > this.getBlockPos().getY()) {
 				return true;
 			}
 		}
-		return false;
+		return this.differantClearance(world);
 	}
 
 	public byte getClearanceHeight() {
@@ -75,7 +78,15 @@ public class BasePathingNode extends PathingNode {
 				}
 			}
 		}
+
 		pos = pos.up();
+		Amazia.LOGGER.warn(Double.toString(Math.abs(BasePathingNode.getTop(world, this.getBlockPos()) - BasePathingNode.getTop(world, pos))));
+		Amazia.LOGGER.warn(Double.toString(BasePathingNode.getTop(world, this.getBlockPos())));
+		Amazia.LOGGER.warn(Double.toString(BasePathingNode.getTop(world, pos)));
+		if (Math.abs(BasePathingNode.getTop(world, this.getBlockPos()) - BasePathingNode.getTop(world, pos)) > 1) {
+			return false;
+		}
+
 		final PathingEdge connected = this.getConnection(pos);
 		if (connected == null) {
 			boolean newNode = false;
@@ -87,9 +98,8 @@ public class BasePathingNode extends PathingNode {
 				}
 			}
 
-			this.addAjacentNode(node);
-
 			if (node != null && this.canWalkTo(node)) {
+				this.addAjacentNode(node);
 				this.addBaseConnection(node, graph);
 				if (newNode) {
 					node.sceduleUpdate(graph);
@@ -100,6 +110,14 @@ public class BasePathingNode extends PathingNode {
 		return false;
 	}
 
+	private static double getTop(final ServerWorld world, final BlockPos pos) {
+		final double voxelh = world.getBlockState(pos).getOutlineShape(world, pos, ShapeContext.absent()).getMax(Axis.Y);
+		if (voxelh == Double.NEGATIVE_INFINITY) {
+			return pos.getY();
+		}
+		return voxelh + pos.getY();
+	}
+
 	private void addAjacentNode(final BasePathingNode node) {
 		if (node != null) {
 			this.ajacentNodes.add(node);
@@ -107,12 +125,28 @@ public class BasePathingNode extends PathingNode {
 		}
 	}
 
-	private BasePathingNode checkWalkableNeighbor(final ServerWorld world, final BlockPos pos, final PathingGraph graph) {
+	private static byte getClerance(final ServerWorld world, final BlockPos pos) {
 		if (BasePathingNode.canWalkOn(world, pos.down()) && BasePathingNode.isPassable(world, pos) && BasePathingNode.isPassable(world, pos.up())) {
 			byte clearance = 2;
 			if (BasePathingNode.isPassable(world, pos.up(2))) {
 				clearance++;
 			}
+			return clearance;
+		}
+		return 0;
+	}
+
+	public boolean differantClearance(final ServerWorld world) {
+		final byte newClear = BasePathingNode.getClerance(world, this.getBlockPos());
+		if (newClear != this.clearanceHeight) {
+			return true;
+		}
+		return false;
+	}
+
+	private BasePathingNode checkWalkableNeighbor(final ServerWorld world, final BlockPos pos, final PathingGraph graph) {
+		final byte clearance = BasePathingNode.getClerance(world, pos);
+		if (clearance != 0) {
 			return new BasePathingNode(pos, graph, clearance, PathingCluster.get(graph, pos, 0));
 		}
 		return null;
@@ -130,6 +164,14 @@ public class BasePathingNode extends PathingNode {
 		return state.getBlock() instanceof DoorBlock && !state.isOf(Blocks.IRON_DOOR) || state.getBlock() instanceof FenceGateBlock;
 	}
 	public boolean canWalkTo(final BasePathingNode node) {
+		final boolean a = node.getBlockPos().getY() == this.getBlockPos().getY() - 1 && node.getClearanceHeight() >= 3;
+		final boolean b = node.getBlockPos().getY() == this.getBlockPos().getY();
+		final boolean c = node.getBlockPos().getY() == this.getBlockPos().getY() + 1 && this.getClearanceHeight() >= 3;
+		if (!b) {
+			Amazia.LOGGER.warn("from: " + this.toString() + ", to: " + node.toString());
+			Amazia.LOGGER.warn(Boolean.toString(a) + ", " + Boolean.toString(b) + ", " + Boolean.toString(c));
+		}
+
 		return node.getBlockPos().getY() == this.getBlockPos().getY() - 1 && node.getClearanceHeight() >= 3 || node.getBlockPos().getY() == this.getBlockPos().getY() || node.getBlockPos().getY() == this.getBlockPos().getY() + 1 && this.getClearanceHeight() >= 3;
 	}
 

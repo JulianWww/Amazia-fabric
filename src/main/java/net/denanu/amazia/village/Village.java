@@ -245,13 +245,15 @@ public class Village {
 	private void spawnMerchant() {
 		if (this.getWorld().getTime() > this.init_time + 100) {
 			final BlockPos pos = this.pathingGraph.getRandomVillageEnterNode();
-			final AmaziaVillageMerchant merchant = AmaziaVillageMerchant.of(this.getWorld(), this, pos);
-			this.getWorld().spawnEntity(merchant);
-			//
-			//			final ServerPlayerEntity mayor = this.getMayor();
-			//			if (mayor != null) {
-			//				mayor.teleport(merchant.getX(), merchant.getY(), merchant.getZ());
-			//			}
+			if (pos != null) {
+				final AmaziaVillageMerchant merchant = AmaziaVillageMerchant.of(this.getWorld(), this, pos);
+				this.getWorld().spawnEntity(merchant);
+
+				final ServerPlayerEntity mayor = this.getMayor();
+				if (mayor != null) {
+					mayor.teleport(merchant.getX(), merchant.getY(), merchant.getZ());
+				}
+			}
 		}
 	}
 
