@@ -1,6 +1,7 @@
 name: Generate Assets
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - '*'
