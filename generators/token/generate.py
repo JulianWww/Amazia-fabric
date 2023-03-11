@@ -118,8 +118,9 @@ def genAchivement(villager, parent, reward):
 	}
 
 for villager, data in villagerTypes.items():
-	with open(outPath + villager + ".json", "w") as file:
-		json.dump(genAchivement(villager, *data), file, indent=4)
+	if (villager != "child"):
+		with open(outPath + villager + ".json", "w") as file:
+			json.dump(genAchivement(villager, *data), file, indent=4)
 
 
 print(f"Generated token based advancements")
