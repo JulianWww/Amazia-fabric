@@ -26,7 +26,7 @@ public class AmaziaChildSpawnItem extends Item {
 		Amazia.LOGGER.info("spawned Child");
 		BlockState state;
 		if ((state = context.getWorld().getBlockState(context.getBlockPos())).getBlock() instanceof BedBlock) {
-			World world = context.getWorld();
+			final World world = context.getWorld();
 			if (world.isClient) {
 				return ActionResult.SUCCESS;
 			}
@@ -49,7 +49,7 @@ public class AmaziaChildSpawnItem extends Item {
 
 	private Set<BlockPos> getVillagePoses(final BlockState state, final ItemUsageContext context) {
 		if (state.get(BedBlock.PART) != BedPart.HEAD) {
-			this.getVillagePosesFromBed(context, context.getBlockPos().offset(state.get(HorizontalFacingBlock.FACING)));
+			return this.getVillagePosesFromBed(context, context.getBlockPos().offset(state.get(HorizontalFacingBlock.FACING)));
 		}
 		return this.getVillagePosesFromBed(context, context.getBlockPos());
 	}

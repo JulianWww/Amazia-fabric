@@ -25,6 +25,7 @@ system(f"rm {outPath}*")
 system(f"mkdir {outPath}")
 system(f"mkdir ./tmp")
 
+
 base = cv2.imread("base_token.png", cv2.IMREAD_UNCHANGED)
 
 for entity, img in images.items():
@@ -39,13 +40,13 @@ for entity, img in images.items():
 
 	cv2.imwrite(outPath + entity + ".png", new_base)
 
-	for acivement_data in acivementLevels:
-		lvl = acivement_data[0]
-		x, y = acivement_data[2]
+	if entity != "child":
+		for acivement_data in acivementLevels:
+			lvl = acivement_data[0]
+			x, y = acivement_data[2]
 
-		cv2.imwrite(outPath + entity + "_" + lvl + ".png", getImage(x, y, mask))
-
-	updateTokeTierOverrides(entity)
+			cv2.imwrite(outPath + entity + "_" + lvl + ".png", getImage(x, y, mask))
+		updateTokeTierOverrides(entity)
   
 	print (f"generated {entity} conversion token")
 
