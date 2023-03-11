@@ -160,18 +160,24 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	}
 
 	protected AmaziaVillagerEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
+		this(entityType, world, null, 0f);
+	}
+
+	protected AmaziaVillagerEntity(final EntityType<? extends PassiveEntity> entityType, final World world, final String lastName, final float intelligence) {
 		super(entityType, world);
 		this.setCanPickUpLoot(true);
 		this.requestedItems = new ArrayList<>();
 		this.craftInput = null;
 		this.hunger = (float) this.getAttributeValue(AmaziaEntityAttributes.MAX_HUNGER);
-		this.dataTracker.set(AmaziaVillagerEntity.INTELLIGENCE, 0f);
+		this.dataTracker.set(AmaziaVillagerEntity.INTELLIGENCE, intelligence);
+		this.education = 0;
 		this.bestFoodItem = Optional.empty();
 		this.professionLevelManager = new ProfessionLevelManager();
 
 		this.inventory.addListener(this);
+		this.activityScedule.generate();
 
-		this.setCustomName(Text.literal(NamingLanguageOptions.generateName(null)));
+		this.setCustomName(Text.literal(NamingLanguageOptions.generateName(lastName)));
 		this.setCustomNameVisible(false);
 	}
 
@@ -219,6 +225,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 		this.goalSelector.add(11, new GoToBedGoal(this, 11));
 
+
 		this.goalSelector.add(25, new GetItemGoal(this, 25, getItemCallback));
 
 		this.goalSelector.add(80, new SequenceGoal<>(this, ImmutableList.of(
@@ -226,7 +233,8 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 				new LearnFromReadingBooksGoal(this, 80)
 				)));
 
-		this.goalSelector.add(99, new DepositItemGoal(this, 99, depositItemCallback));
+		this.goalSelector.add(98, new DepositItemGoal(this, 98, depositItemCallback));
+		//this.goalSelector.add(99, new NitwitRandomWanderAroundGoal<>(this, 99));
 		this.goalSelector.add(100, new AmaziaLookAroundGoal(this));
 
 	}
@@ -329,7 +337,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	public void wakeUpAndChild() {
 		super.wakeUp();
 		if (this.hasVillage()) {
-			this.village.addChild();
+			this.village.addChild(this);
 		}
 
 	}
@@ -970,5 +978,14 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	@Override
 	public Text getCustomName() {
 		return super.getCustomName();
+	}
+
+	@Override
+	public void jump() {
+		super.jump();
+	}
+
+	public String getLastName() {
+		return Titles.getLastName(this.getCustomName().getString());
 	}
 }

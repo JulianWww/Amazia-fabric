@@ -11,12 +11,12 @@ import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.enums.BedPart;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class AmaziaChildSpawnItem extends Item {
-
 	public AmaziaChildSpawnItem(final Settings settings) {
 		super(settings);
 	}
@@ -30,7 +30,7 @@ public class AmaziaChildSpawnItem extends Item {
 			if (world.isClient) {
 				return ActionResult.SUCCESS;
 			}
-			final ChildEntity child = new ChildEntity(context.getWorld());
+			final ChildEntity child = AmaziaChildSpawnItem.setupChild(context);
 			child.setPosition(context.getHitPos());
 			child.setup();
 			context.getWorld().spawnEntity(child);
@@ -58,4 +58,12 @@ public class AmaziaChildSpawnItem extends Item {
 		return AmaziaBlockComponents.getVillages(context.getWorld().getBlockEntity(pos));
 	}
 
+	private static ChildEntity setupChild(final ItemUsageContext context) {
+		final NbtCompound nbt = context.getStack().getNbt();
+
+		final String lastName = nbt.getString("last_name");
+		final float intelligence = nbt.getFloat("Intelligence");
+
+		return new ChildEntity(context.getWorld(), lastName, intelligence);
+	}
 }

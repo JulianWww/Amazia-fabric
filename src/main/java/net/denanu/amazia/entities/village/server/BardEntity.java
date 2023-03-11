@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.entities.village.server.goal.bard.PlayMusicToVillagersGoal;
-import net.denanu.amazia.entities.village.server.goal.nitwit.NitwitRandomWanderAroundGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.AmaziaGoToTargetGoal;
 import net.denanu.amazia.entities.village.server.goal.utils.SequenceGoal;
 import net.denanu.amazia.item.AmaziaItems;
@@ -100,7 +99,6 @@ public class BardEntity extends AmaziaVillagerEntity implements IAnimatable {
 				new AmaziaGoToTargetGoal(this, 40),
 				new PlayMusicToVillagersGoal(this, 40)
 				)));
-		this.goalSelector.add(41, new NitwitRandomWanderAroundGoal<>(this, 41));
 
 		super.registerBaseGoals();
 	}

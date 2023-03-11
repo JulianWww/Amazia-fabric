@@ -10,6 +10,7 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.entities.village.merchant.AmaziaVillageMerchant;
+import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.pathing.PathingGraph;
@@ -35,6 +36,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.annotation.Debug;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -117,7 +119,7 @@ public class Village {
 
 	@SuppressWarnings("resource")
 	public ServerPlayerEntity getMayor() {
-		if (this.getWorld() != null) {
+		if (this.pathingGraph != null) {
 			for (final ServerPlayerEntity player : this.getWorld().getServer().getPlayerManager().getPlayerList()) {
 				if (player.getGameProfile().getId().equals(this.mayor)) {
 					return player;
@@ -246,15 +248,16 @@ public class Village {
 	private void update() {
 		this.pathingGraph.update();
 
-		if (this.getWorld().isDay() && this.merchant == null) {
+		/* if (this.getWorld().isDay() && this.merchant == null) {
 			this.spawnMerchant();
 		}
 		else if (this.getWorld().isNight() && this.merchant != null) {
 			this.merchant.leave();
 			this.merchant = null;
-		}
+		} */
 	}
 
+	@Debug
 	private void spawnMerchant() {
 		if (this.getWorld().getTime() > this.init_time + 100) {
 			final BlockPos pos = this.pathingGraph.getRandomVillageEnterNode();
@@ -455,7 +458,15 @@ public class Village {
 		this.setChanged();
 	}
 
-	public void addChild() {
-		this.addItem(new ItemStack(AmaziaItems.CHILD_SPANW_ITEM, 1));
+	public void addChild(final AmaziaVillagerEntity villager) {
+		final NbtCompound nbt = new NbtCompound();
+
+		nbt.putString("last_name", villager.getLastName());
+		nbt.putFloat("Intelligence", villager.getChildIntelligence());
+
+
+		final ItemStack stack = new ItemStack(AmaziaItems.CHILD_SPANW_ITEM, 1);
+		stack.setNbt(nbt);
+		this.addItem(stack);
 	}
 }

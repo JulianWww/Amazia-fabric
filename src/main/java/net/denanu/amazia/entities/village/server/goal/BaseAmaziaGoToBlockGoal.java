@@ -89,6 +89,9 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 			if (this.nav.isIdle()) {
 				this.nav.startMovingAlong(this.path, this.speed);
 			}
+			if (this.ticksStanding > 30 && this.entity.isOnGround()) {
+				this.entity.jump();
+			}
 		}
 		else {
 			this.currentZ = currentBlockPos.getZ();
@@ -176,6 +179,10 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 	public interface BasePathingAmaziaVillagerEntity extends BaseAmaziaVillagerEntity, IAmaziaFoodConsumerEntity {
 
 		EntityNavigation getNavigation();
+
+		boolean isOnGround();
+
+		void jump();
 
 		Vec3d getPos();
 		BlockPos getBlockPos();

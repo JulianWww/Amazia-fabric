@@ -104,7 +104,7 @@ public class AmaziaEntities {
 	public static final EntityType<ChildEntity> CHILD = Registry.register(
 			Registry.ENTITY_TYPE, new Identifier(Amazia.MOD_ID, "child"),
 			FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ChildEntity::of)
-			.dimensions(EntityDimensions.fixed(0.2f, 0.75f)).build());
+			.dimensions(EntityDimensions.fixed(0.2f, 1f)).build());
 
 
 

@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.entities.village.server.goal.child.ChildGoToSchoolGoal;
+import net.denanu.amazia.item.custom.VillagerTransformationTokenItem;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.village.scedule.VillageActivityGroups;
 import net.minecraft.entity.EntityType;
@@ -18,6 +19,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -39,8 +41,8 @@ public class ChildEntity extends AmaziaVillagerEntity implements IAnimatable {
 		super(entityType, world);
 	}
 
-	public ChildEntity(final World world) {
-		super(AmaziaEntities.CHILD, world);
+	public ChildEntity(final World world, final String lastName, final float intelligence) {
+		super(AmaziaEntities.CHILD, world, lastName, intelligence);
 	}
 
 	public static ChildEntity of(final EntityType<? extends PassiveEntity> entityType, final World world) {
@@ -93,6 +95,22 @@ public class ChildEntity extends AmaziaVillagerEntity implements IAnimatable {
 		if (this.getActivityScedule().getPerformActionGroup() != VillageActivityGroups.WORK && this.hasVehicle()) {
 			this.leaveSchool();
 		}
+
+		if (this.age > 168000) {
+			VillagerTransformationTokenItem.copy(this, this.world, AmaziaEntities.NITWIT);
+		}
+	}
+
+	@Override
+	public void writeCustomDataToNbt(final NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		nbt.putInt("age", this.age);
+	}
+
+	@Override
+	public void readCustomDataFromNbt(final NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		this.age = nbt.getInt("age");
 	}
 
 	@Override
