@@ -318,12 +318,20 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		super.mobTick();
 		if (this.isSleeping()) {
 			if (this.getActivityScedule().getPerformActionGroup() != VillageActivityGroups.SLEEP) {
-				this.wakeUp();
+				this.wakeUpAndChild();
 			}
 			if (!(this.world.getBlockState(this.getBlockPos()).getBlock() instanceof BedBlock)) {
 				this.wakeUp();
 			}
 		}
+	}
+
+	public void wakeUpAndChild() {
+		super.wakeUp();
+		if (this.hasVillage()) {
+			this.village.addChild();
+		}
+
 	}
 
 	@Override

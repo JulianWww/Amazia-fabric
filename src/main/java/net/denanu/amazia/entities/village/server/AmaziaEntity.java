@@ -64,7 +64,7 @@ public class AmaziaEntity extends PassiveEntity implements IVillageEventListener
 	@Override
 	public boolean shouldSwimInFluids() { return true; }
 
-	private void setup() {
+	public void setup() {
 		this.villageSampler = new CuboidSampler(this.getPos(), 4, 4, 4);
 	}
 
@@ -93,7 +93,7 @@ public class AmaziaEntity extends PassiveEntity implements IVillageEventListener
 
 	protected void setVillage() {}
 
-	private void scanForVillage(final BlockPos pos) {
+	public boolean scanForVillage(final BlockPos pos) {
 		final BlockState state =  this.world.getBlockState(pos);
 		if (state.getBlock().equals(AmaziaBlocks.VILLAGE_CORE)) {
 			this.villageCorePos = pos;
@@ -107,7 +107,9 @@ public class AmaziaEntity extends PassiveEntity implements IVillageEventListener
 			this.navigation = new PathFinder(this);
 			//this.moveControl = new AmaziaMoveControll(this);
 			this.world.sendEntityStatus(this, EntityStatuses.ADD_VILLAGER_HAPPY_PARTICLES);
+			return true;
 		}
+		return false;
 	}
 	private void scanForVillage() {
 		this.villageSampler.setPos(this.getPos());
@@ -124,9 +126,11 @@ public class AmaziaEntity extends PassiveEntity implements IVillageEventListener
 	}
 
 
+	@Override
 	public boolean hasVillage() {
 		return this.village != null;
 	}
+	@Override
 	public Village getVillage() {
 		return this.village;
 	}

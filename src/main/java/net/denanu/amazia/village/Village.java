@@ -11,11 +11,13 @@ import net.denanu.amazia.GUI.renderers.VillageBorderRenderer;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.entities.village.merchant.AmaziaVillageMerchant;
 import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
+import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.pathing.PathingGraph;
 import net.denanu.amazia.village.events.EventData;
 import net.denanu.amazia.village.events.IVillageEventListener;
 import net.denanu.amazia.village.events.VillageEvents;
 import net.denanu.amazia.village.sceduling.AbstractFurnaceSceduler;
+import net.denanu.amazia.village.sceduling.BedSceduler;
 import net.denanu.amazia.village.sceduling.FarmingSceduler;
 import net.denanu.amazia.village.sceduling.GuardSceduler;
 import net.denanu.amazia.village.sceduling.LumberSceduler;
@@ -28,9 +30,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -46,7 +51,8 @@ public class Village {
 	private final MineingSceduler mineing;
 	private final LumberSceduler  lumber;
 	private final RancherSceduler ranching;
-	private final PathingNoHeightSceduler enchanting, desks, chair, beds;
+	private final PathingNoHeightSceduler enchanting, desks, chair;
+	private final BedSceduler beds;
 	private final AbstractFurnaceSceduler smelting;
 	private final AbstractFurnaceSceduler blasting;
 	private final AbstractFurnaceSceduler smoking;
@@ -66,6 +72,8 @@ public class Village {
 	@Nullable
 	private final VillageCoreBlockEntity coreBlock;
 
+	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(VillageCoreBlockEntity._size(), ItemStack.EMPTY);
+
 	private final Box boundingBox;
 
 	public Village(final VillageCoreBlockEntity core) {
@@ -78,7 +86,7 @@ public class Village {
 		this.enchanting 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isEnchantingTable, 	BlockHighlightingAmaziaIds.ENCHANTING);
 		this.desks		 	= new PathingNoHeightSceduler	(this, ScedulingPredicates::isDesk, 			BlockHighlightingAmaziaIds.DESK);
 		this.chair			= new PathingNoHeightSceduler	(this, ScedulingPredicates::isChair, 			BlockHighlightingAmaziaIds.CHAIR);
-		this.beds			= new PathingNoHeightSceduler	(this, ScedulingPredicates::isBed, 				BlockHighlightingAmaziaIds.BEDS);
+		this.beds			= new BedSceduler				(this, ScedulingPredicates::isBed, 				BlockHighlightingAmaziaIds.BEDS);
 		this.smelting	 	= new AbstractFurnaceSceduler	(this, Blocks.FURNACE.getClass(),				BlockHighlightingAmaziaIds.NORMAL_FURNACES);
 		this.blasting	 	= new AbstractFurnaceSceduler	(this, Blocks.BLAST_FURNACE.getClass(), 		BlockHighlightingAmaziaIds.BLAST_FURNACES);
 		this.smoking	 	= new AbstractFurnaceSceduler	(this, Blocks.SMOKER.getClass(), 				BlockHighlightingAmaziaIds.SMOKER_FURNACES);
@@ -109,16 +117,17 @@ public class Village {
 
 	@SuppressWarnings("resource")
 	public ServerPlayerEntity getMayor() {
-		for (final ServerPlayerEntity player : this.getWorld().getServer().getPlayerManager().getPlayerList()) {
-			if (player.getGameProfile().getId().equals(this.mayor)) {
-				return player;
+		if (this.getWorld() != null) {
+			for (final ServerPlayerEntity player : this.getWorld().getServer().getPlayerManager().getPlayerList()) {
+				if (player.getGameProfile().getId().equals(this.mayor)) {
+					return player;
+				}
 			}
 		}
 		return null;
 	}
 
 	public void setupVillage() {
-		Amazia.LOGGER.info("Setup Village");
 		this.origin = this.coreBlock.getPos();
 
 		this.pathingGraph = new PathingGraph((ServerWorld)this.coreBlock.getWorld(), this);
@@ -192,6 +201,8 @@ public class Village {
 		nbt.put("bed",				this.beds.			writeNbt());
 		nbt.putLong("init_time", 	this.init_time);
 
+		Inventories.writeNbt(nbt, this.inventory);
+
 		if (this.mayor != null) {
 			nbt.putUuid("mayor",	this.mayor);
 		}
@@ -216,6 +227,8 @@ public class Village {
 		this.beds.			readNbt(nbt.getCompound("bed"));
 		this.mayor			= nbt.contains("mayor") ? nbt.getUuid("mayor") : null;
 		this.init_time		= nbt.contains("init_time") ? nbt.getLong("init_time") : this.getWorld().getTime();
+
+		Inventories.readNbt(nbt, this.inventory);
 	}
 
 	public boolean isValid() {
@@ -345,6 +358,14 @@ public class Village {
 		this.merchant = merchant;
 	}
 
+	public DefaultedList<ItemStack> getInventory() {
+		return this.inventory;
+	}
+
+	public void setInventory(final DefaultedList<ItemStack> inventory) {
+		this.inventory = inventory;
+	}
+
 	public boolean isInVillage(final BlockPos pos) {
 		if (this.getOrigin() == null) {
 			return false;
@@ -412,5 +433,29 @@ public class Village {
 
 	public Collection<IVillageEventListener> getListeners() {
 		return this.listeners;
+	}
+
+	public void addItem(final ItemStack stack) {
+		for (int idx = 0; idx < this.inventory.size(); idx++) {
+			final ItemStack slot = this.inventory.get(idx);
+			if (slot.isEmpty()) {
+				this.inventory.set(idx, stack);
+				break;
+			}
+			if (ItemStack.areNbtEqual(slot, stack)) {
+				slot.setCount(slot.getCount() + stack.getCount());
+				if (slot.getCount() <= slot.getMaxCount()) {
+					slot.setCount(0);
+					break;
+				}
+				stack.setCount(slot.getCount() - slot.getMaxCount());
+				slot.setCount(slot.getMaxCount());
+			}
+		}
+		this.setChanged();
+	}
+
+	public void addChild() {
+		this.addItem(new ItemStack(AmaziaItems.CHILD_SPANW_ITEM, 1));
 	}
 }

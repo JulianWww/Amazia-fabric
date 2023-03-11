@@ -80,9 +80,6 @@ public class BasePathingNode extends PathingNode {
 		}
 
 		pos = pos.up();
-		Amazia.LOGGER.warn(Double.toString(Math.abs(BasePathingNode.getTop(world, this.getBlockPos()) - BasePathingNode.getTop(world, pos))));
-		Amazia.LOGGER.warn(Double.toString(BasePathingNode.getTop(world, this.getBlockPos())));
-		Amazia.LOGGER.warn(Double.toString(BasePathingNode.getTop(world, pos)));
 		if (Math.abs(BasePathingNode.getTop(world, this.getBlockPos()) - BasePathingNode.getTop(world, pos)) > 1) {
 			return false;
 		}

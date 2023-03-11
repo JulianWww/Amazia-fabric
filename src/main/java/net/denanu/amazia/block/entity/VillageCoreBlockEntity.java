@@ -1,17 +1,23 @@
 package net.denanu.amazia.block.entity;
 
+import net.denanu.amazia.GUI.TakeOnlyContainerScreenHandler;
 import net.denanu.amazia.village.Village;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class VillageCoreBlockEntity extends BlockEntity {
+public class VillageCoreBlockEntity extends LootableContainerBlockEntity {
 	private Village village;
 	private boolean initialized = false;
-
 	public VillageCoreBlockEntity(final BlockPos pos, final BlockState state) {
 		super(AmaziaBlockEntities.VILLAGE_CORE, pos, state);
 		this.createVillage();
@@ -22,11 +28,21 @@ public class VillageCoreBlockEntity extends BlockEntity {
 		super.writeNbt(nbt);
 		nbt.put("village", this.village.writeNbt());
 	}
+
 	@Override
 	public void readNbt(final NbtCompound nbt) {
 		super.readNbt(nbt);
 		this.createVillage();
 		this.village.readNbt(nbt.getCompound("village"));
+	}
+
+	@Override
+	public int size() {
+		return VillageCoreBlockEntity._size();
+	}
+
+	public static int _size() {
+		return 9;
 	}
 
 	public Village getVillage() {
@@ -66,5 +82,26 @@ public class VillageCoreBlockEntity extends BlockEntity {
 	public void cancelRemoval() {
 		super.cancelRemoval();
 		this.village.register(this.getWorld());
+	}
+
+
+	@Override
+	protected DefaultedList<ItemStack> getInvStackList() {
+		return this.village.getInventory();
+	}
+
+	@Override
+	protected void setInvStackList(final DefaultedList<ItemStack> inv) {
+		this.village.setInventory(inv);
+	}
+
+	@Override
+	protected Text getContainerName() {
+		return Text.translatable("amazia.village");
+	}
+
+	@Override
+	protected ScreenHandler createScreenHandler(final int syncId, final PlayerInventory playerInventory) {
+		return new TakeOnlyContainerScreenHandler(ScreenHandlerType.GENERIC_9X1, syncId, playerInventory, this, 1);
 	}
 }

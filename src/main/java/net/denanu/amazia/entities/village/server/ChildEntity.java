@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.entities.village.server.goal.child.ChildGoToSchoolGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.denanu.amazia.village.scedule.VillageActivityGroups;
@@ -34,8 +35,16 @@ public class ChildEntity extends AmaziaVillagerEntity implements IAnimatable {
 	private static final ImmutableSet<Item> USABLE_ITEMS = ImmutableSet.of();
 
 	private final AnimationFactory factory = new AnimationFactory(this);
-	public ChildEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
+	protected ChildEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
+	}
+
+	public ChildEntity(final World world) {
+		super(AmaziaEntities.CHILD, world);
+	}
+
+	public static ChildEntity of(final EntityType<? extends PassiveEntity> entityType, final World world) {
+		return new ChildEntity(entityType, world);
 	}
 
 	public static DefaultAttributeContainer.Builder setAttributes() {
