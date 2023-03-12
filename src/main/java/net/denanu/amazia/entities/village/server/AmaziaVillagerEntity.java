@@ -25,6 +25,7 @@ import net.denanu.amazia.entities.village.server.goal.AmaziaLookAroundGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.education.GoToLibraryGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.education.LearnFromReadingBooksGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.hunger.EatGoal;
+import net.denanu.amazia.entities.village.server.goal.nitwit.NitwitRandomWanderAroundGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.CraftGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.DepositItemGoal;
 import net.denanu.amazia.entities.village.server.goal.storage.GetItemGoal;
@@ -234,7 +235,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 				)));
 
 		this.goalSelector.add(98, new DepositItemGoal(this, 98, depositItemCallback));
-		//this.goalSelector.add(99, new NitwitRandomWanderAroundGoal<>(this, 99));
+		this.goalSelector.add(99, new NitwitRandomWanderAroundGoal<>(this, 99));
 		this.goalSelector.add(100, new AmaziaLookAroundGoal(this));
 
 	}

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -34,6 +36,13 @@ public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	public NitwitEntity(final EntityType<? extends PassiveEntity> entityType, final World world) {
 		super(entityType, world);
+	}
+
+	public static void spawn(final World world, final BlockPos pos) {
+		final NitwitEntity entity = new NitwitEntity(AmaziaEntities.NITWIT, world);
+		entity.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+		entity.setup();
+		world.spawnEntity(entity);
 	}
 
 	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {

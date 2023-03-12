@@ -2,7 +2,10 @@ package net.denanu.amazia.entities.village.server.goal.nitwit;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
+import net.denanu.amazia.entities.village.server.BardEntity;
+import net.denanu.amazia.entities.village.server.NitwitEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal;
+import net.denanu.amazia.village.scedule.VillageActivityGroups;
 import net.minecraft.util.math.BlockPos;
 
 public class NitwitRandomWanderAroundGoal<T extends AmaziaVillagerEntity> extends AmaziaGoToBlockGoal<T> {
@@ -35,6 +38,7 @@ public class NitwitRandomWanderAroundGoal<T extends AmaziaVillagerEntity> extend
 
 	@Override
 	protected boolean canRun() {
-		return true;
+		return  this.entity.getActivityScedule().getPerformActionGroup() == VillageActivityGroups.RECREATION ||
+				this.entity.getActivityScedule().getPerformActionGroup() == VillageActivityGroups.WORK && (this.entity instanceof NitwitEntity || this.entity instanceof BardEntity);
 	}
 }
