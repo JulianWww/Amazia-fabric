@@ -4,6 +4,7 @@ import sys
 from json import load, dump
 from pathlib import Path
 import shutil
+from copy import copy
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
@@ -159,7 +160,10 @@ def getChairs(types) :
     saveUnlocker(f"{type}_chair_left",  "decorations", items)
     saveUnlocker(f"{type}_chair_right", "decorations", items)
   
-  lang[f"item.amazia.{type}_chair"] = f"{type.title()} Chair"
+    t = copy(type)
+    t = t.replace("_", " ")
+    print(t)
+    lang[f"block.amazia.{type}_chair"] = f"{t.title()} Chair"
   
 def getDesks(types) :
   removeOf("desk")
