@@ -98,13 +98,17 @@ public class Village {
 
 		this.valid = true;
 
-		this.boundingBox = new Box(
-				core.getPos().getX() + Village.SIZE,
+		this.boundingBox = Village.getBox(core.getPos());
+	}
+
+	public static Box getBox(final BlockPos pos) {
+		return new Box(
+				pos.getX() + Village.SIZE,
 				400,
-				core.getPos().getZ() + Village.SIZE,
-				core.getPos().getX() - Village.SIZE,
+				pos.getZ() + Village.SIZE,
+				pos.getX() - Village.SIZE,
 				-400,
-				core.getPos().getZ() - Village.SIZE
+				pos.getZ() - Village.SIZE
 				);
 	}
 

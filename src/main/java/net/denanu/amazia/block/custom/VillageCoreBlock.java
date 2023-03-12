@@ -4,6 +4,9 @@ import org.jetbrains.annotations.Nullable;
 
 import net.denanu.amazia.block.entity.AmaziaBlockEntities;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
+import net.denanu.amazia.entities.village.server.AmaziaEntity;
+import net.denanu.amazia.entities.village.server.NitwitEntity;
+import net.denanu.amazia.village.Village;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;
@@ -27,6 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
 public class VillageCoreBlock extends BlockWithEntity implements BlockEntityProvider {
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
@@ -45,7 +49,17 @@ public class VillageCoreBlock extends BlockWithEntity implements BlockEntityProv
 	@Nullable
 	@Override
 	public BlockState getPlacementState(final ItemPlacementContext ctx) {
+		for (int i = 0; i < 2; i++) {
+			NitwitEntity.spawn(ctx.getWorld(), ctx.getBlockPos());
+		}
 		return this.getDefaultState().with(VillageCoreBlock.FACING, ctx.getPlayerFacing().getOpposite());
+	}
+
+	@Override
+	public void onBroken(final WorldAccess world, final BlockPos pos, final BlockState state) {
+		for (final AmaziaEntity entity : world.getEntitiesByClass(AmaziaEntity.class, Village.getBox(pos), e -> true)) {
+			entity.discard();
+		}
 	}
 
 	@Override
