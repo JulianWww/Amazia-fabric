@@ -34,7 +34,7 @@ public class TeachAtDesk extends TimedVillageGoal<TeacherEntity> {
 
 	@Override
 	protected int getRequiredTime() {
-		return this.entity.getTeachTime();
+		return 20;//this.entity.getTeachTime();
 	}
 
 	@Override
@@ -48,6 +48,7 @@ public class TeachAtDesk extends TimedVillageGoal<TeacherEntity> {
 			AmaziaGainEducationMap.learnFromTeacher(entity, this.requiredTime);
 			entity.emmitMood(VillagerMoods.HAPPY);
 		}
+		this.entity.gainXp(0.001f);
 		this.entity.setDeskLocation(null);
 	}
 

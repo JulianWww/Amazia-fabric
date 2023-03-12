@@ -6,7 +6,6 @@ import java.util.HashMap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-import net.denanu.amazia.entities.village.server.goal.nitwit.NitwitRandomWanderAroundGoal;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -74,9 +73,6 @@ public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	@Override
 	protected void initGoals() {
-
-		this.goalSelector.add(50, new NitwitRandomWanderAroundGoal<>(this, 50));
-
 		super.registerBaseGoals();
 	}
 

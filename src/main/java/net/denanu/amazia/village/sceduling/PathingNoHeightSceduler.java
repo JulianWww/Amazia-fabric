@@ -55,6 +55,7 @@ public class PathingNoHeightSceduler extends VillageSceduler {
 			this.createTable(pos);
 			VillageSceduler.markBlockAsFound(pos, world);
 			Highlighter.highlight(world, this.id, pos);
+			this.find(world, pos);
 		}
 		else if((table = this.tables.remove(pos)) != null) {
 			table.destroy(this.getVillage());
@@ -62,9 +63,13 @@ public class PathingNoHeightSceduler extends VillageSceduler {
 			this.setChanged();
 			VillageSceduler.markBlockAsLost(pos, world);
 			Highlighter.unhighlight(world, this.id, pos);
+			this.loose(world, pos);
 		}
 
 	}
+
+	public void find(final ServerWorld world, final BlockPos pos) {}
+	public void loose(final ServerWorld world, final BlockPos pos) {}
 
 	@Override
 	public void initialize() {

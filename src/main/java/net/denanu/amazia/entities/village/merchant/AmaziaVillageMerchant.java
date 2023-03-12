@@ -193,6 +193,11 @@ public class AmaziaVillageMerchant extends AmaziaMerchant implements PathingAmaz
 		}
 	}
 
+	@Override
+	public void jump() {
+		super.jump();
+	}
+
 	public void reachCore(final MovementPhases action) {
 		if (action == this.move_phase) {
 			if (this.move_phase == MovementPhases.ARRIVING) {

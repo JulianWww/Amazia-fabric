@@ -2,6 +2,7 @@ package net.denanu.amazia.item;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.AmaziaEntities;
+import net.denanu.amazia.item.custom.AmaziaChildSpawnItem;
 import net.denanu.amazia.item.custom.IntelligenceBoostingBookItem;
 import net.denanu.amazia.item.custom.VillagerTransformationTokenItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -33,6 +34,12 @@ public class AmaziaItems {
 				.rarity(Rarity.UNCOMMON)
 				.group(AmaziaItemGroup.VILLAGE);
 	}
+
+	public static final Item CHILD_SPANW_ITEM = AmaziaItems.registerItem("hart",
+			new AmaziaChildSpawnItem(new FabricItemSettings()
+					.rarity(Rarity.EPIC)
+					.group(AmaziaItemGroup.VILLAGE))
+			);
 
 	public static final Item GENERIC_TOKEN = AmaziaItems.registerItem("base_transformation_token",
 			new Item(AmaziaItems.tokenSettings())

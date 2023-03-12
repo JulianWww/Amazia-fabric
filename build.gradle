@@ -46,10 +46,12 @@ dependencies {
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinalComponentsVersion}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinalComponentsVersion}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cardinalComponentsVersion}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${project.cardinalComponentsVersion}"
     
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinalComponentsVersion}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinalComponentsVersion}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cardinalComponentsVersion}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${project.cardinalComponentsVersion}"
     
     implementation 'com.github.javafaker:javafaker:1.0.2'
     include 'com.github.javafaker:javafaker:1.0.2'

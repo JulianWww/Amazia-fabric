@@ -29,11 +29,6 @@ public class NitwitRandomWanderAroundGoal<T extends AmaziaVillagerEntity> extend
 	}
 
 	@Override
-	public boolean shouldContinue() {
-		return this.subShouldContinue();
-	}
-
-	@Override
 	protected BlockPos getTargetBlock() {
 		return this.entity.getVillage().getPathingGraph().getRandomNode();
 	}

@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.block.AmaziaBlocks;
+import net.denanu.amazia.block.custom.TeachersDeskBlock;
 import net.denanu.amazia.pathing.PathingCell;
 import net.denanu.amazia.pathing.PathingCluster;
 import net.denanu.amazia.pathing.PathingGraph;
@@ -80,9 +81,6 @@ public class BasePathingNode extends PathingNode {
 		}
 
 		pos = pos.up();
-		Amazia.LOGGER.warn(Double.toString(Math.abs(BasePathingNode.getTop(world, this.getBlockPos()) - BasePathingNode.getTop(world, pos))));
-		Amazia.LOGGER.warn(Double.toString(BasePathingNode.getTop(world, this.getBlockPos())));
-		Amazia.LOGGER.warn(Double.toString(BasePathingNode.getTop(world, pos)));
 		if (Math.abs(BasePathingNode.getTop(world, this.getBlockPos()) - BasePathingNode.getTop(world, pos)) > 1) {
 			return false;
 		}
@@ -154,7 +152,7 @@ public class BasePathingNode extends PathingNode {
 
 	public static boolean canWalkOn(final ServerWorld world, final BlockPos pos) {
 		final BlockState blockState = world.getBlockState(pos);
-		return blockState.getMaterial().blocksMovement() && !(blockState.getBlock() instanceof FenceBlock) && !(blockState.getBlock() instanceof WallBlock) && !blockState.isOf(AmaziaBlocks.TREE_FARM_MARKER);
+		return blockState.getMaterial().blocksMovement() && !(blockState.getBlock() instanceof FenceBlock) && !(blockState.getBlock() instanceof WallBlock) && !blockState.isOf(AmaziaBlocks.TREE_FARM_MARKER) && !(blockState.getBlock() instanceof TeachersDeskBlock);
 	}
 	public static boolean isPassable(final ServerWorld world, final BlockPos bp) {
 		final BlockState blockState = world.getBlockState(bp);

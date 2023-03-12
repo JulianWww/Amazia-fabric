@@ -6,40 +6,54 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 
 public class AmaziaLockableSlot extends Slot {
-	private boolean open;
+	private boolean take, put;
 
 	public AmaziaLockableSlot(final Inventory inventory, final int index, final int x, final int y) {
-		this(inventory, index, x, y, false);
+		this(inventory, index, x, y, false, false);
 	}
 
-	public AmaziaLockableSlot(final Inventory inventory, final int index, final int x, final int y, final boolean open) {
+	public AmaziaLockableSlot(final Inventory inventory, final int index, final int x, final int y, final boolean put, final boolean take) {
 		super(inventory, index, x, y);
-		this.open = open;
+		this.put = put;
+		this.take = take;
 	}
 
-	public boolean isLocked() {
-		return !this.open;
+	public boolean canTake() {
+		return this.take;
 	}
 
-	public void lock() {
-		this.open = false;
+	public boolean canPut() {
+		return this.put;
 	}
 
-	public void unlock() {
-		this.open = true;
+	public void lockPut() {
+		this.put = false;
 	}
 
-	public void setLocked(final boolean locked) {
-		this.open = !locked;
+	public void unlockPut() {
+		this.put = true;
+	}
+
+	public void lockTake() {
+		this.take = false;
+	}
+
+	public void unlockTake() {
+		this.take = true;
+	}
+
+	public void setLocked(final boolean put, final boolean take) {
+		this.put = put;
+		this.take = take;
 	}
 
 	@Override
 	public boolean canTakeItems(final PlayerEntity playerEntity) {
-		return true;// this.open;
+		return this.take;
 	}
 
 	@Override
 	public boolean canInsert(final ItemStack stack) {
-		return true;//this.open;
+		return this.put;
 	}
 }

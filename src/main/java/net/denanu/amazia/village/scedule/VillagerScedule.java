@@ -40,7 +40,7 @@ public class VillagerScedule extends BaseVillagerScedule {
 		return nbt.contains(key) ? nbt.getLong(key) : factory.next();
 	}
 
-	private void generate() {
+	public void generate() {
 		this.wakeupTime		= VillagerScedule.WAKEUP_TIME_FACTORY.next();
 		this.endWorkTime	= VillagerScedule.ENDWORK_TIME_FACTORY.next();
 		this.sleepTime		= VillagerScedule.SLEEP_TIME_FACTORY.next();
@@ -63,6 +63,7 @@ public class VillagerScedule extends BaseVillagerScedule {
 		this.currentGroup = this.computeCurrentActionGroup(world);
 	}
 
+	@Override
 	public VillageActivityGroups getPerformActionGroup() {
 		return this.currentGroup;
 	}

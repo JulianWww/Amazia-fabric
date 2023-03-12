@@ -10,15 +10,17 @@ import net.minecraft.entity.ai.pathing.PathNode;
 import net.minecraft.util.math.BlockPos;
 
 public class PathingPath extends Path {
-	public PathingPath(final List<PathingNode> path, final BlockPos target) {
-		super(PathingPath.buildPath(path), target, true);
+	public PathingPath(final List<PathingNode> path, final BlockPos target, final BlockPos origin) {
+		super(PathingPath.buildPath(path, origin), target, true);
 	}
 
-	private static List<PathNode> buildPath(List<PathingNode> path) {
+	private static List<PathNode> buildPath(List<PathingNode> path, final BlockPos origin) {
 		path = PathSmother.smoothPath(path);
 		final ArrayList<PathNode> out = new ArrayList<>();
-		out.ensureCapacity(path.size());
-		for (final ListIterator<PathingNode> iter = path.listIterator(path.size()); iter.hasPrevious();) {
+		out.ensureCapacity(path.size()+1);
+		out.add(new PathingCell(origin).minecraftPathingNode);
+		final ListIterator<PathingNode> iter = path.listIterator(path.size());
+		for (; iter.hasPrevious();) {
 			out.add(iter.previous().getBlockPos().minecraftPathingNode);
 		}
 		return out;

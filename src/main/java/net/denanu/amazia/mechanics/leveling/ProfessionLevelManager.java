@@ -27,8 +27,10 @@ public class ProfessionLevelManager {
 		for (final String key : nbt.getKeys()) {
 			this.professionLevel.put(new Identifier(key), new MutableFloat(nbt.getFloat(key)));
 		}
-		this.updateEfficency(this.getUnmodLevel(profession));
-		this.updateAbilityRankFromNbt(village, profession);
+		if (profession != AmaziaProfessions.CHILD) {
+			this.updateEfficency(this.getUnmodLevel(profession));
+			this.updateAbilityRankFromNbt(village, profession);
+		}
 	}
 
 	public NbtCompound save() {

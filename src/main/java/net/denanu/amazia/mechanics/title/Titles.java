@@ -47,6 +47,12 @@ public enum Titles {
 		return name;
 	}
 
+	public static String getLastName(final String nameAndTitle) {
+		final String name = Titles.removeTitles(nameAndTitle);
+		final String[] split = name.split(" ");
+		return split[split.length - 1];
+	}
+
 	private static String setTitles(String name, final IAmaziaDataProviderEntity entity, final ServerPlayerEntity mayor) {
 		for (final Titles title : Titles.values()) {
 			if (title.qualifies.test(entity)) {

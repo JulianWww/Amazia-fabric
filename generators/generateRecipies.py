@@ -256,10 +256,11 @@ def registerOtherItemUnlockers():
     
   for ID, args in items.items():
     saveUnlocker(ID, *args)
-  
+
   from villagers import images
   for villager in images:
-     saveUnlocker(f"{villager}_conversion_token", "misc", ["amazia:base_transformation_token"])
+    if (villager != "child"):
+      saveUnlocker(f"{villager}_conversion_token", "misc", ["amazia:base_transformation_token"])
 
 
 

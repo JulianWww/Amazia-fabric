@@ -10,7 +10,8 @@ images = {
   "enchanter": "enchanted_book",
   "lumberjack": "iron_axe",
   "blacksmith": "/hammer",
-  "guard": "iron_sword"
+  "guard": "iron_sword",
+  "child": "apple"
 }
 
 acivementLevels = [

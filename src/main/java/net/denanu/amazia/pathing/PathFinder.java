@@ -102,13 +102,13 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 		Amazia.LOGGER.info("Scanned for path " + endNode.getBlockPos());
 
 		if (graph.isSetupDone()) {
-			return PathFinder.finalizeHirarchicalPath( this.findHirarchicalPath(startNode, endNode, graph));
+			return PathFinder.finalizeHirarchicalPath( this.findHirarchicalPath(startNode, endNode, graph), startNode.getBlockPos());
 		}
 		Amazia.LOGGER.info("classic");
-		return PathFinder.finalizeBasePath( this.basePathFinder(startNode, endNode, graph));
+		return PathFinder.finalizeBasePath( this.basePathFinder(startNode, endNode, graph), startNode.getBlockPos());
 	}
 
-	private static PathingPath finalizeHirarchicalPath(PathingNode end) {
+	private static PathingPath finalizeHirarchicalPath(PathingNode end, final BlockPos origin) {
 		if (end == null) {
 			return null;
 		}
@@ -118,9 +118,9 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 		for (; end.getBlockPos().from != null; end = end.getBlockPos().from.to(end)) {
 			path.addAll(end.getBlockPos().from.toPath(end));
 		}
-		return new PathingPath(path, targetPos);
+		return new PathingPath(path, targetPos, origin);
 	}
-	private static PathingPath finalizeBasePath(BasePathingNode end) {
+	private static PathingPath finalizeBasePath(BasePathingNode end, final BlockPos origin) {
 		if (end == null) {
 			return null;
 		}
@@ -130,7 +130,7 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 			path.add(end);
 			end = end.movedFromNode;
 		}
-		return new PathingPath(path, targetPos);
+		return new PathingPath(path, targetPos, origin);
 	}
 
 	private PathingNode findHirarchicalPath(final BasePathingNode startNode, final BasePathingNode endNode, final PathingGraph graph) {
@@ -352,6 +352,11 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 	}
 
 	@Override
+	public void tick() {
+		super.tick();
+	}
+
+	@Override
 	protected void checkTimeouts(final Vec3d currentPos) {
 		if (this.tickCount - this.pathStartTime > 100) {
 			if (currentPos.squaredDistanceTo(this.pathStartPos) < 2.25) {
@@ -398,7 +403,6 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 		if (bl || this.entity.canJumpToNextPathNode(this.currentPath.getCurrentNode().type) && this.shouldJumpToNextNode(vec3d)) {
 			this.currentPath.next();
 			this.openBlock();
-			//this.debug();
 		}
 		this.checkTimeouts(vec3d);
 	}

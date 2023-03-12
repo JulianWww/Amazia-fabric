@@ -13,8 +13,15 @@ public class AmaziaEscapeDangerGoal extends EscapeDangerGoal {
 	}
 
 	@Override
+	public void stop() {
+		super.stop();
+		this.entity.endCurrentlyRunningGoal(0);
+	}
+
+	@Override
 	public void start() {
 		super.start();
+		this.entity.setCurrentlyRunnginGoal(0);
 		HappynessMap.looseHappynessFromFleeing(this.entity);
 	}
 }
