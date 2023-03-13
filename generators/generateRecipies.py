@@ -1,13 +1,17 @@
 import os
 import json
 import sys
+from json import load, dump
 from pathlib import Path
 import shutil
+from copy import copy
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 sys.path.insert(1, str(Path(abspath).parent) + "/token")
+
+langFile = "../src/main/resources/assets/amazia/lang/en_us.json"
 
 path = "../src/main/resources/data/amazia/recipes/"
 types = [
@@ -30,6 +34,9 @@ types = [
   "stripped_warped",
   "stripped_mangrove",
 ]
+
+with open(langFile, "r") as file:
+  lang = load(file)
 
 def getShapedBase():
   return {
@@ -115,7 +122,7 @@ def addOut(data, item, count, group) :
     "count": count
   }
   if not group is None:
-  	data["group"] = "amazia:" + group
+    data["group"] = "amazia:" + group
   return data
 
 def getChair(type, alt):
@@ -152,6 +159,11 @@ def getChairs(types) :
     items = [getLogs(type)]
     saveUnlocker(f"{type}_chair_left",  "decorations", items)
     saveUnlocker(f"{type}_chair_right", "decorations", items)
+  
+    t = copy(type)
+    t = t.replace("_", " ")
+    print(t)
+    lang[f"block.amazia.{type}_chair"] = f"{t.title()} Chair"
   
 def getDesks(types) :
   removeOf("desk")
@@ -278,3 +290,6 @@ if __name__ == "__main__":
   getTrough("dark_oak", "sheep")
   
   registerOtherItemUnlockers()
+
+  with open(langFile, "w") as file:
+    dump(lang, file, indent=4, sort_keys=True)

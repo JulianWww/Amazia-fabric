@@ -17,6 +17,7 @@ import net.denanu.amazia.block.entity.AmaziaBlockEntities;
 import net.denanu.amazia.commands.AmaziaCommand;
 import net.denanu.amazia.commands.AmaziaGameRules;
 import net.denanu.amazia.commands.args.AmaziaArgumentTypes;
+import net.denanu.amazia.compat.mc.worldgen.Worldgen;
 import net.denanu.amazia.data.AmaziaStatusEffects;
 import net.denanu.amazia.data.LootTables;
 import net.denanu.amazia.economy.EconomyFactory;
@@ -121,6 +122,7 @@ public class Amazia implements ModInitializer {
 		AmaziaCriterions.setup();
 		AmaziaScreens.setup();
 		AmaziaParticles.setup();
+		Worldgen.setup();
 	}
 
 	public static VillageManager getVillageManager() {
