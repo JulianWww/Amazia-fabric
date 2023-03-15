@@ -49,6 +49,12 @@ def translate(orig, dest, filename):
   with open(filename, "r") as file:
     last = load(file)
 
+  custom = {}
+  customFile = f"./customs/{dest}.json"
+  if (os.path.exists(customFile)):
+    with open(customFile, "r") as file:
+      custom = load(file)
+
   translator = GoogleTranslator(source='en', target=dest, proxies=PROXIES)
   s = time()
   
@@ -62,6 +68,8 @@ def translate(orig, dest, filename):
           out[x] = y
         elif x in comp and comp[x] == y:
           out[x] = last[x]
+        elif x in custom:
+          out[x] = custom[x]
         else:
           out[x] = translator.translate(y)
         break
