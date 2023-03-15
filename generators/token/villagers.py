@@ -11,7 +11,8 @@ images = {
   "lumberjack": "iron_axe",
   "blacksmith": "/hammer",
   "guard": "iron_sword",
-  "child": "apple"
+  "child": "apple",
+  "nitwit": "scute"
 }
 
 acivementLevels = [

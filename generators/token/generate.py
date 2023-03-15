@@ -40,7 +40,7 @@ for entity, img in images.items():
 
 	cv2.imwrite(outPath + entity + ".png", new_base)
 
-	if entity != "child":
+	if entity != "child" and entity != "nitwit":
 		for acivement_data in acivementLevels:
 			lvl = acivement_data[0]
 			x, y = acivement_data[2]
@@ -118,7 +118,7 @@ def genAchivement(villager, parent, reward):
 	}
 
 for villager, data in villagerTypes.items():
-	if (villager != "child"):
+	if (villager != "child" and villager != "nitwit"):
 		with open(outPath + villager + ".json", "w") as file:
 			json.dump(genAchivement(villager, *data), file, indent=4)
 
