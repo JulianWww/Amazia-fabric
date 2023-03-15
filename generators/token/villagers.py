@@ -12,7 +12,7 @@ images = {
   "blacksmith": "/hammer",
   "guard": "iron_sword",
   "child": "apple",
-  "nitwit": "scute"
+  "nitwit": "firework_star"
 }
 
 acivementLevels = [
