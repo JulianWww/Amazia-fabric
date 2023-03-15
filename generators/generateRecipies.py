@@ -271,7 +271,7 @@ def registerOtherItemUnlockers():
 
   from villagers import images
   for villager in images:
-    if (villager != "child"):
+    if (villager != "child" and villager != "nitwit"):
       saveUnlocker(f"{villager}_conversion_token", "misc", ["amazia:base_transformation_token"])
 
 

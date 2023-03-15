@@ -12,6 +12,7 @@ sys.path.insert(1, str(Path(abspath).parent))
 
 langDir = "../../src/main/resources/assets/amazia/lang/"
 origFile = langDir + "en_us.json"
+compFile = langDir + "en_gb.json"
 
 SOCKS_PORT = 9050
 TOR_PATH = os.path.normpath(os.getcwd()+"/Tor/tor/tor.exe")
@@ -44,8 +45,17 @@ def printProgress(done, todo, time):
   file_print(f"{done} / {todo} \t\t {time} s")
 
 
-def translate(orig, dest):
-  #runTor()
+def translate(orig, dest, filename):
+  with open(filename, "r") as file:
+    last = load(file)
+
+  custom = {}
+  customFile = f"./customs/{dest}.json"
+  print(customFile)
+  if (os.path.exists(customFile)):
+    with open(customFile, "r") as file:
+      custom = load(file)
+
   translator = GoogleTranslator(source='en', target=dest, proxies=PROXIES)
   s = time()
   
@@ -55,7 +65,14 @@ def translate(orig, dest):
     s = time()
     while True:
       try:
-        out[x] = translator.translate(y)
+        if x in custom:
+          out[x] = custom[x]
+        elif (dest == "en"):
+          out[x] = y
+        elif x in comp and comp[x] == y:
+          out[x] = last[x]
+        else:
+          out[x] = translator.translate(y)
         break
       except Exception as e:
         sleep(0.2)
@@ -72,7 +89,7 @@ def makeTranslation(transKey, filenames):
     filenames = [filenames]
 
   start = time()
-  data = translate(en_us, transKey)
+  data = translate(en_us, transKey, f"{langDir}{filenames[0]}.json")
   for filename in filenames:
     with open(f"{langDir}{filename}.json", "w") as file:
       dump(data, file, indent=4, sort_keys=True)
@@ -85,6 +102,10 @@ def makeTranslation(transKey, filenames):
 if __name__ == "__main__":
   with open(origFile, "r") as file:
     en_us = load(file)
+
+  with open(compFile, "r") as file:
+    comp = load(file)
+  
 
   with open("langs.json") as file:
     langs = load(file)
