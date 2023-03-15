@@ -51,6 +51,7 @@ def translate(orig, dest, filename):
 
   custom = {}
   customFile = f"./customs/{dest}.json"
+  print(customFile)
   if (os.path.exists(customFile)):
     with open(customFile, "r") as file:
       custom = load(file)
@@ -64,12 +65,12 @@ def translate(orig, dest, filename):
     s = time()
     while True:
       try:
-        if (dest == "en"):
+        if x in custom:
+          out[x] = custom[x]
+        elif (dest == "en"):
           out[x] = y
         elif x in comp and comp[x] == y:
           out[x] = last[x]
-        elif x in custom:
-          out[x] = custom[x]
         else:
           out[x] = translator.translate(y)
         break
