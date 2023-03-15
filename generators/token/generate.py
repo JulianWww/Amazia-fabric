@@ -28,15 +28,18 @@ system(f"mkdir ./tmp")
 
 base = cv2.imread("base_token.png", cv2.IMREAD_UNCHANGED)
 
-for entity, img in images.items():
-	file = img[1:] + ".png" if img[0] == "/" else wget.download(path + img + ".png", f"./tmp/{img}.png")
-
-	mask = cv2.imread(file, cv2.IMREAD_UNCHANGED)
-	mask = np.pad(mask, ((3,3), (3, 3), (0, 0)), "constant", constant_values = 0)
-
-	pos = np.where(mask[:,:,3] != 0)
+for entity, imgs in images.items():
+	if isinstance(imgs, str):
+		imgs = [imgs]
+	files = [img[1:] + ".png" if img[0] == "/" else wget.download(path + img + ".png", f"./tmp/{img}.png") for img in imgs]
 	new_base = np.copy(base)
-	new_base[pos] = mask[pos]
+
+	for file in files:
+		mask = cv2.imread(file, cv2.IMREAD_UNCHANGED)
+		mask = np.pad(mask, ((3,3), (3, 3), (0, 0)), "constant", constant_values = 0)
+
+		pos = np.where(mask[:,:,3] != 0)
+		new_base[pos] = mask[pos]
 
 	cv2.imwrite(outPath + entity + ".png", new_base)
 
