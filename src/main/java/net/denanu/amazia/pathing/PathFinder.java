@@ -99,12 +99,10 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 			return null;
 		}
 
-		Amazia.LOGGER.info("Scanned for path " + endNode.getBlockPos());
 
 		if (graph.isSetupDone()) {
 			return PathFinder.finalizeHirarchicalPath( this.findHirarchicalPath(startNode, endNode, graph), startNode.getBlockPos());
 		}
-		Amazia.LOGGER.info("classic");
 		return PathFinder.finalizeBasePath( this.basePathFinder(startNode, endNode, graph), startNode.getBlockPos());
 	}
 

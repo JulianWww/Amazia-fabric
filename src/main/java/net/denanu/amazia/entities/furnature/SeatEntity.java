@@ -2,7 +2,6 @@ package net.denanu.amazia.entities.furnature;
 
 import java.util.List;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.AmaziaEntities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -37,7 +36,7 @@ public class SeatEntity extends Entity {
 		{
 			final List<SeatEntity> seats = world.getEntitiesByClass(SeatEntity.class, new Box(pos.getX() - 5, pos.getY() - 5, pos.getZ() - 5, pos.getX() + 5, pos.getY() + 5, pos.getZ() + 5), a -> {
 				final BlockPos p = pos.up();
-				Amazia.LOGGER.info(a.getBlockPos().toString() + " : " + p.toString() + " : " + Boolean.toString(a.getBlockPos().equals(p)));
+
 				return a.getBlockPos().equals(p);
 			});
 			if(seats.isEmpty())

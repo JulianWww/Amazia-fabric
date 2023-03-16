@@ -58,6 +58,10 @@ dependencies {
     include "org.yaml:snakeyaml:1.16"
 }
 
+if (project.version.endsWith('-dev')) {
+	project.version += "-" + Long.toHexString(new Date().getTime())
+}
+
 processResources {
 	inputs.property "version", project.version
 

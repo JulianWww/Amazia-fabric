@@ -11,6 +11,7 @@ import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.util.Identifier;
@@ -24,7 +25,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.ExtendedGeoEntityRenderer;
 
 @Environment(EnvType.CLIENT)
-public class AmaziaRenderer<T extends AmaziaVillagerEntity & IAnimatable> extends ExtendedGeoEntityRenderer<T> {
+public class AmaziaRenderer<T extends PassiveEntity & AmaziaModelEntityI & IAnimatable> extends ExtendedGeoEntityRenderer<T> {
 	public AmaziaRenderer(final EntityRendererFactory.Context ctx, final AnimatedGeoModel<T> model) {
 		super(ctx, model);
 		this.shadowRadius = 0.4f;

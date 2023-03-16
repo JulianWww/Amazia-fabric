@@ -2,7 +2,6 @@ package net.denanu.amazia.pathing.node;
 
 import java.util.HashSet;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.block.AmaziaBlocks;
 import net.denanu.amazia.block.custom.TeachersDeskBlock;
 import net.denanu.amazia.pathing.PathingCell;
@@ -162,14 +161,6 @@ public class BasePathingNode extends PathingNode {
 		return state.getBlock() instanceof DoorBlock && !state.isOf(Blocks.IRON_DOOR) || state.getBlock() instanceof FenceGateBlock;
 	}
 	public boolean canWalkTo(final BasePathingNode node) {
-		final boolean a = node.getBlockPos().getY() == this.getBlockPos().getY() - 1 && node.getClearanceHeight() >= 3;
-		final boolean b = node.getBlockPos().getY() == this.getBlockPos().getY();
-		final boolean c = node.getBlockPos().getY() == this.getBlockPos().getY() + 1 && this.getClearanceHeight() >= 3;
-		if (!b) {
-			Amazia.LOGGER.warn("from: " + this.toString() + ", to: " + node.toString());
-			Amazia.LOGGER.warn(Boolean.toString(a) + ", " + Boolean.toString(b) + ", " + Boolean.toString(c));
-		}
-
 		return node.getBlockPos().getY() == this.getBlockPos().getY() - 1 && node.getClearanceHeight() >= 3 || node.getBlockPos().getY() == this.getBlockPos().getY() || node.getBlockPos().getY() == this.getBlockPos().getY() + 1 && this.getClearanceHeight() >= 3;
 	}
 

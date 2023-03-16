@@ -25,7 +25,7 @@
     "StatusEffectInstanceMixin",
     "TrunkPlacerMixin",
     "VillageBlockUpdateMixin",
-    
+ 
     "enemies.AbstractSkeletonEntityMixin",
     "enemies.DrownedEntityMixin",
     "enemies.GhastEntityMixin",

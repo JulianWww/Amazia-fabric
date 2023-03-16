@@ -2,7 +2,6 @@ package net.denanu.amazia.pathing;
 
 import java.util.HashMap;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.pathing.node.BasePathingNode;
 import net.denanu.amazia.pathing.node.PathingNode;
 import net.denanu.amazia.village.Village;
@@ -139,7 +138,6 @@ public class PathingGraph {
 
 
 	public void finalizeSetup() {
-		Amazia.LOGGER.info("Pathing Setup Done");
 		this.setupDone = true;
 	}
 
@@ -192,7 +190,7 @@ public class PathingGraph {
 	}
 
 	public BlockPos getRandomNode() {
-		return this.lvl0.getRandom();
+		return this.lvl0.getRandom(this.village.getOrigin(), 25);
 	}
 
 	public BlockPos getRandomVillageEnterNode() {

@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.goal.storage.InteractWithContainerGoal;
 import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
 import net.denanu.amazia.utils.nbt.NbtUtils;
@@ -136,7 +135,6 @@ public class StorageSceduler extends FacingPathingVillageSceduler {
 	}
 
 	public DoubleDownPathingData getDepositLocation(final ServerWorld world, final ItemStack item) {
-		Amazia.LOGGER.info("Scanned storage depositing");
 		DoubleDownPathingData potential = null;
 		for (final Entry<BlockPos, DoubleDownPathingData> pos : this.chests.entrySet()) {
 			final Pair<Boolean, Boolean> data = StorageSceduler.canAddItem(pos.getValue().getStorageInventory(world), item);

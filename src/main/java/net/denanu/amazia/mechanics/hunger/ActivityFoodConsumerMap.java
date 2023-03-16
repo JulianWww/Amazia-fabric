@@ -1,6 +1,5 @@
 package net.denanu.amazia.mechanics.hunger;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
 import net.denanu.amazia.utils.random.LevelBasedLinearRange;
 import net.denanu.amazia.utils.random.LevelBasedRandomnessFactory;
@@ -11,7 +10,6 @@ public class ActivityFoodConsumerMap {
 
 	static void consumeFood(final IAmaziaFoodConsumerEntity entity, final float amount) {
 		entity.reduceFood(amount);
-		Amazia.LOGGER.info("ate");
 	}
 
 	private static void consumeFoodWithProbability(final IAmaziaFoodConsumerEntity entity, final int prob, final float amount) {
@@ -21,15 +19,15 @@ public class ActivityFoodConsumerMap {
 	}
 
 	public static void lookAroundUseFood(final IAmaziaFoodConsumerEntity entity) {
-		ActivityFoodConsumerMap.consumeFoodWithProbability(entity, 10, 1);
+		//ActivityFoodConsumerMap.consumeFoodWithProbability(entity, 10, 1);
 	}
 
 	public static void walkUseFood(final IAmaziaFoodConsumerEntity entity, final int foodUsage) {
-		ActivityFoodConsumerMap.consumeFoodWithProbability(entity, foodUsage, 1);
+		ActivityFoodConsumerMap.consumeFoodWithProbability(entity, foodUsage, 0.01f);
 	}
 
 	public static void interactWithContainerUseFood(final IAmaziaFoodConsumerEntity entity) {
-		ActivityFoodConsumerMap.consumeFoodWithProbability(entity, 10, 1);
+		ActivityFoodConsumerMap.consumeFoodWithProbability(entity, 10, 0.01f);
 	}
 
 	public static void craftItemUseFood(final IAmaziaDataProviderEntity entity, final Item itm) {
@@ -45,7 +43,7 @@ public class ActivityFoodConsumerMap {
 	}
 
 	public static void growCropUseFood(final IAmaziaFoodConsumerEntity entity) {
-		ActivityFoodConsumerMap.consumeFood(entity, 2);
+		ActivityFoodConsumerMap.consumeFood(entity, 0.5f);
 	}
 
 	public static void regrowMineUseFood(final IAmaziaFoodConsumerEntity entity) {
@@ -57,15 +55,15 @@ public class ActivityFoodConsumerMap {
 	}
 
 	public static void harvestCropUseFood(final IAmaziaDataProviderEntity entity) {
-		ActivityFoodConsumerMap.consumeFood(entity, 1);
+		ActivityFoodConsumerMap.consumeFood(entity, 0.1f);
 	}
 
 	public static void plantCropUseFood(final IAmaziaDataProviderEntity entity) {
-		ActivityFoodConsumerMap.consumeFood(entity, 1);
+		ActivityFoodConsumerMap.consumeFood(entity, 0.1f);
 	}
 
 	public static void tillLandUseFood(final IAmaziaDataProviderEntity entity) {
-		ActivityFoodConsumerMap.consumeFood(entity, 5);
+		ActivityFoodConsumerMap.consumeFood(entity, 1);
 	}
 
 	public static void melleAttackUseFood(final IAmaziaDataProviderEntity entity) {

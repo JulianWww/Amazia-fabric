@@ -252,13 +252,13 @@ public class Village {
 	private void update() {
 		this.pathingGraph.update();
 
-		/* if (this.getWorld().isDay() && this.merchant == null) {
+		if (this.getWorld().isDay() && this.merchant == null) {
 			this.spawnMerchant();
 		}
 		else if (this.getWorld().isNight() && this.merchant != null) {
 			this.merchant.leave();
 			this.merchant = null;
-		} */
+		}
 	}
 
 	@Debug

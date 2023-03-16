@@ -2,7 +2,6 @@ package net.denanu.amazia.item.custom;
 
 import java.util.Set;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.components.AmaziaBlockComponents;
 import net.denanu.amazia.entities.village.server.ChildEntity;
 import net.minecraft.block.BedBlock;
@@ -23,7 +22,6 @@ public class AmaziaChildSpawnItem extends Item {
 
 	@Override
 	public ActionResult useOnBlock(final ItemUsageContext context) {
-		Amazia.LOGGER.info("spawned Child");
 		BlockState state;
 		if ((state = context.getWorld().getBlockState(context.getBlockPos())).getBlock() instanceof BedBlock) {
 			final World world = context.getWorld();
@@ -36,7 +34,6 @@ public class AmaziaChildSpawnItem extends Item {
 			context.getWorld().spawnEntity(child);
 
 			for (final BlockPos pos : this.getVillagePoses(state, context)) {
-				Amazia.LOGGER.info(pos.toString());
 				if (child.scanForVillage(pos)) {
 					break;
 				}

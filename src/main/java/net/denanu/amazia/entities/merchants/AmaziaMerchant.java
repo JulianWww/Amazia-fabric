@@ -11,6 +11,9 @@ import net.denanu.amazia.economy.Economy;
 import net.denanu.amazia.economy.IAmaziaMerchant;
 import net.denanu.amazia.economy.ProfessionFactory;
 import net.denanu.amazia.entities.merchants.goals.WonderAroundSameYGoal;
+import net.denanu.amazia.entities.village.both.VillagerData;
+import net.denanu.amazia.entities.village.client.AmaziaModelEntityI;
+import net.denanu.amazia.mechanics.VillagerTypes;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.networking.s2c.AmaziaDataSetterS2C;
 import net.denanu.amazia.utils.nbt.NbtUtils;
@@ -25,8 +28,11 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -39,6 +45,7 @@ import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -51,7 +58,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IAnimatable {
+public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, AmaziaModelEntityI, IAnimatable {
+	private static final TrackedData<VillagerData> VILLAGER_DATA = DataTracker.registerData(VillagerEntity.class, VillagerData.VILLAGER_DATA);
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -79,6 +87,12 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 	}
 
 	@Override
+	protected void initDataTracker() {
+		super.initDataTracker();
+		this.dataTracker.startTracking(AmaziaMerchant.VILLAGER_DATA, new VillagerData(VillagerTypes.SNOW));
+	}
+
+	@Override
 	protected void initGoals() {
 		this.goalSelector.add(0, new SwimGoal(this));
 		this.goalSelector.add(1, new EscapeDangerGoal(this, 2.0));
@@ -101,6 +115,7 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 		super.writeCustomDataToNbt(nbt);
 		nbt.put("home", NbtUtils.toNbt(this.home));
 		nbt.putString("profession", this.profession);
+		nbt.put("type", this.dataTracker.get(AmaziaMerchant.VILLAGER_DATA).toNbt());
 		if (this.offers != null) { nbt.put("Trades", this.offers.toNbt()); }
 	}
 
@@ -109,6 +124,9 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 		super.readCustomDataFromNbt(nbt);
 		this.home = NbtUtils.toBlockPos(nbt.getList("home", NbtElement.INT_TYPE));
 		this.profession = nbt.getString("profession");
+		if (nbt.contains("type")) {
+			this.dataTracker.set(AmaziaMerchant.VILLAGER_DATA, new VillagerData(nbt.getCompound("type")));
+		}
 		this.offers = new AmaziaTradeOfferList(nbt.getCompound("Trades"));
 	}
 
@@ -119,11 +137,11 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 
 	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
 		if (event.isMoving()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.merchant.walk", true));
 			return PlayState.CONTINUE;
 		}
 
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.merchant.idle", true));
 		return PlayState.CONTINUE;
 	}
 
@@ -140,7 +158,7 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 	public static DefaultAttributeContainer.Builder setAttributes() {
 		return MobEntity.createMobAttributes()
 				.add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
-				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2f);
+				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.4f);
 	}
 
 	// Merchant
@@ -172,7 +190,6 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 	@Override
 	public AmaziaTradeOfferList getOffers() {
 		if (this.offers == null || this.offers.isEmpty()) {
-			Amazia.LOGGER.info("Built trades");
 			this.offers = Economy.buildTrades(this);
 		}
 		else {
@@ -240,5 +257,25 @@ public class AmaziaMerchant extends PassiveEntity implements IAmaziaMerchant, IA
 				AmaziaNetworking.S2C.SET_TRADE_OFFERS,
 				AmaziaDataSetterS2C.toSetTradeOfferBuf(this.customer.currentScreenHandler.syncId, this.getOffers())
 				);
+	}
+
+	@Override
+	public Identifier getProfession() {
+		return Identifier.of(Amazia.MOD_ID, "merchant");
+	}
+
+	@Override
+	public BlockPos getBlockPos() {
+		return super.getBlockPos();
+	}
+
+	@Override
+	public boolean isOnGround() {
+		return super.isOnGround();
+	}
+
+	@Override
+	public VillagerData getData() {
+		return this.dataTracker.get(AmaziaMerchant.VILLAGER_DATA);
 	}
 }

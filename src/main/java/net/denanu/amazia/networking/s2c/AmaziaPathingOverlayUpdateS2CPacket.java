@@ -19,6 +19,5 @@ public class AmaziaPathingOverlayUpdateS2CPacket {
 		final ClientPathingNode node =new ClientPathingNode(ajacents, pos);
 
 		VillagePathingOverlay.addNode(node);
-		VillagePathingOverlay.addToQueue(ajacents);
 	}
 }

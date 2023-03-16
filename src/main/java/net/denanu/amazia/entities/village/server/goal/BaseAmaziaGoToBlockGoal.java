@@ -27,7 +27,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 	private int currentX, currentZ = 0;
 
 	public BaseAmaziaGoToBlockGoal(final E e, final int priority) {
-		this(e, priority, BaseAmaziaGoToBlockGoal.BASE_FOOD_USAGE, 1.0f);
+		this(e, priority, BaseAmaziaGoToBlockGoal.BASE_FOOD_USAGE, 0.8f);
 	}
 
 	public BaseAmaziaGoToBlockGoal(final E e, final int priority, final int foodUsage) {
@@ -141,12 +141,15 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 	}
 
 	protected void recalcPath() {
+		//Amazia.LOGGER.info("Pathing to " + this.targetPos.toString());
+		//Amazia.LOGGER.info("Pathing from " + this.entity.getBlockPos());
 		this.nav =  this.entity.getNavigation();
 		this.path = (PathingPath) this.nav.findPathTo(this.targetPos, 0);
 		if (this.path != null && this.path.getLength() == 1) {
 			this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() + 1, this.targetPos.getZ() + 0.5, 1);
 		}
 		if (this.path == null && !this.directMovement) {
+			Amazia.LOGGER.info("Pathing failed");
 			this.fail();
 			return;
 		}

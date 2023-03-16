@@ -15,7 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
 public class CraftingHungerManager {
-	public static final Map<Item, LevelBasedRandomnessFactory<Float>> ITEM_HUNGER_MAP = new HashMap<Item, LevelBasedRandomnessFactory<Float>>();
+	public static final Map<Item, LevelBasedRandomnessFactory<Float>> ITEM_HUNGER_MAP = new HashMap<>();
 
 	public static void register(final Item item, final LevelBasedRandomnessFactory<Float> factory) {
 		CraftingHungerManager.ITEM_HUNGER_MAP.put(item, factory);
@@ -73,7 +73,7 @@ public class CraftingHungerManager {
 			.append("Missing food cost factory for: ")
 			.append(itm)
 			.append(" add using CraftingHungerManager.register");
-			Amazia.LOGGER.info(
+			Amazia.LOGGER.debug(
 					builder.toString()
 					);
 		}

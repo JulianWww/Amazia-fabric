@@ -1,11 +1,14 @@
 package net.denanu.amazia.commands.village.pathing;
 
+import java.util.List;
+
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
+import net.denanu.amazia.Amazia;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.networking.s2c.AmaziaDataSetterS2C;
@@ -13,6 +16,7 @@ import net.denanu.amazia.pathing.node.BasePathingNode;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.BlockPosArgumentType;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -71,9 +75,15 @@ public class AmaziaClientVillagePathingCommands {
 			else {
 				context.getSource().sendFeedback(Text.translatable("messages.amazia.commands.disabled_pathing_render"), false);
 			}
-			ServerPlayNetworking.send(context.getSource().getPlayer(), AmaziaNetworking.S2C.SETUP_PATHINGOVERLAY, AmaziaDataSetterS2C.toSetupBasePathingRendereingBuf(pos, val));
+			final long id = context.getSource().getWorld().getTime();
+			Amazia.LOGGER.info(Long.toString(id));
+			final List<PacketByteBuf> packets = AmaziaDataSetterS2C.toSetupBasePathingRendereingBuf(context, pos, val, id);
+			for (final PacketByteBuf packet : packets) {
+				ServerPlayNetworking.send(context.getSource().getPlayer(), AmaziaNetworking.S2C.SETUP_PATHINGOVERLAY, packet);
+			}
 		}
 		catch (final Exception e){
+			Amazia.LOGGER.error(e.getMessage());
 			return -1;
 		}
 		return 1;

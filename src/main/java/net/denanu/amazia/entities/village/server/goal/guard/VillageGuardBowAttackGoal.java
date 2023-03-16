@@ -2,7 +2,6 @@ package net.denanu.amazia.entities.village.server.goal.guard;
 
 import java.util.EnumSet;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.GuardEntity;
 import net.denanu.amazia.mechanics.hunger.ActivityFoodConsumerMap;
 import net.minecraft.entity.EquipmentSlot;
@@ -106,7 +105,6 @@ public class VillageGuardBowAttackGoal extends Goal {
 		((MobEntity) this.guard).setAttacking(false);
 		((LivingEntity) this.guard).clearActiveItem();
 		this.guard.getMoveControl().stop();
-		Amazia.LOGGER.info("stoped combat movement");
 	}
 
 	@Override

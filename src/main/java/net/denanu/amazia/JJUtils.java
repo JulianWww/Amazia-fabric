@@ -1,5 +1,6 @@
 package net.denanu.amazia;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -150,5 +151,19 @@ public class JJUtils {
 			}
 		}
 		return out.getValue();
+	}
+
+	public static <Key, T> T getOrNull(final HashMap<Key, T> positionMap, final Key i) {
+		if (positionMap == null) {
+			return null;
+		}
+		return positionMap.get(i);
+	}
+
+	public static <T> T maxOrNull(final HashMap<Integer, T> map) {
+		if (map == null) {
+			return null;
+		}
+		return JJUtils.max(map.entrySet());
 	}
 }

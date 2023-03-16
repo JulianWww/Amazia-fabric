@@ -7,6 +7,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.entities.AmaziaEntities;
+import net.denanu.amazia.mechanics.education.IAmaziaEducatedEntity;
+import net.denanu.amazia.mechanics.happyness.IAmaziaHappynessEntity;
+import net.denanu.amazia.mechanics.intelligence.IAmaziaIntelligenceEntity;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -43,6 +46,14 @@ public class NitwitEntity extends AmaziaVillagerEntity implements IAnimatable {
 		entity.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
 		entity.setup();
 		world.spawnEntity(entity);
+	}
+
+	@Override
+	public void setup() {
+		super.setup();
+		this.education = IAmaziaEducatedEntity.baseEducation(this);
+		this.happyness = IAmaziaHappynessEntity.getDefaultHappyness();
+		this.dataTracker.set(AmaziaVillagerEntity.INTELLIGENCE, IAmaziaIntelligenceEntity.getInitalIntelligence());
 	}
 
 	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {

@@ -1,7 +1,7 @@
 package net.denanu.amazia.entities;
 
 import net.denanu.amazia.entities.furnature.SeatRenderer;
-import net.denanu.amazia.entities.merchants.client.MerchantRenderer;
+import net.denanu.amazia.entities.merchants.AmaziaMerchant;
 import net.denanu.amazia.entities.village.client.AmaziaModel;
 import net.denanu.amazia.entities.village.client.AmaziaRenderer;
 import net.denanu.amazia.entities.village.client.BlacksmithRenderer;
@@ -17,6 +17,7 @@ import net.denanu.amazia.entities.village.client.MinerRenderer;
 import net.denanu.amazia.entities.village.client.NitwitRenderer;
 import net.denanu.amazia.entities.village.client.RancherRenderer;
 import net.denanu.amazia.entities.village.client.TeacherRenderer;
+import net.denanu.amazia.entities.village.server.BardEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -39,8 +40,8 @@ public class ClientEntities {
 		EntityRendererRegistry.register(AmaziaEntities.TEACHER, 			TeacherRenderer::new);
 		EntityRendererRegistry.register(AmaziaEntities.CHILD, 				ChildRenderer::new);
 
-		EntityRendererRegistry.register(AmaziaEntities.MERCHANT,			MerchantRenderer::new);
-		EntityRendererRegistry.register(AmaziaEntities.VILLAGE_MERCHANT,	MerchantRenderer::new);
+		EntityRendererRegistry.register(AmaziaEntities.MERCHANT,			ctx -> new AmaziaRenderer<AmaziaMerchant>(ctx, new AmaziaModel<>("merchant")));
+		EntityRendererRegistry.register(AmaziaEntities.VILLAGE_MERCHANT,	ctx -> new AmaziaRenderer<AmaziaMerchant>(ctx, new AmaziaModel<>("merchant")));
 		EntityRendererRegistry.register(AmaziaEntities.SEAT,				SeatRenderer::new);
 	}
 }

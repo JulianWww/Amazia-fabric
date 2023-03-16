@@ -1,11 +1,17 @@
 package net.denanu.amazia.pathing;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
 import net.denanu.amazia.JJUtils;
 import net.denanu.amazia.pathing.node.BasePathingNode;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
 public class PathingLvl {
@@ -63,15 +69,14 @@ public class PathingLvl {
 		return map.get(key);
 	}
 
-	public BlockPos getRandom() {
-		return
-				JJUtils.getRandomSetElement(
-						JJUtils.getRandomSetElement(
-								JJUtils.getRandomSetElement(
-										this.positionMap.entrySet()
-										).getValue().entrySet()
-								).getValue().entrySet()
-						).getValue().getBlockPos();
+	public BlockPos getRandom(final BlockPos center, final int range) {
+		final BasePathingNode node = JJUtils.maxOrNull(
+				JJUtils.getOrNull(
+						JJUtils.getOrNull(this.positionMap, center.getX() + JJUtils.rand.nextInt(-range, range)),
+						center.getY() + JJUtils.rand.nextInt(-range, range)
+						)
+				);
+		return node == null ? null : node.getBlockPos();
 	}
 
 	@Nullable
@@ -83,5 +88,35 @@ public class PathingLvl {
 								).entrySet()
 						).entrySet()
 				).getBlockPos();
+	}
+
+	public List<PacketByteBuf> toBuf(final Consumer<PacketByteBuf> meta) {
+		final LinkedList<BasePathingNode> nodes = new LinkedList<>();
+		for (final HashMap<Integer, HashMap<Integer, BasePathingNode>> xmap : this.positionMap.values()) {
+			for (final HashMap<Integer, BasePathingNode> zmap : xmap.values()) {
+				nodes.addAll(zmap.values());
+			}
+		}
+
+		final int partition = 1024;
+		final List<PacketByteBuf> out = new LinkedList<>();
+		final Iterator<BasePathingNode> iter = nodes.iterator();
+
+		while (iter.hasNext()) {
+			final LinkedList<BasePathingNode> nodeBuf = new LinkedList<>();
+			while (nodeBuf.size() < partition && iter.hasNext()) {
+				nodeBuf.add(iter.next());
+			}
+			final PacketByteBuf buf = PacketByteBufs.create();
+			meta.accept(buf);
+			buf.writeCollection(nodeBuf, (buf2, node) -> {
+				buf2.writeBlockPos(node.getBlockPos());
+				buf2.writeCollection(node.ajacentNodes, (buf3, aj) -> {
+					buf3.writeBlockPos(aj.getBlockPos());
+				});
+			});
+			out.add(buf);
+		}
+		return out;
 	}
 }

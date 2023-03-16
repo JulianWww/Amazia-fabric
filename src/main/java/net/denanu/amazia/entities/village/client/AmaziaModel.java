@@ -4,12 +4,13 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 @Environment(EnvType.CLIENT)
-public class AmaziaModel<T extends AmaziaVillagerEntity & IAnimatable> extends AnimatedGeoModel<T> {
+public class AmaziaModel<T extends PassiveEntity & AmaziaModelEntityI & IAnimatable> extends AnimatedGeoModel<T> {
 	private final Identifier ANIM, MODEL;
 	private static final Identifier TEX = Identifier.of(Amazia.MOD_ID, "textures/entity/villagers/villager.png");
 

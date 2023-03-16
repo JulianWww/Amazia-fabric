@@ -72,7 +72,12 @@ public class BardEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
 		if (event.isMoving()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.generic.walk", true));
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bard.walk", true));
+			return PlayState.CONTINUE;
+		}
+
+		if (this.isSleeping()) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.generic.sleep", true));
 			return PlayState.CONTINUE;
 		}
 
