@@ -1,7 +1,6 @@
 package net.denanu.amazia.entities.village.client;
 
 import net.denanu.amazia.entities.village.client.features.AmaziaVillagerClothingFeatureRenderer;
-import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -27,9 +26,13 @@ import software.bernie.geckolib3.renderers.geo.ExtendedGeoEntityRenderer;
 @Environment(EnvType.CLIENT)
 public class AmaziaRenderer<T extends PassiveEntity & AmaziaModelEntityI & IAnimatable> extends ExtendedGeoEntityRenderer<T> {
 	public AmaziaRenderer(final EntityRendererFactory.Context ctx, final AnimatedGeoModel<T> model) {
+		this(ctx, true, model);
+	}
+
+	public AmaziaRenderer(final EntityRendererFactory.Context ctx, final boolean biomeSpecifics, final AnimatedGeoModel<T> model) {
 		super(ctx, model);
 		this.shadowRadius = 0.4f;
-		this.addLayer(new AmaziaVillagerClothingFeatureRenderer<>(this));
+		this.addLayer(new AmaziaVillagerClothingFeatureRenderer<>(this, biomeSpecifics));
 	}
 
 	@Override
