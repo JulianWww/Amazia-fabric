@@ -722,5 +722,10 @@
     "profession.amazia.mason": "Mason",
     "profession.amazia.shepherd": "Shepherd",
     "profession.amazia.toolsmith": "Toolsmith",
-    "profession.amazia.weaponsmith": "Weaponsmith"
+    "profession.amazia.weaponsmith": "Weaponsmith",
+    "minecraft.textures/misc/forcefield.png": "Vanilla",
+    "amazia.textures/misc/border/neo.png": "Neo",
+    "amazia.textures/misc/border/bee.png": "Hexagons",
+    "amazia.textures/misc/border/bee_high_res.png": "Hexagons 128px",
+    "amazia.gui.title.configs": "Configs"
 }
