@@ -3,3 +3,4 @@ Better Villagers in Minecraft. Allows For Vilage Creation and Development.
 Credits:
 - Heart Icon by Nicole Marie T
 - Happy emoji from Flaticon.
+- Village border Neo from https://github.com/Yxmna/YPACK/

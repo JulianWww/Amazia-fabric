@@ -11,10 +11,14 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.config.options.ConfigColor;
+import fi.dy.masa.malilib.config.options.ConfigDouble;
+import fi.dy.masa.malilib.config.options.ConfigInteger;
 import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
 import net.denanu.amazia.Amazia;
+import net.denanu.amazia.GUI.renderers.VillageBorderMotionRelativeAnchorCycle;
+import net.denanu.amazia.GUI.renderers.VillageBorderTextureSelectorCycle;
 import net.denanu.amazia.compat.malilib.NameFakerOption;
 import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
 import net.fabricmc.api.EnvType;
@@ -29,6 +33,14 @@ public class Config implements IConfigHandler {
 
 		public static ConfigColor PROBLEM_COLOR = Generic.register(new ConfigColor("problem_color", "#00820000", "Color used in chat for Problems"));
 		public static ConfigBoolean SHOW_NAMES_IN_CHAT = Generic.register(new ConfigBoolean("show_names", true, "If chat messages should contain entity names", "Chat Names"));
+		public static ConfigBoolean SHOW_VILLAGE_BORDER = Generic.register(new ConfigBoolean("show_border", true, "If Village  Borders should be rendered", "Village Border"));
+		public static ConfigOptionList VILLAGE_BORDER_TEXTURES = Generic.register(new ConfigOptionList("village border Texture", VillageBorderTextureSelectorCycle.VANILLA, "Village Border Texture"));
+		public static ConfigDouble MOVEMENT_SPEED 	= Generic.register(new ConfigDouble("village border speed", 	1, 	    -1d, 1d, 	true, "Speed at wich the textures will scroll upwards"));
+		public static ConfigInteger BORDER_DISTANCE = Generic.register(new ConfigInteger("village border distance", 16, 	1, 128, 	true, "How far away to start rendering the Border"));
+		public static ConfigDouble BORDER_HIGHT 	= Generic.register(new ConfigDouble("village border hight", 	3, 		1, 128, 	true, "How Tall the Border Should Be"));
+		public static ConfigDouble BORDER_FALLAF 	= Generic.register(new ConfigDouble("village border fallof", 	1, 		0, 16, 		true, "Fase Speed of the Border towards the edges"));
+		public static ConfigColor BORDER_COLOR = Generic.register(new ConfigColor("billage border color", "#FF20A0FF", "Color used the Village Border"));
+		public static ConfigOptionList BORDER_MOTION = Generic.register(new ConfigOptionList("village border relative", VillageBorderMotionRelativeAnchorCycle.WORLD, "Village Border Motion Ralation"));
 
 		protected static <T extends IConfigBase> T register(final T config) {
 			Generic.OPTIONS.add(config);
