@@ -3,7 +3,7 @@
       "id": "amazia",
       "version": "${version}",
       "name": "Amazia",
-      "description": "Better Villagers in Minecraft. Allows For Vilage Creation and Development.\n\nCredits:\n- Heart Icon by Nicole Marie T\n- Happy emoji from Flaticon.\n",
+      "description": "Better Villagers in Minecraft. Allows For Vilage Creation and Development.\n\nCredits:\n- Heart Icon by Nicole Marie T\n- Happy emoji from Flaticon.\n- Village border Neo from https://github.com/Yxmna/YPACK/\n",
       "authors": [
             "Denanu",
             "Nico Steiner",

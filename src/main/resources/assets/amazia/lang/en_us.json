@@ -607,6 +607,9 @@
     "amazia.options.namegenlangWarning": "Name Generation may not be 100% accurate",
     "amazia.rancher": "Rancher",
     "amazia.teacher": "Teacher",
+    "amazia.textures/misc/border/bee.png": "Hexagons",
+    "amazia.textures/misc/border/bee_high_res.png": "Hexagons 128px",
+    "amazia.textures/misc/border/neo.png": "Neo",
     "amazia.village": "Village",
     "amazia.village.merchant.nopath": "Merchant%s was unable to find a path to your village",
     "amazia:attribute.villager.max_hunger": "Max Hunger",
@@ -707,6 +710,7 @@
     "messages.amazia.commands.success": "Success",
     "messages.amazia.erros.non_existant_economy_item": "Amazia economy missing item:",
     "messages.amazia.erros.non_existant_economy_modifier": "Amazia economy missing trade modifier:",
+    "minecraft.textures/misc/forcefield.png": "Vanilla",
     "profession.amazia.armorer": "Armorer",
     "profession.amazia.butcher": "Butcher",
     "profession.amazia.cartographer": "Cartographer",
@@ -718,9 +722,5 @@
     "profession.amazia.mason": "Mason",
     "profession.amazia.shepherd": "Shepherd",
     "profession.amazia.toolsmith": "Toolsmith",
-    "profession.amazia.weaponsmith": "Weaponsmith",
-    "minecraft.textures/misc/forcefield.png": "Vanilla",
-    "amazia.textures/misc/border/neo.png": "Neo",
-    "amazia.textures/misc/border/bee.png": "Hexagons",
-    "amazia.textures/misc/border/bee_high_res.png": "Hexagons 128px"
+    "profession.amazia.weaponsmith": "Weaponsmith"
 }
