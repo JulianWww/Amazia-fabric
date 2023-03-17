@@ -43,12 +43,12 @@ dependencies {
 	modImplementation "fi.dy.masa.malilib:malilib-fabric-1.19.2:0.13.0"
 
 
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.1"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.1.0"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.1"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-block:5.0.1"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:5.0.1"
     
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.1"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.1.0"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.1"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-block:5.0.1"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:5.0.1"
