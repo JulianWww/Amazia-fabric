@@ -31,35 +31,35 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation 'software.bernie.geckolib:geckolib-fabric-1.19:3.1.22'
+	modImplementation 'software.bernie.geckolib:geckolib-fabric-1.19:3.1.201'
 	
 	modCompileOnly "com.terraformersmc:modmenu:${project.mod_menu_version}"
 	
 	// implementation group: 'org.javatuples', name: 'javatuples', version: '1.2'
 
-	modImplementation "net.denanu.BlockHighlighting:BlockHighlighting-${project.minecraft_version}:${BlockHighlighting_version}"
-	modImplementation "net.denanu.DynamicSoundManager:DynamicSoundManager-${project.minecraft_version}:${DynamicSoundManagerVersion}"
-	modImplementation "net.denanu.StoppableSound:StoppableSound-${project.minecraft_version}:${StoppableSound_version}"
-	modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
+	modImplementation "net.denanu.BlockHighlighting:BlockHighlighting-1.19.2:1.0.0.1679062932638"
+	modImplementation "net.denanu.DynamicSoundManager:DynamicSoundManager-1.19.2:1.0.0.1679062912920"
+	modImplementation "net.denanu.StoppableSound:StoppableSound-1.19.2:1.0.2.1679063961161"
+	modImplementation "fi.dy.masa.malilib:malilib-fabric-1.19.2:0.13.0"
 
 
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinalComponentsVersion}"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinalComponentsVersion}"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cardinalComponentsVersion}"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${project.cardinalComponentsVersion}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinalComponentsVersion}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinalComponentsVersion}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-block:${cardinalComponentsVersion}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${cardinalComponentsVersion}"
     
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinalComponentsVersion}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinalComponentsVersion}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cardinalComponentsVersion}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${project.cardinalComponentsVersion}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinalComponentsVersion}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinalComponentsVersion}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-block:${cardinalComponentsVersion}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${cardinalComponentsVersion}"
     
     implementation 'com.github.javafaker:javafaker:1.0.2'
     include 'com.github.javafaker:javafaker:1.0.2'
-    include "org.yaml:snakeyaml:1.16"
+    include "org.yaml:snakeyaml:2.0"
 }
 
-if (project.version.endsWith('-dev')) {
-	project.version += "-" + Long.toHexString(new Date().getTime())
+if (project.dev == "true") {
+	project.version += "." + Long.toHexString(new Date().getTime())
 }
 
 processResources {
