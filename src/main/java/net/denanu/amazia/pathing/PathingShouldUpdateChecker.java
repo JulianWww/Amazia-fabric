@@ -9,7 +9,7 @@ public class PathingShouldUpdateChecker {
 		if (oldState.getBlock() == newState.getBlock()) {
 			return false;
 		}
-		if (oldState.isOf(Blocks.DIRT) || oldState.isOf(Blocks.GRASS_BLOCK) || oldState.isOf(Blocks.DIRT_PATH) && newState.isOf(Blocks.FARMLAND)) {
+		if (oldState.isOf(Blocks.DIRT) && oldState.isOf(Blocks.GRASS_BLOCK) || oldState.isOf(Blocks.DIRT_PATH) && newState.isOf(Blocks.FARMLAND)) {
 			return false;
 		}
 		return true;

@@ -1,6 +1,7 @@
 package net.denanu.amazia.village.sceduling;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -195,5 +196,9 @@ public class LumberSceduler extends VillageSceduler {
 			return this.schools.get(JJUtils.getRandomListElement(this.filled));
 		}
 		return null;
+	}
+
+	public Collection<LumberPathingData> getAccessPoints() {
+		return this.schools.values();
 	}
 }
