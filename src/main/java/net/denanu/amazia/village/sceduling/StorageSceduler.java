@@ -1,5 +1,6 @@
 package net.denanu.amazia.village.sceduling;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -164,5 +165,9 @@ public class StorageSceduler extends FacingPathingVillageSceduler {
 	@Override
 	protected void addPathingOption(final BlockPos pos, final Direction facing) {
 		this.chests.put(pos, new DoubleDownPathingData(pos, this.getVillage(), facing));
+	}
+
+	public Collection<DoubleDownPathingData> getAccessPoints() {
+		return this.chests.values();
 	}
 }

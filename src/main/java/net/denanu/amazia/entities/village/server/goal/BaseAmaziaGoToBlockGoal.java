@@ -119,12 +119,11 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 	}
 
 	private static double getSquareDistance(final Vec3d pos, final Vec3d loc) {
-		return Math.max(
-				Math.max(
-						Math.abs(pos.getX() - loc.getX()),
-						Math.abs(pos.getZ() - loc.getZ())
-						),
-				Math.floor(Math.abs(pos.getY() - loc.getY())));
+		final double dy = Math.floor(Math.abs(pos.getY() - loc.getY()));
+		if (dy > 1) {
+			return 16;
+		}
+		return Math.max(Math.abs(pos.getX() - loc.getX()), Math.abs(pos.getZ() - loc.getZ()));
 	}
 
 	private void runBackupMotion() {
@@ -149,7 +148,6 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 			this.entity.getMoveControl().moveTo( this.targetPos.getX() + 0.5,  this.targetPos.getY() + 1, this.targetPos.getZ() + 0.5, 1);
 		}
 		if (this.path == null && !this.directMovement) {
-			Amazia.LOGGER.info("Pathing failed");
 			this.fail();
 			return;
 		}

@@ -1,5 +1,6 @@
 package net.denanu.amazia.commands.village.pathing;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.mojang.brigadier.CommandDispatcher;
@@ -12,13 +13,17 @@ import net.denanu.amazia.Amazia;
 import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.networking.s2c.AmaziaDataSetterS2C;
+import net.denanu.amazia.pathing.interfaces.PathingEventListener;
 import net.denanu.amazia.pathing.node.BasePathingNode;
+import net.denanu.amazia.village.Village;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.BlockPosArgumentType;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
@@ -38,6 +43,11 @@ public class AmaziaClientVillagePathingCommands {
 						.then(CommandManager.argument("pos", BlockPosArgumentType.blockPos())
 								.executes(AmaziaClientVillagePathingCommands::getConnections)
 								)
+						)
+				);
+		namespace.then(CommandManager.literal("showAccessPoints")
+				.then(CommandManager.argument("villagePos", BlockPosArgumentType.blockPos())
+						.executes(AmaziaClientVillagePathingCommands::showAccesPoints)
 						)
 				);
 
@@ -87,5 +97,38 @@ public class AmaziaClientVillagePathingCommands {
 			return -1;
 		}
 		return 1;
+	}
+
+	private static int showAccesPoints(final CommandContext<ServerCommandSource> context) {
+		try {
+			final BlockPos pos = BlockPosArgumentType.getBlockPos(context, "villagePos");
+
+			if (context.getSource().getWorld().getBlockEntity(pos) instanceof final VillageCoreBlockEntity core) {
+				final Village village = core.getVillage();
+				final ServerWorld world = context.getSource().getWorld();
+				AmaziaClientVillagePathingCommands.renderAccessPoints(village.getBlasting().getAccessPoints(), world);
+				AmaziaClientVillagePathingCommands.renderAccessPoints(village.getSmelting().getAccessPoints(), world);
+				AmaziaClientVillagePathingCommands.renderAccessPoints(village.getSmoking().getAccessPoints(), world);
+				AmaziaClientVillagePathingCommands.renderAccessPoints(village.getLumber().getAccessPoints(), world);
+				AmaziaClientVillagePathingCommands.renderAccessPoints(village.getEnchanting().getAccessPoints(), world);
+				AmaziaClientVillagePathingCommands.renderAccessPoints(village.getDesk().getAccessPoints(), world);
+				AmaziaClientVillagePathingCommands.renderAccessPoints(village.getChairs().getAccessPoints(), world);
+				AmaziaClientVillagePathingCommands.renderAccessPoints(village.getStorage().getAccessPoints(), world);
+				AmaziaClientVillagePathingCommands.renderAccessPoints(village.getBeds().getAccessPoints(), world);
+			}
+		}
+		catch (final Exception e){
+			Amazia.LOGGER.error(e.getMessage());
+			return -1;
+		}
+		return 1;
+	}
+
+	private static <T extends PathingEventListener> void renderAccessPoints(final Collection<T> listeners, final ServerWorld world) {
+		for (final PathingEventListener listener : listeners) {
+			for (final BlockPos pos : listener.getPathingOptions()) {
+				world.spawnParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 16, 0, 0, 0, 0);
+			}
+		}
 	}
 }

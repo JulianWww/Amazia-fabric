@@ -1,6 +1,7 @@
 package net.denanu.amazia.village.sceduling;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,5 +118,9 @@ public class AbstractFurnaceSceduler extends FacingPathingVillageSceduler {
 			return this.pathing.get(JJUtils.getRandomListElement(this.location));
 		}
 		return null;
+	}
+
+	public Collection<DoubleDownPathingData> getAccessPoints() {
+		return this.pathing.values();
 	}
 }
