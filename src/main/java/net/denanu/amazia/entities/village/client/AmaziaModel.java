@@ -1,7 +1,6 @@
 package net.denanu.amazia.entities.village.client;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -15,7 +14,7 @@ public class AmaziaModel<T extends PassiveEntity & AmaziaModelEntityI & IAnimata
 	private static final Identifier TEX = Identifier.of(Amazia.MOD_ID, "textures/entity/villagers/villager.png");
 
 	public AmaziaModel(final String name) {
-		this(Amazia.MOD_ID, name);
+		this(name, name);
 	}
 
 	public AmaziaModel(final String MODID, final String name) {
