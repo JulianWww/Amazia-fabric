@@ -14,7 +14,7 @@ public class AmaziaModel<T extends PassiveEntity & AmaziaModelEntityI & IAnimata
 	private static final Identifier TEX = Identifier.of(Amazia.MOD_ID, "textures/entity/villagers/villager.png");
 
 	public AmaziaModel(final String name) {
-		this(name, name);
+		this(Amazia.MOD_ID, name);
 	}
 
 	public AmaziaModel(final String MODID, final String name) {

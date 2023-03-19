@@ -5099,6 +5099,11 @@
 					]
 				},
 				{
+					"name": "bipedHandLeft",
+					"parent": "arms_flipped",
+					"pivot": [6, 9.5, 0.35]
+				},
+				{
 					"name": "other_arm",
 					"parent": "arms_rotation",
 					"pivot": [0, 22.5, 0.35],
@@ -5128,6 +5133,11 @@
 							}
 						}
 					]
+				},
+				{
+					"name": "bipedHandRight",
+					"parent": "other_arm",
+					"pivot": [6, 9.5, 0.35]
 				},
 				{
 					"name": "right_leg",

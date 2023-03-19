@@ -58,8 +58,11 @@ dependencies {
     include "org.yaml:snakeyaml:2.0"
 }
 
+group = project.maven_group + "." + project.archives_base_name
+archivesBaseName = project.archives_base_name + '-' + project.minecraft_version
+
 if (project.dev == "true") {
-	project.version += "." + Long.toHexString(new Date().getTime())
+	project.version += "." + Long.toString(new Date().getTime())
 }
 
 processResources {
@@ -88,19 +91,18 @@ jar {
 	}
 }
 
-// configure the maven publication
+tasks.publish.dependsOn build
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
+			artifactId archivesBaseName
 			from components.java
 		}
 	}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+		maven {
+			url "./maven"
+		}
 	}
 }
