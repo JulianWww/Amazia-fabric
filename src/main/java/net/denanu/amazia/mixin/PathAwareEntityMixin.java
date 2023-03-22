@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.entities.village.server.AmaziaEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
@@ -20,7 +19,6 @@ public class PathAwareEntityMixin extends MobEntity {
 	public void updateLeashInject(final CallbackInfo callinfo) {
 		final PathAwareEntity entity = (PathAwareEntity)(Object)this;
 		if (entity.getHoldingEntity() instanceof final AmaziaEntity holder) {
-			Amazia.LOGGER.info("teleported entity");
 			entity.teleport(
 					holder.getX(),
 					holder.getY(),

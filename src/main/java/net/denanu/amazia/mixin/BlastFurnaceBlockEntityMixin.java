@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.denanu.amazia.Amazia;
 import net.denanu.amazia.components.AmaziaBlockComponents;
 import net.denanu.amazia.village.Village;
 import net.denanu.amazia.village.VillageManager;
@@ -46,7 +45,6 @@ public abstract class BlastFurnaceBlockEntityMixin extends LockableContainerBloc
 	}
 	private AbstractFurnaceSceduler getHandler(final BlastFurnaceBlockEntityMixin t, final BlockPos pos) {
 		final Village village = VillageManager.getVillage(pos, (ServerWorld) this.world);
-		Amazia.LOGGER.info(BlockEntityType.getId(t.getType()).toString());
 		return switch (BlockEntityType.getId(t.getType()).toString()) {
 		case "minecraft:furnace" -> village.getSmelting();
 		case "minecraft:blast_furnace" -> village.getBlasting();

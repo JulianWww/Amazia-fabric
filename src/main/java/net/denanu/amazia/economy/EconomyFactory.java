@@ -315,7 +315,7 @@ public class EconomyFactory {
 	public final static RandomnessFactory<Integer> DIE_RANDOMNESS_FACTORY = new ConstrainedGaussianIntRandom(16, 4, 64, 1);
 
 	// value       volatility  return rate | stackSize generator							professions
-	public final static BaseItemEconomy COAL = 					EconomyFactory.register(Items.COAL, 					0.0666f, 	0.0001f, 	0.01f,	new ConstrainedGaussianIntRandom(20f, 8f, 64,1),ImmutableSet.of("armorer", "butcher", "fischerman", "toolsmith", "weaponsmith")).addToVillage();
+	public final static BaseItemEconomy COAL = 					EconomyFactory.register(Items.COAL, 					0.0666f, 	0.001f, 		0.01f,	new ConstrainedGaussianIntRandom(20f, 8f, 64,1),ImmutableSet.of("armorer", "butcher", "fischerman", "toolsmith", "weaponsmith")).addToVillage();
 	public final static BaseItemEconomy IRON_HELMET = 			EconomyFactory.register(Items.IRON_HELMET, 				5, 			2f, 		0.001f, new ConstantValue<>(1), 						ImmutableSet.of("armorer")).modify(EconomyFactory.HELMET_ENCHANTMENT_MODIFIER);
 	public final static BaseItemEconomy IRON_CHESTPLATE = 		EconomyFactory.register(Items.IRON_CHESTPLATE, 			9, 			2f, 		0.001f, new ConstantValue<>(1), 						ImmutableSet.of("armorer")).modify(EconomyFactory.CHESTPLATE_ENCHANTMENT_MODIFIER);
 	public final static BaseItemEconomy IRON_LEGGINS =			EconomyFactory.register(Items.IRON_LEGGINGS, 			7, 			2f, 		0.001f, new ConstantValue<>(1), 						ImmutableSet.of("armorer")).modify(EconomyFactory.LEGGINS_ENCHANTMENT_MODIFIER);

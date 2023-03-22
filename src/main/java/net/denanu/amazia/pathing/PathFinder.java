@@ -26,8 +26,8 @@ import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.ai.pathing.PathNode;
 import net.minecraft.entity.ai.pathing.PathNodeNavigator;
-import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.annotation.Debug;
 import net.minecraft.util.math.BlockPos;
@@ -99,12 +99,9 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 			return null;
 		}
 
-		Amazia.LOGGER.info("Scanned for path " + endNode.getBlockPos());
-
 		if (graph.isSetupDone()) {
 			return PathFinder.finalizeHirarchicalPath( this.findHirarchicalPath(startNode, endNode, graph), startNode.getBlockPos());
 		}
-		Amazia.LOGGER.info("classic");
 		return PathFinder.finalizeBasePath( this.basePathFinder(startNode, endNode, graph), startNode.getBlockPos());
 	}
 
@@ -188,7 +185,7 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 		final int currentEval = graph.getEvalIndex();
 
 		final PriorityQueue<PriorityElement<BasePathingNode>> nodeQueue = new PriorityQueue<>(PriorityElement.comparator);
-		nodeQueue.add(new PriorityElement<>(PathFinder.estimateHyperGreadyDistance(startNode, endNode), startNode));
+		nodeQueue.add(new PriorityElement<>(PathFinder.estimateDistance(startNode, endNode), startNode));
 		startNode.lastEvaluation = currentEval;
 
 		startNode.distance = 0;
@@ -208,7 +205,7 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 					next.distance = current.getRight().distance + next.getY() == current.getRight().getY() ? 1 : 16;
 
 					next.lastEvaluation = currentEval;
-					nodeQueue.add(new PriorityElement<>(next.distance + PathFinder.estimateHyperGreadyDistance(next, endNode), next));
+					nodeQueue.add(new PriorityElement<>(next.distance + PathFinder.estimateDistance(next, endNode), next));
 				}
 			}
 		}
@@ -219,6 +216,7 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 		return n1.manhattenDistance(n2);
 	}
 
+	@Debug
 	private static int estimateHyperGreadyDistance(final PathingNode n1, final PathingNode n2) {
 		return n1.getSquaredDistance(n2);
 	}
@@ -250,7 +248,7 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
             for (blockpos = new BlockPos((Entity)this.entity); (this.blockAccess.func_180495_p(blockpos).func_185904_a() == Material.field_151579_a || this.blockAccess.func_180495_p(blockpos).func_177230_c().func_176205_b(this.blockAccess, blockpos)) && blockpos.func_177956_o() > 0; blockpos = blockpos.func_177977_b()) {}
             i = blockpos.func_177984_a().func_177956_o();
         }*/
-		final BlockPos blockpos2 = new BlockPos(this.entity.getPos());
+		final BlockPos blockpos2 = this.entity.getBlockPos();
 		BasePathingNode node = graph.getNode(blockpos2.getX(), i, blockpos2.getZ());
 		if (node == null) {
 			node = graph.getNode(blockpos2.getX(), i + 1, blockpos2.getZ());
@@ -405,18 +403,15 @@ public class PathFinder <T extends MobEntity & AmaziaPathfinderEntity> extends E
 			this.openBlock();
 		}
 		this.checkTimeouts(vec3d);
+		//this.debug();
 	}
 
 	@Debug
 	private void debug() {
-		for (final ArmorStandEntity stand : this.entity.getWorld().getEntitiesByClass(ArmorStandEntity.class, this.entity.getVillage().getBox(), e -> true)) {
-			stand.discard();
-		}
-
 		for (int idx = this.currentPath.getCurrentNodeIndex(); idx < this.currentPath.getLength(); idx++) {
 			final PathNode node = this.currentPath.getNode(idx);
-			final ArmorStandEntity stand = new ArmorStandEntity(this.entity.getWorld(), node.x + 0.5, node.y, node.z + 0.5);
-			this.entity.getWorld().spawnEntity(stand);
+			final BlockPos pos = node.getBlockPos();
+			((ServerWorld)this.entity.world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 16, 0, 0, 0, 0);
 		}
 	}
 

@@ -7,8 +7,10 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3f;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -16,7 +18,7 @@ import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
 @Environment(EnvType.CLIENT)
-public class AmaziaVillerHeldItemFeatureRenderer<T extends AmaziaVillagerEntity & IAnimatable> extends GeoLayerRenderer<T> {
+public class AmaziaVillerHeldItemFeatureRenderer<T extends LivingEntity & IAnimatable> extends GeoLayerRenderer<T> {
 	private final HeldItemRenderer heldItemRenderer;
 
 	public AmaziaVillerHeldItemFeatureRenderer(final IGeoRenderer<T> entityRendererIn, final HeldItemRenderer renderer) {

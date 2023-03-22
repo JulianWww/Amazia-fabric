@@ -27,7 +27,7 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 	private int currentX, currentZ = 0;
 
 	public BaseAmaziaGoToBlockGoal(final E e, final int priority) {
-		this(e, priority, BaseAmaziaGoToBlockGoal.BASE_FOOD_USAGE, 1.0f);
+		this(e, priority, BaseAmaziaGoToBlockGoal.BASE_FOOD_USAGE, 0.8f);
 	}
 
 	public BaseAmaziaGoToBlockGoal(final E e, final int priority, final int foodUsage) {
@@ -119,12 +119,11 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 	}
 
 	private static double getSquareDistance(final Vec3d pos, final Vec3d loc) {
-		return Math.max(
-				Math.max(
-						Math.abs(pos.getX() - loc.getX()),
-						Math.abs(pos.getZ() - loc.getZ())
-						),
-				Math.floor(Math.abs(pos.getY() - loc.getY())));
+		final double dy = Math.floor(Math.abs(pos.getY() - loc.getY()));
+		if (dy > 1) {
+			return 16;
+		}
+		return Math.max(Math.abs(pos.getX() - loc.getX()), Math.abs(pos.getZ() - loc.getZ()));
 	}
 
 	private void runBackupMotion() {
@@ -141,6 +140,8 @@ public abstract class BaseAmaziaGoToBlockGoal<E extends BasePathingAmaziaVillage
 	}
 
 	protected void recalcPath() {
+		//Amazia.LOGGER.info("Pathing to " + this.targetPos.toString());
+		//Amazia.LOGGER.info("Pathing from " + this.entity.getBlockPos());
 		this.nav =  this.entity.getNavigation();
 		this.path = (PathingPath) this.nav.findPathTo(this.targetPos, 0);
 		if (this.path != null && this.path.getLength() == 1) {

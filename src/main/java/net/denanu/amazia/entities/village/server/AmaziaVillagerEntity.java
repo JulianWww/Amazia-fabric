@@ -20,6 +20,7 @@ import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
 import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.moods.VillagerMoods;
 import net.denanu.amazia.entities.village.both.VillagerData;
+import net.denanu.amazia.entities.village.client.AmaziaModelEntityI;
 import net.denanu.amazia.entities.village.server.goal.AmaziaGoToBlockGoal.PathingAmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.goal.AmaziaLookAroundGoal;
 import net.denanu.amazia.entities.village.server.goal.mechanics.education.GoToLibraryGoal;
@@ -88,6 +89,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.scoreboard.ServerScoreboard;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -104,9 +106,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
-public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner, AmaziaMechanicsGuiEntity,
+public abstract class AmaziaVillagerEntity extends AmaziaEntity implements InventoryOwner, AmaziaModelEntityI, AmaziaMechanicsGuiEntity,
 InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactory, PathingAmaziaVillagerEntity {
-	private static final TrackedData<Float> INTELLIGENCE = DataTracker.registerData(AmaziaVillagerEntity.class, TrackedDataHandlerRegistry.FLOAT);
+	protected static final TrackedData<Float> INTELLIGENCE = DataTracker.registerData(AmaziaVillagerEntity.class, TrackedDataHandlerRegistry.FLOAT);
 	private static final TrackedData<VillagerData> VILLAGER_DATA = DataTracker.registerData(VillagerEntity.class, VillagerData.VILLAGER_DATA);
 
 	private final SimpleInventory inventory = new SimpleInventory(18);
@@ -118,9 +120,9 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	private final VillagerScedule activityScedule = new VillagerScedule();
 
 	private float hunger;
-	private float education;
+	protected float education;
 	protected final ProfessionLevelManager professionLevelManager;
-	private float happyness;
+	protected float happyness;
 
 	private Optional<Integer> bestFoodItem;
 
@@ -180,11 +182,24 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 
 		this.setCustomName(Text.literal(NamingLanguageOptions.generateName(lastName)));
 		this.setCustomNameVisible(false);
+
+		if (this.world.getServer() != null) {
+			final ServerScoreboard scoreboard = this.world.getServer().getScoreboard();
+			if (scoreboard != null && Amazia.TEAM != null) {
+				scoreboard.addPlayerToTeam(this.getUuidAsString(), Amazia.TEAM);
+				Amazia.LOGGER.info("registered to team");
+			}
+		}
+	}
+
+	@Override
+	protected boolean hasCollidedSoftly(final Vec3d adjustedMovement) {
+		return true;
 	}
 
 	public static DefaultAttributeContainer.Builder setAttributes() {
 		return AmaziaEntity.setAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
-				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.22f);
+				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.35f);
 	}
 
 	@Override
@@ -490,7 +505,6 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	public void tryCraftingStart(final Item itm) {
 		final HashMap<Item, ArrayList<CraftingRecipe>> craftables = this.getCraftables();
 		if (craftables.containsKey(itm)) {
-			Amazia.LOGGER.info(itm.toString());
 			final CraftingRecipe recipy = JJUtils.getRandomListElement(craftables.get(itm));
 			final ArrayList<Item> ingredients = new ArrayList<>();
 			this.craftInput = CraftingUtils.getRecipyInput(recipy);
@@ -699,6 +713,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 		return this.dataTracker.get(AmaziaVillagerEntity.INTELLIGENCE);
 	}
 
+	@Override
 	public VillagerData getData() {
 		return this.dataTracker.get(AmaziaVillagerEntity.VILLAGER_DATA);
 	}
@@ -974,6 +989,16 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	@Override
 	public float getMaxVillagerHealth() {
 		return super.getMaxHealth();
+	}
+
+	@Override
+	public BlockPos getBlockPos() {
+		return super.getBlockPos();
+	}
+
+	@Override
+	public boolean isOnGround() {
+		return super.isOnGround();
 	}
 
 	@Override

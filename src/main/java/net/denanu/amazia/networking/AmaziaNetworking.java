@@ -2,7 +2,6 @@ package net.denanu.amazia.networking;
 
 import net.denanu.amazia.Amazia;
 import net.denanu.amazia.networking.c2s.AmaziaMerchantTradeSelectC2SPacket;
-import net.denanu.amazia.networking.c2s.AmaziaPathingOverlayRequestUpdateC2SPacket;
 import net.denanu.amazia.networking.c2s.AmaziaRequestNamingSystemC2SPacket;
 import net.denanu.amazia.networking.c2s.UpdateNamingSystemC2SPacket;
 import net.denanu.amazia.networking.s2c.AmaziaCustomChatMessageS2CPacket;
@@ -18,7 +17,6 @@ import net.minecraft.util.Identifier;
 public class AmaziaNetworking {
 	public static class C2S {
 		public static final Identifier MERCHANT_TRADE_SELECT = new Identifier(Amazia.MOD_ID, "trade_select");
-		public static final Identifier PATHING_OVERLAY_UPDATE = Identifier.of(Amazia.MOD_ID, "pathing_cs");
 		public static final Identifier CHANGE_NAME_GENERATOR = Identifier.of(Amazia.MOD_ID, "change_name");
 		public static final Identifier GET_NAME_GENERATOR = Identifier.of(Amazia.MOD_ID, "get_name");
 	}
@@ -35,7 +33,6 @@ public class AmaziaNetworking {
 
 	public static void registerC2SPackets() {
 		ServerPlayNetworking.registerGlobalReceiver(AmaziaNetworking.C2S.MERCHANT_TRADE_SELECT, AmaziaMerchantTradeSelectC2SPacket::receive);
-		ServerPlayNetworking.registerGlobalReceiver(AmaziaNetworking.C2S.PATHING_OVERLAY_UPDATE, AmaziaPathingOverlayRequestUpdateC2SPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(AmaziaNetworking.C2S.CHANGE_NAME_GENERATOR, UpdateNamingSystemC2SPacket::receive);
 		ServerPlayNetworking.registerGlobalReceiver(AmaziaNetworking.C2S.GET_NAME_GENERATOR, AmaziaRequestNamingSystemC2SPacket::receive);
 	}

@@ -70,8 +70,6 @@ public class RegenerateMineSubGoal extends TimedMultirunVillageGoal<DruidEntity>
 
 	@Override
 	protected void takeAction() {
-		Amazia.LOGGER.info("RegeneratedMine");
-
 		final var world = (ServerWorld) this.entity.getWorld();
 
 		this.entity.getMine().getBox();

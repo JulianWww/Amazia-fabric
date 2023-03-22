@@ -1,21 +1,13 @@
 package net.denanu.amazia.GUI.debug;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.concurrent.Semaphore;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.networking.AmaziaNetworking;
-import net.denanu.amazia.networking.c2s.AmaziaPathingOverlayRequestUpdateC2SPacket;
 import net.denanu.amazia.pathing.node.ClientPathingNode;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.Frustum;
@@ -29,9 +21,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
-public class VillagePathingOverlay implements ClientTickEvents.EndTick {
+public class VillagePathingOverlay {
 	public static ArrayList<ClientPathingNode> nodes = new ArrayList<>();
-	public static Deque<BlockPos> queue = new LinkedList<>();
+	public static long id=-1;
 	public static boolean render = false;
 	public static BlockPos villageLoc = new BlockPos(0,0,0);
 
@@ -96,20 +88,6 @@ public class VillagePathingOverlay implements ClientTickEvents.EndTick {
 		VillagePathingOverlay.sem.release();
 	}
 
-	public static void addToQueue(final Collection<BlockPos> poses) {
-		try {
-			VillagePathingOverlay.sem.acquire();
-			for (final BlockPos pos : poses) {
-				if (!VillagePathingOverlay.nodes.contains(pos) && !VillagePathingOverlay.queue.contains(pos) ) {
-					VillagePathingOverlay.queue.add(pos);
-				}
-			}
-		} catch (final InterruptedException e) {
-			Amazia.LOGGER.error(e.toString());
-		}
-		VillagePathingOverlay.sem.release();
-	}
-
 	private static void drawLine(final BlockPos from, final BlockPos to, final int color, final BufferBuilder bufferBuilder, final Camera camera) {
 		VillagePathingOverlay.drawLine(from.getX(), from.getY(), from.getZ(), to.getX(), to.getY(), to.getZ(), color, bufferBuilder, camera);
 	}
@@ -119,7 +97,7 @@ public class VillagePathingOverlay implements ClientTickEvents.EndTick {
 		final double cameraY = camera.getPos().y - .005D;
 		final double cameraZ = camera.getPos().z;
 
-		final float yOffset = 0.05f;
+		final float yOffset = 0.07f;
 
 		bufferBuilder.vertex(fx - cameraX + 0.5, fy - cameraY + yOffset, fz - cameraZ + 0.5).color(0f, 0f, 0f, 0f).next();
 		bufferBuilder.vertex(fx - cameraX + 0.5, fy - cameraY + yOffset, fz - cameraZ + 0.5).color(0f, 1f, 0f, 1f).next();
@@ -140,12 +118,5 @@ public class VillagePathingOverlay implements ClientTickEvents.EndTick {
 		final ArrayList<BlockPos> ajacents = new ArrayList<>();
 		ajacents.add(new BlockPos(1, 0, 0));
 		VillagePathingOverlay.nodes.add(new ClientPathingNode(ajacents, new BlockPos(0,0,0)));
-	}
-
-	@Override
-	public void onEndTick(final MinecraftClient client) {
-		if (VillagePathingOverlay.render && !VillagePathingOverlay.queue.isEmpty() && ClientPlayNetworking.canSend(AmaziaNetworking.C2S.PATHING_OVERLAY_UPDATE)) {
-			ClientPlayNetworking.send(AmaziaNetworking.C2S.PATHING_OVERLAY_UPDATE, AmaziaPathingOverlayRequestUpdateC2SPacket.toBuf(VillagePathingOverlay.queue.pop(), VillagePathingOverlay.villageLoc));
-		}
 	}
 }

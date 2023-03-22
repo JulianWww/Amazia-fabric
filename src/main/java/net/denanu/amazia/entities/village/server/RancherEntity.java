@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import net.denanu.amazia.JJUtils;
-import net.denanu.amazia.components.AmaziaEntityComponents;
 import net.denanu.amazia.entities.village.server.goal.rancher.BringAnimalsToPen;
 import net.denanu.amazia.entities.village.server.goal.rancher.FeedAnimalGoal;
 import net.denanu.amazia.entities.village.server.goal.rancher.FetchAnimal;
@@ -48,7 +47,6 @@ public class RancherEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	public RancherEntity(final EntityType<? extends PassiveEntity> entityType, final World world)  {
 		super(entityType, world);
-		AmaziaEntityComponents.setCanCollide(this, false);
 		this.animalInteractionAge = 0;
 	}
 

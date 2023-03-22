@@ -1,4 +1,9 @@
+rm -r build
 ./gradlew build
-cp ./build/libs/amazia-0.0.1-1.19.2.jar ~/.minecraft/mods
 
-cp ./build/libs/amazia-0.0.1-1.19.2.jar ~/Downloads/server/mods
+rm build/libs/*sources*
+rm ~/.minecraft/mods/amazia*
+rm ~/Downloads/server/mods/amazia*
+
+cp ./build/libs/amazia*.jar ~/.minecraft/mods
+mv ./build/libs/amazia*.jar ~/Downloads/server/mods

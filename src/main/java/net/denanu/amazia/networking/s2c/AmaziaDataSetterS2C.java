@@ -1,5 +1,10 @@
 package net.denanu.amazia.networking.s2c;
 
+import java.util.List;
+
+import com.mojang.brigadier.context.CommandContext;
+
+import net.denanu.amazia.block.entity.VillageCoreBlockEntity;
 import net.denanu.amazia.compat.malilib.NamingLanguageOptions;
 import net.denanu.amazia.economy.AmaziaTradeOfferList;
 import net.denanu.amazia.entities.moods.VillagerMoods;
@@ -7,6 +12,7 @@ import net.denanu.amazia.pathing.node.BasePathingNode;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.math.BlockPos;
 
 public class AmaziaDataSetterS2C {
@@ -41,14 +47,18 @@ public class AmaziaDataSetterS2C {
 		return offers.toPacket(buf);
 	}
 
-	public static PacketByteBuf toSetupBasePathingRendereingBuf(final BlockPos pos, final boolean val) {
+	public static List<PacketByteBuf> toSetupBasePathingRendereingBuf(final CommandContext<ServerCommandSource> context, final BlockPos pos, final boolean val, final long id) {
+		if (val && context.getSource().getWorld().getBlockEntity(pos) instanceof final VillageCoreBlockEntity core) {
+			return core.getVillage().getPathingGraph().lvl0.toBuf(buf2 -> {
+				buf2.writeBoolean(val);
+				buf2.writeLong(id);
+			});
+		}
 		final PacketByteBuf buf = PacketByteBufs.create();
 
 		buf.writeBoolean(val);
-		if (val) {
-			buf.writeBlockPos(pos);
-		}
-
-		return buf;
+		buf.writeLong(id);
+		buf.writeCollection(List.of(), (buf2, d) -> {});
+		return List.of(buf);
 	}
 }

@@ -1,6 +1,7 @@
 package net.denanu.amazia.village.sceduling;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Predicate;
@@ -98,5 +99,9 @@ public class PathingNoHeightSceduler extends VillageSceduler {
 			return this.tables.get(JJUtils.getRandomListElement(this.enchantingTables, pred, this.getVillage().getWorld()));
 		}
 		return null;
+	}
+
+	public Collection<NoHeightPathingData> getAccessPoints() {
+		return this.tables.values();
 	}
 }

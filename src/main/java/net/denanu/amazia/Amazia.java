@@ -3,6 +3,7 @@ package net.denanu.amazia;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ import net.denanu.amazia.economy.offerModifiers.price.AmaziaValueModifiers;
 import net.denanu.amazia.entities.AmaziaEntities;
 import net.denanu.amazia.entities.AmaziaEntityAttributes;
 import net.denanu.amazia.entities.village.both.Trackers;
+import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.denanu.amazia.entities.village.server.ChefEntity;
 import net.denanu.amazia.entities.village.server.FarmerEntity;
 import net.denanu.amazia.entities.village.server.GuardEntity;
@@ -35,6 +37,7 @@ import net.denanu.amazia.highlighting.BlockHighlightingAmaziaIds;
 import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.mechanics.hunger.CraftingHungerManager;
 import net.denanu.amazia.mechanics.leveling.AmaziaProfessions;
+import net.denanu.amazia.mixin.MinecraftServerWorldAccessor;
 import net.denanu.amazia.networking.AmaziaNetworking;
 import net.denanu.amazia.particles.AmaziaParticles;
 import net.denanu.amazia.sounds.AmaziaSounds;
@@ -47,10 +50,17 @@ import net.denanu.amazia.village.VillageManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.scoreboard.AbstractTeam.CollisionRule;
+import net.minecraft.scoreboard.ServerScoreboard;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.GeckoLib;
 
@@ -68,6 +78,7 @@ public class Amazia implements ModInitializer {
 	public static HashMap<Item, ArrayList<CraftingRecipe>> GUARD_CRAFTABLES;
 
 	private static VillageManager villageManager;
+	public static Team TEAM;
 
 	@Override
 	public void onInitialize() {
@@ -87,6 +98,28 @@ public class Amazia implements ModInitializer {
 		AmaziaValueModifiers.setup();
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(AmaziaPersistentStateHandler::fromNbt, AmaziaPersistentStateHandler::loadDefault, Amazia.MOD_ID);
+
+			final Identifier villageTeam = Identifier.of(Amazia.MOD_ID, "village_internal_team");
+			final ServerScoreboard scoreboard = server.getScoreboard();
+			if (scoreboard.getTeam(villageTeam.toTranslationKey()) != null) {
+				return;
+			}
+			Amazia.TEAM = scoreboard.addTeam(villageTeam.toTranslationKey());
+			Amazia.TEAM.setDisplayName(Text.translatable(villageTeam.toTranslationKey()));
+			Amazia.TEAM.setCollisionRule(CollisionRule.NEVER);
+
+			for (final ServerWorld world : server.getWorlds()) {
+				final MinecraftServerWorldAccessor worldAccess = (MinecraftServerWorldAccessor)world;
+				for (final Iterator<Entity> iter = worldAccess.getEntityManager().getLookup().iterate().iterator(); iter.hasNext();) {
+					if (iter.next() instanceof final AmaziaVillagerEntity entity) {
+						server.getScoreboard().addPlayerToTeam(entity.getUuidAsString(), Amazia.TEAM);
+					}
+				}
+			}
+		});
+
+		ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+			Amazia.TEAM = null;
 		});
 
 		// Networking
