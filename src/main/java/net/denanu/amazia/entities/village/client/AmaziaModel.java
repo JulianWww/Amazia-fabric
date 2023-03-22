@@ -1,7 +1,6 @@
 package net.denanu.amazia.entities.village.client;
 
 import net.denanu.amazia.Amazia;
-import net.denanu.amazia.entities.village.server.AmaziaVillagerEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.passive.PassiveEntity;

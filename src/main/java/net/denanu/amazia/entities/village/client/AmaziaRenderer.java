@@ -92,7 +92,7 @@ public class AmaziaRenderer<T extends PassiveEntity & AmaziaModelEntityI & IAnim
 		case "armorBipedLeftLeg", "armorBipedRightLeg", "armorBipedLeftLeg2", "armorBipedRightLeg2" -> this.leggings;
 		case "armorBipedBody", "armorBipedRightArm", "armorBipedLeftArm" -> this.chestplate;
 		case "armorBipedHead" -> this.helmet;
-		default -> null;
+		default -> ItemStack.EMPTY;
 		};
 	}
 

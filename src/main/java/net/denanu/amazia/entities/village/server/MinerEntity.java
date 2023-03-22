@@ -95,11 +95,11 @@ public class MinerEntity extends AmaziaVillagerEntity implements IAnimatable {
 
 	private <E extends IAnimatable> PlayState predicate(final AnimationEvent<E> event) {
 		if (event.isMoving()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.walk", true));
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.generic.walk", true));
 			return PlayState.CONTINUE;
 		}
 
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.farmer.idle", true));
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.generic.idle", true));
 		return PlayState.CONTINUE;
 	}
 

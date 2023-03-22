@@ -37,7 +37,6 @@ import net.denanu.amazia.item.AmaziaItems;
 import net.denanu.amazia.item.custom.VillagerTransformationTokenItem;
 import net.denanu.amazia.mechanics.AmaziaMechanicsGuiEntity;
 import net.denanu.amazia.mechanics.IAmaziaDataProviderEntity;
-import net.denanu.amazia.mechanics.VillagerTypes;
 import net.denanu.amazia.mechanics.education.IAmaziaEducatedEntity;
 import net.denanu.amazia.mechanics.happyness.HappynessMap;
 import net.denanu.amazia.mechanics.happyness.IAmaziaHappynessEntity;
@@ -103,6 +102,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.village.VillagerType;
 import net.minecraft.world.World;
 import oshi.util.tuples.Triplet;
 
@@ -206,7 +206,7 @@ InventoryChangedListener, IAmaziaDataProviderEntity, ExtendedScreenHandlerFactor
 	protected void initDataTracker() {
 		super.initDataTracker();
 		this.dataTracker.startTracking(AmaziaVillagerEntity.INTELLIGENCE, 0f);
-		this.dataTracker.startTracking(AmaziaVillagerEntity.VILLAGER_DATA, new VillagerData(VillagerTypes.SNOW));
+		this.dataTracker.startTracking(AmaziaVillagerEntity.VILLAGER_DATA, new VillagerData(Identifier.of(Amazia.MOD_ID, VillagerType.forBiome(this.world.getBiome(this.getBlockPos())).toString())));
 	}
 
 	public void registerBaseGoals() {
