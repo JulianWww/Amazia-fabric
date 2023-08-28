@@ -55,7 +55,7 @@ dependencies {
     
     implementation 'com.github.javafaker:javafaker:1.0.2'
     include 'com.github.javafaker:javafaker:1.0.2'
-    include "org.yaml:snakeyaml:2.0"
+    include "org.yaml:snakeyaml:2.2"
 }
 
 group = project.maven_group + "." + project.archives_base_name
